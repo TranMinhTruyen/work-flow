@@ -17,17 +17,19 @@ public class ControllerAop {
 
   @Around(value = "execution(* com.org.workflow.controller.*.*(..))", argNames = "joinPoint")
   public Object controllerLogger(ProceedingJoinPoint joinPoint) throws Throwable {
-    Object value;
+    Object value = null;
     long startTime = System.currentTimeMillis();
     final String methodName = joinPoint.getSignature().getName();
     final String controllerName = joinPoint.getTarget().getClass().getName();
     LOGGER.info("Start time taken by controller: {}", controllerName);
     try {
-      LOGGER.info("Run controller {} method {}.", controllerName, methodName);
+      LOGGER.info("Run controller {}, method {}.", controllerName, methodName);
       value = joinPoint.proceed();
+    } catch (Throwable throwable) {
+      LOGGER.error("Controller name {}, method {} has error: {} do rollback", controllerName, methodName, throwable.getMessage());
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
-      LOGGER.info("Controller name {} method {} time taken {} ms", controllerName, methodName, timeTaken);
+      LOGGER.info("Controller name {}, method {} time taken {} ms", controllerName, methodName, timeTaken);
     }
     return value;
   }

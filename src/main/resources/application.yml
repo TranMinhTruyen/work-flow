@@ -1,1 +1,28 @@
+server:
+  port: 8080
+  
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/workflow
+    username: postgres
+    password: 1234
+    hikari:
+      maximum-pool-size: 100
+      connection-timeout: 1800000
+      max-lifetime: 30000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+    open-in-view: false
+    
 
+springdoc:
+  api-docs:
+    path: /api-docs
