@@ -14,8 +14,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.org.workflow.common.cnst.CommonCnst.DATE_TIME_FORMAT_PATTERN;
-import static com.org.workflow.common.cnst.CommonCnst.ZONE_ID;
+import static com.org.workflow.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.common.cnst.CommonConst.ZONE_ID;
 
 @Data
 @Builder
@@ -29,7 +29,7 @@ import static com.org.workflow.common.cnst.CommonCnst.ZONE_ID;
 })
 public class BaseResponse implements Serializable {
   private HttpStatusCode status;
-  private String timestamp = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
+  private final String timestamp = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
       .format(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(ZONE_ID)));
   private String message;
   @Nullable
