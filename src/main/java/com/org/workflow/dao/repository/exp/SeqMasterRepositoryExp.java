@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface SeqMasterRepositoryExp {
   Optional<SeqMaster> selectByEntityName(String entityName);
+  Optional<Long> updateSeq(String entityName);
 }

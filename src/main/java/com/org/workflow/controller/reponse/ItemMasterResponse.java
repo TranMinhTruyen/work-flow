@@ -1,11 +1,10 @@
 package com.org.workflow.controller.reponse;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class ItemMasterResponse {
+  private String id;
   private String key;
   private String value1;
   private String value2;

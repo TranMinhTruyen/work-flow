@@ -25,24 +25,22 @@ public class RepositoryAop {
 
   @Around(value = "execution(* com.org.workflow.dao.*.*(..))", argNames = "joinPoint")
   public Object serviceLogger(ProceedingJoinPoint joinPoint) throws Throwable {
-    Object value = null;
     long startTime = System.currentTimeMillis();
     final String methodName = joinPoint.getSignature().getName();
     final String repositoryName = joinPoint.getTarget().getClass().getName();
     LOGGER.info("Start time taken by repository: {}", repositoryName);
     try {
       LOGGER.info("Repository name {}, method {} do commit", repositoryName, methodName);
-      value = joinPoint.proceed();
-    } catch (Throwable throwable) {
-      LOGGER.error("Repository name {}, method {} has error: {} do rollback", repositoryName, methodName, throwable.getMessage());
+    } catch (Exception exception) {
+      LOGGER.error("Repository name {}, method {} has error: {} do rollback", repositoryName, methodName, exception.getMessage());
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
       LOGGER.info("Repository name {}, method {} time taken {} ms", repositoryName, methodName, timeTaken);
     }
-    return value;
+    return joinPoint.proceed();
   }
 
-  @Around(value = "execution(* com.org.workflow.dao.*.*(..))", argNames = "joinPoint")
+  @Around(value = "execution(* com.org.workflow.service.*.*(..))", argNames = "joinPoint")
   public Object transaction(ProceedingJoinPoint joinPoint) throws AppException {
     DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
     definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -57,4 +55,5 @@ public class RepositoryAop {
     }
     return value;
   }
+
 }

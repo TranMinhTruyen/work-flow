@@ -4,8 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class ItemMasterRequest {
+  private String id;
   private String key;
   private String value1;
   private String value2;

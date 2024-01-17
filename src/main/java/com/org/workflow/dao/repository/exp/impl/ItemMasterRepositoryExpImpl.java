@@ -38,20 +38,18 @@ public class ItemMasterRepositoryExpImpl extends QuerydslRepositorySupport imple
   @Override
   public Optional<List<ItemMaster>> searchByKeyWord(String keyword) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
-    booleanBuilder.orAllOf(
-        itemMaster.id.like(keyword),
-        itemMaster.key.likeIgnoreCase(keyword),
-        itemMaster.value1.likeIgnoreCase(keyword),
-        itemMaster.value2.likeIgnoreCase(keyword),
-        itemMaster.value3.likeIgnoreCase(keyword),
-        itemMaster.value4.likeIgnoreCase(keyword),
-        itemMaster.value5.likeIgnoreCase(keyword),
-        itemMaster.value6.likeIgnoreCase(keyword),
-        itemMaster.value7.likeIgnoreCase(keyword),
-        itemMaster.value8.likeIgnoreCase(keyword),
-        itemMaster.value9.likeIgnoreCase(keyword),
-        itemMaster.value10.likeIgnoreCase(keyword)
-    );
+    booleanBuilder.or(itemMaster.id.like(keyword))
+        .or(itemMaster.key.likeIgnoreCase(keyword))
+        .or(itemMaster.value1.likeIgnoreCase(keyword))
+        .or(itemMaster.value2.likeIgnoreCase(keyword))
+        .or(itemMaster.value3.likeIgnoreCase(keyword))
+        .or(itemMaster.value4.likeIgnoreCase(keyword))
+        .or(itemMaster.value5.likeIgnoreCase(keyword))
+        .or(itemMaster.value6.likeIgnoreCase(keyword))
+        .or(itemMaster.value7.likeIgnoreCase(keyword))
+        .or(itemMaster.value8.likeIgnoreCase(keyword))
+        .or(itemMaster.value9.likeIgnoreCase(keyword))
+        .or(itemMaster.value10.likeIgnoreCase(keyword));
     JPQLQuery<ItemMaster> query = from(itemMaster).where(booleanBuilder);
     return Optional.ofNullable(query.fetch());
   }

@@ -1,18 +1,21 @@
 package com.org.workflow.controller;
 
 import com.org.workflow.controller.reponse.BaseResponse;
+import com.org.workflow.controller.reponse.ItemMasterResponse;
 import com.org.workflow.controller.request.ItemMasterRequest;
 import com.org.workflow.core.exception.AppException;
 import com.org.workflow.dao.entity.ItemMaster;
 import com.org.workflow.service.ItemMasterService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "ItemMasterController")
 @RestController
@@ -22,14 +25,20 @@ public class ItemMasterController extends AbstractController {
   private final ItemMasterService itemMasterService;
 
   @PostMapping("/item-master/create")
-  public ResponseEntity<BaseResponse> createItemMaster(ItemMasterRequest itemMasterRequest) throws AppException {
-    ItemMaster result = itemMasterService.createMaster(itemMasterRequest);
-    BaseResponse baseResponse = new BaseResponse();
-    baseResponse.setMessage("Create item master success");
-    baseResponse.setBody(result);
-    baseResponse.setStatus(HttpStatus.OK);
-    HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-    return new ResponseEntity<>(baseResponse, httpHeaders, HttpStatus.OK);
+  public ResponseEntity<BaseResponse> createItemMaster(@RequestBody ItemMasterRequest itemMasterRequest) {
+    ItemMaster result = itemMasterService.createItemMaster(itemMasterRequest);
+    return this.returnBaseResponse(result, "Create success", HttpStatus.OK);
+  }
+
+  @PostMapping("/item-master/get")
+  public ResponseEntity<BaseResponse> getItemMaster(@RequestParam String keyword) {
+    List<ItemMasterResponse> itemMasterResponseList = itemMasterService.getItemMaster(keyword);
+    return this.returnBaseResponse(itemMasterResponseList, "Get success", HttpStatus.OK);
+  }
+
+  @PostMapping("/item-master/update")
+  public ResponseEntity<BaseResponse> updateItemMaster(@RequestBody ItemMasterRequest itemMasterRequest) throws AppException {
+    ItemMaster result = itemMasterService.updateItemMaster(itemMasterRequest);
+    return this.returnBaseResponse(result, "Update success", HttpStatus.OK);
   }
 }
