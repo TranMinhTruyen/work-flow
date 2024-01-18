@@ -26,6 +26,9 @@ public class AppUser implements Serializable {
   
   @Column(name = "role")
   private String role;
+  
+  @Column(name="login_fail_count")
+  private Integer loginFailCount;
 
   @Column(name = "is_active", nullable = false)
   private Boolean isActive;

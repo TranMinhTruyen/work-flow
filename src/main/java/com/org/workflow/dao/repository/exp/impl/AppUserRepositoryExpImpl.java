@@ -28,4 +28,15 @@ public class AppUserRepositoryExpImpl extends QuerydslRepositorySupport implemen
     );
     return Optional.ofNullable(query.fetchFirst());
   }
+
+  @Override
+  public Optional<AppUser> selectByUserName(String userName) {
+    JPQLQuery<AppUser> query = from(appUser).where(
+        appUser.username.eq(userName),
+        appUser.isActive.eq(true),
+        appUser.deleteDatetime.isNull(),
+        appUser.deleteBy.isNull()
+    );
+    return Optional.ofNullable(query.fetchFirst());
+  }
 }

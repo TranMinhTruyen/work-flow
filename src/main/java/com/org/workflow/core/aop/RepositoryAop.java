@@ -47,8 +47,8 @@ public class RepositoryAop {
     TransactionStatus transactionStatus = transactionManager.getTransaction(definition);
     Object value;
     try {
-      value = joinPoint.proceed();
       transactionManager.commit(transactionStatus);
+      value = joinPoint.proceed();
     } catch (Throwable e) {
       transactionManager.rollback(transactionStatus);
       throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, e.getStackTrace());
