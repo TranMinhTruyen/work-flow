@@ -7,13 +7,12 @@ import com.org.workflow.controller.request.ItemMasterRequest;
 import com.org.workflow.core.exception.AppException;
 import com.org.workflow.dao.entity.ItemMaster;
 import com.org.workflow.dao.repository.ItemMasterRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -65,8 +64,10 @@ public class ItemMasterService {
   }
 
   public ItemMaster updateItemMaster(ItemMasterRequest itemMasterRequest) throws AppException {
-    Optional<ItemMaster> result = itemMasterRepository.selectByIdAndKey(Long.valueOf(itemMasterRequest.getId()), itemMasterRequest.getKey());
-    ItemMaster update = result.orElseThrow(() -> new AppException("Not found", HttpStatus.NOT_FOUND));
+    Optional<ItemMaster> result = itemMasterRepository.selectByIdAndKey(
+        Long.valueOf(itemMasterRequest.getId()), itemMasterRequest.getKey());
+    ItemMaster update = result.orElseThrow(
+        () -> new AppException("Not found", HttpStatus.NOT_FOUND));
     update.setValue1(itemMasterRequest.getValue1());
     update.setValue2(itemMasterRequest.getValue2());
     update.setValue3(itemMasterRequest.getValue3());

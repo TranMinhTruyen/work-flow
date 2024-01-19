@@ -1,19 +1,18 @@
 package com.org.workflow.dao.entity;
 
-import com.org.workflow.dao.id.ItemMasterId;
+import com.org.workflow.dao.id.ItemMasterPk;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 @Data
 @Entity(name = "item_master")
-@IdClass(ItemMasterId.class)
+@IdClass(ItemMasterPk.class)
 public class ItemMaster implements Serializable {
-  
+
   @Id
   private Long id;
 
@@ -22,7 +21,7 @@ public class ItemMaster implements Serializable {
 
   @Column(name = "value_1", nullable = false)
   private String value1;
-  
+
   @Column(name = "value_2")
   private String value2;
 
@@ -49,5 +48,5 @@ public class ItemMaster implements Serializable {
 
   @Column(name = "value_10")
   private String value10;
-  
+
 }

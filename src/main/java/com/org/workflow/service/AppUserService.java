@@ -1,15 +1,6 @@
 package com.org.workflow.service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-
+import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.CreateAppUserRequest;
 import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.request.LoginRequest;
@@ -18,8 +9,15 @@ import com.org.workflow.core.security.AppUserDetail;
 import com.org.workflow.core.security.JwtProvider;
 import com.org.workflow.dao.entity.AppUser;
 import com.org.workflow.dao.repository.AppUserRepository;
-
+import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +28,8 @@ public class AppUserService implements UserDetailsService {
   private final JwtProvider jwtProvider;
 
   public AppUser createAppUser(CreateAppUserRequest createAppUserRequest) throws AppException {
-    Optional<AppUser> result =
-        appUserRepository.selectByUserName(createAppUserRequest.getUsername());
+    Optional<AppUser> result = appUserRepository.selectByUserName(
+        createAppUserRequest.getUsername());
     if (result.isPresent()) {
       throw new AppException("Username already exists", HttpStatus.CONFLICT);
     }
@@ -52,22 +50,22 @@ public class AppUserService implements UserDetailsService {
 
   public LoginResponse login(LoginRequest loginRequest) throws AppException {
     Optional<AppUser> result = appUserRepository.selectByUserName(loginRequest.getUsername());
-    AppUser appUser =
-        result.orElseThrow(() -> new AppException("Not found user name", HttpStatus.NOT_FOUND));
+    AppUser appUser = result.orElseThrow(
+        () -> new AppException(MessageEnum.ANY_MESSAGE, HttpStatus.NOT_FOUND, null, "Not found user name"));
     if (BCrypt.checkpw(loginRequest.getPassword(), appUser.getLoginPassword())) {
       LoginResponse loginResponse = new LoginResponse();
-      String token =
-          jwtProvider.generateAccessToken(new AppUserDetail(appUser), loginRequest.getIsRemember());
+      String token = jwtProvider.generateAccessToken(new AppUserDetail(appUser),
+          loginRequest.getIsRemember());
       loginResponse.setToken(token);
       return loginResponse;
     } else {
-      throw new AppException("Wrong password", HttpStatus.FORBIDDEN);
+      throw new AppException(MessageEnum.ANY_MESSAGE, HttpStatus.NOT_FOUND, null, "Wrong password");
     }
   }
 
   public AppUserDetail loadByUserName(String username) throws AppException {
     Optional<AppUser> result = appUserRepository.selectByUserName(username);
-    AppUser appUser = result.orElseThrow(() -> new AppException("Not found", HttpStatus.NOT_FOUND));
+    AppUser appUser = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND));
     return new AppUserDetail(appUser);
   }
 
@@ -75,4 +73,5 @@ public class AppUserService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return null;
   }
+
 }

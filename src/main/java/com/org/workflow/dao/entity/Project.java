@@ -10,27 +10,18 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-@Entity(name = "app_user")
-public class AppUser implements Serializable {
+@Entity(name = "project")
+public class Project implements Serializable {
 
   @Id
-  @Column(name = "user_name", nullable = false)
-  private String username;
+  @Column(name = "project_id")
+  private String projectId;
 
-  @Column(name = "login_password", nullable = false)
-  private String loginPassword;
+  @Column(name = "project_name", nullable = false)
+  private String projectName;
 
-  @Column(name = "full_name")
-  private String fullName;
-
-  @Column(name = "role")
-  private String role;
-
-  @Column(name = "login_fail_count")
-  private Integer loginFailCount;
-
-  @Column(name = "is_active", nullable = false)
-  private Boolean isActive;
+  @Column(name = "project_lead", nullable = false)
+  private String projectLead;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_date_time", nullable = false)
@@ -52,4 +43,5 @@ public class AppUser implements Serializable {
 
   @Column(name = "delete_by")
   private String deleteBy;
+
 }

@@ -1,19 +1,22 @@
 package com.org.workflow.core.security;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.crypto.SecretKey;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import com.org.workflow.common.cnst.CommonConst;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.UUID;
 
 @Component
 public class JwtProvider {
@@ -24,17 +27,12 @@ public class JwtProvider {
     Date expiryDate;
     if (!isRemember)
       expiryDate = new Date(now + CommonConst.EXPIRATIONTIME);
-    else expiryDate = new Date(now + CommonConst.EXPIRATIONTIME_FOR_REMEMBER);
-    Claims claims = Jwts.claims()
-        .id(UUID.randomUUID().toString())
-        .subject(userDetail.getAppUser().getUsername())
-        .audience().and().build();
-    return Jwts.builder()
-        .claims(claims)
-        .issuedAt(new Date())
-        .expiration(expiryDate)
-        .signWith(getSigningKey())
-        .compact();
+    else
+      expiryDate = new Date(now + CommonConst.EXPIRATIONTIME_FOR_REMEMBER);
+    Claims claims = Jwts.claims().id(UUID.randomUUID().toString())
+        .subject(userDetail.getAppUser().getUsername()).audience().and().build();
+    return Jwts.builder().claims(claims).issuedAt(new Date()).expiration(expiryDate)
+        .signWith(getSigningKey()).compact();
   }
 
   public String getUserNameFromToken(String token) {
@@ -57,7 +55,7 @@ public class JwtProvider {
       LOGGER.error("Invalid JWT token");
     } catch (IllegalArgumentException ex) {
       LOGGER.error("JWT claims string is empty.");
-    }-
+    }
     return false;
   }
 }

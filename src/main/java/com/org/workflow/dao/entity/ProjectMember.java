@@ -1,8 +1,10 @@
 package com.org.workflow.dao.entity;
 
+import com.org.workflow.dao.id.ProjectMemberPk;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.io.Serializable;
@@ -10,27 +12,20 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-@Entity(name = "app_user")
-public class AppUser implements Serializable {
+@Entity(name = "project_member")
+@IdClass(ProjectMemberPk.class)
+public class ProjectMember implements Serializable {
 
   @Id
-  @Column(name = "user_name", nullable = false)
-  private String username;
+  @Column(name = "project_id")
+  private String projectId;
 
-  @Column(name = "login_password", nullable = false)
-  private String loginPassword;
+  @Id
+  @Column(name = "member_id")
+  private String memberId;
 
-  @Column(name = "full_name")
-  private String fullName;
-
-  @Column(name = "role")
-  private String role;
-
-  @Column(name = "login_fail_count")
-  private Integer loginFailCount;
-
-  @Column(name = "is_active", nullable = false)
-  private Boolean isActive;
+  @Column(name = "add_by")
+  private String addBy;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_date_time", nullable = false)

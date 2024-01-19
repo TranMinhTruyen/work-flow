@@ -11,7 +11,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemMasterId implements Serializable {
+public class ItemMasterPk implements Serializable {
   private Long id;
   private String key;
 }

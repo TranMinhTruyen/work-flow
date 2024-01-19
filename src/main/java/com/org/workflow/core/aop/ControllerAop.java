@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ControllerAop {
-  
+
   private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAop.class);
 
   @Around(value = "execution(* com.org.workflow.controller.*.*(..))", argNames = "joinPoint")
@@ -24,10 +24,12 @@ public class ControllerAop {
     try {
       LOGGER.info("Run controller {}, method {}.", controllerName, methodName);
     } catch (Exception exception) {
-      LOGGER.error("Controller name {}, method {} has error: {} do rollback", controllerName, methodName, exception.getMessage());
+      LOGGER.error("Controller name {}, method {} has error: {} do rollback", controllerName,
+          methodName, exception.getMessage());
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
-      LOGGER.info("Controller name {}, method {} time taken {} ms", controllerName, methodName, timeTaken);
+      LOGGER.info("Controller name {}, method {} time taken {} ms", controllerName, methodName,
+          timeTaken);
     }
     return joinPoint.proceed();
   }

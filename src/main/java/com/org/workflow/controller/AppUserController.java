@@ -1,11 +1,5 @@
 package com.org.workflow.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.reponse.CreateAppUserRequest;
 import com.org.workflow.controller.reponse.LoginResponse;
@@ -13,9 +7,13 @@ import com.org.workflow.controller.request.LoginRequest;
 import com.org.workflow.core.exception.AppException;
 import com.org.workflow.dao.entity.AppUser;
 import com.org.workflow.service.AppUserService;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "AppUserController")
 @RestController
@@ -37,4 +35,5 @@ public class AppUserController extends AbstractController {
     LoginResponse result = appUserService.login(loginRequest);
     return this.returnBaseResponse(result, "Login success", HttpStatus.OK);
   }
+
 }

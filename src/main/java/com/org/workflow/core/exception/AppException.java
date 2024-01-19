@@ -1,63 +1,48 @@
 package com.org.workflow.core.exception;
 
+import com.org.workflow.common.enums.MessageEnum;
+import java.text.MessageFormat;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
-public class AppException extends Exception {
-  
-  private HttpStatus errorCode;
-  private StackTraceElement[] stackTraceElement;
+@Setter
+@Getter
+public class AppException extends AbstractException {
 
-  public AppException() {
-    super();
-  }
+  private ErrorDetail errorDetail;
 
-  public AppException(HttpStatus errorCode, StackTraceElement[] stackTraceElement) {
-    this.errorCode = errorCode;
-    this.stackTraceElement = stackTraceElement;
-  }
-
-  public AppException(String message, HttpStatus errorCode, StackTraceElement[] stackTraceElement) {
-    super(message);
-    this.errorCode = errorCode;
-    this.stackTraceElement = stackTraceElement;
-  }
-
-  public AppException(String message, Throwable cause, HttpStatus errorCode, StackTraceElement[] stackTraceElement) {
-    super(message, cause);
-    this.errorCode = errorCode;
-    this.stackTraceElement = stackTraceElement;
-  }
-
-  public AppException(Throwable cause, HttpStatus errorCode, StackTraceElement[] stackTraceElement) {
-    super(cause);
-    this.errorCode = errorCode;
-    this.stackTraceElement = stackTraceElement;
-  }
-
-  public AppException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, HttpStatus errorCode, StackTraceElement[] stackTraceElement) {
-    super(message, cause, enableSuppression, writableStackTrace);
-    this.errorCode = errorCode;
-    this.stackTraceElement = stackTraceElement;
+  public AppException(ErrorDetail errorDetail) {
+    this.errorDetail = errorDetail;
   }
 
   public AppException(String message, HttpStatus errorCode) {
-    super(message);
-    this.errorCode = errorCode;
+    this.errorDetail = new ErrorDetail(message, errorCode);
   }
 
-  public HttpStatus getErrorCode() {
-    return errorCode;
+  public AppException(MessageEnum messageEnum) {
+    this.errorDetail = new ErrorDetail(messageEnum.getMessage(), messageEnum.getHttpStatus());
   }
 
-  public void setErrorCode(HttpStatus errorCode) {
-    this.errorCode = errorCode;
+  public AppException(MessageEnum messageEnum, HttpStatus httpStatus) {
+    this.errorDetail = new ErrorDetail(messageEnum.getMessage(), httpStatus);
   }
 
-  public StackTraceElement[] getStackTraceElement() {
-    return stackTraceElement;
+  public AppException(MessageEnum messageEnum, HttpStatus httpStatus, Object... args) {
+    this.errorDetail = new ErrorDetail(MessageFormat.format(messageEnum.getMessage(), args),
+        httpStatus);
   }
 
-  public void setStackTraceElement(StackTraceElement[] stackTraceElement) {
-    this.stackTraceElement = stackTraceElement;
+  public AppException(MessageEnum messageEnum, HttpStatus httpStatus, String prefix,
+      Object... args) {
+    if (StringUtils.isBlank(prefix)) {
+      this.errorDetail = new ErrorDetail(MessageFormat.format(messageEnum.getMessage(), args),
+          httpStatus);
+    } else {
+      String message = MessageFormat.format(messageEnum.getMessage(), args);
+      this.errorDetail = new ErrorDetail(prefix.concat(message), httpStatus);
+    }
   }
+
 }
