@@ -12,6 +12,9 @@ public class ErrorDetail implements Serializable {
 
   private HttpStatus httpStatus;
 
+  public ErrorDetail() {
+  }
+
   public ErrorDetail(String message, HttpStatus httpStatus) {
     this.message = message;
     this.httpStatus = httpStatus;

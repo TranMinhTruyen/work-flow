@@ -51,7 +51,7 @@ public class AppUserService implements UserDetailsService {
   public LoginResponse login(LoginRequest loginRequest) throws AppException {
     Optional<AppUser> result = appUserRepository.selectByUserName(loginRequest.getUsername());
     AppUser appUser = result.orElseThrow(
-        () -> new AppException(MessageEnum.ANY_MESSAGE, HttpStatus.NOT_FOUND, null, "Not found user name"));
+        () -> new AppException("Not found user name", HttpStatus.NOT_FOUND));
     if (BCrypt.checkpw(loginRequest.getPassword(), appUser.getLoginPassword())) {
       LoginResponse loginResponse = new LoginResponse();
       String token = jwtProvider.generateAccessToken(new AppUserDetail(appUser),
@@ -59,7 +59,7 @@ public class AppUserService implements UserDetailsService {
       loginResponse.setToken(token);
       return loginResponse;
     } else {
-      throw new AppException(MessageEnum.ANY_MESSAGE, HttpStatus.NOT_FOUND, null, "Wrong password");
+      throw new AppException("Wrong password", HttpStatus.NOT_FOUND);
     }
   }
 

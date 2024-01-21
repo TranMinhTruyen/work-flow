@@ -1,6 +1,7 @@
 package com.org.workflow.service;
 
 import com.org.workflow.common.cnst.EntityConst;
+import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.SeqUtil;
 import com.org.workflow.controller.reponse.ItemMasterResponse;
 import com.org.workflow.controller.request.ItemMasterRequest;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -66,8 +66,7 @@ public class ItemMasterService {
   public ItemMaster updateItemMaster(ItemMasterRequest itemMasterRequest) throws AppException {
     Optional<ItemMaster> result = itemMasterRepository.selectByIdAndKey(
         Long.valueOf(itemMasterRequest.getId()), itemMasterRequest.getKey());
-    ItemMaster update = result.orElseThrow(
-        () -> new AppException("Not found", HttpStatus.NOT_FOUND));
+    ItemMaster update = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND));
     update.setValue1(itemMasterRequest.getValue1());
     update.setValue2(itemMasterRequest.getValue2());
     update.setValue3(itemMasterRequest.getValue3());
