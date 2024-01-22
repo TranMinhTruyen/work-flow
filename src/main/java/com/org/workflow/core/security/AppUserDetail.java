@@ -1,46 +1,20 @@
 package com.org.workflow.core.security;
 
-import com.org.workflow.dao.entity.AppUser;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
-@AllArgsConstructor
-public class AppUserDetail implements UserDetails {
+public class AppUserDetail implements Serializable {
 
-  private AppUser appUser;
+  private String username;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    List<GrantedAuthority> authorities = new ArrayList<>();
+  private String loginPassword;
 
-    if (appUser.getRole() != null && !StringUtils.isBlank(appUser.getRole())) {
-      authorities.add(new SimpleGrantedAuthority(appUser.getRole()));
-    }
+  private String role;
 
-    return authorities;
-  }
+  private Boolean isActive;
 
-  @Override
-  public String getPassword() {
-    return appUser.getLoginPassword();
-  }
-
-  @Override
-  public String getUsername() {
-    return appUser.getUsername();
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return appUser.getIsActive();
-  }
+  private List<String> authorities;
 
 }

@@ -1,5 +1,6 @@
 package com.org.workflow.controller;
 
+import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.reponse.ItemMasterResponse;
 import com.org.workflow.controller.request.ItemMasterRequest;
@@ -16,6 +17,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,15 +30,13 @@ public class ItemMasterController extends AbstractController {
 
   private final ItemMasterService itemMasterService;
 
-
-  @Operation(
-      responses = {
-          @ApiResponse(responseCode = "200", description = "OK",
-              content = @Content(schema = @Schema(hidden = true))),
-          @ApiResponse(responseCode = "400", description = "Bad request"),
-          @ApiResponse(responseCode = "500", description = "Server error"),
-          @ApiResponse(responseCode = "403", description = "Forbidden")},
-      security = {@SecurityRequirement(name = "Authorization")})
+  @Operation(responses = {
+      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Server error"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+      @SecurityRequirement(name = "Authorization")})
+  @PreAuthorize("hasAnyRole('ROLE_LEADER', 'ROLE_ADMIN')")
   @PostMapping("/item-master/create")
   public ResponseEntity<BaseResponse> createItemMaster(
       @RequestBody ItemMasterRequest itemMasterRequest) {
@@ -45,29 +45,26 @@ public class ItemMasterController extends AbstractController {
   }
 
 
-  @Operation(
-      responses = {
-          @ApiResponse(responseCode = "200", description = "OK",
-              content = @Content(schema = @Schema(hidden = true))),
-          @ApiResponse(responseCode = "400", description = "Bad request"),
-          @ApiResponse(responseCode = "500", description = "Server error"),
-          @ApiResponse(responseCode = "403", description = "Forbidden")},
-      security = {@SecurityRequirement(name = "Authorization")})
+  @Operation(responses = {
+      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Server error"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+      @SecurityRequirement(name = "Authorization")})
   @PostMapping("/item-master/get")
-  public ResponseEntity<BaseResponse> getItemMaster(@RequestParam String keyword) {
+  public ResponseEntity<BaseResponse> getItemMaster(
+      @RequestParam(required = false) String keyword) {
     List<ItemMasterResponse> itemMasterResponseList = itemMasterService.getItemMaster(keyword);
-    return this.returnBaseResponse(itemMasterResponseList, "Get success", HttpStatus.OK);
+    return this.returnBaseResponse(itemMasterResponseList, MessageEnum.GET_SUCCESS, "item master");
   }
 
 
-  @Operation(
-      responses = {
-          @ApiResponse(responseCode = "200", description = "OK",
-              content = @Content(schema = @Schema(hidden = true))),
-          @ApiResponse(responseCode = "400", description = "Bad request"),
-          @ApiResponse(responseCode = "500", description = "Server error"),
-          @ApiResponse(responseCode = "403", description = "Forbidden")},
-      security = {@SecurityRequirement(name = "Authorization")})
+  @Operation(responses = {
+      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Server error"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+      @SecurityRequirement(name = "Authorization")})
   @PostMapping("/item-master/update")
   public ResponseEntity<BaseResponse> updateItemMaster(
       @RequestBody ItemMasterRequest itemMasterRequest) throws AppException {

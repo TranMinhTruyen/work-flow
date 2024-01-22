@@ -22,7 +22,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtProvider {
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
 
-  public String generateAccessToken(AppUserDetail userDetail, boolean isRemember) {
+  public String generateAccessToken(CustomUserDetail userDetail, boolean isRemember) {
     long now = (new Date()).getTime();
     Date expiryDate;
     if (!isRemember)
@@ -30,7 +30,7 @@ public class JwtProvider {
     else
       expiryDate = new Date(now + CommonConst.EXPIRATIONTIME_FOR_REMEMBER);
     Claims claims = Jwts.claims().id(UUID.randomUUID().toString())
-        .subject(userDetail.getAppUser().getUsername()).audience().and().build();
+        .subject(userDetail.getUsername()).audience().and().build();
     return Jwts.builder().claims(claims).issuedAt(new Date()).expiration(expiryDate)
         .signWith(getSigningKey()).compact();
   }

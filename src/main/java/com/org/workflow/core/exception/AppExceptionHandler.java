@@ -1,5 +1,6 @@
 package com.org.workflow.core.exception;
 
+import com.org.workflow.common.cnst.CoreConst;
 import com.org.workflow.controller.reponse.BaseResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,19 +19,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AppExceptionHandler {
 
-  private static final String CLASS_NAME = "com.org.workflow";
-
   @ExceptionHandler(value = AppException.class)
   public ResponseEntity<BaseResponse> handleAppException(AppException appException) {
     BaseResponse baseResponse = BaseResponse.builder()
-        .message(appException.getErrorDetail().getMessage())
-        .status(appException.getErrorDetail().getHttpStatus()).build();
-    if (appException.getStackTrace() != null && Arrays.stream(
-        appException.getStackTrace()).findAny().isPresent()) {
+        .message(appException.getErrorDetail().getMessage()).build();
+    if (appException.getStackTrace() != null && Arrays.stream(appException.getStackTrace())
+        .findAny().isPresent()) {
       List<StackTrace> stackTraceList = new ArrayList<>();
       StackTrace stackTrace;
       for (StackTraceElement item : appException.getStackTrace()) {
-        if (item.getClassName().contains(CLASS_NAME)) {
+        if (item.getClassName().contains(CoreConst.CLASS_NAME)) {
           stackTrace = new StackTrace();
           stackTrace.setClassName(item.getClassName());
           stackTrace.setMethodName(item.getMethodName());
@@ -52,7 +50,7 @@ public class AppExceptionHandler {
       List<StackTrace> stackTraceList = new ArrayList<>();
       StackTrace stackTrace;
       for (StackTraceElement item : exception.getStackTrace()) {
-        if (CLASS_NAME.equals(item.getClassName())) {
+        if (item.getClassName().contains(CoreConst.CLASS_NAME)) {
           stackTrace = new StackTrace();
           stackTrace.setClassName(item.getClassName());
           stackTrace.setMethodName(item.getMethodName());

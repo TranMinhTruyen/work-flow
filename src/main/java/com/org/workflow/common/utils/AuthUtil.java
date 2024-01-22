@@ -1,14 +1,14 @@
 package com.org.workflow.common.utils;
 
-import com.org.workflow.core.security.AppUserDetail;
+import com.org.workflow.core.security.CustomUserDetail;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthUtil {
 
-  public static AppUserDetail getAuthentication() {
+  public static CustomUserDetail getAuthentication() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return (AppUserDetail) authentication.getPrincipal();
+    return (CustomUserDetail) authentication.getPrincipal();
   }
 
 }
