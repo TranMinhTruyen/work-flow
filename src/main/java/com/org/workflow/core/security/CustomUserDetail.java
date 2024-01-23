@@ -1,6 +1,5 @@
 package com.org.workflow.core.security;
 
-import com.org.workflow.dao.entity.AppUser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +22,12 @@ public class CustomUserDetail implements UserDetails {
 
     if (appUserDetail.getRole() != null && !StringUtils.isBlank(appUserDetail.getRole())) {
       authorities.add(new SimpleGrantedAuthority(appUserDetail.getRole()));
+    }
+
+    if (appUserDetail.getAuthorities() != null && !appUserDetail.getAuthorities().isEmpty()) {
+      for (String authority : appUserDetail.getAuthorities()) {
+        authorities.add(new SimpleGrantedAuthority(authority));
+      }
     }
 
     return authorities;

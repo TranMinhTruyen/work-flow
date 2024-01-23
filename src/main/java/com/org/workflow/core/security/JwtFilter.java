@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JwtFilter extends OncePerRequestFilter {
-  
+
   private final JwtProvider jwtProvider;
-  
+
   private final AppUserService appUserService;
 
   public JwtFilter(JwtProvider jwtProvider, AppUserService appUserService) {
@@ -31,12 +31,12 @@ public class JwtFilter extends OncePerRequestFilter {
     String token = getJwtFromRequest(request);
     if (!StringUtils.isBlank(token) && jwtProvider.validateToken(token)) {
       String username = jwtProvider.getUserNameFromToken(token);
+
       try {
         CustomUserDetail customUserDetail = appUserService.loadByUserName(username);
         if (customUserDetail.isEnabled()) {
-          UsernamePasswordAuthenticationToken authentication =
-              new UsernamePasswordAuthenticationToken(customUserDetail, null,
-                  customUserDetail.getAuthorities());
+          UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+              customUserDetail, null, customUserDetail.getAuthorities());
           authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }

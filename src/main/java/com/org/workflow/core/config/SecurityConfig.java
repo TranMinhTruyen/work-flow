@@ -65,7 +65,9 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable).exceptionHandling(
             exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-        .sessionManagement(
+        .formLogin(login -> login.loginPage("/login").permitAll()).logout(
+            logout -> logout.logoutUrl("/api/app-user/logout").invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")).sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth -> auth.requestMatchers(HttpMethod.GET).permitAll().requestMatchers(WHITE_LIST)

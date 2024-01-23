@@ -1,5 +1,6 @@
 package com.org.workflow.controller;
 
+import com.org.workflow.common.cnst.AuthConst;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.reponse.ItemMasterResponse;
@@ -36,7 +37,7 @@ public class ItemMasterController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
-  @PreAuthorize("hasAnyRole('ROLE_LEADER', 'ROLE_ADMIN')")
+  @PreAuthorize(AuthConst.ITEM_MASTER_CREATE)
   @PostMapping("/item-master/create")
   public ResponseEntity<BaseResponse> createItemMaster(
       @RequestBody ItemMasterRequest itemMasterRequest) {

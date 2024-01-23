@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,8 +43,8 @@ public class AppExceptionHandler {
         HttpStatus.valueOf(appException.getErrorDetail().getHttpStatus().value()));
   }
 
-  @ExceptionHandler({Throwable.class, Exception.class})
-  public ResponseEntity<BaseResponse> handleException(Exception exception) {
+  @ExceptionHandler(Throwable.class)
+  public ResponseEntity<BaseResponse> handleException(Throwable exception) {
     BaseResponse baseResponse = BaseResponse.builder().message(exception.getMessage()).build();
     if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
         .isPresent()) {
@@ -60,7 +61,9 @@ public class AppExceptionHandler {
       }
       baseResponse.setBody(stackTraceList);
     }
-    return new ResponseEntity<>(baseResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(baseResponse,
+        !(exception instanceof AccessDeniedException) ? HttpStatus.INTERNAL_SERVER_ERROR
+            : HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -1,6 +1,7 @@
 package com.org.workflow.core.aop;
 
 import com.org.workflow.core.exception.AppException;
+import com.org.workflow.core.exception.ErrorDetail;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,7 +19,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 @Component
 @RequiredArgsConstructor
 public class ServiceAop {
-  
+
   private static final String JOIN_POINT = "joinPoint";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAop.class);
@@ -58,7 +59,7 @@ public class ServiceAop {
       throw exception;
     } catch (Throwable e) {
       transactionManager.rollback(transactionStatus);
-      throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new AppException(new ErrorDetail(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
     }
     return value;
   }

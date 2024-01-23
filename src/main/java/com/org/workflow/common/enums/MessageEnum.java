@@ -21,6 +21,8 @@ public enum MessageEnum {
   CREATE_SUCCESS("Create {0} success", HttpStatus.OK),
   
   GET_SUCCESS("Get {0} success", HttpStatus.OK),
+  
+  USER_NAME_EXISTS("Username already exists", HttpStatus.CONFLICT),
 
 
   //@formatter:on
