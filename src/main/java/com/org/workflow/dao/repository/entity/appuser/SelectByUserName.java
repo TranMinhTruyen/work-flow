@@ -1,6 +1,7 @@
 package com.org.workflow.dao.repository.entity.appuser;
 
 import com.querydsl.core.annotations.QueryProjection;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
@@ -20,9 +21,11 @@ public class SelectByUserName {
 
   private String authorities;
 
+  private LocalDateTime updateDatetime;
+
   @QueryProjection
   public SelectByUserName(String username, String loginPassword, String fullName, String role,
-      Integer loginFailCount, Boolean isActive, String authorities) {
+      Integer loginFailCount, Boolean isActive, String authorities, LocalDateTime updateDatetime) {
     this.username = username;
     this.loginPassword = loginPassword;
     this.fullName = fullName;
@@ -30,6 +33,7 @@ public class SelectByUserName {
     this.loginFailCount = loginFailCount;
     this.isActive = isActive;
     this.authorities = authorities;
+    this.updateDatetime = updateDatetime;
   }
 
 }

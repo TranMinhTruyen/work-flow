@@ -22,6 +22,10 @@ public enum MessageEnum {
   
   GET_SUCCESS("Get {0} success", HttpStatus.OK),
   
+  UPDATE_FAILED("Can't update data because it has been update by another. Please reload page again!", HttpStatus.CONFLICT),
+  
+  NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL("New password and current password not equal", HttpStatus.BAD_REQUEST),
+  
   USER_NAME_EXISTS("Username already exists", HttpStatus.CONFLICT),
 
 

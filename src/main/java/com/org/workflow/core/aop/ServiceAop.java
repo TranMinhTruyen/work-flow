@@ -27,39 +27,29 @@ public class ServiceAop {
   private final PlatformTransactionManager transactionManager;
 
   @Around(value = "execution(* com.org.workflow.service.*.*(..))", argNames = JOIN_POINT)
-  public Object serviceLogger(ProceedingJoinPoint joinPoint) throws Throwable {
-    long startTime = System.currentTimeMillis();
-    final String methodName = joinPoint.getSignature().getName();
-    final String serviceName = joinPoint.getTarget().getClass().getName();
-    LOGGER.info("Start time taken by service: {}", serviceName);
-    try {
-      LOGGER.info("Run service {}, method {}.", serviceName, methodName);
-    } catch (Exception exception) {
-      LOGGER.error("Service name {}, method {} has error: {} do rollback", serviceName, methodName,
-          exception.getMessage());
-    } finally {
-      Long timeTaken = System.currentTimeMillis() - startTime;
-      LOGGER.info("Service name {}, method {} time taken {} ms", serviceName, methodName,
-          timeTaken);
-    }
-    return joinPoint.proceed();
-  }
-
-  @Around(value = "execution(* com.org.workflow.service.*.*(..))", argNames = JOIN_POINT)
   public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
     DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
     definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     TransactionStatus transactionStatus = transactionManager.getTransaction(definition);
+    final String methodName = joinPoint.getSignature().getName();
+    final String serviceName = joinPoint.getTarget().getClass().getName();
+    long startTime = System.currentTimeMillis();
     Object value;
+    LOGGER.info("Start time taken by service: {}", serviceName);
     try {
       value = joinPoint.proceed();
       transactionManager.commit(transactionStatus);
+      LOGGER.info("Service name {}, method {} do commit.", serviceName, methodName);
     } catch (AppException exception) {
       transactionManager.rollback(transactionStatus);
       throw exception;
     } catch (Throwable e) {
       transactionManager.rollback(transactionStatus);
       throw new AppException(new ErrorDetail(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    } finally {
+      Long timeTaken = System.currentTimeMillis() - startTime;
+      LOGGER.info("Service name {}, method {} time taken {} ms", serviceName, methodName,
+          timeTaken);
     }
     return value;
   }

@@ -23,7 +23,7 @@ public class ControllerAop {
     LOGGER.info("Start time taken by controller: {}", controllerName);
     try {
       LOGGER.info("Run controller {}, method {}.", controllerName, methodName);
-    } catch (Exception exception) {
+    } catch (Throwable exception) {
       LOGGER.error("Controller name {}, method {} has error: {} do rollback", controllerName,
           methodName, exception.getMessage());
     } finally {

@@ -5,11 +5,13 @@ import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.AppUserResponse;
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.reponse.CreateAppUserResponse;
-import com.org.workflow.controller.request.CreateAppUserRequest;
 import com.org.workflow.controller.reponse.LoginResponse;
+import com.org.workflow.controller.reponse.UpdateUserResponse;
+import com.org.workflow.controller.request.ChangePasswordRequest;
+import com.org.workflow.controller.request.CreateAppUserRequest;
 import com.org.workflow.controller.request.LoginRequest;
+import com.org.workflow.controller.request.UpdateUserRequest;
 import com.org.workflow.core.exception.AppException;
-import com.org.workflow.dao.entity.AppUser;
 import com.org.workflow.service.AppUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +33,14 @@ public class AppUserController extends AbstractController {
 
   private final AppUserService appUserService;
 
+
+  /**
+   * Create AppUser.
+   *
+   * @param createAppUserRequest CreateAppUserRequest
+   * @return ResponseEntity<BaseResponse>
+   * @throws AppException AppException
+   */
   @Operation(responses = {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
@@ -44,6 +54,19 @@ public class AppUserController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.CREATE_SUCCESS, result.getUsername());
   }
 
+
+  /**
+   * Login AppUser.
+   *
+   * @param loginRequest LoginRequest
+   * @return ResponseEntity<BaseResponse>
+   * @throws AppException AppException
+   */
+  @Operation(responses = {
+      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Server error"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")})
   @PostMapping("/app-user/login")
   public ResponseEntity<BaseResponse> loginAppUser(@RequestBody LoginRequest loginRequest)
       throws AppException {
@@ -51,6 +74,13 @@ public class AppUserController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
+
+  /**
+   * Get AppUser profile.
+   *
+   * @return ResponseEntity<BaseResponse>
+   * @throws AppException AppException
+   */
   @Operation(responses = {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
@@ -61,6 +91,48 @@ public class AppUserController extends AbstractController {
   public ResponseEntity<BaseResponse> getProfile() throws AppException {
     AppUserResponse result = appUserService.getProfile();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  }
+
+
+  /**
+   * Update AppUser.
+   *
+   * @param updateUserRequest UpdateUserRequest
+   * @return ResponseEntity<BaseResponse>
+   * @throws AppException AppException
+   */
+  @Operation(responses = {
+      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Server error"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+      @SecurityRequirement(name = "Authorization")})
+  @PostMapping("/app-user/update-app-user")
+  public ResponseEntity<BaseResponse> updateAppUser(
+      @RequestBody UpdateUserRequest updateUserRequest) throws AppException {
+    UpdateUserResponse result = appUserService.updateAppUser(updateUserRequest);
+    return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  }
+
+
+  /**
+   * Change login password.
+   *
+   * @param changePasswordRequest ChangePasswordRequest
+   * @return ResponseEntity<BaseResponse>
+   * @throws AppException AppException
+   */
+  @Operation(responses = {
+      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "500", description = "Server error"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+      @SecurityRequirement(name = "Authorization")})
+  @PostMapping("/app-user/change-login-password")
+  public ResponseEntity<BaseResponse> changeLoginPassword(
+      @RequestBody ChangePasswordRequest changePasswordRequest) throws AppException {
+    appUserService.changeLoginPassword(changePasswordRequest);
+    return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
   }
 
 }

@@ -12,7 +12,7 @@ public class CoreConst {
 
   public static final String API_PREFIX = "/api";
 
-  public static final String CLASS_NAME = "com.org.workflow";
+  public static final String CLASS_NAME = "com.org.workflow.service";
 
   public static final String SECRET_KEY = "WKI9zOfZ0XHFHCZLUDNlcIfEuqAOiKKOP4gfI9RdLRr6L5pBllHSh8C"
       + "jyrUgFsMfaklLPfiuJl8o0wj3KuXc15suEiuz7PD0oieuu927WlC9nR37tccvqQg4Jeo2bKvTyFcnvOM5H1IKyEevqUymzOGHeoe"

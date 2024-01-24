@@ -1,6 +1,7 @@
 package com.org.workflow.controller.reponse;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,9 @@ public class AppUserResponse implements Serializable {
   private Integer loginFailCount;
 
   private Boolean isActive;
-
+  
   private List<String> authorities;
+
+  private LocalDateTime updateDatetime;
 
 }

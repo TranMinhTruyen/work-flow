@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @ControllerAdvice
 @RestControllerAdvice
 public class AppExceptionHandler {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AppExceptionHandler.class);
 
   @ExceptionHandler(value = AppException.class)
   public ResponseEntity<BaseResponse> handleAppException(AppException appException) {
@@ -35,6 +39,9 @@ public class AppExceptionHandler {
           stackTrace.setMethodName(item.getMethodName());
           stackTrace.setLineNumber(item.getLineNumber());
           stackTraceList.add(stackTrace);
+          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
+              item.getClassName(), item.getMethodName(), item.getLineNumber(),
+              appException.getErrorDetail().getMessage());
         }
       }
       baseResponse.setBody(stackTraceList);
@@ -57,6 +64,9 @@ public class AppExceptionHandler {
           stackTrace.setMethodName(item.getMethodName());
           stackTrace.setLineNumber(item.getLineNumber());
           stackTraceList.add(stackTrace);
+          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
+              item.getClassName(), item.getMethodName(), item.getLineNumber(),
+              exception.getMessage());
         }
       }
       baseResponse.setBody(stackTraceList);
