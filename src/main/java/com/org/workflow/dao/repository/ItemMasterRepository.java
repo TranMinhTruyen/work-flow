@@ -1,8 +1,18 @@
 package com.org.workflow.dao.repository;
 
-import com.org.workflow.dao.entity.ItemMaster;
-import com.org.workflow.dao.repository.exp.ItemMasterRepositoryExp;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.org.workflow.dao.document.MasterItem;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ItemMasterRepository extends JpaRepository<ItemMaster, Long>, ItemMasterRepositoryExp {
+@Repository
+public interface ItemMasterRepository extends MongoRepository<MasterItem, Long> {
+
+  Optional<MasterItem> getItemMasterByIdAndMasterCodeAndDeleteDatetimeIsNullOrDeleteDatetimeIsEmpty(
+      Long id,
+      String masterCode);
+
+  Optional<List<MasterItem>> getItemMasterByMasterCode(String masterCode);
+
 }

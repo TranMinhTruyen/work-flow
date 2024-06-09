@@ -3,7 +3,7 @@ package com.org.workflow.controller.request;
 import lombok.Data;
 
 @Data
-public class ItemMasterRequest {
+public class MasterItemRequest {
 
   private String id;
 
@@ -28,5 +28,7 @@ public class ItemMasterRequest {
   private String value9;
 
   private String value10;
+
+  private int displayOrder;
 
 }

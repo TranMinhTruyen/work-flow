@@ -1,18 +1,19 @@
 package com.org.workflow.controller;
 
 import com.org.workflow.common.cnst.AuthConst;
+import com.org.workflow.common.cnst.CoreConst;
 import com.org.workflow.common.enums.MessageEnum;
-import com.org.workflow.controller.reponse.AppUserResponse;
 import com.org.workflow.controller.reponse.BaseResponse;
-import com.org.workflow.controller.reponse.CreateAppUserResponse;
+import com.org.workflow.controller.reponse.CreateUserAccountResponse;
 import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.reponse.UpdateUserResponse;
+import com.org.workflow.controller.reponse.UserAccountResponse;
 import com.org.workflow.controller.request.ChangePasswordRequest;
 import com.org.workflow.controller.request.CreateAppUserRequest;
 import com.org.workflow.controller.request.LoginRequest;
 import com.org.workflow.controller.request.UpdateUserRequest;
 import com.org.workflow.core.exception.AppException;
-import com.org.workflow.service.AppUserService;
+import com.org.workflow.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,14 +25,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AppUserController")
 @RestController
 @RequiredArgsConstructor
-public class AppUserController extends AbstractController {
+@Tag(name = "UserAccountController")
+@RequestMapping(path = CoreConst.API_PREFIX + "/user-account")
+public class UserAccountController extends AbstractController {
 
-  private final AppUserService appUserService;
+  private final UserService userService;
 
 
   /**
@@ -47,10 +50,10 @@ public class AppUserController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")})
   @PreAuthorize(AuthConst.PERMIT_ALL)
-  @PostMapping("/app-user/create")
+  @PostMapping("/create")
   public ResponseEntity<BaseResponse> createAppUser(
       @RequestBody CreateAppUserRequest createAppUserRequest) throws AppException {
-    CreateAppUserResponse result = appUserService.createAppUser(createAppUserRequest);
+    CreateUserAccountResponse result = userService.createAppUser(createAppUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_SUCCESS, result.getUsername());
   }
 
@@ -67,10 +70,10 @@ public class AppUserController extends AbstractController {
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")})
-  @PostMapping("/app-user/login")
+  @PostMapping("/login")
   public ResponseEntity<BaseResponse> loginAppUser(@RequestBody LoginRequest loginRequest)
       throws AppException {
-    LoginResponse result = appUserService.login(loginRequest);
+    LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -87,9 +90,9 @@ public class AppUserController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
-  @PostMapping("/app-user/get-profile")
+  @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile() throws AppException {
-    AppUserResponse result = appUserService.getProfile();
+    UserAccountResponse result = userService.getProfile();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -107,10 +110,10 @@ public class AppUserController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
-  @PostMapping("/app-user/update-app-user")
+  @PostMapping("/update-app-user")
   public ResponseEntity<BaseResponse> updateAppUser(
       @RequestBody UpdateUserRequest updateUserRequest) throws AppException {
-    UpdateUserResponse result = appUserService.updateAppUser(updateUserRequest);
+    UpdateUserResponse result = userService.updateUserAccount(updateUserRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -128,10 +131,10 @@ public class AppUserController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
-  @PostMapping("/app-user/change-login-password")
+  @PostMapping("/change-login-password")
   public ResponseEntity<BaseResponse> changeLoginPassword(
       @RequestBody ChangePasswordRequest changePasswordRequest) throws AppException {
-    appUserService.changeLoginPassword(changePasswordRequest);
+    userService.changeLoginPassword(changePasswordRequest);
     return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
   }
 

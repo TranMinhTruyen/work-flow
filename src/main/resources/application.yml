@@ -1,20 +1,13 @@
 server:
   port: 8080
-  
+
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/workflow
-    hikari:
-      username: postgres
-      password: 1234
-      maximum-pool-size: 100
-      connection-timeout: 1800000
-      max-lifetime: 30000
-      driver-class-name: org.postgresql.Driver
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: work-flow
   jpa:
-    show-sql: false
-#    hibernate:
-#      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

@@ -1,12 +1,17 @@
 package com.org.workflow.service;
 
-import com.org.workflow.common.cnst.EntityConst;
+import static com.org.workflow.common.cnst.DocumentConst.MASTER_HISTORY;
+
+import com.org.workflow.common.cnst.DocumentConst;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.SeqUtil;
-import com.org.workflow.controller.reponse.ItemMasterResponse;
-import com.org.workflow.controller.request.ItemMasterRequest;
+import com.org.workflow.controller.reponse.MasterItemResponse;
+import com.org.workflow.controller.request.MasterItemRequest;
 import com.org.workflow.core.exception.AppException;
-import com.org.workflow.dao.entity.ItemMaster;
+import com.org.workflow.dao.document.ChangeValue;
+import com.org.workflow.dao.document.MasterItem;
+import com.org.workflow.dao.document.MasterItemHistory;
+import com.org.workflow.dao.repository.ItemMasterHistoryRepository;
 import com.org.workflow.dao.repository.ItemMasterRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,61 +27,167 @@ public class ItemMasterService {
 
   private final SeqUtil seqUtil;
 
-  public ItemMaster createItemMaster(ItemMasterRequest itemMasterRequest) {
-    ItemMaster create = new ItemMaster();
-    create.setId(seqUtil.getSeq(EntityConst.MASTER));
-    create.setKey(itemMasterRequest.getKey());
-    create.setValue1(itemMasterRequest.getValue1());
-    create.setValue2(itemMasterRequest.getValue2());
-    create.setValue3(itemMasterRequest.getValue3());
-    create.setValue4(itemMasterRequest.getValue4());
-    create.setValue5(itemMasterRequest.getValue5());
-    create.setValue6(itemMasterRequest.getValue6());
-    create.setValue7(itemMasterRequest.getValue7());
-    create.setValue8(itemMasterRequest.getValue8());
-    create.setValue9(itemMasterRequest.getValue9());
-    create.setValue10(itemMasterRequest.getValue10());
-    return itemMasterRepository.save(create);
+  private final ItemMasterHistoryRepository itemMasterHistoryRepository;
+
+  public MasterItem createItemMaster(MasterItemRequest masterItemRequest) {
+    MasterItem create = new MasterItem();
+    create.setId(seqUtil.getSeq(DocumentConst.MASTER_ITEM));
+    create.setMasterCode(masterItemRequest.getKey());
+    create.setValue1(masterItemRequest.getValue1());
+    create.setValue2(masterItemRequest.getValue2());
+    create.setValue3(masterItemRequest.getValue3());
+    create.setValue4(masterItemRequest.getValue4());
+    create.setValue5(masterItemRequest.getValue5());
+    create.setValue6(masterItemRequest.getValue6());
+    create.setValue7(masterItemRequest.getValue7());
+    create.setValue8(masterItemRequest.getValue8());
+    create.setValue9(masterItemRequest.getValue9());
+    create.setValue10(masterItemRequest.getValue10());
+    create.setDisplayOrder(masterItemRequest.getDisplayOrder());
+
+    MasterItem result = itemMasterRepository.save(create);
+
+    this.saveHistory(new MasterItem(), result, "CREATE");
+
+    return result;
   }
 
-  public List<ItemMasterResponse> getItemMaster(String keyword) {
-    Optional<List<ItemMaster>> result = itemMasterRepository.searchByKeyWord(keyword);
-    List<ItemMasterResponse> returnValue = new ArrayList<>();
+  public List<MasterItemResponse> getItemMaster(String keyword) {
+    Optional<List<MasterItem>> result = itemMasterRepository.getItemMasterByMasterCode(keyword);
+    List<MasterItemResponse> returnValue = new ArrayList<>();
     if (result.isPresent() && !result.get().isEmpty()) {
-      ItemMasterResponse itemMasterResponse;
-      for (ItemMaster item : result.get()) {
-        itemMasterResponse = new ItemMasterResponse();
-        itemMasterResponse.setKey(item.getKey());
-        itemMasterResponse.setValue1(item.getValue1());
-        itemMasterResponse.setValue2(item.getValue2());
-        itemMasterResponse.setValue3(item.getValue3());
-        itemMasterResponse.setValue4(item.getValue4());
-        itemMasterResponse.setValue5(item.getValue5());
-        itemMasterResponse.setValue6(item.getValue6());
-        itemMasterResponse.setValue7(item.getValue7());
-        itemMasterResponse.setValue8(item.getValue8());
-        itemMasterResponse.setValue9(item.getValue9());
-        itemMasterResponse.setValue10(item.getValue10());
-        returnValue.add(itemMasterResponse);
+      MasterItemResponse masterItemResponse;
+      for (MasterItem item : result.get()) {
+        masterItemResponse = new MasterItemResponse();
+        masterItemResponse.setId(String.valueOf(item.getId()));
+        masterItemResponse.setKey(item.getMasterCode());
+        masterItemResponse.setValue1(item.getValue1());
+        masterItemResponse.setValue2(item.getValue2());
+        masterItemResponse.setValue3(item.getValue3());
+        masterItemResponse.setValue4(item.getValue4());
+        masterItemResponse.setValue5(item.getValue5());
+        masterItemResponse.setValue6(item.getValue6());
+        masterItemResponse.setValue7(item.getValue7());
+        masterItemResponse.setValue8(item.getValue8());
+        masterItemResponse.setValue9(item.getValue9());
+        masterItemResponse.setValue10(item.getValue10());
+        masterItemResponse.setDisplayOrder(item.getDisplayOrder());
+        returnValue.add(masterItemResponse);
       }
     }
     return returnValue;
   }
 
-  public ItemMaster updateItemMaster(ItemMasterRequest itemMasterRequest) throws AppException {
-    Optional<ItemMaster> result = itemMasterRepository.selectByIdAndKey(
-        Long.valueOf(itemMasterRequest.getId()), itemMasterRequest.getKey());
-    ItemMaster update = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND));
-    update.setValue1(itemMasterRequest.getValue1());
-    update.setValue2(itemMasterRequest.getValue2());
-    update.setValue3(itemMasterRequest.getValue3());
-    update.setValue4(itemMasterRequest.getValue4());
-    update.setValue5(itemMasterRequest.getValue5());
-    update.setValue6(itemMasterRequest.getValue6());
-    update.setValue7(itemMasterRequest.getValue7());
-    update.setValue8(itemMasterRequest.getValue8());
-    update.setValue9(itemMasterRequest.getValue9());
-    update.setValue10(itemMasterRequest.getValue10());
-    return itemMasterRepository.save(update);
+  public MasterItem updateItemMaster(MasterItemRequest masterItemRequest) throws AppException {
+    Optional<MasterItem> result = itemMasterRepository
+        .getItemMasterByIdAndMasterCodeAndDeleteDatetimeIsNullOrDeleteDatetimeIsEmpty(
+            Long.valueOf(masterItemRequest.getId()), masterItemRequest.getKey());
+
+    MasterItem update = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND));
+    update.setValue1(masterItemRequest.getValue1());
+    update.setValue2(masterItemRequest.getValue2());
+    update.setValue3(masterItemRequest.getValue3());
+    update.setValue4(masterItemRequest.getValue4());
+    update.setValue5(masterItemRequest.getValue5());
+    update.setValue6(masterItemRequest.getValue6());
+    update.setValue7(masterItemRequest.getValue7());
+    update.setValue8(masterItemRequest.getValue8());
+    update.setValue9(masterItemRequest.getValue9());
+    update.setValue10(masterItemRequest.getValue10());
+    update.setDisplayOrder(masterItemRequest.getDisplayOrder());
+
+    MasterItem updateResult = itemMasterRepository.save(update);
+
+    this.saveHistory(result.get(), updateResult, "UPDATE");
+
+    return updateResult;
   }
+
+
+  private void saveHistory(MasterItem before, MasterItem after, String changeType) {
+    MasterItemHistory masterItemHistory = new MasterItemHistory();
+    masterItemHistory.setId(seqUtil.getSeq(MASTER_HISTORY));
+    masterItemHistory.setMasterCode(after.getMasterCode());
+
+    ChangeValue changeValue = new ChangeValue();
+
+    // Set change value for value 1
+    changeValue.setFieldValueBefore(before.getValue1());
+    changeValue.setFieldValueAfter(after.getValue1());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue1(changeValue);
+
+    // Set change value for value 2
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue2());
+    changeValue.setFieldValueAfter(after.getValue2());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue2(changeValue);
+
+    // Set change value for value 3
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue3());
+    changeValue.setFieldValueAfter(after.getValue3());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue3(changeValue);
+
+    // Set change value for value 4
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue4());
+    changeValue.setFieldValueAfter(after.getValue4());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue4(changeValue);
+
+    // Set change value for value 5
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue5());
+    changeValue.setFieldValueAfter(after.getValue5());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue5(changeValue);
+
+    // Set change value for value 6
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue6());
+    changeValue.setFieldValueAfter(after.getValue6());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue6(changeValue);
+
+    // Set change value for value 7
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue7());
+    changeValue.setFieldValueAfter(after.getValue7());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue7(changeValue);
+
+    // Set change value for value 8
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue8());
+    changeValue.setFieldValueAfter(after.getValue8());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue8(changeValue);
+
+    // Set change value for value 9
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue9());
+    changeValue.setFieldValueAfter(after.getValue9());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue9(changeValue);
+
+    // Set change value for value 10
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getValue10());
+    changeValue.setFieldValueAfter(after.getValue10());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setValue10(changeValue);
+
+    // Set change value for display order
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getDisplayOrder());
+    changeValue.setFieldValueAfter(after.getDisplayOrder());
+    changeValue.setChangeType(changeType);
+    masterItemHistory.setDisplayOrder(changeValue);
+
+    itemMasterHistoryRepository.save(masterItemHistory);
+  }
+
 }

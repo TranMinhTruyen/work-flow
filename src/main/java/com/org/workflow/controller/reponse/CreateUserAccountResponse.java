@@ -5,13 +5,15 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CreateAppUserResponse {
+public class CreateUserAccountResponse {
 
   private String username;
 
   private String fullName;
 
   private String role;
+
+  private List<String> authorities;
 
   private LocalDateTime createDatetime;
 
@@ -20,7 +22,5 @@ public class CreateAppUserResponse {
   private LocalDateTime updateDatetime;
 
   private String updateBy;
-
-  private List<String> authorities;
 
 }

@@ -1,14 +1,16 @@
 package com.org.workflow.core.security;
 
 import com.org.workflow.core.exception.AppException;
-import com.org.workflow.service.AppUserService;
+import com.org.workflow.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -16,14 +18,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JwtFilter extends OncePerRequestFilter {
 
-  private final JwtProvider jwtProvider;
+  @Autowired
+  private JwtProvider jwtProvider;
 
-  private final AppUserService appUserService;
-
-  public JwtFilter(JwtProvider jwtProvider, AppUserService appUserService) {
-    this.jwtProvider = jwtProvider;
-    this.appUserService = appUserService;
-  }
+  @Autowired
+  private UserService userService;
 
   @Override
   public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -31,9 +30,8 @@ public class JwtFilter extends OncePerRequestFilter {
     String token = getJwtFromRequest(request);
     if (!StringUtils.isBlank(token) && jwtProvider.validateToken(token)) {
       String username = jwtProvider.getUserNameFromToken(token);
-
       try {
-        CustomUserDetail customUserDetail = appUserService.loadByUserName(username);
+        CustomUserDetail customUserDetail = userService.loadByUserName(username);
         if (customUserDetail.isEnabled()) {
           UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
               customUserDetail, null, customUserDetail.getAuthorities());
@@ -42,6 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
       } catch (AppException e) {
         SecurityContextHolder.clearContext();
+        response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
       }
     }
     filterChain.doFilter(request, response);

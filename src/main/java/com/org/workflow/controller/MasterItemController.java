@@ -1,12 +1,13 @@
 package com.org.workflow.controller;
 
 import com.org.workflow.common.cnst.AuthConst;
+import com.org.workflow.common.cnst.CoreConst;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
-import com.org.workflow.controller.reponse.ItemMasterResponse;
-import com.org.workflow.controller.request.ItemMasterRequest;
+import com.org.workflow.controller.reponse.MasterItemResponse;
+import com.org.workflow.controller.request.MasterItemRequest;
 import com.org.workflow.core.exception.AppException;
-import com.org.workflow.dao.entity.ItemMaster;
+import com.org.workflow.dao.document.MasterItem;
 import com.org.workflow.service.ItemMasterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,13 +22,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ItemMasterController")
 @RestController
 @RequiredArgsConstructor
-public class ItemMasterController extends AbstractController {
+@Tag(name = "ItemMasterController")
+@RequestMapping(path = CoreConst.API_PREFIX + "/master-item")
+public class MasterItemController extends AbstractController {
 
   private final ItemMasterService itemMasterService;
 
@@ -38,10 +41,10 @@ public class ItemMasterController extends AbstractController {
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
   @PreAuthorize(AuthConst.ITEM_MASTER_CREATE)
-  @PostMapping("/item-master/create")
+  @PostMapping("/create")
   public ResponseEntity<BaseResponse> createItemMaster(
-      @RequestBody ItemMasterRequest itemMasterRequest) {
-    ItemMaster result = itemMasterService.createItemMaster(itemMasterRequest);
+      @RequestBody MasterItemRequest masterItemRequest) {
+    MasterItem result = itemMasterService.createItemMaster(masterItemRequest);
     return this.returnBaseResponse(result, "Create success", HttpStatus.OK);
   }
 
@@ -52,11 +55,11 @@ public class ItemMasterController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
-  @PostMapping("/item-master/get")
+  @PostMapping("/get")
   public ResponseEntity<BaseResponse> getItemMaster(
       @RequestParam(required = false) String keyword) {
-    List<ItemMasterResponse> itemMasterResponseList = itemMasterService.getItemMaster(keyword);
-    return this.returnBaseResponse(itemMasterResponseList, MessageEnum.GET_SUCCESS, "item master");
+    List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(keyword);
+    return this.returnBaseResponse(masterItemResponseList, MessageEnum.GET_SUCCESS, "item master");
   }
 
 
@@ -66,10 +69,10 @@ public class ItemMasterController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
-  @PostMapping("/item-master/update")
+  @PostMapping("/update")
   public ResponseEntity<BaseResponse> updateItemMaster(
-      @RequestBody ItemMasterRequest itemMasterRequest) throws AppException {
-    ItemMaster result = itemMasterService.updateItemMaster(itemMasterRequest);
+      @RequestBody MasterItemRequest masterItemRequest) throws AppException {
+    MasterItem result = itemMasterService.updateItemMaster(masterItemRequest);
     return this.returnBaseResponse(result, "Update success", HttpStatus.OK);
   }
 

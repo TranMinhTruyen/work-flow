@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUserResponse implements Serializable {
+public class UserAccountResponse implements Serializable {
 
   private String username;
 
@@ -23,7 +23,7 @@ public class AppUserResponse implements Serializable {
   private Integer loginFailCount;
 
   private Boolean isActive;
-  
+
   private List<String> authorities;
 
   private LocalDateTime updateDatetime;

@@ -3,7 +3,7 @@ package com.org.workflow.controller.reponse;
 import lombok.Data;
 
 @Data
-public class ItemMasterResponse {
+public class MasterItemResponse {
 
   private String id;
 
@@ -29,4 +29,6 @@ public class ItemMasterResponse {
 
   private String value10;
 
+  private int displayOrder;
+  
 }

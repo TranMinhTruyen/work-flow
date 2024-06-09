@@ -1,31 +1,29 @@
 package com.org.workflow.common.utils;
 
-import com.org.workflow.dao.entity.SeqMaster;
-import com.org.workflow.dao.repository.SeqMasterRepository;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
-@Component
+import com.org.workflow.dao.document.SeqMaster;
+import java.util.Objects;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
+
+@Service
 @RequiredArgsConstructor
 public class SeqUtil {
 
-  private final SeqMasterRepository seqMasterRepository;
+  private final MongoOperations mongo;
 
   public Long getSeq(String entityName) {
-    Optional<SeqMaster> queryResult = seqMasterRepository.selectByEntityName(entityName);
-    if (queryResult.isPresent()) {
-      SeqMaster update = queryResult.get();
-      update.setSequence(update.getSequence() + 1L);
-      seqMasterRepository.save(update);
-      return update.getSequence();
-    } else {
-      SeqMaster create = new SeqMaster();
-      create.setEntityName(entityName);
-      create.setSequence(1L);
-      seqMasterRepository.save(create);
-      return 1L;
-    }
+    SeqMaster counter = mongo.findAndModify(
+        query(where("entity_name").is(entityName)),
+        new Update().inc("seq", 1),
+        options().returnNew(true).upsert(true),
+        SeqMaster.class);
+    return Objects.isNull(counter) ? 1 : counter.getSeq();
   }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class AppUserDetail implements Serializable {
+public class UserDetail implements Serializable {
 
   private String username;
 
