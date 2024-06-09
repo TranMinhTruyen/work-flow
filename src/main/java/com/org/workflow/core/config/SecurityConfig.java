@@ -2,7 +2,10 @@ package com.org.workflow.core.config;
 
 import com.org.workflow.core.exception.CustomAuthenticationEntryPoint;
 import com.org.workflow.core.security.JwtFilter;
+import com.org.workflow.core.security.JwtProvider;
+import com.org.workflow.service.UserService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,7 +27,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+  private final JwtProvider jwtProvider;
+
+  private final UserService userService;
 
   private static final String[] WHITE_LIST = {"/v3/api-docs/**", "/swagger-ui/**",
       "/swagger-ui.html", "/api/user-account/login", "/api/user-account/create"};
@@ -36,7 +44,7 @@ public class SecurityConfig {
 
   @Bean
   public JwtFilter jwtAuthenticationFilter() {
-    return new JwtFilter();
+    return new JwtFilter(jwtProvider, userService);
   }
 
   @Bean

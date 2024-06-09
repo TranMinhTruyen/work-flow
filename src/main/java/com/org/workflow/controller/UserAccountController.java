@@ -51,7 +51,7 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "403", description = "Forbidden")})
   @PreAuthorize(AuthConst.PERMIT_ALL)
   @PostMapping("/create")
-  public ResponseEntity<BaseResponse> createAppUser(
+  public ResponseEntity<BaseResponse> createUserAccount(
       @RequestBody CreateAppUserRequest createAppUserRequest) throws AppException {
     CreateUserAccountResponse result = userService.createAppUser(createAppUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_SUCCESS, result.getUsername());
@@ -71,7 +71,7 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "500", description = "Server error"),
       @ApiResponse(responseCode = "403", description = "Forbidden")})
   @PostMapping("/login")
-  public ResponseEntity<BaseResponse> loginAppUser(@RequestBody LoginRequest loginRequest)
+  public ResponseEntity<BaseResponse> loginUserAccount(@RequestBody LoginRequest loginRequest)
       throws AppException {
     LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
@@ -111,7 +111,7 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
       @SecurityRequirement(name = "Authorization")})
   @PostMapping("/update-app-user")
-  public ResponseEntity<BaseResponse> updateAppUser(
+  public ResponseEntity<BaseResponse> updateUserAccount(
       @RequestBody UpdateUserRequest updateUserRequest) throws AppException {
     UpdateUserResponse result = userService.updateUserAccount(updateUserRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
