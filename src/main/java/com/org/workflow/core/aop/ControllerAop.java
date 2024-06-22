@@ -22,13 +22,15 @@ public class ControllerAop {
     final String controllerName = joinPoint.getTarget().getClass().getName();
     LOGGER.info("Start time taken by controller: {}", controllerName);
     try {
-      LOGGER.info("Run controller {}, method {}.", controllerName, methodName);
+      LOGGER.info("Controller name: [{}], run method: [{}].", controllerName, methodName);
     } catch (Throwable exception) {
-      LOGGER.error("Controller name {}, method {} has error: {} do rollback", controllerName,
+      LOGGER.error("Controller name: [{}], method: [{}] has error: [{}] do rollback",
+          controllerName,
           methodName, exception.getMessage());
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
-      LOGGER.info("Controller name {}, method {} time taken {} ms", controllerName, methodName,
+      LOGGER.info("Controller name: [{}], method: [{}] time taken {} ms", controllerName,
+          methodName,
           timeTaken);
     }
     return joinPoint.proceed();

@@ -29,6 +29,8 @@ public class MasterItemRequest {
 
   private String value10;
 
-  private int displayOrder;
+  private Integer displayOrder;
+
+  private Boolean isDeleted;
 
 }

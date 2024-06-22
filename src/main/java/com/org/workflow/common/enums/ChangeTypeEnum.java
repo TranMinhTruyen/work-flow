@@ -5,15 +5,17 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ObjectEnums {
+public enum ChangeTypeEnum {
   //@formatter:off
 
-  ITEM_MASTER("ItemMaster"),
-  USER_ACCOUNT("UserAccount"),
+  CREATE("CREATE"),
+  UPDATE("UPDATE"),
+  DELETE("DELETE"),
+  NO_CHANGE("NO_CHANGE"),
 
   //@formatter:on
   ;
 
-  private final String objectName;
+  private final String typeName;
 
 }

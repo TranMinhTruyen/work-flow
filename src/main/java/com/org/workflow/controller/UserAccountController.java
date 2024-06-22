@@ -9,7 +9,7 @@ import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.reponse.UpdateUserResponse;
 import com.org.workflow.controller.reponse.UserAccountResponse;
 import com.org.workflow.controller.request.ChangePasswordRequest;
-import com.org.workflow.controller.request.CreateAppUserRequest;
+import com.org.workflow.controller.request.CreateUserAccountRequest;
 import com.org.workflow.controller.request.LoginRequest;
 import com.org.workflow.controller.request.UpdateUserRequest;
 import com.org.workflow.core.exception.AppException;
@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.lang.reflect.InvocationTargetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,11 +37,10 @@ public class UserAccountController extends AbstractController {
 
   private final UserService userService;
 
-
   /**
    * Create AppUser.
    *
-   * @param createAppUserRequest CreateAppUserRequest
+   * @param createUserAccountRequest CreateAppUserRequest
    * @return ResponseEntity<BaseResponse>
    * @throws AppException AppException
    */
@@ -48,15 +48,16 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")})
+      @ApiResponse(responseCode = "403", description = "Forbidden")
+  })
   @PreAuthorize(AuthConst.PERMIT_ALL)
-  @PostMapping("/create")
+  @PostMapping(value = "/create")
   public ResponseEntity<BaseResponse> createUserAccount(
-      @RequestBody CreateAppUserRequest createAppUserRequest) throws AppException {
-    CreateUserAccountResponse result = userService.createAppUser(createAppUserRequest);
+      @RequestBody CreateUserAccountRequest createUserAccountRequest)
+      throws AppException {
+    CreateUserAccountResponse result = userService.createAppUser(createUserAccountRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_SUCCESS, result.getUsername());
   }
-
 
   /**
    * Login AppUser.
@@ -69,14 +70,14 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")})
+      @ApiResponse(responseCode = "403", description = "Forbidden")
+  })
   @PostMapping("/login")
   public ResponseEntity<BaseResponse> loginUserAccount(@RequestBody LoginRequest loginRequest)
       throws AppException {
     LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
-
 
   /**
    * Get AppUser profile.
@@ -88,14 +89,14 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")})
+      @ApiResponse(responseCode = "403", description = "Forbidden") }, security = {
+          @SecurityRequirement(name = "Authorization")
+      })
   @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile() throws AppException {
     UserAccountResponse result = userService.getProfile();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
-
 
   /**
    * Update AppUser.
@@ -108,15 +109,17 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")})
-  @PostMapping("/update-app-user")
+      @ApiResponse(responseCode = "403", description = "Forbidden") }, security = {
+          @SecurityRequirement(name = "Authorization")
+      })
+  @PostMapping("/update-user-account")
   public ResponseEntity<BaseResponse> updateUserAccount(
-      @RequestBody UpdateUserRequest updateUserRequest) throws AppException {
+      @RequestBody UpdateUserRequest updateUserRequest)
+      throws AppException, InvocationTargetException, IllegalAccessException, InstantiationException,
+      NoSuchMethodException {
     UpdateUserResponse result = userService.updateUserAccount(updateUserRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
-
 
   /**
    * Change login password.
@@ -129,8 +132,9 @@ public class UserAccountController extends AbstractController {
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")})
+      @ApiResponse(responseCode = "403", description = "Forbidden") }, security = {
+          @SecurityRequirement(name = "Authorization")
+      })
   @PostMapping("/change-login-password")
   public ResponseEntity<BaseResponse> changeLoginPassword(
       @RequestBody ChangePasswordRequest changePasswordRequest) throws AppException {

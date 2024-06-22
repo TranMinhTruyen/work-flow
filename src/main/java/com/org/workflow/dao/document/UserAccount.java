@@ -13,25 +13,34 @@ import org.springframework.data.mongodb.core.mapping.Field.Write;
 @Document(value = "user_account")
 public class UserAccount extends AbstractDocument implements Serializable {
 
-  @Field(name = "user_name", write = Write.NON_NULL)
+  @Field(name = "user_id", write = Write.ALWAYS)
+  private String userId;
+
+  @Field(name = "user_name", write = Write.ALWAYS)
   private String userName;
 
-  @Field(name = "login_password", write = Write.NON_NULL)
+  @Field(name = "email", write = Write.ALWAYS)
+  private String email;
+
+  @Field(name = "login_password", write = Write.ALWAYS)
   private String loginPassword;
 
-  @Field(name = "full_name")
+  @Field(name = "full_name", write = Write.ALWAYS)
   private String fullName;
 
-  @Field(name = "role")
+  @Field(name = "image_path", write = Write.ALWAYS)
+  private String imagePath;
+
+  @Field(name = "role", write = Write.ALWAYS)
   private String role;
 
-  @Field(name = "authorities")
+  @Field(name = "authorities", write = Write.ALWAYS)
   private List<String> authorities;
 
-  @Field(name = "login_fail_count")
+  @Field(name = "login_fail_count", write = Write.ALWAYS)
   private Integer loginFailCount;
 
-  @Field(name = "is_active", write = Write.NON_NULL)
+  @Field(name = "is_active", write = Write.ALWAYS)
   private Boolean isActive;
 
 }

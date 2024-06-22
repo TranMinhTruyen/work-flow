@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemMasterRepository extends MongoRepository<MasterItem, Long> {
 
-  Optional<MasterItem> getItemMasterByIdAndMasterCodeAndDeleteDatetimeIsNullOrDeleteDatetimeIsEmpty(
-      Long id,
-      String masterCode);
+  Optional<MasterItem> getItemMasterByIdAndMasterCodeAndIsDeleted(Long id, String masterCode,
+      Boolean isDeleted);
 
-  Optional<List<MasterItem>> getItemMasterByMasterCode(String masterCode);
+  Optional<MasterItem> getItemMasterByIdAndMasterCode(Long id, String masterCode);
+
+  Optional<List<MasterItem>> getItemMasterByMasterCodeAndIsDeletedIsFalse(String masterCode);
 
 }

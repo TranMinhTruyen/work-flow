@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CreateAppUserRequest {
+public class CreateUserAccountRequest {
 
   private String username;
 
@@ -15,5 +15,7 @@ public class CreateAppUserRequest {
   private String role;
 
   private List<String> authorities;
+
+  private byte[] image;
 
 }

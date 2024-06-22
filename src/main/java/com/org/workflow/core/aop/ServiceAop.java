@@ -2,7 +2,6 @@ package com.org.workflow.core.aop;
 
 import com.org.workflow.core.exception.AppException;
 import com.org.workflow.core.exception.ErrorDetail;
-import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,12 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Aspect
 @Component
-@RequiredArgsConstructor
 public class ServiceAop {
 
   private static final String JOIN_POINT = "joinPoint";
@@ -24,8 +20,6 @@ public class ServiceAop {
 
   @Around(value = "execution(* com.org.workflow.service.*.*(..))", argNames = JOIN_POINT)
   public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-    DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
-    definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     final String methodName = joinPoint.getSignature().getName();
     final String serviceName = joinPoint.getTarget().getClass().getName();
     long startTime = System.currentTimeMillis();
@@ -33,14 +27,16 @@ public class ServiceAop {
     LOGGER.info("Start time taken by service: {}", serviceName);
     try {
       value = joinPoint.proceed();
-      LOGGER.info("Service name {}, method {} do commit.", serviceName, methodName);
+      LOGGER.info("Service name: [{}], run method: [{}] do commit.", serviceName, methodName);
     } catch (AppException exception) {
+      LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
+          methodName, exception.getMessage());
       throw exception;
     } catch (Throwable e) {
       throw new AppException(new ErrorDetail(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
-      LOGGER.info("Service name {}, method {} time taken {} ms", serviceName, methodName,
+      LOGGER.info("Service name: [{}], method: [{}] time taken {} ms", serviceName, methodName,
           timeTaken);
     }
     return value;

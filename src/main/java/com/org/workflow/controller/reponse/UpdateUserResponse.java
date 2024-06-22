@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class UpdateUserResponse {
 
+  private String userId;
+
   private String fullName;
 
   private String role;

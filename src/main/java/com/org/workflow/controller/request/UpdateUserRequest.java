@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class UpdateUserRequest {
 
+  private String email;
+
   private String fullName;
 
   private String role;
@@ -17,5 +19,7 @@ public class UpdateUserRequest {
   private LocalDateTime updateDatetime;
 
   private List<String> authorities;
+
+  private Boolean isActive;
 
 }

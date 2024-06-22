@@ -1,14 +1,15 @@
 package com.org.workflow.core.exception;
 
-import com.org.workflow.common.enums.MessageEnum;
-import java.io.Serializable;
 import java.text.MessageFormat;
+
+import com.org.workflow.common.enums.MessageEnum;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class AppException extends AbstractException implements Serializable {
+public class AppException extends AbstractException {
 
   private final ErrorDetail errorDetail;
 

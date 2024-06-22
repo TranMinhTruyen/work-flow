@@ -10,8 +10,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        format_sql: true
-        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        SpringSessionContext: org.springframework.orm.hibernate5.SpringSessionContext
     open-in-view: false
 
 #logging
@@ -20,9 +19,13 @@ logging:
     name: D:/work-flow/work-flow.log
   level:
     root: INFO
-    org.hibernate: ERROR
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
   pattern:
     dateformat: dd-MM-yyyy HH:mm:ss
 

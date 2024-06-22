@@ -6,22 +6,23 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(value = "user_login_history")
-public class UserLoginHistory extends AbstractDocument implements Serializable {
+@Document(value = "notification")
+public class Notification extends AbstractDocument implements Serializable {
 
   @Field(name = "user_id", write = Write.ALWAYS)
   private String userId;
 
-  @Field(name = "user_name", write = Write.ALWAYS)
-  private String userName;
+  @Field(name = "title", write = Write.ALWAYS)
+  private String title;
 
-  @Field(name = "ip_address", write = Write.ALWAYS)
-  private String ipAddress;
+  @Field(name = "message", write = Write.ALWAYS)
+  private String message;
 
-  @Field(name = "is_active", write = Write.ALWAYS)
-  private Boolean isActive;
+  @Field(name = "is_read", write = Write.ALWAYS, targetType = FieldType.BOOLEAN)
+  private Boolean isRead;
 
 }

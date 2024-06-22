@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.0'
+    id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.5'
 }
 
@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -36,6 +36,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
     implementation 'com.google.guava:guava:33.1.0-jre'
+    implementation 'commons-io:commons-io:2.16.1'
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.3.1'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

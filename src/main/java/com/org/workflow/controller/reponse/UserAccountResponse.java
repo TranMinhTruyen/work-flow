@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserAccountResponse implements Serializable {
 
+  private String userId;
+
+  private String email;
+
   private String username;
 
   private String fullName;
@@ -25,6 +29,8 @@ public class UserAccountResponse implements Serializable {
   private Boolean isActive;
 
   private List<String> authorities;
+
+  private LocalDateTime createDatetime;
 
   private LocalDateTime updateDatetime;
 
