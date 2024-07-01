@@ -1,6 +1,10 @@
 package com.org.workflow.service;
 
+import static com.org.workflow.common.cnst.DocumentConst.NOTIFICATION;
+
+import com.org.workflow.common.utils.SeqUtil;
 import com.org.workflow.controller.reponse.NotificationResponse;
+import com.org.workflow.controller.request.NotificationCreateRequest;
 import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.repository.NotificationRepository;
 import java.util.ArrayList;
@@ -11,16 +15,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationService {
+public class NotificationService extends AbstractService {
 
   private final NotificationRepository notificationRepository;
+
+  private final SeqUtil seqUtil;
 
   /**
    * @return
    */
   public List<NotificationResponse> findResponseIsNotRead() {
 
-    Optional<List<Notification>> result = notificationRepository.findAllByIsReadIsFalseAndIsDeletedIsFalse();
+    Optional<List<Notification>> result = notificationRepository
+        .findAllByIsReadIsFalseAndIsDeletedIsFalse();
 
     List<NotificationResponse> notificationResponseList = new ArrayList<>();
 
@@ -30,6 +37,7 @@ public class NotificationService {
       for (Notification notification : notifications) {
         NotificationResponse notificationResponse = new NotificationResponse();
         notificationResponse.setUserId(notification.getUserId());
+        notificationResponse.setId(notification.getId());
         notificationResponse.setTitle(notification.getTitle());
         notificationResponse.setMessage(notification.getMessage());
         notificationResponse.setIsRead(notification.getIsRead());
@@ -42,6 +50,22 @@ public class NotificationService {
     }
 
     return notificationResponseList;
+  }
+
+  /**
+   * @param notificationCreateRequest
+   */
+  public void createNotification(NotificationCreateRequest notificationCreateRequest) {
+
+    Notification notification = new Notification();
+    notification.setId(seqUtil.getSeq(NOTIFICATION));
+    notification.setTitle(notificationCreateRequest.getTitle());
+    notification.setMessage(notificationCreateRequest.getMessage());
+    notification.setUserId(notificationCreateRequest.getUserId());
+    notification.setIsDeleted(false);
+    notification.setIsRead(false);
+
+    notificationRepository.save(notification);
   }
 
 }

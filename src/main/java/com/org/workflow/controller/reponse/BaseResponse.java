@@ -18,11 +18,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder(value = {"status", "timestamp", "message", "body"})
+@JsonPropertyOrder(value = {"timestamp", "messageCode", "message", "body"})
 public class BaseResponse implements Serializable {
 
   private final String timestamp = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
       .format(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(ZONE_ID)));
+
+  private String messageCode;
 
   private String message;
 

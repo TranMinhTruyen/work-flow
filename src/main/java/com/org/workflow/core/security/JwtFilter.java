@@ -1,6 +1,6 @@
 package com.org.workflow.core.security;
 
-import com.org.workflow.core.exception.AppException;
+import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtFilter extends OncePerRequestFilter {
 
   private final JwtProvider jwtProvider;
-  
+
   private final UserService userService;
 
   @Override
@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
           authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-      } catch (AppException e) {
+      } catch (WorkFlowException e) {
         SecurityContextHolder.clearContext();
         response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
       }

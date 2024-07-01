@@ -2,12 +2,12 @@ package com.org.workflow.common.cnst;
 
 import static com.org.workflow.common.enums.MessageEnum.UTILITY_CLASS;
 
-import com.org.workflow.core.exception.AppException;
+import com.org.workflow.core.exception.WorkFlowException;
 
 public class CoreConst {
 
-  private CoreConst() throws AppException {
-    throw new AppException(UTILITY_CLASS);
+  private CoreConst() throws WorkFlowException {
+    throw new WorkFlowException(UTILITY_CLASS);
   }
 
   public static final String API_PREFIX = "/api";

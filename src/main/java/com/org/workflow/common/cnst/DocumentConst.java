@@ -10,4 +10,6 @@ public class DocumentConst {
 
   public static final String USER_ACCOUNT_HISTORY = "user_account_history";
 
+  public static final String NOTIFICATION = "notification";
+
 }

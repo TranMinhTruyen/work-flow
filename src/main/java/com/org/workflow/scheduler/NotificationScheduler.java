@@ -22,12 +22,13 @@ public class NotificationScheduler {
 
   private final SimpMessagingTemplate messagingTemplate;
 
-  @Scheduled(fixedRate = 60000)
+  @Scheduled(cron = "0 * * * * *")
   public void checkUnreadNotifications() {
     LOGGER.info("Checking unread notifications");
     List<NotificationResponse> unreadNotifications = notificationService.findResponseIsNotRead();
     for (NotificationResponse notification : unreadNotifications) {
-      messagingTemplate.convertAndSendToUser(notification.getUserId(), "/check-notification",
+      messagingTemplate.convertAndSendToUser(
+          notification.getUserId(), "/check-notification",
           notification);
     }
   }

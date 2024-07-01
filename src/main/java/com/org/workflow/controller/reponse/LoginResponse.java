@@ -14,6 +14,8 @@ public class LoginResponse implements Serializable {
 
   private String tokenType;
 
+  private String userId;
+
   private String token;
 
 }

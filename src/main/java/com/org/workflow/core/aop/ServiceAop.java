@@ -1,7 +1,7 @@
 package com.org.workflow.core.aop;
 
-import com.org.workflow.core.exception.AppException;
 import com.org.workflow.core.exception.ErrorDetail;
+import com.org.workflow.core.exception.WorkFlowException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,12 +28,13 @@ public class ServiceAop {
     try {
       value = joinPoint.proceed();
       LOGGER.info("Service name: [{}], run method: [{}] do commit.", serviceName, methodName);
-    } catch (AppException exception) {
+    } catch (WorkFlowException exception) {
       LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
           methodName, exception.getMessage());
       throw exception;
     } catch (Throwable e) {
-      throw new AppException(new ErrorDetail(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+      throw new WorkFlowException(
+          new ErrorDetail(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
       LOGGER.info("Service name: [{}], method: [{}] time taken {} ms", serviceName, methodName,

@@ -8,6 +8,8 @@ public class NotificationResponse {
 
   private String userId;
 
+  private Long id;
+
   private String title;
 
   private String message;

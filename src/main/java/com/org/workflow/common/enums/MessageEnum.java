@@ -30,6 +30,8 @@ public enum MessageEnum {
 
   USER_NAME_EXISTS("E0004", "Username already exists", HttpStatus.CONFLICT),
 
+  CREATE_USER_ACCOUNT_SUCCESS("UA001", "Create username: {0} success!", HttpStatus.OK),
+
 
   //@formatter:on
   ;

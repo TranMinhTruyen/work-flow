@@ -10,7 +10,7 @@ import com.org.workflow.common.utils.HistoryUtil;
 import com.org.workflow.common.utils.SeqUtil;
 import com.org.workflow.controller.reponse.MasterItemResponse;
 import com.org.workflow.controller.request.MasterItemRequest;
-import com.org.workflow.core.exception.AppException;
+import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.dao.document.ChangeValue;
 import com.org.workflow.dao.document.MasterItem;
 import com.org.workflow.dao.document.MasterItemHistory;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ItemMasterService {
+public class ItemMasterService extends AbstractService {
 
   private final ItemMasterRepository itemMasterRepository;
 
@@ -92,11 +92,11 @@ public class ItemMasterService {
     return returnValue;
   }
 
-  public MasterItem updateItemMaster(MasterItemRequest masterItemRequest) throws AppException {
+  public MasterItem updateItemMaster(MasterItemRequest masterItemRequest) throws WorkFlowException {
     Optional<MasterItem> result = itemMasterRepository
         .getItemMasterByIdAndMasterCode(
             Long.valueOf(masterItemRequest.getId()), masterItemRequest.getKey());
-    MasterItem resultValue = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND));
+    MasterItem resultValue = result.orElseThrow(() -> new WorkFlowException(MessageEnum.NOT_FOUND));
 
     MasterItem update = new MasterItem();
     update.setId(resultValue.getId());

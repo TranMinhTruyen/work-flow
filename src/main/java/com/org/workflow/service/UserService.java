@@ -8,7 +8,6 @@ import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.AuthUtil;
 import com.org.workflow.common.utils.HistoryUtil;
-import com.org.workflow.common.utils.SeqUtil;
 import com.org.workflow.controller.reponse.CreateUserAccountResponse;
 import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.reponse.UpdateUserResponse;
@@ -17,8 +16,8 @@ import com.org.workflow.controller.request.ChangePasswordRequest;
 import com.org.workflow.controller.request.CreateUserAccountRequest;
 import com.org.workflow.controller.request.LoginRequest;
 import com.org.workflow.controller.request.UpdateUserRequest;
-import com.org.workflow.core.exception.AppException;
 import com.org.workflow.core.exception.ErrorDetail;
+import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.core.security.CustomUserDetail;
 import com.org.workflow.core.security.JwtProvider;
 import com.org.workflow.dao.document.ChangeValue;
@@ -36,16 +35,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author minh-truyen
  */
 @Service
 @RequiredArgsConstructor
-public class UserService {
-
-  private final SeqUtil seqUtil;
+public class UserService extends AbstractService {
 
   private final UserAccountRepository userAccountRepository;
 
@@ -58,16 +54,16 @@ public class UserService {
   /**
    * Create new user.
    *
-   * @param createUserAccountRequest CreateAppUserRequest
+   * @param createUserAccountRequest CreateUserAccountRequest
    * @return CreateUserAccountResponse
-   * @throws AppException AppException
+   * @throws WorkFlowException AppException
    */
   public CreateUserAccountResponse createAppUser(CreateUserAccountRequest createUserAccountRequest)
-      throws AppException {
+      throws WorkFlowException {
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(
         createUserAccountRequest.getUsername());
     if (result.isPresent()) {
-      throw new AppException(MessageEnum.USER_NAME_EXISTS);
+      throw new WorkFlowException(MessageEnum.USER_NAME_EXISTS);
     }
     LocalDateTime now = LocalDateTime.now();
     UserAccount userAccount = new UserAccount();
@@ -79,6 +75,7 @@ public class UserService {
             .hashString(createUserAccountRequest.getLoginPassword(), StandardCharsets.UTF_16)
             .toString());
     userAccount.setFullName(createUserAccountRequest.getFullName());
+    userAccount.setEmail(createUserAccountRequest.getEmail());
     userAccount.setRole(createUserAccountRequest.getRole());
     userAccount.setAuthorities(createUserAccountRequest.getAuthorities());
     userAccount.setIsActive(true);
@@ -109,17 +106,17 @@ public class UserService {
    *
    * @param loginRequest LoginRequest
    * @return LoginResponse
-   * @throws AppException AppException
+   * @throws WorkFlowException AppException
    */
-  @Transactional
-  public LoginResponse login(LoginRequest loginRequest) throws AppException {
+  public LoginResponse login(LoginRequest loginRequest) throws WorkFlowException {
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(
         loginRequest.getUsername());
     UserAccount userAccount = result.orElseThrow(
-        () -> new AppException(MessageEnum.NOT_FOUND, "Username: " + loginRequest.getUsername()));
+        () -> new WorkFlowException(MessageEnum.NOT_FOUND,
+            "Username: " + loginRequest.getUsername()));
 
     if (!userAccount.getIsActive()) {
-      throw new AppException(new ErrorDetail("Account is disable", HttpStatus.NOT_ACCEPTABLE));
+      throw new WorkFlowException(new ErrorDetail("Account is disable", HttpStatus.NOT_ACCEPTABLE));
     }
 
     String loginPassword = Hashing.sha512()
@@ -131,6 +128,7 @@ public class UserService {
           loginRequest.getIsRemember());
       loginResponse.setToken(token);
       loginResponse.setTokenType(BEARER);
+      loginResponse.setUserId(userAccount.getUserId());
       return loginResponse;
     } else {
       if (userAccount.getLoginFailCount() == null) {
@@ -142,7 +140,7 @@ public class UserService {
         }
       }
       userAccountRepository.save(userAccount);
-      throw new AppException(new ErrorDetail("Wrong password", HttpStatus.NOT_FOUND));
+      throw new WorkFlowException(new ErrorDetail("Wrong password", HttpStatus.NOT_FOUND));
     }
   }
 
@@ -151,11 +149,12 @@ public class UserService {
    *
    * @param username String
    * @return CustomUserDetail
-   * @throws AppException AppException
+   * @throws WorkFlowException AppException
    */
-  public CustomUserDetail loadByUserName(String username) throws AppException {
+  public CustomUserDetail loadByUserName(String username) throws WorkFlowException {
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
-    UserAccount userAccount = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND));
+    UserAccount userAccount = result.orElseThrow(
+        () -> new WorkFlowException(MessageEnum.NOT_FOUND));
     return new CustomUserDetail(userAccount);
   }
 
@@ -163,13 +162,13 @@ public class UserService {
    * Get profile user.
    *
    * @return UserAccountResponse
-   * @throws AppException AppException
+   * @throws WorkFlowException AppException
    */
-  public UserAccountResponse getProfile() throws AppException {
+  public UserAccountResponse getProfile() throws WorkFlowException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
     UserAccount userAccount = result.orElseThrow(
-        () -> new AppException(MessageEnum.NOT_FOUND, "user"));
+        () -> new WorkFlowException(MessageEnum.NOT_FOUND, "user"));
     UserAccountResponse userAccountResponse = new UserAccountResponse();
     userAccountResponse.setUserId(userAccount.getUserId());
     userAccountResponse.setEmail(userAccount.getEmail());
@@ -185,23 +184,27 @@ public class UserService {
   }
 
   /**
-   * Update AppUser.
+   * Update user.
    *
    * @param updateUserRequest UpdateUserRequest
    * @return UpdateUserResponse
-   * @throws AppException AppException
+   * @throws WorkFlowException         AppException
+   * @throws InvocationTargetException InvocationTargetException
+   * @throws IllegalAccessException    IllegalAccessException
+   * @throws InstantiationException    InstantiationException
+   * @throws NoSuchMethodException     NoSuchMethodException
    */
   public UpdateUserResponse updateUserAccount(UpdateUserRequest updateUserRequest)
-      throws AppException, InvocationTargetException, IllegalAccessException, InstantiationException,
+      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException,
       NoSuchMethodException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
     UserAccount oldUserAccount = result.orElseThrow(
-        () -> new AppException(MessageEnum.NOT_FOUND, username));
+        () -> new WorkFlowException(MessageEnum.NOT_FOUND, username));
 
     if (updateUserRequest.getUpdateDatetime() != null && !updateUserRequest.getUpdateDatetime()
         .equals(oldUserAccount.getUpdateDatetime())) {
-      throw new AppException(MessageEnum.UPDATE_FAILED);
+      throw new WorkFlowException(MessageEnum.UPDATE_FAILED);
     }
 
     LocalDateTime now = LocalDateTime.now();
@@ -227,18 +230,20 @@ public class UserService {
   }
 
   /**
-   * Change login password.
+   * Change password.
    *
    * @param changePasswordRequest ChangePasswordRequest
-   * @throws AppException AppException
+   * @throws WorkFlowException AppException
    */
-  public void changeLoginPassword(ChangePasswordRequest changePasswordRequest) throws AppException {
+  public void changeLoginPassword(ChangePasswordRequest changePasswordRequest)
+      throws WorkFlowException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
-    UserAccount update = result.orElseThrow(() -> new AppException(MessageEnum.NOT_FOUND, "user"));
+    UserAccount update = result.orElseThrow(
+        () -> new WorkFlowException(MessageEnum.NOT_FOUND, "user"));
     if (!changePasswordRequest.getNewLoginPassword()
         .equals(changePasswordRequest.getConfirmNewLoginPassword())) {
-      throw new AppException(MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL);
+      throw new WorkFlowException(MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL);
     }
     update.setLoginPassword(
         BCrypt.hashpw(changePasswordRequest.getConfirmNewLoginPassword(), BCrypt.gensalt(16)));
@@ -247,6 +252,13 @@ public class UserService {
     this.saveHistory(result.get(), userAccountUpdateResult, ChangeTypeEnum.UPDATE);
   }
 
+  /**
+   * Save history.
+   *
+   * @param before     UserAccount
+   * @param after      UserAccount
+   * @param changeType ChangeTypeEnum
+   */
   private void saveHistory(UserAccount before, UserAccount after, ChangeTypeEnum changeType) {
     UserAccountHistory userAccountHistory = new UserAccountHistory();
     userAccountHistory.setId(seqUtil.getSeq(USER_ACCOUNT_HISTORY));
@@ -257,6 +269,12 @@ public class UserService {
     // Set change value for full name
     changeValue.setFieldValueBefore(before.getFullName());
     changeValue.setFieldValueAfter(after.getFullName());
+    changeValue.setChangeType(changeType.getTypeName());
+    userAccountHistory.setFullName(changeValue);
+
+    // Set change value for email
+    changeValue.setFieldValueBefore(before.getEmail());
+    changeValue.setFieldValueAfter(after.getEmail());
     changeValue.setChangeType(changeType.getTypeName());
     userAccountHistory.setFullName(changeValue);
 

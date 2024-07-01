@@ -1,6 +1,7 @@
 package com.org.workflow.core.exception;
 
 import com.org.workflow.common.cnst.CoreConst;
+import com.org.workflow.controller.AbstractController;
 import com.org.workflow.controller.reponse.BaseResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,19 +21,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @ControllerAdvice
 @RestControllerAdvice
-public class AppExceptionHandler {
+public class ExceptionInterceptor extends AbstractController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AppExceptionHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionInterceptor.class);
 
-  @ExceptionHandler(value = AppException.class)
-  public ResponseEntity<BaseResponse> handleAppException(AppException appException) {
-    BaseResponse baseResponse = BaseResponse.builder()
-        .message(appException.getErrorDetail().getMessage()).build();
-    if (appException.getStackTrace() != null && Arrays.stream(appException.getStackTrace())
+  @ExceptionHandler(value = WorkFlowException.class)
+  public ResponseEntity<BaseResponse> handleAppException(WorkFlowException workFlowException) {
+    List<StackTrace> stackTraceList = new ArrayList<>();
+    if (workFlowException.getStackTrace() != null && Arrays.stream(
+            workFlowException.getStackTrace())
         .findAny().isPresent()) {
-      List<StackTrace> stackTraceList = new ArrayList<>();
       StackTrace stackTrace;
-      for (StackTraceElement item : appException.getStackTrace()) {
+      for (StackTraceElement item : workFlowException.getStackTrace()) {
         if (item.getClassName().contains(CoreConst.CLASS_NAME)) {
           stackTrace = new StackTrace();
           stackTrace.setClassName(item.getClassName());
@@ -41,21 +41,21 @@ public class AppExceptionHandler {
           stackTraceList.add(stackTrace);
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
               item.getClassName(), item.getMethodName(), item.getLineNumber(),
-              appException.getErrorDetail().getMessage());
+              workFlowException.getErrorDetail().getMessage());
         }
       }
-      baseResponse.setBody(stackTraceList);
     }
-    return new ResponseEntity<>(baseResponse,
-        HttpStatus.valueOf(appException.getErrorDetail().getHttpStatus().value()));
+    return returnBaseResponse(stackTraceList, workFlowException.getErrorDetail().getMessage(),
+        workFlowException.getErrorDetail().getHttpStatus());
   }
 
   @ExceptionHandler(Throwable.class)
   public ResponseEntity<BaseResponse> handleException(Throwable exception) {
     BaseResponse baseResponse = BaseResponse.builder().message(exception.getMessage()).build();
+
+    List<StackTrace> stackTraceList = new ArrayList<>();
     if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
         .isPresent()) {
-      List<StackTrace> stackTraceList = new ArrayList<>();
       StackTrace stackTrace;
       for (StackTraceElement item : exception.getStackTrace()) {
         if (item.getClassName().contains(CoreConst.CLASS_NAME)) {
@@ -71,7 +71,7 @@ public class AppExceptionHandler {
       }
       baseResponse.setBody(stackTraceList);
     }
-    return new ResponseEntity<>(baseResponse,
+    return returnBaseResponse(stackTraceList, null,
         !(exception instanceof AccessDeniedException) ? HttpStatus.INTERNAL_SERVER_ERROR
             : HttpStatus.UNAUTHORIZED);
   }
