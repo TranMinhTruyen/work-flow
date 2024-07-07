@@ -40,6 +40,7 @@ public abstract class AbstractController {
   protected ResponseEntity<BaseResponse> returnBaseResponse(HttpStatus httpStatus,
       @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
     baseResponse.setMessage(MessageFormat.format(messageEnum.getMessage(), messageArgs));
     baseResponse.setBody(body);
@@ -57,6 +58,7 @@ public abstract class AbstractController {
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
       MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
     baseResponse.setMessage(MessageFormat.format(messageEnum.getMessage(), messageArgs));
     baseResponse.setBody(body);

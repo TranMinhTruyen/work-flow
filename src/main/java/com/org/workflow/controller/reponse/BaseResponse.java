@@ -24,6 +24,8 @@ public class BaseResponse implements Serializable {
   private final String timestamp = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
       .format(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(ZONE_ID)));
 
+  private String messageType;
+
   private String messageCode;
 
   private String message;
