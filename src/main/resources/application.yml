@@ -18,17 +18,25 @@ spring:
 
 #logging
 logging:
-  file:
-    name: D:/work-flow/work-flow.log
   level:
     root: INFO
     org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: INFO
+              MongoOperations: INFO
+              MongoDatabaseFactorySupport: INFO
+              MongoTemplate.MongoClientSession: INFO
+              MongoClient: INFO
+              MongoClientImpl: INFO
+              Mongo: INFO
+              MongoDbFactory: INFO
+    mongodb:
+      driver: INFO
+  file:
+    name: D:/work-flow/work-flow.log
   pattern:
     dateformat: dd-MM-yyyy HH:mm:ss
 

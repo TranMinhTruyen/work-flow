@@ -1,7 +1,5 @@
 package com.org.workflow.service;
 
-import static com.org.workflow.common.cnst.DocumentConst.NOTIFICATION;
-
 import com.org.workflow.common.utils.SeqUtil;
 import com.org.workflow.controller.reponse.NotificationResponse;
 import com.org.workflow.controller.request.NotificationCreateRequest;
@@ -37,7 +35,6 @@ public class NotificationService extends AbstractService {
       for (Notification notification : notifications) {
         NotificationResponse notificationResponse = new NotificationResponse();
         notificationResponse.setUserId(notification.getUserId());
-        notificationResponse.setId(notification.getId());
         notificationResponse.setTitle(notification.getTitle());
         notificationResponse.setMessage(notification.getMessage());
         notificationResponse.setIsRead(notification.getIsRead());
@@ -58,7 +55,6 @@ public class NotificationService extends AbstractService {
   public void createNotification(NotificationCreateRequest notificationCreateRequest) {
 
     Notification notification = new Notification();
-    notification.setId(seqUtil.getSeq(NOTIFICATION));
     notification.setTitle(notificationCreateRequest.getTitle());
     notification.setMessage(notificationCreateRequest.getMessage());
     notification.setUserId(notificationCreateRequest.getUserId());

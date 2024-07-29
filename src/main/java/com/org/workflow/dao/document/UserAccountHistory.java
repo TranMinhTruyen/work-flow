@@ -12,25 +12,34 @@ import org.springframework.data.mongodb.core.mapping.Field.Write;
 @EqualsAndHashCode(callSuper = false)
 public class UserAccountHistory extends AbstractDocument implements Serializable {
 
-  @Field(name = "user_name", write = Write.NON_NULL)
+  @Field(name = "user_id", write = Write.ALWAYS)
+  private String userId;
+
+  @Field(name = "user_name", write = Write.ALWAYS)
   private String userName;
 
-  @Field(name = "full_name")
+  @Field(name = "email", write = Write.ALWAYS)
+  private ChangeValue email;
+
+  @Field(name = "login_password", write = Write.ALWAYS)
+  private ChangeValue loginPassword;
+
+  @Field(name = "full_name", write = Write.ALWAYS)
   private ChangeValue fullName;
 
-  @Field(name = "image_path")
+  @Field(name = "image_path", write = Write.ALWAYS)
   private ChangeValue imagePath;
 
-  @Field(name = "role")
+  @Field(name = "role", write = Write.ALWAYS)
   private ChangeValue role;
 
-  @Field(name = "authorities")
+  @Field(name = "authorities", write = Write.ALWAYS)
   private ChangeValue authorities;
 
-  @Field(name = "login_fail_count")
+  @Field(name = "login_fail_count", write = Write.ALWAYS)
   private ChangeValue loginFailCount;
 
-  @Field(name = "is_active")
+  @Field(name = "is_active", write = Write.ALWAYS)
   private ChangeValue isActive;
 
 }

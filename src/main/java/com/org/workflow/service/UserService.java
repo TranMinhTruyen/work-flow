@@ -1,9 +1,6 @@
 package com.org.workflow.service;
 
-import static com.org.workflow.common.cnst.DocumentConst.USER_ACCOUNT_HISTORY;
-
 import com.google.common.hash.Hashing;
-import com.org.workflow.common.cnst.DocumentConst;
 import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.AuthUtil;
@@ -28,10 +25,10 @@ import com.org.workflow.dao.repository.UserAccountRepository;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -51,6 +48,10 @@ public class UserService extends AbstractService {
 
   private static final String BEARER = "Bearer";
 
+  private static final String USER_ID_PREFIX = "WF";
+
+  public static final String ID_FULL_TIME = "HHmmssddMMyyyy";
+
   /**
    * Create new user.
    *
@@ -60,15 +61,17 @@ public class UserService extends AbstractService {
    */
   public CreateUserAccountResponse createAppUser(CreateUserAccountRequest createUserAccountRequest)
       throws WorkFlowException {
-    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(
+    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(
         createUserAccountRequest.getUsername());
     if (result.isPresent()) {
       throw new WorkFlowException(MessageEnum.USER_NAME_EXISTS);
     }
     LocalDateTime now = LocalDateTime.now();
     UserAccount userAccount = new UserAccount();
-    userAccount.setId(seqUtil.getSeq(DocumentConst.USER_ACCOUNT));
-    userAccount.setUserId(StringUtils.leftPad(String.valueOf(userAccount.getId()), 5, "0"));
+
+    String useId = USER_ID_PREFIX.concat(
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
+    userAccount.setUserId(useId);
     userAccount.setUserName(createUserAccountRequest.getUsername());
     userAccount.setLoginPassword(
         Hashing.sha512()
@@ -88,6 +91,17 @@ public class UserService extends AbstractService {
 
     this.saveHistory(new UserAccount(), saveUserAccount, ChangeTypeEnum.CREATE);
 
+    return getCreateUserAccountResponse(saveUserAccount);
+  }
+
+  /**
+   * Create CreateUserAccountResponse
+   *
+   * @param saveUserAccount UserAccount
+   * @return CreateUserAccountResponse
+   */
+  private static CreateUserAccountResponse getCreateUserAccountResponse(
+      UserAccount saveUserAccount) {
     CreateUserAccountResponse createUserAccountResponse = new CreateUserAccountResponse();
     createUserAccountResponse.setUsername(saveUserAccount.getUserName());
     createUserAccountResponse.setFullName(saveUserAccount.getFullName());
@@ -97,7 +111,6 @@ public class UserService extends AbstractService {
     createUserAccountResponse.setCreatedBy(saveUserAccount.getCreatedBy());
     createUserAccountResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
     createUserAccountResponse.setUpdateBy(saveUserAccount.getUpdateBy());
-
     return createUserAccountResponse;
   }
 
@@ -109,7 +122,7 @@ public class UserService extends AbstractService {
    * @throws WorkFlowException AppException
    */
   public LoginResponse login(LoginRequest loginRequest) throws WorkFlowException {
-    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(
+    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(
         loginRequest.getUsername());
     UserAccount userAccount = result.orElseThrow(
         () -> new WorkFlowException(MessageEnum.NOT_FOUND,
@@ -152,7 +165,7 @@ public class UserService extends AbstractService {
    * @throws WorkFlowException AppException
    */
   public CustomUserDetail loadByUserName(String username) throws WorkFlowException {
-    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
+    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
         () -> new WorkFlowException(MessageEnum.NOT_FOUND));
     return new CustomUserDetail(userAccount);
@@ -166,7 +179,7 @@ public class UserService extends AbstractService {
    */
   public UserAccountResponse getProfile() throws WorkFlowException {
     String username = AuthUtil.getAuthentication().getUsername();
-    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
+    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
         () -> new WorkFlowException(MessageEnum.NOT_FOUND, "user"));
     UserAccountResponse userAccountResponse = new UserAccountResponse();
@@ -198,7 +211,7 @@ public class UserService extends AbstractService {
       throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException,
       NoSuchMethodException {
     String username = AuthUtil.getAuthentication().getUsername();
-    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
+    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount oldUserAccount = result.orElseThrow(
         () -> new WorkFlowException(MessageEnum.NOT_FOUND, username));
 
@@ -238,7 +251,7 @@ public class UserService extends AbstractService {
   public void changeLoginPassword(ChangePasswordRequest changePasswordRequest)
       throws WorkFlowException {
     String username = AuthUtil.getAuthentication().getUsername();
-    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserName(username);
+    Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount update = result.orElseThrow(
         () -> new WorkFlowException(MessageEnum.NOT_FOUND, "user"));
     if (!changePasswordRequest.getNewLoginPassword()
@@ -261,35 +274,48 @@ public class UserService extends AbstractService {
    */
   private void saveHistory(UserAccount before, UserAccount after, ChangeTypeEnum changeType) {
     UserAccountHistory userAccountHistory = new UserAccountHistory();
-    userAccountHistory.setId(seqUtil.getSeq(USER_ACCOUNT_HISTORY));
+    userAccountHistory.setUserId(after.getUserId());
     userAccountHistory.setUserName(after.getUserName());
 
     ChangeValue changeValue = new ChangeValue();
 
-    // Set change value for full name
-    changeValue.setFieldValueBefore(before.getFullName());
-    changeValue.setFieldValueAfter(after.getFullName());
-    changeValue.setChangeType(changeType.getTypeName());
-    userAccountHistory.setFullName(changeValue);
-
     // Set change value for email
     changeValue.setFieldValueBefore(before.getEmail());
     changeValue.setFieldValueAfter(after.getEmail());
-    changeValue.setChangeType(changeType.getTypeName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
+    userAccountHistory.setEmail(changeValue);
+
+    // Set change value for login password
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getLoginPassword());
+    changeValue.setFieldValueAfter(after.getLoginPassword());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
+    userAccountHistory.setLoginPassword(changeValue);
+
+    // Set change value for full name
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getFullName());
+    changeValue.setFieldValueAfter(after.getFullName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setFullName(changeValue);
 
     // Set change value for image path
     changeValue = new ChangeValue();
     changeValue.setFieldValueBefore(before.getImagePath());
     changeValue.setFieldValueAfter(after.getImagePath());
-    changeValue.setChangeType(changeType.getTypeName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setImagePath(changeValue);
 
     // Set change value for role
     changeValue = new ChangeValue();
     changeValue.setFieldValueBefore(before.getRole());
     changeValue.setFieldValueAfter(after.getRole());
-    changeValue.setChangeType(changeType.getTypeName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setRole(changeValue);
 
     // Set change value for authorities
@@ -304,14 +330,16 @@ public class UserService extends AbstractService {
     changeValue = new ChangeValue();
     changeValue.setFieldValueBefore(before.getLoginFailCount());
     changeValue.setFieldValueAfter(after.getLoginFailCount());
-    changeValue.setChangeType(changeType.getTypeName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setLoginFailCount(changeValue);
 
     // Set change value for isActive
     changeValue = new ChangeValue();
     changeValue.setFieldValueBefore(before.getIsActive());
     changeValue.setFieldValueAfter(after.getIsActive());
-    changeValue.setChangeType(changeType.getTypeName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setIsActive(changeValue);
 
     LocalDateTime now = LocalDateTime.now();

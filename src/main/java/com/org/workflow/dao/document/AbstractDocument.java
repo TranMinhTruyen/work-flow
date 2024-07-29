@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 public abstract class AbstractDocument {
 
   @Id
-  private Long id;
+  private String id;
 
   @Field(name = "is_deleted", write = Write.ALWAYS, targetType = FieldType.BOOLEAN)
   private Boolean isDeleted;

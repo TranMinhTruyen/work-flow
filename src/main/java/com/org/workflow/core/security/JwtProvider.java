@@ -8,7 +8,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.UUID;
 import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ public class JwtProvider {
       expiryDate = new Date(now + CommonConst.EXPIRATIONTIME_FOR_REMEMBER);
     }
     Claims claims = Jwts.claims()
-        .id(UUID.randomUUID().toString())
+        .id(userDetail.getUserAccount().getUserId())
         .subject(userDetail.getUsername())
         .audience()
         .and()
@@ -47,7 +46,8 @@ public class JwtProvider {
   }
 
   private SecretKey getSigningKey() {
-    return Keys.hmacShaKeyFor(CommonConst.ACCESS_TOKEN_SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    return Keys.hmacShaKeyFor(
+        CommonConst.ACCESS_TOKEN_SECRET_KEY.getBytes(StandardCharsets.UTF_16));
   }
 
   public boolean validateToken(String token) {

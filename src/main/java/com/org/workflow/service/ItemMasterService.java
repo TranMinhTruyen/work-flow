@@ -1,8 +1,5 @@
 package com.org.workflow.service;
 
-import static com.org.workflow.common.cnst.DocumentConst.MASTER_HISTORY;
-
-import com.org.workflow.common.cnst.DocumentConst;
 import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.AuthUtil;
@@ -35,7 +32,6 @@ public class ItemMasterService extends AbstractService {
 
   public MasterItem createItemMaster(MasterItemRequest masterItemRequest) {
     MasterItem create = new MasterItem();
-    create.setId(seqUtil.getSeq(DocumentConst.MASTER_ITEM));
     create.setMasterCode(masterItemRequest.getKey());
     create.setValue1(masterItemRequest.getValue1());
     create.setValue2(masterItemRequest.getValue2());
@@ -130,7 +126,6 @@ public class ItemMasterService extends AbstractService {
 
   private void saveHistory(MasterItem before, MasterItem after, ChangeTypeEnum changeType) {
     MasterItemHistory masterItemHistory = new MasterItemHistory();
-    masterItemHistory.setId(seqUtil.getSeq(MASTER_HISTORY));
     masterItemHistory.setMasterCode(after.getMasterCode());
 
     ChangeValue changeValue = new ChangeValue();

@@ -7,6 +7,7 @@ import com.org.workflow.service.UserService;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,6 +39,9 @@ public class SecurityConfig {
 
   private final UserService userService;
 
+  @Value(value = "${client.url}")
+  private String clientUrl;
+
   private static final String[] WHITE_LIST = {"/v3/api-docs/**", "/swagger-ui/**",
       "/swagger-ui.html", "/api/user-account/login", "/api/user-account/create", "/ws/**"};
 
@@ -67,13 +71,9 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors(AbstractHttpConfigurer::disable)
-        .csrf(AbstractHttpConfigurer::disable).exceptionHandling(
+        .csrf(AbstractHttpConfigurer::disable)
+        .exceptionHandling(
             exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-        .logout(logout -> logout
-            .logoutUrl("/api/user-account/logout")
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID")
-        )
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
@@ -89,7 +89,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+    configuration.setAllowedOrigins(List.of(clientUrl));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
     configuration.setExposedHeaders(List.of("x-auth-token"));
