@@ -6,7 +6,6 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const ESLintPlugin = require('eslint-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
@@ -136,10 +135,6 @@ module.exports = (env, argv) => {
         template: path.resolve(__dirname, 'public', 'index.html'),
         filename: 'index.html',
       }),
-
-      // new ESLintPlugin({
-      //   extensions: ['.tsx', '.ts', '.js', '.jsx'],
-      // }),
     ],
   };
 
