@@ -11,6 +11,8 @@ public class CreateUserAccountResponse {
 
   private String fullName;
 
+  private String birthDay;
+
   private String role;
 
   private List<String> authorities;

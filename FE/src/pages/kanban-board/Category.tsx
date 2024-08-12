@@ -1,11 +1,12 @@
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { memo } from 'react';
-import { Stack, Typography } from '@mui/material';
 import FloatButton from '../../components/button/FloatButton';
 import AddIcon from '@mui/icons-material/Add';
 import ICategory from '../../model/draganddrop/Category';
 import Task from './Task';
 import { Droppable } from '@hello-pangea/dnd';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 type CategoryProps = {
   categoryItem: ICategory;

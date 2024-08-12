@@ -73,11 +73,12 @@ public class UserService extends AbstractService {
         LocalDateTime.now().format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
     userAccount.setUserId(useId);
     userAccount.setUserName(createUserAccountRequest.getUsername());
-    userAccount.setLoginPassword(
+    userAccount.setPassword(
         Hashing.sha512()
-            .hashString(createUserAccountRequest.getLoginPassword(), StandardCharsets.UTF_16)
+            .hashString(createUserAccountRequest.getPassword(), StandardCharsets.UTF_16)
             .toString());
     userAccount.setFullName(createUserAccountRequest.getFullName());
+    userAccount.setBirthDay(createUserAccountRequest.getBirthDay());
     userAccount.setEmail(createUserAccountRequest.getEmail());
     userAccount.setRole(createUserAccountRequest.getRole());
     userAccount.setAuthorities(createUserAccountRequest.getAuthorities());
@@ -105,6 +106,7 @@ public class UserService extends AbstractService {
     CreateUserAccountResponse createUserAccountResponse = new CreateUserAccountResponse();
     createUserAccountResponse.setUsername(saveUserAccount.getUserName());
     createUserAccountResponse.setFullName(saveUserAccount.getFullName());
+    createUserAccountResponse.setBirthDay(saveUserAccount.getBirthDay());
     createUserAccountResponse.setRole(saveUserAccount.getRole());
     createUserAccountResponse.setAuthorities(saveUserAccount.getAuthorities());
     createUserAccountResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
@@ -135,7 +137,7 @@ public class UserService extends AbstractService {
     String loginPassword = Hashing.sha512()
         .hashString(loginRequest.getPassword(), StandardCharsets.UTF_16).toString();
 
-    if (userAccount.getLoginPassword().equals(loginPassword)) {
+    if (userAccount.getPassword().equals(loginPassword)) {
       LoginResponse loginResponse = new LoginResponse();
       String token = jwtProvider.generateAccessToken(new CustomUserDetail(userAccount),
           loginRequest.getIsRemember());
@@ -187,6 +189,7 @@ public class UserService extends AbstractService {
     userAccountResponse.setEmail(userAccount.getEmail());
     userAccountResponse.setUsername(userAccount.getUserName());
     userAccountResponse.setFullName(userAccount.getFullName());
+    userAccountResponse.setBirthDay(userAccount.getBirthDay());
     userAccountResponse.setRole(userAccount.getRole());
     userAccountResponse.setAuthorities(userAccount.getAuthorities());
     userAccountResponse.setLoginFailCount(userAccount.getLoginFailCount());
@@ -225,6 +228,7 @@ public class UserService extends AbstractService {
     UserAccount userAccount = (UserAccount) BeanUtils.cloneBean(oldUserAccount);
     userAccount.setEmail(updateUserRequest.getEmail());
     userAccount.setFullName(updateUserRequest.getFullName());
+    userAccount.setBirthDay(updateUserRequest.getBirthDay());
     userAccount.setRole(updateUserRequest.getRole());
     userAccount.setAuthorities(updateUserRequest.getAuthorities());
     userAccount.setIsActive(updateUserRequest.getIsActive());
@@ -258,7 +262,7 @@ public class UserService extends AbstractService {
         .equals(changePasswordRequest.getConfirmNewLoginPassword())) {
       throw new WorkFlowException(MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL);
     }
-    update.setLoginPassword(
+    update.setPassword(
         BCrypt.hashpw(changePasswordRequest.getConfirmNewLoginPassword(), BCrypt.gensalt(16)));
     UserAccount userAccountUpdateResult = userAccountRepository.save(update);
 
@@ -288,8 +292,8 @@ public class UserService extends AbstractService {
 
     // Set change value for login password
     changeValue = new ChangeValue();
-    changeValue.setFieldValueBefore(before.getLoginPassword());
-    changeValue.setFieldValueAfter(after.getLoginPassword());
+    changeValue.setFieldValueBefore(before.getPassword());
+    changeValue.setFieldValueAfter(after.getPassword());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
         changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setLoginPassword(changeValue);
@@ -298,6 +302,14 @@ public class UserService extends AbstractService {
     changeValue = new ChangeValue();
     changeValue.setFieldValueBefore(before.getFullName());
     changeValue.setFieldValueAfter(after.getFullName());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
+    userAccountHistory.setFullName(changeValue);
+
+    // Set change value for birthday
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getBirthDay());
+    changeValue.setFieldValueAfter(after.getBirthDay());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
         changeValue.getFieldValueAfter(), changeType));
     userAccountHistory.setFullName(changeValue);

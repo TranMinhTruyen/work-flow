@@ -22,11 +22,14 @@ public class UserAccount extends AbstractDocument implements Serializable {
   @Field(name = "email", write = Write.ALWAYS)
   private String email;
 
-  @Field(name = "login_password", write = Write.ALWAYS)
-  private String loginPassword;
+  @Field(name = "password", write = Write.ALWAYS)
+  private String password;
 
   @Field(name = "full_name", write = Write.ALWAYS)
   private String fullName;
+
+  @Field(name = "birth_day", write = Write.ALWAYS)
+  private String birthDay;
 
   @Field(name = "image_path", write = Write.ALWAYS)
   private String imagePath;

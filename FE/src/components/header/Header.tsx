@@ -1,7 +1,7 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { IconButton as MuiIconButton, Stack } from '@mui/material';
+import { IconButton as MuiIconButton } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -16,15 +16,16 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
+import Stack from '@mui/material/Stack';
 
-interface IHeaderProps {
+type IHeaderProps = {
   drawerWidth: number;
-}
+};
 
-interface AppBarProps extends MuiAppBarProps {
+type AppBarProps = MuiAppBarProps & {
   drawerWidth?: number;
   open?: boolean;
-}
+};
 
 const Header = (props: IHeaderProps) => {
   const { drawerWidth } = props;

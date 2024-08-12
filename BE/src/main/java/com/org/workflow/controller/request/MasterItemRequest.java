@@ -7,7 +7,9 @@ public class MasterItemRequest {
 
   private String id;
 
-  private String key;
+  private String masterCode;
+
+  private String masterValue;
 
   private String value1;
 

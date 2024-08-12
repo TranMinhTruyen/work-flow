@@ -4,9 +4,11 @@ import { Route, Routes } from 'react-router-dom';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { ApiProvider } from 'common/provider/ApiProvider';
 import AuthProvider from 'common/provider/AuthProvider';
+import MainLayout from '../main/MainLayout';
+import AuthLayout from 'components/main/AuthLayout';
 
 const Login = lazy(() => import('../../pages/login/Login'));
-const Main = lazy(() => import('../main/Main'));
+const Register = lazy(() => import('../../pages/register/Register'));
 
 const routerItems = RouterItems;
 
@@ -29,19 +31,37 @@ const Router = () => {
     <ApiProvider>
       <Routes>
         <Route
-          path={'/login'}
+          path={'/auth'}
           element={
             <BackgroundLoading>
-              <Login />
+              <AuthLayout />
             </BackgroundLoading>
           }
-        />
+        >
+          <Route
+            path={'login'}
+            element={
+              <BackgroundLoading>
+                <Login />
+              </BackgroundLoading>
+            }
+          />
+          <Route
+            path={'register'}
+            element={
+              <BackgroundLoading>
+                <Register />
+              </BackgroundLoading>
+            }
+          />
+        </Route>
+
         <Route
           path={'/'}
           element={
             <BackgroundLoading>
               <AuthProvider>
-                <Main />
+                <MainLayout />
               </AuthProvider>
             </BackgroundLoading>
           }
@@ -60,4 +80,4 @@ const Router = () => {
   );
 };
 
-export default memo(Router);
+export default Router;

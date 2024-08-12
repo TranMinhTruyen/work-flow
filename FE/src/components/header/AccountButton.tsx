@@ -2,8 +2,11 @@ import { memo, useState, MouseEvent } from 'react';
 import IconButton from '../button/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
-import { Divider, ListItemIcon, MenuItem, styled } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
 
 const AccountButton = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

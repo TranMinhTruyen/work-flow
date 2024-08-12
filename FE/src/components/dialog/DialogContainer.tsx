@@ -4,11 +4,11 @@ import { useAppDispatch } from 'common/store';
 import LoadingDialog from './LoadingDialog';
 import { toggleConfirmDialog, toggleLoading } from 'common/commonSlice';
 
-type DialogContainerProps = {
+type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancelButton'> & {
   type: DialogType;
-} & Omit<ConfirmDialogProps, 'open'>;
+};
 
-type DialogType = 'confirm' | 'loading';
+type DialogType = 'confirm' | 'loading' | 'message';
 
 export let openDialogContainer = (_props: DialogContainerProps) => {};
 
@@ -19,7 +19,7 @@ const DialogContainer = () => {
   useEffect(() => {
     openDialogContainer = (props: DialogContainerProps) => {
       setDialogProps(props);
-      if (props.type === 'confirm') {
+      if (props.type === 'confirm' || props.type === 'message') {
         dispatch(toggleConfirmDialog(true));
       }
       if (props.type === 'loading') {
@@ -30,15 +30,15 @@ const DialogContainer = () => {
 
   if (!dialogProps) return null;
 
-  if (dialogProps.type === 'confirm') {
-    return <ConfirmDialog {...dialogProps} />;
+  // Return dialog component
+  switch (dialogProps.type) {
+    case 'confirm':
+      return <ConfirmDialog showCancelButton={true} {...dialogProps} />;
+    case 'message':
+      return <ConfirmDialog {...dialogProps} />;
+    case 'loading':
+      return <LoadingDialog />;
   }
-
-  if (dialogProps.type === 'loading') {
-    return <LoadingDialog />;
-  }
-
-  return null;
 };
 
 export default memo(DialogContainer);

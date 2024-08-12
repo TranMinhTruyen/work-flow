@@ -2,20 +2,20 @@ import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';
 import IconButton from '@mui/material/IconButton';
-import React, { memo, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
 import { useAppDispatch, useAppSelector } from '../../common/store';
 import DrawerMenu from './DrawerMenu';
 import { ChevronLeft } from '@mui/icons-material';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
 
-interface IDrawerProps {
+type IDrawerProps = {
   drawerWidth: number;
-}
+};
 
-interface ICustomDrawerProps extends DrawerProps {
+type ICustomDrawerProps = DrawerProps & {
   drawerWidth?: number;
-}
+};
 
 const Drawer = (props: IDrawerProps) => {
   const { drawerWidth } = props;

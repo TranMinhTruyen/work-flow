@@ -1,8 +1,8 @@
-import { SelcetDataType } from 'components/input/SelectInput';
+import { SelectDataType } from 'components/input/SelectInput';
 import ICategory from 'model/draganddrop/Category';
 import IContent from 'model/draganddrop/Content';
 
-export const issueTypeSelect: SelcetDataType[] = [
+export const issueTypeSelect: SelectDataType[] = [
   {
     key: 0,
     value: 'Error',
@@ -17,7 +17,7 @@ export const issueTypeSelect: SelcetDataType[] = [
   },
 ];
 
-export const statusTypeSelect: SelcetDataType[] = [
+export const statusTypeSelect: SelectDataType[] = [
   {
     key: 0,
     value: 'Open',
@@ -40,7 +40,7 @@ export const statusTypeSelect: SelcetDataType[] = [
   },
 ];
 
-export const assigneeSelect: SelcetDataType[] = [
+export const assigneeSelect: SelectDataType[] = [
   {
     key: 0,
     value: 'Assignee 1',

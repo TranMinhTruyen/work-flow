@@ -15,6 +15,9 @@ public class MasterItem extends AbstractDocument implements Serializable {
   @Field(name = "master_code", write = Write.ALWAYS)
   private String masterCode;
 
+  @Field(name = "master_value", write = Write.ALWAYS)
+  private String masterValue;
+
   @Field(name = "value_1", write = Write.ALWAYS)
   private String value1;
 

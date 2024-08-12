@@ -1,5 +1,4 @@
 import { styled } from '@mui/material';
-import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useAppSelector } from 'common/store';
 import Grid2 from '@mui/material/Unstable_Grid2';
@@ -9,7 +8,7 @@ import Header from 'components/header/Header';
 
 const DRAWER_WIDTH: number = 250;
 
-const Main = () => {
+const MainLayout = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
 
   return (
@@ -23,7 +22,7 @@ const Main = () => {
   );
 };
 
-export default memo(Main);
+export default MainLayout;
 
 interface ScreenLayoutProps {
   openDrawer: boolean;

@@ -3,12 +3,12 @@ import { MenuItem, styled, TextField, TextFieldProps } from '@mui/material';
 type SelectInputProps = TextFieldProps & {
   label?: string;
   width?: number;
-  data: SelcetDataType[];
+  data: SelectDataType[];
 };
 
-export type SelcetDataType = {
-  key?: any;
-  value?: any;
+export type SelectDataType = {
+  key?: string | number;
+  value?: string | number;
 };
 
 const SelectInput = (props: SelectInputProps) => {

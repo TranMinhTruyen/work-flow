@@ -4,7 +4,6 @@ import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.AuthUtil;
 import com.org.workflow.common.utils.HistoryUtil;
-import com.org.workflow.common.utils.SeqUtil;
 import com.org.workflow.controller.reponse.MasterItemResponse;
 import com.org.workflow.controller.request.MasterItemRequest;
 import com.org.workflow.core.exception.WorkFlowException;
@@ -26,13 +25,19 @@ public class ItemMasterService extends AbstractService {
 
   private final ItemMasterRepository itemMasterRepository;
 
-  private final SeqUtil seqUtil;
-
   private final ItemMasterHistoryRepository itemMasterHistoryRepository;
 
-  public MasterItem createItemMaster(MasterItemRequest masterItemRequest) {
+  public MasterItem createItemMaster(MasterItemRequest masterItemRequest) throws WorkFlowException {
+    Optional<MasterItem> findResult = itemMasterRepository.getItemMasterByMasterCodeAndMasterValueAndIsDeletedIsFalse(
+        masterItemRequest.getMasterCode(), masterItemRequest.getMasterValue());
+
+    if (findResult.isPresent()) {
+      throw new WorkFlowException(MessageEnum.ITEM_MASTER_EXISTS);
+    }
+
     MasterItem create = new MasterItem();
-    create.setMasterCode(masterItemRequest.getKey());
+    create.setMasterCode(masterItemRequest.getMasterCode());
+    create.setMasterValue(masterItemRequest.getMasterValue());
     create.setValue1(masterItemRequest.getValue1());
     create.setValue2(masterItemRequest.getValue2());
     create.setValue3(masterItemRequest.getValue3());
@@ -69,7 +74,8 @@ public class ItemMasterService extends AbstractService {
       for (MasterItem item : result.get()) {
         masterItemResponse = new MasterItemResponse();
         masterItemResponse.setId(String.valueOf(item.getId()));
-        masterItemResponse.setKey(item.getMasterCode());
+        masterItemResponse.setMasterCode(item.getMasterCode());
+        masterItemResponse.setMasterValue(item.getMasterValue());
         masterItemResponse.setValue1(item.getValue1());
         masterItemResponse.setValue2(item.getValue2());
         masterItemResponse.setValue3(item.getValue3());
@@ -91,12 +97,13 @@ public class ItemMasterService extends AbstractService {
   public MasterItem updateItemMaster(MasterItemRequest masterItemRequest) throws WorkFlowException {
     Optional<MasterItem> result = itemMasterRepository
         .getItemMasterByIdAndMasterCode(
-            Long.valueOf(masterItemRequest.getId()), masterItemRequest.getKey());
+            Long.valueOf(masterItemRequest.getId()), masterItemRequest.getMasterCode());
     MasterItem resultValue = result.orElseThrow(() -> new WorkFlowException(MessageEnum.NOT_FOUND));
 
     MasterItem update = new MasterItem();
     update.setId(resultValue.getId());
     update.setMasterCode(resultValue.getMasterCode());
+    update.setMasterValue(resultValue.getMasterValue());
     update.setValue1(masterItemRequest.getValue1());
     update.setValue2(masterItemRequest.getValue2());
     update.setValue3(masterItemRequest.getValue3());
@@ -129,6 +136,13 @@ public class ItemMasterService extends AbstractService {
     masterItemHistory.setMasterCode(after.getMasterCode());
 
     ChangeValue changeValue = new ChangeValue();
+
+    // Set change value for masterValue
+    changeValue.setFieldValueBefore(before.getMasterValue());
+    changeValue.setFieldValueAfter(after.getMasterValue());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
+    masterItemHistory.setValue1(changeValue);
 
     // Set change value for value 1
     changeValue.setFieldValueBefore(before.getValue1());

@@ -2,7 +2,6 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import ICategory from '../../model/draganddrop/Category';
 import Category from './Category';
-import { Divider, Stack, Typography } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,6 +11,9 @@ import FloatButton from '../../components/button/FloatButton';
 import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/boardData';
 import SelectInput from 'components/input/SelectInput';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 
 const Board = () => {
   const [state, setState] = useState<ICategory[]>([]);

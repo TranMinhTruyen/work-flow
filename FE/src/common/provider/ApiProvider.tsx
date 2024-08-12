@@ -34,7 +34,7 @@ export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
       if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
         // If login data is undefined, back to login screen
         if (loginData === undefined) {
-          window.location.replace('/login');
+          window.location.replace('/auth/login');
         } else {
           // Set token to header
           config.headers['Authorization'] = `Bearer ${loginData.token}`;
@@ -109,7 +109,7 @@ export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
         }
 
         openDialogContainer({
-          type: 'confirm',
+          type: 'message',
           title: 'Error',
           messageType: MessageType.ERROR,
           message: dialogMessage,

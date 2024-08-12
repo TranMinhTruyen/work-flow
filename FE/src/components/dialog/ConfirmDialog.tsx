@@ -1,13 +1,3 @@
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Divider,
-  DialogProps as MuiDialogProps,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'common/store';
 import FloatButton from 'components/button/FloatButton';
 import { memo, useCallback, useMemo } from 'react';
@@ -16,13 +6,21 @@ import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { selectOpenConfirmDialog, toggleConfirmDialog } from 'common/commonSlice';
 import { MessageType } from 'common/provider/ApiProvider';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
-export type ConfirmDialogProps = Omit<MuiDialogProps, 'open'> & {
+export type ConfirmDialogProps = Omit<DialogProps, 'open'> & {
   title?: string | JSX.Element;
   message?: string | JSX.Element;
   messageType?: MessageType;
   cancelText?: string;
   confirmText?: string;
+  showCancelButton?: boolean;
   onConfirm: () => void;
   onCancel?: () => void;
 };
@@ -34,6 +32,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     messageType,
     cancelText,
     confirmText,
+    showCancelButton,
     onConfirm,
     onCancel,
     ...restProps
@@ -80,6 +79,26 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     }
   }, [message]);
 
+  const cancelButton = useMemo(() => {
+    if (showCancelButton !== undefined && showCancelButton) {
+      return (
+        <FloatButton
+          label={
+            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+              {cancelText ?? 'Cancel'}
+            </Typography>
+          }
+          sx={{
+            width: 120,
+            height: 40,
+            backgroundColor: 'rgba(255, 50, 50, 0.8)',
+          }}
+          onClick={handleCancelClick}
+        />
+      );
+    }
+  }, []);
+
   return (
     <Dialog keepMounted open={openDialog} {...restProps} fullWidth={true} maxWidth={'xs'}>
       <Box sx={{ padding: '10px' }}>
@@ -112,20 +131,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
             }}
             onClick={handleConfirmClick}
           />
-
-          <FloatButton
-            label={
-              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {cancelText ?? 'Cancel'}
-              </Typography>
-            }
-            sx={{
-              width: 120,
-              height: 40,
-              backgroundColor: 'rgba(255, 50, 50, 0.8)',
-            }}
-            onClick={handleCancelClick}
-          />
+          {cancelButton}
         </Stack>
       </DialogActions>
     </Dialog>

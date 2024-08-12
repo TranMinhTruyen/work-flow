@@ -10,9 +10,11 @@ public class CreateUserAccountRequest {
 
   private String username;
 
-  private String loginPassword;
+  private String password;
 
   private String fullName;
+
+  private String birthDay;
 
   private String role;
 

@@ -43,7 +43,8 @@ public class SecurityConfig {
   private String clientUrl;
 
   private static final String[] WHITE_LIST = {"/v3/api-docs/**", "/swagger-ui/**",
-      "/swagger-ui.html", "/api/user-account/login", "/api/user-account/create", "/ws/**"};
+      "/swagger-ui.html", "/api/user-account/login", "/api/user-account/create",
+      "/api/master-item/get", "/ws/**"};
 
   @Bean
   public PasswordEncoder passwordEncoder() {

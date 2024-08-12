@@ -1,15 +1,4 @@
 import { memo, useCallback, MouseEvent } from 'react';
-import {
-  Avatar,
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import IContent from '../../model/draganddrop/Content';
 import IconButton from '../../components/button/IconButton';
@@ -17,6 +6,15 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Draggable } from '@hello-pangea/dnd';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
 
 type TaskProps = {
   data: IContent;

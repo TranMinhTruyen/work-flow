@@ -7,7 +7,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   useEffect(() => {
     const isLogin = checkLogin();
     if (!isLogin) {
-      window.location.replace('/login');
+      window.location.replace('/auth/login');
     }
     setIsSet(true);
   }, []);

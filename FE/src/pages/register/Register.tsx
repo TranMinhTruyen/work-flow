@@ -1,73 +1,54 @@
-import { memo, useCallback, useEffect, useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import FloatButton from '../../components/button/FloatButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import KeyIcon from '@mui/icons-material/Key';
-import { useNavigate } from 'react-router-dom';
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import TextInput from 'components/form/TextInput';
-import CheckBox from 'components/form/CheckboxInput';
-import { ILoginForm } from 'model/login/LoginForm';
-import { openDialogContainer } from 'components/dialog/DialogContainer';
-import { handleSubmitLogin } from './action/loginAction';
-import loginStyles from 'assets/styles/login/loginStyles';
-import { MessageType } from 'common/provider/ApiProvider';
-import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
 import InputAdornment from '@mui/material/InputAdornment';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import loginStyles from 'assets/styles/login/loginStyles';
+import { memo, useCallback, useState } from 'react';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
+import KeyIcon from '@mui/icons-material/Key';
+import FloatButton from 'components/button/FloatButton';
+import { IRegisterForm } from 'model/register/registerForm';
+import { useForm } from 'react-hook-form';
+import TextInput from 'components/form/TextInput';
+import { issueTypeSelect } from 'pages/kanban-board/data/boardData';
+import { SelectDataType } from 'components/input/SelectInput';
+import MultiSelectInput from 'components/form/MultiSelectInput';
+import FileInput from 'components/input/FileInput';
 
-const Login = () => {
+export const selectValue: SelectDataType[] = [
+  {
+    key: 0,
+    value: 'Error',
+  },
+  {
+    key: 1,
+    value: 'Info',
+  },
+  {
+    key: 2,
+    value: 'Warning',
+  },
+];
+
+const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const navigate = useNavigate();
-
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
-  const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
-    defaultValues: { isRemember: false },
-  });
+  const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({});
 
-  useEffect(() => {
-    reset();
-  }, [reset]);
-
-  // Handle submit login
-  const handleLogin = useCallback(
-    async (data: ILoginForm) => {
-      await trigger();
-      await handleSubmitLogin(data);
-    },
-    [trigger]
-  );
-
-  const onInvalid: SubmitErrorHandler<ILoginForm> = useCallback(errors => {
-    openDialogContainer({
-      type: 'message',
-      title: 'Error',
-      messageType: MessageType.ERROR,
-      message: (
-        <>
-          {Object.entries(errors).map(([field]) => (
-            <Typography sx={{ fontSize: 20 }}>Input required: {field}</Typography>
-          ))}
-        </>
-      ),
-      onConfirm: () => {},
-    });
-  }, []);
+  const handleRegister = useCallback(async (data: IRegisterForm) => {}, []);
 
   return (
-    <form id={'login-form'} onSubmit={handleSubmit(handleLogin, onInvalid)}>
+    <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
       <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 700 }}>
         <CardContent>
           <Stack alignItems={'center'}>
             <Typography variant="h4" sx={loginStyles.textTitle}>
-              Login
+              Register
             </Typography>
           </Stack>
         </CardContent>
@@ -76,11 +57,9 @@ const Login = () => {
 
         <CardContent>
           <Stack alignItems={'center'} spacing={3}>
-            <Avatar sx={loginStyles.avatar} />
-
             <TextInput
-              name={'username'}
               control={control}
+              name={'username'}
               size={'medium'}
               placeholder={'Username or email'}
               required={true}
@@ -95,8 +74,8 @@ const Login = () => {
             />
 
             <TextInput
-              name={'password'}
               control={control}
+              name={'password'}
               size={'medium'}
               placeholder={'Password'}
               required={true}
@@ -117,17 +96,15 @@ const Login = () => {
                 ),
               }}
             />
-          </Stack>
 
-          <Stack alignItems={'end'} sx={{ paddingRight: 10 }}>
-            <CheckBox name={'isRemember'} control={control} label={'Remember me'} />
-          </Stack>
+            <MultiSelectInput
+              name={'authorities'}
+              control={control}
+              data={issueTypeSelect}
+              width={500}
+            />
 
-          <Stack alignItems={'center'}>
-            <Typography sx={{ fontSize: 18 }}>
-              If you don't have account, please{' '}
-              {<Link onClick={() => navigate('/auth/register')}>register</Link>}
-            </Typography>
+            <FileInput label={'Upload image'} />
           </Stack>
         </CardContent>
 
@@ -139,11 +116,11 @@ const Login = () => {
               <FloatButton
                 label={
                   <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                    Login
+                    Register
                   </Typography>
                 }
                 sx={loginStyles.button}
-                form={'login-form'}
+                form={'register-form'}
                 type={'submit'}
               />
             </Stack>
@@ -153,5 +130,4 @@ const Login = () => {
     </form>
   );
 };
-
-export default memo(Login);
+export default memo(Register);

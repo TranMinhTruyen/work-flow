@@ -1,7 +1,10 @@
-import { CircularProgress, Dialog, DialogContent, Stack } from '@mui/material';
 import { useAppSelector } from 'common/store';
 import { selectIsLoading } from 'common/commonSlice';
 import { memo } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const LoadingDialog = () => {
   const isLoading = useAppSelector(selectIsLoading);

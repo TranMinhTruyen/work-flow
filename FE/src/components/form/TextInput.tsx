@@ -48,6 +48,8 @@ const TextInput = (props: TextInputProps) => {
       }}
       render={({ field: { onBlur, onChange, value = '' }, fieldState: { error } }) => (
         <UncontrolledTextInput
+          label={label}
+          width={width}
           value={value ?? ''}
           onChange={onChange}
           onBlur={handleOnBlur(onBlur, value)}

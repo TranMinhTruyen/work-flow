@@ -22,6 +22,8 @@ public class UserAccountResponse implements Serializable {
 
   private String fullName;
 
+  private String birthDay;
+
   private String role;
 
   private Integer loginFailCount;
