@@ -22,7 +22,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 
   const selectValues = useMemo(() => {
     return ((propsValue as any[]) || values).filter(value =>
-      (data || []).some(item => item.value == value)
+      (data || []).some(item => item.value === value)
     );
   }, [data, propsValue, values]);
 

@@ -1,31 +1,46 @@
 import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
 
 export type FileInputProps = {
   label?: string;
   height?: number;
   width?: number;
-  onChange?: (value: FileList | null) => void;
+  onChange?: (value: Uint8Array | null) => void;
 };
 
 const FileInput = (props: FileInputProps) => {
   const { label, width = 200, height = 40, onChange } = props;
 
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
-  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFiles(event.target.files);
-      if (onChange) {
-        onChange(files);
+  const readFileAsByte = useCallback((file: File): Promise<Uint8Array> => {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const byteArray = new Uint8Array(reader.result as ArrayBuffer);
+        resolve(byteArray);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }, []);
+
+  const handleFileUpload = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+        const fileData = event.target.files[0];
+        setFile(fileData);
+        const filesDataString = await readFileAsByte(fileData);
+        if (onChange) {
+          onChange(filesDataString);
+        }
       }
-    }
-  };
+    },
+    [onChange, readFileAsByte]
+  );
 
   return (
     <Button
@@ -46,17 +61,9 @@ const FileInput = (props: FileInputProps) => {
           color: '#000000',
         },
       }}
-      startIcon={!files && <FileUploadIcon />}
+      startIcon={!file && <FileUploadIcon />}
     >
-      {files === null ? (
-        <Box>{label}</Box>
-      ) : (
-        <Box>
-          {Array.from(files).map((file, index) => (
-            <Box key={index}>{file.name}</Box>
-          ))}
-        </Box>
-      )}
+      {file === null ? <Box>{label}</Box> : <Box>{file.name}</Box>}
       <VisuallyHiddenInput type="file" onChange={handleFileUpload} />
     </Button>
   );
