@@ -11,18 +11,8 @@ export type MultiSelectInputProps = UncontrolledMultiSelectInputProps & {
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
-  const {
-    name,
-    control,
-    defaultValue,
-    data,
-    messageErr,
-    label,
-    width,
-    required,
-    onChange,
-    ...restProps
-  } = props;
+  const { name, control, defaultValue, data, messageErr, width, required, onChange, ...restProps } =
+    props;
 
   return (
     <Controller
@@ -35,7 +25,6 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       render={({ field: { onChange, value = '' }, fieldState: { error } }) => (
         <UncontrolledMultiSelectInput
           width={width}
-          label={label}
           value={value || ''}
           data={data}
           defaultValue={defaultValue}

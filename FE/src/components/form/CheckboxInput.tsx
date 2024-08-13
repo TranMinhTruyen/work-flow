@@ -1,7 +1,7 @@
 import UncontrolledCheckBoxInput, {
   CheckBoxProps as UncontrolledCheckboxProps,
 } from 'components/input/CheckboxInput';
-import { Controller, ControllerRenderProps, UseControllerProps } from 'react-hook-form';
+import { Controller, UseControllerProps } from 'react-hook-form';
 
 export type CheckboxProps = UncontrolledCheckboxProps & {
   name: string;
@@ -10,24 +10,20 @@ export type CheckboxProps = UncontrolledCheckboxProps & {
 };
 
 const CheckBox = (props: CheckboxProps) => {
-  const { name, control, defaultValue, label } = props;
-
-  const handleOnChange =
-    (field: ControllerRenderProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { checked } = event.target;
-      field.onChange(checked);
-    };
+  const { name, control, defaultValue, label, disabled, ...restProps } = props;
 
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={defaultValue}
-      render={({ field }) => (
+      render={({ field: { onChange, value = '' } }) => (
         <UncontrolledCheckBoxInput
           label={label}
-          checked={field.value}
-          onChange={handleOnChange(field)}
+          checked={value}
+          onChange={onChange}
+          disabled={disabled}
+          {...restProps}
         />
       )}
     />

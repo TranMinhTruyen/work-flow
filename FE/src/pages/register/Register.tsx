@@ -17,7 +17,7 @@ import TextInput from 'components/form/TextInput';
 import { issueTypeSelect } from 'pages/kanban-board/data/boardData';
 import { SelectDataType } from 'components/input/SelectInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
-import FileInput from 'components/input/FileInput';
+import FileInput from 'components/form/FileInput';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -40,7 +40,9 @@ const Register = () => {
 
   const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({});
 
-  const handleRegister = useCallback(async (data: IRegisterForm) => {}, []);
+  const handleRegister = useCallback(async (data: IRegisterForm) => {
+    console.log(data);
+  }, []);
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
@@ -98,13 +100,14 @@ const Register = () => {
             />
 
             <MultiSelectInput
-              name={'authorities'}
               control={control}
+              name={'authorities'}
+              placeholder={'Authorities'}
               data={issueTypeSelect}
               width={500}
             />
 
-            <FileInput label={'Upload image'} />
+            <FileInput name={'image'} control={control} label={'Upload image'} />
           </Stack>
         </CardContent>
 

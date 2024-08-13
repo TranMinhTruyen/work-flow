@@ -5,5 +5,5 @@ export interface IRegisterForm {
   fullName?: string;
   role?: string;
   authorities?: string[];
-  image?: string[];
+  image?: Uint8Array;
 }

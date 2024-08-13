@@ -1,7 +1,7 @@
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
 } from 'components/input/TextInput';
-import { Controller, Noop, UseControllerProps } from 'react-hook-form';
+import { Controller, UseControllerProps } from 'react-hook-form';
 
 export type TextInputProps = Omit<UncontrolledTextInputProps, 'onChange' | 'onBlur'> & {
   name: string;
@@ -27,7 +27,7 @@ const TextInput = (props: TextInputProps) => {
     ...restProps
   } = props;
 
-  const handleOnBlur = (onBlur: Noop, value: any) => () => {
+  const handleOnBlur = (value: any) => () => {
     if (required && (value === undefined || value === null || value === '')) {
       control?.setError(name, { type: 'required' });
     } else {
@@ -46,13 +46,13 @@ const TextInput = (props: TextInputProps) => {
       rules={{
         required: required,
       }}
-      render={({ field: { onBlur, onChange, value = '' }, fieldState: { error } }) => (
+      render={({ field: { onChange, value = '' }, fieldState: { error } }) => (
         <UncontrolledTextInput
           label={label}
           width={width}
           value={value ?? ''}
           onChange={onChange}
-          onBlur={handleOnBlur(onBlur, value)}
+          onBlur={handleOnBlur(value)}
           error={!!(error && error.type !== 'valid')}
           helperText={!!error ? error.message : null}
           inputProps={{

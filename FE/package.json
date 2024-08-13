@@ -6,7 +6,7 @@
   "author": "Tran Minh Truyen",
   "license": "MIT",
   "scripts": {
-    "start": "WATCHPACK_POLLING=true webpack-dev-server --mode development",
+    "start": "react-scripts start",
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "build:analyze": "webpack --mode production --env analyze",

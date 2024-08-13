@@ -1,6 +1,6 @@
-import { lazy, memo, ReactNode, Suspense } from 'react';
+import { lazy, ReactNode, Suspense } from 'react';
 import RouterItems from './RouterItems';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { ApiProvider } from 'common/provider/ApiProvider';
 import AuthProvider from 'common/provider/AuthProvider';
@@ -28,55 +28,57 @@ const BackgroundLoading = ({ children }: { children: ReactNode }) => {
 
 const Router = () => {
   return (
-    <ApiProvider>
-      <Routes>
-        <Route
-          path={'/auth'}
-          element={
-            <BackgroundLoading>
-              <AuthLayout />
-            </BackgroundLoading>
-          }
-        >
+    <BrowserRouter>
+      <ApiProvider>
+        <Routes>
           <Route
-            path={'login'}
+            path={'/auth'}
             element={
               <BackgroundLoading>
-                <Login />
+                <AuthLayout />
               </BackgroundLoading>
             }
-          />
-          <Route
-            path={'register'}
-            element={
-              <BackgroundLoading>
-                <Register />
-              </BackgroundLoading>
-            }
-          />
-        </Route>
-
-        <Route
-          path={'/'}
-          element={
-            <BackgroundLoading>
-              <AuthProvider>
-                <MainLayout />
-              </AuthProvider>
-            </BackgroundLoading>
-          }
-        >
-          {routerItems.map((item, index) => (
+          >
             <Route
-              key={index}
-              index={item.componentPath === '/board' ? true : false}
-              path={item.componentPath}
-              element={<BackgroundLoading>{item.componentElement}</BackgroundLoading>}
+              path={'login'}
+              element={
+                <BackgroundLoading>
+                  <Login />
+                </BackgroundLoading>
+              }
             />
-          ))}
-        </Route>
-      </Routes>
-    </ApiProvider>
+            <Route
+              path={'register'}
+              element={
+                <BackgroundLoading>
+                  <Register />
+                </BackgroundLoading>
+              }
+            />
+          </Route>
+
+          <Route
+            path={'/'}
+            element={
+              <BackgroundLoading>
+                <AuthProvider>
+                  <MainLayout />
+                </AuthProvider>
+              </BackgroundLoading>
+            }
+          >
+            {routerItems.map((item, index) => (
+              <Route
+                key={index}
+                index={item.componentPath === '/board' ? true : false}
+                path={item.componentPath}
+                element={<BackgroundLoading>{item.componentElement}</BackgroundLoading>}
+              />
+            ))}
+          </Route>
+        </Routes>
+      </ApiProvider>
+    </BrowserRouter>
   );
 };
 

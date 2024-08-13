@@ -3,7 +3,8 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import { ChangeEvent, useCallback, useState } from 'react';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { readFileAsByte } from 'common/utils/convertUtil';
 
 export type FileInputProps = {
   label?: string;
@@ -17,17 +18,6 @@ const FileInput = (props: FileInputProps) => {
 
   const [file, setFile] = useState<File | null>(null);
 
-  const readFileAsByte = useCallback((file: File): Promise<Uint8Array> => {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const byteArray = new Uint8Array(reader.result as ArrayBuffer);
-        resolve(byteArray);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }, []);
-
   const handleFileUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) {
@@ -39,7 +29,7 @@ const FileInput = (props: FileInputProps) => {
         }
       }
     },
-    [onChange, readFileAsByte]
+    [onChange]
   );
 
   return (
@@ -63,7 +53,13 @@ const FileInput = (props: FileInputProps) => {
       }}
       startIcon={!file && <FileUploadIcon />}
     >
-      {file === null ? <Box>{label}</Box> : <Box>{file.name}</Box>}
+      {file === null ? (
+        <Typography>{label}</Typography>
+      ) : (
+        <Typography sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {file.name}
+        </Typography>
+      )}
       <VisuallyHiddenInput type="file" onChange={handleFileUpload} />
     </Button>
   );

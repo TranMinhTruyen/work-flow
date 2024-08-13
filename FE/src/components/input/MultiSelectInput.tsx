@@ -2,21 +2,21 @@ import { styled } from '@mui/material/styles';
 import { SelectDataType } from './SelectInput';
 import Select, { SelectProps } from '@mui/material/Select';
 import { useMemo, useState } from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import FormControl from '@mui/material/FormControl';
+import Typography from '@mui/material/Typography';
+import Checkbox from '@mui/material/Checkbox';
 
 export type MultiSelectInputProps = Omit<SelectProps, 'multiple'> & {
-  label?: string;
   width?: number;
   data: SelectDataType[];
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
-  const { label, width = 200, data, value: propsValue, onChange, ...restProps } = props;
+  const { width = 200, data, value: propsValue, onChange, placeholder, ...restProps } = props;
 
   const [values, setValues] = useState<any[]>([]);
 
@@ -53,25 +53,29 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   return (
     <FormControlStyled fullWidth sx={{ width: width }}>
       <Select
+        displayEmpty
         value={selectValues}
-        input={<OutlinedInput label={label} />}
         // @ts-ignore
-        defaultValue={[]}
-        // @ts-ignore
+        defaultValue={selectValues}
         onChange={handleChange}
-        // @ts-ignore
         multiple
-        renderValue={selected => (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {selected.map(value => (
-              <Chip key={value} label={value} />
-            ))}
-          </Box>
-        )}
+        renderValue={selected => {
+          if (selected.length === 0) {
+            return <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>;
+          }
+          return (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map(value => (
+                <Chip key={value} label={value} />
+              ))}
+            </Box>
+          );
+        }}
         {...restProps}
       >
         {data.map(item => (
           <MenuItem key={item.key} value={item.value}>
+            <Checkbox checked={selectValues.some(selectValue => selectValue === item.value)} />
             <ListItemText primary={item.value} />
           </MenuItem>
         ))}
@@ -88,11 +92,12 @@ const FormControlStyled = styled(FormControl)({
 
   '& .MuiOutlinedInput-input': {
     minWidth: '94%',
+    color: 'rgba(13, 13, 13, 0.8) !important',
   },
 
   '& label': {
     fontSize: '13px',
-    color: '#aca8b7',
+    color: 'rgba(13, 13, 13, 0.8) !important',
 
     '&.MuiInputLabel-outlined': {
       top: '-3px',
@@ -112,17 +117,5 @@ const FormControlStyled = styled(FormControl)({
 
   '&:hover fieldset': {
     borderColor: '#00b2ff !important',
-  },
-
-  '& .Mui-focused fieldset': {
-    borderColor: '#007fb6 !important',
-  },
-
-  '& .Mui-disabled': {
-    backgroundColor: 'rgb(220 220 220 / 20%) !important',
-  },
-
-  '& .MuiFormHelperText-root': {
-    marginLeft: 0,
   },
 });
