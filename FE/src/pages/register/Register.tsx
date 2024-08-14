@@ -46,8 +46,8 @@ const Register = () => {
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
-      <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 700 }}>
-        <CardContent>
+      <Card elevation={5} sx={{ width: 700, maxWidth: 700, height: 800, maxHeight: 800 }}>
+        <CardContent style={{ height: '40px' }}>
           <Stack alignItems={'center'}>
             <Typography variant="h4" sx={loginStyles.textTitle}>
               Register
@@ -57,7 +57,7 @@ const Register = () => {
 
         <Divider />
 
-        <CardContent>
+        <CardContent sx={{ height: 620, maxHeight: 1500 }}>
           <Stack alignItems={'center'} spacing={3}>
             <TextInput
               control={control}
@@ -113,7 +113,7 @@ const Register = () => {
 
         <Divider />
 
-        <CardContent>
+        <CardContent style={{ padding: '16px' }}>
           <Stack alignItems={'center'}>
             <Stack direction={'row'} alignItems={'center'} spacing={10}>
               <FloatButton

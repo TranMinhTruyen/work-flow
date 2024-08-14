@@ -5,14 +5,29 @@ import { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemText from '@mui/material/ListItemText';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
+import InputAdornment from '@mui/material/InputAdornment';
+import KeyIcon from '@mui/icons-material/Key';
+import IconButton from '@mui/material/IconButton';
+import { VisibilityOff } from '@mui/icons-material';
+import { Button } from '@mui/material';
 
 export type MultiSelectInputProps = Omit<SelectProps, 'multiple'> & {
   width?: number;
   data: SelectDataType[];
+};
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
@@ -71,12 +86,13 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
             </Box>
           );
         }}
+        MenuProps={MenuProps}
         {...restProps}
       >
         {data.map(item => (
           <MenuItem key={item.key} value={item.value}>
             <Checkbox checked={selectValues.some(selectValue => selectValue === item.value)} />
-            <ListItemText primary={item.value} />
+            <Typography>{item.value}</Typography>
           </MenuItem>
         ))}
       </Select>
