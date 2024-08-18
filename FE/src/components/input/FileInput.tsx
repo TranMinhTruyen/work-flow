@@ -18,16 +18,18 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { useDropzone } from 'react-dropzone';
+import Box from '@mui/material/Box';
 
 export type FileInputProps = {
   label?: string;
   height?: number;
   width?: number;
   multipleFile?: boolean;
-  onChange?: (value: FileData[] | null) => void;
+  onChange?: (value: FileInputData[] | null) => void;
 };
 
-export interface FileData {
+export interface FileInputData {
   file?: File;
   fileData?: Uint8Array;
 }
@@ -35,9 +37,42 @@ export interface FileData {
 const FileInput = (props: FileInputProps) => {
   const { label, width = 500, height = 40, multipleFile = true, onChange } = props;
 
-  const [file, setFile] = useState<FileData[]>([]);
+  const [fileList, setFileList] = useState<FileInputData[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const settingFileList = useCallback(
+    async (fileList: FileList | any[] | null) => {
+      if (fileList) {
+        let fileDataList: FileInputData[] = [];
+
+        for (var i = 0; i < fileList.length; i++) {
+          let fileItem: FileInputData = {};
+          fileItem.fileData = await readFileAsByte(fileList[i] as File);
+          fileItem.file = fileList[i] as File;
+          fileDataList.push(fileItem);
+        }
+
+        setFileList(prev => {
+          fileDataList.forEach(item => {
+            prev.push(item);
+          });
+          return prev;
+        });
+
+        if (onChange) {
+          onChange(fileDataList);
+        }
+      }
+    },
+    [onChange]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: async acceptedFiles => {
+      await settingFileList(acceptedFiles);
+    },
+  });
 
   const handleClick = useCallback((event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,153 +84,141 @@ const FileInput = (props: FileInputProps) => {
 
   const handleFileUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target.files) {
-        let fileList: FileData[] = [];
-
-        for (var i = 0; i < event.target.files.length; i++) {
-          let fileItem: FileData = {};
-          fileItem.fileData = await readFileAsByte(event.target.files[i]);
-          fileItem.file = event.target.files[i];
-          fileList.push(fileItem);
-        }
-
-        setFile(prev => {
-          fileList.forEach(item => {
-            prev.push(item);
-          });
-          return prev;
-        });
-
-        if (onChange) {
-          onChange(fileList);
-        }
-      }
+      await settingFileList(event.target.files);
     },
-    [onChange]
+    [settingFileList]
   );
 
   const handleDeleteFile = useCallback(
     (index: number) => () => {
-      if (index > -1 && index < file.length) {
-        const newFileList = [...file];
+      if (index > -1 && index < fileList.length) {
+        const newFileList = [...fileList];
         newFileList.splice(index, 1);
-        setFile(newFileList);
+        setFileList(newFileList);
 
         if (onChange) {
           onChange(newFileList);
         }
       }
     },
-    [file, onChange]
+    [fileList, onChange]
   );
 
   return (
-    <TextInput
-      size={'medium'}
-      value={file.length === 0 ? label : `Total file: ${file.length}`}
-      sx={{ width: width, height: height }}
-      disabled
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position={'start'}>
-            <FolderIcon
-              sx={{ marginLeft: 0.5, fontSize: 25 }}
-              color={file.length === 0 ? 'inherit' : 'primary'}
-            />
-          </InputAdornment>
-        ),
-        endAdornment: (
-          <InputAdornment position={'end'}>
-            <ButtonGroup variant={'contained'} sx={{ borderRadius: 25 }}>
-              <Button
-                component={'label'}
-                tabIndex={-1}
-                sx={{
-                  width: 100,
-                  borderRadius: 25,
-                  '&:hover': {
-                    backgroundColor: 'rgba(210, 210, 210, 0.8)',
-                    color: '#000000',
+    <Box {...getRootProps()}>
+      <TextInput
+        size={'medium'}
+        placeholder={fileList.length === 0 ? label : `Total file: ${fileList.length}`}
+        sx={{ width: width, height: height }}
+        onClick={e => e.stopPropagation()} // Prevent open upload file dialog when click to TextInput
+        InputProps={{
+          readOnly: true,
+          startAdornment: (
+            <InputAdornment position={'start'}>
+              <FolderIcon
+                sx={{ marginLeft: 0.5, fontSize: 25 }}
+                color={fileList.length === 0 ? 'inherit' : 'primary'}
+              />
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position={'end'}>
+              <ButtonGroup variant={'contained'} sx={{ borderRadius: 25 }}>
+                <Button
+                  component={'label'}
+                  tabIndex={-1}
+                  sx={{
+                    width: 100,
+                    borderRadius: 25,
+                    '&:hover': {
+                      backgroundColor: 'rgba(210, 210, 210, 0.8)',
+                      color: '#000000',
+                    },
+                  }}
+                >
+                  <FileUploadIcon />
+                  <input
+                    multiple={multipleFile}
+                    hidden
+                    onChange={handleFileUpload}
+                    {...getInputProps()}
+                  />
+                </Button>
+                <Button
+                  sx={{
+                    width: 40,
+                    borderRadius: 25,
+                    '&:hover': {
+                      backgroundColor: 'rgba(210, 210, 210, 0.8)',
+                      color: '#000000',
+                    },
+                  }}
+                  onClick={handleClick}
+                >
+                  {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </Button>
+              </ButtonGroup>
+              <StyledMenu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      width: 400,
+                      overflow: 'auto',
+                      maxHeight: 300,
+                      backgroundColor: 'rgba(255, 255, 255)',
+                      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.8)',
+                    },
                   },
                 }}
               >
-                <FileUploadIcon />
-                <input type="file" multiple={multipleFile} hidden onChange={handleFileUpload} />
-              </Button>
-              <Button
-                sx={{
-                  width: 40,
-                  borderRadius: 25,
-                  '&:hover': {
-                    backgroundColor: 'rgba(210, 210, 210, 0.8)',
-                    color: '#000000',
-                  },
-                }}
-                onClick={handleClick}
-              >
-                {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </Button>
-            </ButtonGroup>
-            <StyledMenu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              slotProps={{
-                paper: {
-                  sx: {
-                    width: 400,
-                    overflow: 'auto',
-                    maxHeight: 300,
-                    backgroundColor: 'rgba(255, 255, 255)',
-                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.8)',
-                  },
-                },
-              }}
-            >
-              {file.length === 0 ? (
-                <MenuItem onClick={handleClose}>
-                  <Typography>Empty</Typography>
-                </MenuItem>
-              ) : (
-                file.map((item, index) => (
-                  <ListItem
-                    key={index}
-                    secondaryAction={
-                      <IconButton
-                        size={'large'}
-                        edge={'end'}
-                        color={'error'}
-                        onClick={handleDeleteFile(index)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                      <Avatar>
-                        <InsertDriveFileIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <Typography
+                {fileList.length === 0 ? (
+                  <MenuItem onClick={handleClose}>
+                    <Typography>Empty</Typography>
+                  </MenuItem>
+                ) : (
+                  fileList.map((item, index) => (
+                    <ListItem
                       key={index}
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
+                      secondaryAction={
+                        <IconButton
+                          size={'large'}
+                          edge={'end'}
+                          color={'error'}
+                          onClick={handleDeleteFile(index)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      }
                     >
-                      {item.file?.name}
-                    </Typography>
-                  </ListItem>
-                ))
-              )}
-            </StyledMenu>
-          </InputAdornment>
-        ),
-      }}
-    />
+                      <ListItemAvatar>
+                        <Avatar>
+                          <InsertDriveFileIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <Typography
+                        key={index}
+                        sx={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {item.file?.name}
+                      </Typography>
+                    </ListItem>
+                  ))
+                )}
+              </StyledMenu>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Box>
   );
 };
 

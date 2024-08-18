@@ -14,23 +14,26 @@ import FloatButton from 'components/button/FloatButton';
 import { IRegisterForm } from 'model/register/registerForm';
 import { useForm } from 'react-hook-form';
 import TextInput from 'components/form/TextInput';
-import { issueTypeSelect } from 'pages/kanban-board/data/boardData';
 import { SelectDataType } from 'components/input/SelectInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
 import FileInput from 'components/form/FileInput';
 
 export const selectValue: SelectDataType[] = [
   {
-    key: 0,
-    value: 'Error',
+    key: 'CREATE',
+    value: 'Can CREATE',
   },
   {
-    key: 1,
-    value: 'Info',
+    key: 'GET',
+    value: 'Can GET',
   },
   {
-    key: 2,
-    value: 'Warning',
+    key: 'UPDATE',
+    value: 'Can UPDATE',
+  },
+  {
+    key: 'DELETE',
+    value: 'Can DELETE',
   },
 ];
 
@@ -38,7 +41,11 @@ const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
-  const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({});
+  const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({
+    defaultValues: {
+      authorities: [],
+    },
+  });
 
   const handleRegister = useCallback(async (data: IRegisterForm) => {
     console.log(data);
@@ -103,7 +110,7 @@ const Register = () => {
               control={control}
               name={'authorities'}
               placeholder={'Authorities'}
-              data={issueTypeSelect}
+              data={selectValue}
               width={500}
             />
 

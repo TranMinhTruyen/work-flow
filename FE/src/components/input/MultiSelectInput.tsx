@@ -1,26 +1,21 @@
 import { styled } from '@mui/material/styles';
 import { SelectDataType } from './SelectInput';
-import Select, { SelectProps } from '@mui/material/Select';
-import { useMemo, useState } from 'react';
+import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
-import InputAdornment from '@mui/material/InputAdornment';
-import KeyIcon from '@mui/icons-material/Key';
-import IconButton from '@mui/material/IconButton';
-import { VisibilityOff } from '@mui/icons-material';
-import { Button } from '@mui/material';
 
 export type MultiSelectInputProps = Omit<SelectProps, 'multiple'> & {
   width?: number;
   data: SelectDataType[];
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 50;
+const ITEM_PADDING_TOP = 5;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -33,81 +28,87 @@ const MenuProps = {
 const MultiSelectInput = (props: MultiSelectInputProps) => {
   const { width = 200, data, value: propsValue, onChange, placeholder, ...restProps } = props;
 
-  const [values, setValues] = useState<any[]>([]);
+  const [values, setValues] = useState<SelectDataType[]>([]);
 
   const selectValues = useMemo(() => {
-    return ((propsValue as any[]) || values).filter(value =>
-      (data || []).some(item => item.value === value)
-    );
-  }, [data, propsValue, values]);
+    return values.filter(value => (data || []).some(item => item.key === value));
+  }, [data, values]);
 
-  const handleChange: SelectProps<any[]>['onChange'] = (event, child) => {
-    if (onChange) {
-      onChange(event, child);
-    }
+  const handleChange = useCallback(
+    (event: SelectChangeEvent<any[]>, child: ReactNode) => {
+      const currentValue = event.target.value;
 
-    if (propsValue !== undefined) return;
+      // On autofill we get a stringified value.
+      let newValues: any[];
+      if (typeof currentValue === 'number') {
+        newValues = [currentValue];
+      } else if (typeof currentValue === 'string') {
+        newValues = currentValue.split(',');
+      } else {
+        newValues = currentValue;
+      }
 
-    const {
-      target: { value },
-    } = event;
+      setValues(newValues);
 
-    // On autofill we get a stringified value.
-    let newValues: any[];
-    if (typeof value === 'number') {
-      newValues = [value];
-    } else if (typeof value === 'string') {
-      newValues = value.split(',');
-    } else {
-      newValues = value;
-    }
-
-    setValues(newValues);
-  };
+      if (onChange) {
+        onChange(event, child);
+      }
+    },
+    [onChange]
+  );
 
   return (
-    <FormControlStyled fullWidth sx={{ width: width }}>
-      <Select
-        displayEmpty
-        value={selectValues}
-        // @ts-ignore
-        defaultValue={selectValues}
-        onChange={handleChange}
-        multiple
-        renderValue={selected => {
-          if (selected.length === 0) {
-            return <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>;
-          }
-          return (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map(value => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          );
-        }}
-        MenuProps={MenuProps}
-        {...restProps}
-      >
-        {data.map(item => (
-          <MenuItem key={item.key} value={item.value}>
-            <Checkbox checked={selectValues.some(selectValue => selectValue === item.value)} />
-            <Typography>{item.value}</Typography>
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControlStyled>
+    <Box sx={{ width: width }}>
+      <FormControlStyled fullWidth>
+        <Select
+          displayEmpty
+          value={selectValues}
+          // @ts-ignore
+          defaultValue={selectValues}
+          onChange={handleChange}
+          multiple
+          renderValue={selected => {
+            var renderValue = data.filter(x => selected.includes(x.key));
+
+            if (renderValue.length === 0) {
+              return (
+                <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>
+              );
+            }
+
+            return (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {renderValue.map((item, index) => (
+                  <Chip key={index} label={item.value} />
+                ))}
+              </Box>
+            );
+          }}
+          MenuProps={MenuProps}
+          {...restProps}
+        >
+          {data.map((item, index) => (
+            <MenuItem key={index} value={item.key}>
+              <Checkbox checked={selectValues.some(selectValue => selectValue === item.key)} />
+              <Typography>{item.value}</Typography>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControlStyled>
+    </Box>
   );
 };
 export default MultiSelectInput;
 
 const FormControlStyled = styled(FormControl)({
   '& .MuiInputBase-formControl': {
+    height: '56px !important',
     '& .MuiInputBase-input': {},
   },
 
   '& .MuiOutlinedInput-input': {
     minWidth: '94%',
+    padding: '12px',
     color: 'rgba(13, 13, 13, 0.8) !important',
   },
 
