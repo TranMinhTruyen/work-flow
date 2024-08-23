@@ -1,9 +1,15 @@
 import deepOrange from '@mui/material/colors/deepOrange';
 
 const loginStyles = {
+  header: {
+    height: 70,
+  },
+
   textTitle: {
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    textAlign: 'center',
+    width: '100%',
   },
 
   avatar: {
@@ -25,6 +31,12 @@ const loginStyles = {
     height: 40,
     maxHeight: 40,
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
+  },
+
+  footer: {
+    display: 'flex',
+    justifyContent: 'center',
+    height: 70,
   },
 };
 

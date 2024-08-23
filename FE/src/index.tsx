@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import DialogContainer from 'components/dialog/DialogContainer';
 import store from 'common/store';
 import { StrictMode } from 'react';
+import { CssBaseline } from '@mui/material';
 
 const render = async () => {
   const rootNode = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -15,6 +16,7 @@ const render = async () => {
       <Provider store={store}>
         <App />
         <DialogContainer />
+        <CssBaseline />
       </Provider>
     </StrictMode>
   );

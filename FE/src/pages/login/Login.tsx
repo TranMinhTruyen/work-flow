@@ -11,7 +11,6 @@ import { ILoginForm } from 'model/login/LoginForm';
 import { openDialogContainer } from 'components/dialog/DialogContainer';
 import { handleSubmitLogin } from './action/loginAction';
 import loginStyles from 'assets/styles/login/loginStyles';
-import { MessageType } from 'common/provider/ApiProvider';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -21,6 +20,9 @@ import Avatar from '@mui/material/Avatar';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
+import { MessageType } from 'common/enums/MessageEnum';
+import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -64,13 +66,14 @@ const Login = () => {
   return (
     <form id={'login-form'} onSubmit={handleSubmit(handleLogin, onInvalid)}>
       <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 700 }}>
-        <CardContent>
-          <Stack alignItems={'center'}>
+        <CardHeader
+          sx={loginStyles.header}
+          title={
             <Typography variant="h4" sx={loginStyles.textTitle}>
               Login
             </Typography>
-          </Stack>
-        </CardContent>
+          }
+        />
 
         <Divider />
 
@@ -133,7 +136,7 @@ const Login = () => {
 
         <Divider />
 
-        <CardContent>
+        <CardActions sx={loginStyles.footer}>
           <Stack alignItems={'center'}>
             <Stack direction={'row'} alignItems={'center'} spacing={10}>
               <FloatButton
@@ -148,7 +151,7 @@ const Login = () => {
               />
             </Stack>
           </Stack>
-        </CardContent>
+        </CardActions>
       </Card>
     </form>
   );

@@ -5,7 +5,6 @@ import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { selectOpenConfirmDialog, toggleConfirmDialog } from 'common/commonSlice';
-import { MessageType } from 'common/provider/ApiProvider';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -13,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import { MessageType } from 'common/enums/MessageEnum';
 
 export type ConfirmDialogProps = Omit<DialogProps, 'open'> & {
   title?: string | JSX.Element;
@@ -97,7 +97,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         />
       );
     }
-  }, []);
+  }, [cancelText, handleCancelClick, showCancelButton]);
 
   return (
     <Dialog keepMounted open={openDialog} {...restProps} fullWidth={true} maxWidth={'xs'}>

@@ -6,18 +6,12 @@ import IBaseResponse from '../api/baseResponse';
 import { selectIsLoading, selectLoginData, toggleLoading } from 'common/commonSlice';
 import { openDialogContainer } from 'components/dialog/DialogContainer';
 import { ILoginResponse } from 'model/login/LoginModel';
+import { MessageType } from 'common/enums/MessageEnum';
 
 const axiosInstance = axios.create({
   baseURL: process.env.SERVER_URL,
   timeout: TIME_OUT,
 });
-
-export enum MessageType {
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
-  WARN = 'WARNING',
-  INFO = 'INFO',
-}
 
 const whiteList: string[] = ['/api/user-account/login'];
 

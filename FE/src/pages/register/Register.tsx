@@ -17,6 +17,9 @@ import TextInput from 'components/form/TextInput';
 import { SelectDataType } from 'components/input/SelectInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
 import FileInput from 'components/form/FileInput';
+import { IMAGE_FILE_TYPE } from 'common/constants/commonConst';
+import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -53,18 +56,19 @@ const Register = () => {
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
-      <Card elevation={5} sx={{ width: 700, maxWidth: 700, height: 800, maxHeight: 800 }}>
-        <CardContent style={{ height: '40px' }}>
-          <Stack alignItems={'center'}>
+      <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 800 }}>
+        <CardHeader
+          sx={loginStyles.header}
+          title={
             <Typography variant="h4" sx={loginStyles.textTitle}>
               Register
             </Typography>
-          </Stack>
-        </CardContent>
+          }
+        />
 
         <Divider />
 
-        <CardContent sx={{ height: 620, maxHeight: 1500 }}>
+        <CardContent>
           <Stack alignItems={'center'} spacing={3}>
             <TextInput
               control={control}
@@ -114,28 +118,29 @@ const Register = () => {
               width={500}
             />
 
-            <FileInput name={'image'} control={control} label={'Upload image'} />
+            <FileInput
+              name={'image'}
+              control={control}
+              acceptFile={IMAGE_FILE_TYPE}
+              label={'Upload image'}
+            />
           </Stack>
         </CardContent>
 
         <Divider />
 
-        <CardContent style={{ padding: '16px' }}>
-          <Stack alignItems={'center'}>
-            <Stack direction={'row'} alignItems={'center'} spacing={10}>
-              <FloatButton
-                label={
-                  <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                    Register
-                  </Typography>
-                }
-                sx={loginStyles.button}
-                form={'register-form'}
-                type={'submit'}
-              />
-            </Stack>
-          </Stack>
-        </CardContent>
+        <CardActions sx={loginStyles.footer}>
+          <FloatButton
+            label={
+              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                Register
+              </Typography>
+            }
+            sx={loginStyles.button}
+            form={'register-form'}
+            type={'submit'}
+          />
+        </CardActions>
       </Card>
     </form>
   );

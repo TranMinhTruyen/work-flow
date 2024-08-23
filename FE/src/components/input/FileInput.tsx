@@ -18,13 +18,14 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { useDropzone } from 'react-dropzone';
+import { Accept, useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 
 export type FileInputProps = {
   label?: string;
   height?: number;
   width?: number;
+  acceptFile?: Accept;
   multipleFile?: boolean;
   onChange?: (value: FileInputData[] | null) => void;
 };
@@ -35,21 +36,21 @@ export interface FileInputData {
 }
 
 const FileInput = (props: FileInputProps) => {
-  const { label, width = 500, height = 40, multipleFile = true, onChange } = props;
+  const { label, width = 500, height, acceptFile, multipleFile = true, onChange } = props;
 
   const [fileList, setFileList] = useState<FileInputData[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const settingFileList = useCallback(
-    async (fileList: FileList | any[] | null) => {
-      if (fileList) {
+    async (fileInputList: FileList | any[] | null) => {
+      if (fileInputList) {
         let fileDataList: FileInputData[] = [];
 
-        for (var i = 0; i < fileList.length; i++) {
+        for (var i = 0; i < fileInputList.length; i++) {
           let fileItem: FileInputData = {};
-          fileItem.fileData = await readFileAsByte(fileList[i] as File);
-          fileItem.file = fileList[i] as File;
+          fileItem.fileData = await readFileAsByte(fileInputList[i] as File);
+          fileItem.file = fileInputList[i] as File;
           fileDataList.push(fileItem);
         }
 
@@ -61,14 +62,16 @@ const FileInput = (props: FileInputProps) => {
         });
 
         if (onChange) {
-          onChange(fileDataList);
+          onChange(fileList);
         }
       }
     },
-    [onChange]
+    [fileList, onChange]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
+    accept: acceptFile,
+    noClick: true,
     onDrop: async acceptedFiles => {
       await settingFileList(acceptedFiles);
     },
@@ -110,7 +113,6 @@ const FileInput = (props: FileInputProps) => {
         size={'medium'}
         placeholder={fileList.length === 0 ? label : `Total file: ${fileList.length}`}
         sx={{ width: width, height: height }}
-        onClick={e => e.stopPropagation()} // Prevent open upload file dialog when click to TextInput
         InputProps={{
           readOnly: true,
           startAdornment: (
@@ -138,6 +140,7 @@ const FileInput = (props: FileInputProps) => {
                 >
                   <FileUploadIcon />
                   <input
+                    type={'file'}
                     multiple={multipleFile}
                     hidden
                     onChange={handleFileUpload}
