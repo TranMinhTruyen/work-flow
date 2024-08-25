@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import FloatButton from '../../components/button/FloatButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import { useNavigate } from 'react-router-dom';
@@ -23,10 +22,13 @@ import Link from '@mui/material/Link';
 import { MessageType } from 'common/enums/MessageEnum';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
+import { useTranslation } from 'react-i18next';
+import FloatButton from 'components/button/FloatButton';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
@@ -70,7 +72,7 @@ const Login = () => {
           sx={loginStyles.header}
           title={
             <Typography variant="h4" sx={loginStyles.textTitle}>
-              Login
+              {t('Login')}
             </Typography>
           }
         />
@@ -84,8 +86,7 @@ const Login = () => {
             <TextInput
               name={'username'}
               control={control}
-              size={'medium'}
-              placeholder={'Username or email'}
+              label={t('Username or email')}
               required={true}
               sx={loginStyles.textInput}
               InputProps={{
@@ -100,8 +101,7 @@ const Login = () => {
             <TextInput
               name={'password'}
               control={control}
-              size={'medium'}
-              placeholder={'Password'}
+              label={t('Password')}
               required={true}
               type={isShowPassword ? 'text' : 'password'}
               sx={loginStyles.textInput}
@@ -112,7 +112,7 @@ const Login = () => {
                   </InputAdornment>
                 ),
                 endAdornment: (
-                  <InputAdornment position={'start'}>
+                  <InputAdornment position={'end'}>
                     <IconButton onClick={handleClickShowPassword} edge={'end'}>
                       {isShowPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -128,8 +128,8 @@ const Login = () => {
 
           <Stack alignItems={'center'}>
             <Typography sx={{ fontSize: 18 }}>
-              If you don't have account, please{' '}
-              {<Link onClick={() => navigate('/auth/register')}>register</Link>}
+              {t("If you don't have account, please ")}
+              {<Link onClick={() => navigate('/auth/register')}>{t('register')}</Link>}
             </Typography>
           </Stack>
         </CardContent>
@@ -137,20 +137,16 @@ const Login = () => {
         <Divider />
 
         <CardActions sx={loginStyles.footer}>
-          <Stack alignItems={'center'}>
-            <Stack direction={'row'} alignItems={'center'} spacing={10}>
-              <FloatButton
-                label={
-                  <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                    Login
-                  </Typography>
-                }
-                sx={loginStyles.button}
-                form={'login-form'}
-                type={'submit'}
-              />
-            </Stack>
-          </Stack>
+          <FloatButton
+            label={
+              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                {t('Login')}
+              </Typography>
+            }
+            sx={loginStyles.button}
+            form={'login-form'}
+            type={'submit'}
+          />
         </CardActions>
       </Card>
     </form>

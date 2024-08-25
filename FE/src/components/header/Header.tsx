@@ -73,17 +73,21 @@ const Header = (props: IHeaderProps) => {
     dispatch(toggleDrawer());
   }, [dispatch]);
 
+  const handleLogout = useCallback(() => {
+    window.location.replace('/auth/login');
+  }, []);
+
   return (
     <AppBar drawerWidth={drawerWidth} position="fixed" open={openDrawer}>
       <Toolbar>
         <MuiIconButton
           color="inherit"
-          aria-label="open drawer"
           onClick={handleDrawerOpen}
           edge="start"
           sx={{
             width: `calc(${theme.spacing(5)} + 6px)`,
-            marginRight: 5,
+            marginRight: 4,
+            marginLeft: '-13px',
             ...(openDrawer && { display: 'none' }),
           }}
         >
@@ -98,7 +102,7 @@ const Header = (props: IHeaderProps) => {
           WORK FLOW
         </Typography>
         <Stack direction={'row'} spacing={2}>
-          <FloatButton startIcon={<LogoutIcon />} label="Logout" />
+          <FloatButton startIcon={<LogoutIcon />} label="Logout" onClick={handleLogout} />
 
           <AccountButton />
 

@@ -1,5 +1,5 @@
 # using Node.js base image
-FROM node:18 AS development
+FROM node:22.7.0-alpine AS development
 ENV NODE_ENV development
 
 WORKDIR /app

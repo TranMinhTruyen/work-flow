@@ -7,6 +7,7 @@ import DialogContainer from 'components/dialog/DialogContainer';
 import store from 'common/store';
 import { StrictMode } from 'react';
 import { CssBaseline } from '@mui/material';
+import '../i18n.ts';
 
 const render = async () => {
   const rootNode = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

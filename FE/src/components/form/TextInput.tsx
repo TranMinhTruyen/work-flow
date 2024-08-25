@@ -20,16 +20,16 @@ const TextInput = (props: TextInputProps) => {
     messageErr,
     required,
     inputProps,
-    label,
     width,
     onChange,
     onBlur,
+    label,
     ...restProps
   } = props;
 
   const handleOnBlur = (value: any) => () => {
     if (required && (value === undefined || value === null || value === '')) {
-      control?.setError(name, { type: 'required' });
+      control?.setError(name, { type: 'required', message: `${label} is required!` });
     } else {
       control?.setError(name, { type: 'valid' });
     }
@@ -48,8 +48,8 @@ const TextInput = (props: TextInputProps) => {
       }}
       render={({ field: { onChange, value = '' }, fieldState: { error } }) => (
         <UncontrolledTextInput
-          label={label}
           width={width}
+          label={label}
           value={value ?? ''}
           onChange={onChange}
           onBlur={handleOnBlur(value)}

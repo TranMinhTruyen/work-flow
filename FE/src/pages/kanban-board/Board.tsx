@@ -114,6 +114,7 @@ const Board = () => {
       {isFilter ? (
         <Stack direction={'row'} spacing={2} alignItems={'center'}>
           <SelectInput
+            displayNone
             data={issueTypeSelect}
             defaultValue={''}
             label={'Issue Type'}
@@ -121,6 +122,7 @@ const Board = () => {
           />
 
           <SelectInput
+            displayNone
             data={statusTypeSelect}
             defaultValue={''}
             label={'Status'}
@@ -128,6 +130,7 @@ const Board = () => {
           />
 
           <SelectInput
+            displayNone
             data={assigneeSelect}
             defaultValue={''}
             label={'Assignee'}

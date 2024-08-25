@@ -8,13 +8,22 @@ export type TextInputProps = TextFieldProps & {
 
 const TextInput = (props: TextInputProps) => {
   const { label, width, ...restProps } = props;
-  return <StyledTextInput size="small" sx={{ width: width }} label={label} {...restProps} />;
+  return (
+    <StyledTextInput
+      sx={{ width: width }}
+      label={label}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      {...restProps}
+    />
+  );
 };
 
 const StyledTextInput = styled(TextField)({
-  width: 200,
   borderRadius: 50,
   '& .MuiOutlinedInput-root': {
+    height: 50,
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
       borderRadius: 50,
@@ -26,6 +35,11 @@ const StyledTextInput = styled(TextField)({
       borderColor: '#007fb6',
     },
   },
+
+  '& .MuiInputLabel-root': {
+    color: 'rgba(13, 13, 13)',
+  },
+
   input: {
     '&:-webkit-autofill': {
       WebkitBoxShadow: '0 0 0 1000px rgba(255, 255, 255) inset',

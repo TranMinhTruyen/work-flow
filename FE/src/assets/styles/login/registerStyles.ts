@@ -1,6 +1,4 @@
-import deepOrange from '@mui/material/colors/deepOrange';
-
-const loginStyles = {
+const registerStyles = {
   header: {
     height: 70,
     display: 'flex',
@@ -14,21 +12,13 @@ const loginStyles = {
     width: '100%',
   },
 
-  avatar: {
-    width: 150,
-    maxWidth: 150,
-    height: 150,
-    maxHeight: 150,
-    bgcolor: deepOrange[500],
-  },
-
   textInput: {
     width: 500,
     maxWidth: 500,
   },
 
   button: {
-    width: 200,
+    width: 150,
     maxWidth: 200,
     height: 40,
     maxHeight: 40,
@@ -42,4 +32,4 @@ const loginStyles = {
   },
 };
 
-export default loginStyles;
+export default registerStyles;

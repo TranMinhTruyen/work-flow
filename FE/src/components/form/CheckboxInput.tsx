@@ -10,7 +10,7 @@ export type CheckboxProps = UncontrolledCheckboxProps & {
 };
 
 const CheckBox = (props: CheckboxProps) => {
-  const { name, control, defaultValue, label, disabled, ...restProps } = props;
+  const { name, control, defaultValue, disabled, ...restProps } = props;
 
   return (
     <Controller
@@ -19,7 +19,6 @@ const CheckBox = (props: CheckboxProps) => {
       defaultValue={defaultValue}
       render={({ field: { onChange, value = '' } }) => (
         <UncontrolledCheckBoxInput
-          label={label}
           checked={value}
           onChange={onChange}
           disabled={disabled}

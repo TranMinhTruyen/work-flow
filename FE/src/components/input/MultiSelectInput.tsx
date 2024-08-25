@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { SelectDataType } from './SelectInput';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
@@ -8,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
+import { SelectDataType } from 'common/constants/type';
+import InputLabel from '@mui/material/InputLabel';
 
 export type MultiSelectInputProps = Omit<SelectProps, 'multiple'> & {
   width?: number;
@@ -26,7 +27,7 @@ const MenuProps = {
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
-  const { width = 200, data, value: propsValue, onChange, placeholder, ...restProps } = props;
+  const { width = 200, data, value: propsValue, onChange, label, ...restProps } = props;
 
   const [values, setValues] = useState<SelectDataType[]>([]);
 
@@ -60,21 +61,20 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   return (
     <Box sx={{ width: width }}>
       <FormControlStyled fullWidth>
+        <InputLabel shrink={true}>
+          <Typography sx={{ color: 'rgba(13, 13, 13)' }}>{label}</Typography>
+        </InputLabel>
         <Select
           displayEmpty
+          label={label}
+          notched={true}
           value={selectValues}
           // @ts-ignore
           defaultValue={selectValues}
           onChange={handleChange}
           multiple
           renderValue={selected => {
-            var renderValue = data.filter(x => selected.includes(x.key));
-
-            if (renderValue.length === 0) {
-              return (
-                <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>
-              );
-            }
+            const renderValue = data.filter(x => selected.includes(x.key));
 
             return (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -88,7 +88,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
           {...restProps}
         >
           {data.map((item, index) => (
-            <MenuItem key={index} value={item.key}>
+            <MenuItem key={index} value={item.key} sx={{ padding: '5px' }}>
               <Checkbox checked={selectValues.some(selectValue => selectValue === item.key)} />
               <Typography>{item.value}</Typography>
             </MenuItem>
@@ -102,8 +102,7 @@ export default MultiSelectInput;
 
 const FormControlStyled = styled(FormControl)({
   '& .MuiInputBase-formControl': {
-    height: '56px !important',
-    '& .MuiInputBase-input': {},
+    height: '50px !important',
   },
 
   '& .MuiOutlinedInput-input': {
@@ -112,27 +111,30 @@ const FormControlStyled = styled(FormControl)({
     color: 'rgba(13, 13, 13, 0.8) !important',
   },
 
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '50px !important',
+    '& fieldset': {
+      borderWidth: '1px !important',
+      borderColor: 'rgba(13, 13, 13, 0.8) !important',
+    },
+    '&:hover fieldset': {
+      borderColor: '#00b2ff !important',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#00b2ff !important',
+    },
+  },
+
   '& label': {
-    fontSize: '13px',
+    fontSize: '16px',
     color: 'rgba(13, 13, 13, 0.8) !important',
 
     '&.MuiInputLabel-outlined': {
-      top: '-3px',
+      top: '-8px',
     },
 
     '&.MuiInputLabel-shrink': {
       top: 0,
-      color: '#aca8b7',
     },
-  },
-
-  '& fieldset': {
-    borderWidth: '1px !important',
-    borderRadius: '50px !important',
-    borderColor: 'rgba(13, 13, 13, 0.8) !important',
-  },
-
-  '&:hover fieldset': {
-    borderColor: '#00b2ff !important',
   },
 });

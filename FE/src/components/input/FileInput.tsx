@@ -110,21 +110,19 @@ const FileInput = (props: FileInputProps) => {
   return (
     <Box {...getRootProps()}>
       <TextInput
-        size={'medium'}
-        placeholder={fileList.length === 0 ? label : `Total file: ${fileList.length}`}
+        size={'small'}
+        label={label}
+        placeholder={`Total file: ${fileList.length}`}
         sx={{ width: width, height: height }}
         InputProps={{
           readOnly: true,
           startAdornment: (
             <InputAdornment position={'start'}>
-              <FolderIcon
-                sx={{ marginLeft: 0.5, fontSize: 25 }}
-                color={fileList.length === 0 ? 'inherit' : 'primary'}
-              />
+              <FolderIcon color={fileList.length === 0 ? 'inherit' : 'primary'} />
             </InputAdornment>
           ),
           endAdornment: (
-            <InputAdornment position={'end'}>
+            <InputAdornment position={'end'} sx={{ marginRight: '-7px' }}>
               <ButtonGroup variant={'contained'} sx={{ borderRadius: 25 }}>
                 <Button
                   component={'label'}

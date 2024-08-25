@@ -5,11 +5,11 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
 
   useEffect(() => {
-    const isLogin = checkLogin();
-    if (!isLogin) {
-      window.location.replace('/auth/login');
-      return;
-    }
+    // const isLogin = checkLogin();
+    // if (!isLogin) {
+    //   window.location.replace('/auth/login');
+    //   return;
+    // }
     setIsSet(true);
   }, []);
 

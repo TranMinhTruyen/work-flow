@@ -4,7 +4,6 @@ import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import loginStyles from 'assets/styles/login/loginStyles';
 import { memo, useCallback, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -14,12 +13,14 @@ import FloatButton from 'components/button/FloatButton';
 import { IRegisterForm } from 'model/register/registerForm';
 import { useForm } from 'react-hook-form';
 import TextInput from 'components/form/TextInput';
-import { SelectDataType } from 'components/input/SelectInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
 import FileInput from 'components/form/FileInput';
 import { IMAGE_FILE_TYPE } from 'common/constants/commonConst';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
+import registerStyles from 'assets/styles/login/registerStyles';
+import { useNavigate } from 'react-router-dom';
+import { SelectDataType } from 'common/constants/type';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -43,6 +44,7 @@ export const selectValue: SelectDataType[] = [
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
+  const navigate = useNavigate();
 
   const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({
     defaultValues: {
@@ -58,9 +60,9 @@ const Register = () => {
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
       <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 800 }}>
         <CardHeader
-          sx={loginStyles.header}
+          sx={registerStyles.header}
           title={
-            <Typography variant="h4" sx={loginStyles.textTitle}>
+            <Typography variant="h4" align="center" sx={registerStyles.textTitle}>
               Register
             </Typography>
           }
@@ -73,10 +75,9 @@ const Register = () => {
             <TextInput
               control={control}
               name={'username'}
-              size={'medium'}
-              placeholder={'Username or email'}
+              label={'Username or email'}
               required={true}
-              sx={loginStyles.textInput}
+              sx={registerStyles.textInput}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position={'start'}>
@@ -89,11 +90,10 @@ const Register = () => {
             <TextInput
               control={control}
               name={'password'}
-              size={'medium'}
-              placeholder={'Password'}
+              label={'Password'}
               required={true}
               type={isShowPassword ? 'text' : 'password'}
-              sx={loginStyles.textInput}
+              sx={registerStyles.textInput}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position={'start'}>
@@ -101,7 +101,7 @@ const Register = () => {
                   </InputAdornment>
                 ),
                 endAdornment: (
-                  <InputAdornment position={'start'}>
+                  <InputAdornment position={'end'}>
                     <IconButton onClick={handleClickShowPassword} edge={'end'}>
                       {isShowPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -113,7 +113,7 @@ const Register = () => {
             <MultiSelectInput
               control={control}
               name={'authorities'}
-              placeholder={'Authorities'}
+              label={'Authorities'}
               data={selectValue}
               width={500}
             />
@@ -129,17 +129,30 @@ const Register = () => {
 
         <Divider />
 
-        <CardActions sx={loginStyles.footer}>
-          <FloatButton
-            label={
-              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                Register
-              </Typography>
-            }
-            sx={loginStyles.button}
-            form={'register-form'}
-            type={'submit'}
-          />
+        <CardActions sx={registerStyles.footer}>
+          <Stack direction={'row'} spacing={5}>
+            <FloatButton
+              onClick={() => navigate('/auth/login')}
+              label={
+                <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                  Back
+                </Typography>
+              }
+              sx={registerStyles.button}
+              form={'register-form'}
+            />
+
+            <FloatButton
+              label={
+                <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                  Register
+                </Typography>
+              }
+              sx={registerStyles.button}
+              form={'register-form'}
+              type={'submit'}
+            />
+          </Stack>
         </CardActions>
       </Card>
     </form>

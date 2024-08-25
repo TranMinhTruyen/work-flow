@@ -159,7 +159,7 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
 };
 
 export const CustomListItem = styled(ListItem)({
-  borderRadius: 15,
+  borderRadius: 25,
   display: 'block',
 });
 
@@ -168,7 +168,7 @@ export const CustomListItemButton = styled(ListItemButton)({
   minWidth: 0,
   px: 2.5,
   justifyContent: 'center',
-  borderRadius: 15,
+  borderRadius: 25,
   '&:hover': {
     backgroundColor: '#d9d8d8',
   },
