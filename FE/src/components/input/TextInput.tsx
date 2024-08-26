@@ -38,6 +38,13 @@ const StyledTextInput = styled(TextField)({
 
   '& .MuiInputLabel-root': {
     color: 'rgba(13, 13, 13)',
+    marginLeft: 10,
+  },
+
+  '& .MuiOutlinedInput-notchedOutline': {
+    legend: {
+      marginLeft: 10,
+    },
   },
 
   input: {

@@ -3,11 +3,11 @@ import './assets/styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import DialogContainer from 'components/dialog/DialogContainer';
-import store from 'common/store';
 import { StrictMode } from 'react';
 import { CssBaseline } from '@mui/material';
-import '../i18n.ts';
+import './i18n.ts';
+import store from './common/store';
+import DialogContainer from './components/dialog/DialogContainer';
 
 const render = async () => {
   const rootNode = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

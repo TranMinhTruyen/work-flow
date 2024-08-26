@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
+import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -81,7 +82,7 @@ const SelectInput = (props: SelectInputProps) => {
                 <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>
               );
             }
-            return <Typography>{renderValue.value}</Typography>;
+            return <Chip label={renderValue.value} />;
           }}
           {...restProps}
         >
@@ -120,6 +121,17 @@ const FormControlStyled = styled(FormControl)({
     },
     '&.Mui-focused fieldset': {
       borderColor: '#00b2ff !important',
+    },
+  },
+
+  '& .MuiInputLabel-root': {
+    color: 'rgba(13, 13, 13)',
+    marginLeft: 10,
+  },
+
+  '& .MuiOutlinedInput-notchedOutline': {
+    legend: {
+      marginLeft: 10,
     },
   },
 

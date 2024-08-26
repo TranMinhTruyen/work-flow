@@ -125,6 +125,17 @@ const FormControlStyled = styled(FormControl)({
     },
   },
 
+  '& .MuiInputLabel-root': {
+    color: 'rgba(13, 13, 13)',
+    marginLeft: 10,
+  },
+
+  '& .MuiOutlinedInput-notchedOutline': {
+    legend: {
+      marginLeft: 10,
+    },
+  },
+
   '& label': {
     fontSize: '16px',
     color: 'rgba(13, 13, 13, 0.8) !important',
