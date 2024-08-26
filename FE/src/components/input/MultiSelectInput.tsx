@@ -9,10 +9,12 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import { SelectDataType } from 'common/constants/type';
 import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export type MultiSelectInputProps = Omit<SelectProps, 'multiple'> & {
   width?: number;
   data: SelectDataType[];
+  helperText?: string;
 };
 
 const ITEM_HEIGHT = 50;
@@ -27,7 +29,16 @@ const MenuProps = {
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
-  const { width = 200, data, value: propsValue, onChange, label, ...restProps } = props;
+  const {
+    width = 200,
+    data,
+    value: propsValue,
+    onChange,
+    label,
+    error,
+    helperText,
+    ...restProps
+  } = props;
 
   const [values, setValues] = useState<SelectDataType[]>([]);
 
@@ -59,48 +70,48 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   );
 
   return (
-    <Box sx={{ width: width }}>
-      <FormControlStyled fullWidth>
-        <InputLabel shrink={true}>
-          <Typography sx={{ color: 'rgba(13, 13, 13)' }}>{label}</Typography>
-        </InputLabel>
-        <Select
-          displayEmpty
-          label={label}
-          notched={true}
-          value={selectValues}
-          // @ts-ignore
-          defaultValue={selectValues}
-          onChange={handleChange}
-          multiple
-          renderValue={selected => {
-            const renderValue = data.filter(x => selected.includes(x.key));
+    <FormControlStyled sx={{ width: width }} error={error}>
+      <InputLabel shrink={true}>
+        <Typography sx={{ color: 'rgba(13, 13, 13)' }}>{label}</Typography>
+      </InputLabel>
+      <Select
+        displayEmpty
+        label={label}
+        notched={true}
+        error={error}
+        value={selectValues}
+        // @ts-ignore
+        defaultValue={selectValues}
+        onChange={handleChange}
+        multiple
+        renderValue={selected => {
+          const renderValue = data.filter(x => selected.includes(x.key));
 
-            return (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {renderValue.map((item, index) => (
-                  <Chip key={index} label={item.value} />
-                ))}
-              </Box>
-            );
-          }}
-          MenuProps={MenuProps}
-          {...restProps}
-        >
-          {data.map((item, index) => (
-            <MenuItem key={index} value={item.key} sx={{ padding: '5px' }}>
-              <Checkbox checked={selectValues.some(selectValue => selectValue === item.key)} />
-              <Typography>{item.value}</Typography>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControlStyled>
-    </Box>
+          return (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {renderValue.map((item, index) => (
+                <Chip key={index} label={item.value} />
+              ))}
+            </Box>
+          );
+        }}
+        MenuProps={MenuProps}
+        {...restProps}
+      >
+        {data.map((item, index) => (
+          <MenuItem key={index} value={item.key} sx={{ padding: '5px' }}>
+            <Checkbox checked={selectValues.some(selectValue => selectValue === item.key)} />
+            <Typography>{item.value}</Typography>
+          </MenuItem>
+        ))}
+      </Select>
+      {helperText && <FormHelperText error={error}>{helperText}</FormHelperText>}
+    </FormControlStyled>
   );
 };
 export default MultiSelectInput;
 
-const FormControlStyled = styled(FormControl)({
+const FormControlStyled = styled(FormControl)(({ error }) => ({
   '& .MuiInputBase-formControl': {
     height: '50px !important',
   },
@@ -115,7 +126,7 @@ const FormControlStyled = styled(FormControl)({
     borderRadius: '50px !important',
     '& fieldset': {
       borderWidth: '1px !important',
-      borderColor: 'rgba(13, 13, 13, 0.8) !important',
+      borderColor: error === false ? 'rgba(13, 13, 13, 0.8) !important' : '#ff0000',
     },
     '&:hover fieldset': {
       borderColor: '#00b2ff !important',
@@ -148,4 +159,4 @@ const FormControlStyled = styled(FormControl)({
       top: 0,
     },
   },
-});
+}));

@@ -1,5 +1,3 @@
-import deepOrange from '@mui/material/colors/deepOrange';
-
 const loginStyles = {
   header: {
     height: 70,
@@ -19,7 +17,7 @@ const loginStyles = {
     maxWidth: 150,
     height: 150,
     maxHeight: 150,
-    bgcolor: deepOrange[500],
+    bgcolor: 'rgba(0, 170, 255, 0.8)',
   },
 
   textInput: {

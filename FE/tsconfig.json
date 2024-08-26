@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "target": "ES2022",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "allowJs": true,
@@ -20,7 +20,8 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
+    "allowImportingTsExtensions": true
   },
-  "include": ["./src"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

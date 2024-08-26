@@ -1,8 +1,25 @@
 {
+  "Language": "Ngôn ngữ",
+  "language": "ngôn ngữ",
   "Login": "Đăng nhập",
+  "login": "đăng nhập",
   "Username or email": "Username hoặc email",
+  "username or email": "username hoặc email",
   "Password": "Mật khẩu",
+  "password": "mật khẩu",
+  "Remember me": "Ghi nhớ tài khoản",
+  "remember me": "ghi nhớ tài khoản",
   "Input required": "Trường bắt buộc",
+  "input required": "trường bắt buộc",
   "If you don't have account, please ": "Nếu bạn chưa có tài khoản, hãy ",
-  "register": "đăng kí"
+  "if you don't have account, please ": "nếu bạn chưa có tài khoản, hãy ",
+  "Register": "Đăng kí",
+  "register": "đăng kí",
+  "Back": "Quay lại",
+  "back": "quay lại",
+  "Authorities": "Các loại quyền",
+  "authorities": "các loại quyền",
+  "Upload image": "Tải lên tệp hình ảnh",
+  "upload image": "tải lên tệp hình ảnh",
+  "Total file: ": "Tổng số file: "
 }

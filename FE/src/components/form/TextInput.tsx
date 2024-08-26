@@ -44,7 +44,7 @@ const TextInput = (props: TextInputProps) => {
       control={control}
       defaultValue={defaultValue}
       rules={{
-        required: required,
+        required: required ? `${label} is required!` : '',
       }}
       render={({ field: { onChange, value = '' }, fieldState: { error } }) => (
         <UncontrolledTextInput

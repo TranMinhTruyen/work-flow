@@ -20,6 +20,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Accept, useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
+import { useTranslation } from 'react-i18next';
 
 export type FileInputProps = {
   label?: string;
@@ -27,6 +28,8 @@ export type FileInputProps = {
   width?: number;
   acceptFile?: Accept;
   multipleFile?: boolean;
+  error?: boolean;
+  helperText?: string;
   onChange?: (value: FileInputData[] | null) => void;
 };
 
@@ -36,7 +39,17 @@ export interface FileInputData {
 }
 
 const FileInput = (props: FileInputProps) => {
-  const { label, width = 500, height, acceptFile, multipleFile = true, onChange } = props;
+  const {
+    label,
+    width = 500,
+    height,
+    acceptFile,
+    multipleFile = true,
+    error,
+    helperText,
+    onChange,
+  } = props;
+  const { t } = useTranslation();
 
   const [fileList, setFileList] = useState<FileInputData[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -112,7 +125,8 @@ const FileInput = (props: FileInputProps) => {
       <TextInput
         size={'small'}
         label={label}
-        placeholder={`Total file: ${fileList.length}`}
+        error={error}
+        placeholder={t('Total file: ') + `${fileList.length}`}
         sx={{ width: width, height: height }}
         InputProps={{
           readOnly: true,
@@ -218,6 +232,7 @@ const FileInput = (props: FileInputProps) => {
             </InputAdornment>
           ),
         }}
+        helperText={helperText}
       />
     </Box>
   );

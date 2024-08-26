@@ -21,6 +21,7 @@ import CardActions from '@mui/material/CardActions';
 import registerStyles from 'assets/styles/login/registerStyles';
 import { useNavigate } from 'react-router-dom';
 import { SelectDataType } from 'common/constants/type';
+import { useTranslation } from 'react-i18next';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -45,6 +46,7 @@ const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({
     defaultValues: {
@@ -63,7 +65,7 @@ const Register = () => {
           sx={registerStyles.header}
           title={
             <Typography variant="h4" align="center" sx={registerStyles.textTitle}>
-              Register
+              {t('Register')}
             </Typography>
           }
         />
@@ -75,8 +77,8 @@ const Register = () => {
             <TextInput
               control={control}
               name={'username'}
-              label={'Username or email'}
-              required={true}
+              label={t('Username or email')}
+              required
               sx={registerStyles.textInput}
               InputProps={{
                 startAdornment: (
@@ -90,8 +92,8 @@ const Register = () => {
             <TextInput
               control={control}
               name={'password'}
-              label={'Password'}
-              required={true}
+              label={t('Password')}
+              required
               type={isShowPassword ? 'text' : 'password'}
               sx={registerStyles.textInput}
               InputProps={{
@@ -112,17 +114,18 @@ const Register = () => {
 
             <MultiSelectInput
               control={control}
+              required
               name={'authorities'}
-              label={'Authorities'}
+              label={t('Authorities')}
               data={selectValue}
               width={500}
             />
 
             <FileInput
-              name={'image'}
               control={control}
+              name={'image'}
               acceptFile={IMAGE_FILE_TYPE}
-              label={'Upload image'}
+              label={t('Upload image')}
             />
           </Stack>
         </CardContent>
@@ -135,7 +138,7 @@ const Register = () => {
               onClick={() => navigate('/auth/login')}
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  Back
+                  {t('Back')}
                 </Typography>
               }
               sx={registerStyles.button}
@@ -145,7 +148,7 @@ const Register = () => {
             <FloatButton
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  Register
+                  {t('Register')}
                 </Typography>
               }
               sx={registerStyles.button}

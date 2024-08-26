@@ -4,6 +4,7 @@ import { Controller, UseControllerProps } from 'react-hook-form';
 
 export type MultiSelectInputProps = UncontrolledMultiSelectInputProps & {
   name: string;
+  label?: string;
   control?: UseControllerProps['control'];
   defaultValue?: string | number | boolean;
   messageErr?: string;
@@ -11,8 +12,18 @@ export type MultiSelectInputProps = UncontrolledMultiSelectInputProps & {
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
-  const { name, control, defaultValue, data, messageErr, width, required, onChange, ...restProps } =
-    props;
+  const {
+    name,
+    label,
+    control,
+    defaultValue,
+    data,
+    messageErr,
+    width,
+    required,
+    onChange,
+    ...restProps
+  } = props;
 
   return (
     <Controller
@@ -20,16 +31,18 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       control={control}
       defaultValue={defaultValue}
       rules={{
-        required: required,
+        required: required ? `${label} is required!` : '',
       }}
       render={({ field: { onChange, value = '' }, fieldState: { error } }) => (
         <UncontrolledMultiSelectInput
           width={width}
+          label={label}
           value={value || ''}
           data={data}
           defaultValue={defaultValue}
           onChange={onChange}
-          error={!!(error && error.type !== 'valid')}
+          error={!!error}
+          helperText={error?.message}
           {...restProps}
         />
       )}

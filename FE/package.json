@@ -24,10 +24,6 @@
     "@mui/material": "^5.15.13",
     "@reduxjs/toolkit": "^2.2.6",
     "@stomp/stompjs": "^7.0.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/lodash": "^4.17.0",
     "@types/node": "^16.18.89",
     "@types/react": "^18.3.3",
@@ -45,7 +41,7 @@
     "react-i18next": "^15.0.1",
     "react-redux": "^9.1.2",
     "react-router-dom": "^6.22.3",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "sockjs-client": "^1.6.1",
     "typescript": "^5.5.4",
     "web-vitals": "^2.1.4"
@@ -63,14 +59,19 @@
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "dotenv-webpack": "^8.1.0",
-    "file-loader": "^6.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.9.0",
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.9.0",
     "prettier": "^3.3.3",
     "sass": "^1.77.8",
     "sass-loader": "^16.0.0",
-    "serve": "^14.2.3",
     "ts-loader": "^9.5.1",
     "webpack": "^5.93.0",
     "webpack-bundle-analyzer": "^4.10.2",
@@ -78,9 +79,43 @@
     "webpack-dev-server": "^5.0.4"
   },
   "eslintConfig": {
+
     "extends": [
-      "react-app"
-    ]
+      "react-app",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "project": [
+        "./tsconfig.json"
+      ],
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "warn",
+        {
+          "semi": true,
+          "tabWidth": 2,
+          "useTabs": false,
+          "printWidth": 100,
+          "singleQuote": true,
+          "trailingComma": "es5",
+          "bracketSpacing": true,
+          "bracketSameLine": false,
+          "arrowParens": "avoid",
+          "no-mixed-spaces-and-tabs": ["warn"],
+          "no-unused-vars": ["warn"],
+          "endOfLine": "auto"
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [

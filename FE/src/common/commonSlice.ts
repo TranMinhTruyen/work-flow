@@ -4,6 +4,7 @@ import { ILoginResponse } from 'model/login/LoginModel';
 
 interface CommonState {
   theme: string;
+  language: string;
   isOpenDrawer: boolean;
   isLogin: boolean;
   isLoading: boolean;
@@ -13,6 +14,7 @@ interface CommonState {
 
 const initialState: CommonState = {
   theme: '',
+  language: 'EN',
   isOpenDrawer: true,
   isLogin: false,
   isLoading: false,
@@ -56,16 +58,30 @@ export const commonSlice = createSlice({
         openConfirmDialog: payload,
       };
     },
+    setLanguage: (state, action: PayloadAction<string>) => {
+      const { payload } = action;
+      return {
+        ...state,
+        language: payload,
+      };
+    },
   },
 });
 
-export const { setLoginData, toggleDrawer, toggleLogin, toggleLoading, toggleConfirmDialog } =
-  commonSlice.actions;
+export const {
+  setLoginData,
+  toggleDrawer,
+  toggleLogin,
+  toggleLoading,
+  toggleConfirmDialog,
+  setLanguage,
+} = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;
 export const selectOpenDrawer = (state: RootState) => state.commonState.isOpenDrawer;
 export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
 export const selectOpenConfirmDialog = (state: RootState) => state.commonState.openConfirmDialog;
+export const selectLanguage = (state: RootState) => state.commonState.language;
 
 export default commonSlice.reducer;

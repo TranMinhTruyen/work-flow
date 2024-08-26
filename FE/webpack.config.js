@@ -56,30 +56,6 @@ module.exports = (env, argv) => {
             },
           ],
         },
-        {
-          test: /\.(png|svg|jpg|gif)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: isProduction
-                  ? 'static/media/[name].[contenthash:6].[ext]'
-                  : '[path][name].[ext]',
-              },
-            },
-          ],
-        },
-        {
-          test: /\.(eot|ttf|woff|woff2)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: isProduction ? 'static/fonts/[name].[ext]' : '[path][name].[ext]',
-              },
-            },
-          ],
-        },
       ],
     },
 

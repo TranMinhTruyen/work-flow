@@ -3,11 +3,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import { useNavigate } from 'react-router-dom';
-import { SubmitErrorHandler, useForm } from 'react-hook-form';
 import TextInput from 'components/form/TextInput';
 import CheckBox from 'components/form/CheckboxInput';
 import { ILoginForm } from 'model/login/LoginForm';
-import { openDialogContainer } from 'components/dialog/DialogContainer';
 import { handleSubmitLogin } from './action/loginAction';
 import loginStyles from 'assets/styles/login/loginStyles';
 import Typography from '@mui/material/Typography';
@@ -19,11 +17,11 @@ import Avatar from '@mui/material/Avatar';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
-import { MessageType } from 'common/enums/MessageEnum';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import { useTranslation } from 'react-i18next';
 import FloatButton from 'components/button/FloatButton';
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -49,24 +47,8 @@ const Login = () => {
     [trigger]
   );
 
-  const onInvalid: SubmitErrorHandler<ILoginForm> = useCallback(errors => {
-    openDialogContainer({
-      type: 'message',
-      title: 'Error',
-      messageType: MessageType.ERROR,
-      message: (
-        <>
-          {Object.entries(errors).map(([field]) => (
-            <Typography sx={{ fontSize: 20 }}>Input required: {field}</Typography>
-          ))}
-        </>
-      ),
-      onConfirm: () => {},
-    });
-  }, []);
-
   return (
-    <form id={'login-form'} onSubmit={handleSubmit(handleLogin, onInvalid)}>
+    <form id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
       <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 700 }}>
         <CardHeader
           sx={loginStyles.header}
@@ -87,7 +69,7 @@ const Login = () => {
               name={'username'}
               control={control}
               label={t('Username or email')}
-              required={true}
+              required
               sx={loginStyles.textInput}
               InputProps={{
                 startAdornment: (
@@ -102,7 +84,7 @@ const Login = () => {
               name={'password'}
               control={control}
               label={t('Password')}
-              required={true}
+              required
               type={isShowPassword ? 'text' : 'password'}
               sx={loginStyles.textInput}
               InputProps={{
@@ -123,7 +105,7 @@ const Login = () => {
           </Stack>
 
           <Stack alignItems={'end'} sx={{ paddingRight: 10 }}>
-            <CheckBox name={'isRemember'} control={control} label={'Remember me'} />
+            <CheckBox name={'isRemember'} control={control} label={t('Remember me')} />
           </Stack>
 
           <Stack alignItems={'center'}>

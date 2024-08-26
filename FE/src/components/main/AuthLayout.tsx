@@ -3,9 +3,11 @@ import Container from '@mui/material/Container';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import authStyles from 'assets/styles/main/AuthLayout';
+import { selectLanguage, setLanguage } from 'common/commonSlice';
 import { SelectDataType } from 'common/constants/type';
+import { useAppDispatch, useAppSelector } from 'common/store';
 import SelectInput from 'components/input/SelectInput';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
@@ -21,13 +23,19 @@ export const languageTypeSelect: SelectDataType[] = [
 ];
 
 const AuthLayout = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dispatch = useAppDispatch();
+  const language: string = useAppSelector(selectLanguage);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [i18n, language]);
 
   const handleChangeLanguage = useCallback(
     (event: SelectChangeEvent<any>) => {
-      i18n.changeLanguage(event.target.value === '' ? 'EN' : event.target.value);
+      dispatch(setLanguage(event.target.value));
     },
-    [i18n]
+    [dispatch]
   );
 
   return (
@@ -37,8 +45,8 @@ const AuthLayout = () => {
           <SelectInput
             width={150}
             data={languageTypeSelect}
-            defaultValue={'EN'}
-            label={'Language'}
+            defaultValue={language}
+            label={t('Language')}
             onChange={handleChangeLanguage}
           />
           <Outlet />
