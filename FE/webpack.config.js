@@ -76,12 +76,6 @@ module.exports = (env, argv) => {
         serveIndex: true,
         watch: true,
       },
-      // open: {
-      //   app: {
-      //     name: 'chrome',
-      //     arguments: ['--new-window', '--incognito'],
-      //   },
-      // },
     },
 
     devtool: isProduction ? false : 'source-map',
