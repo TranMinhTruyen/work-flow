@@ -38,31 +38,31 @@ const Header = (props: IHeaderProps) => {
   const [notificationsSize, setNotificationsSize] = useState<number>();
 
   // TODO Websocket example
-  useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws');
-    const stompClient = new Client({
-      webSocketFactory: () => socket as any,
-      onConnect: () => {
-        console.log('WebSocket connection opened');
+  // useEffect(() => {
+  //   const socket = new SockJS('http://localhost:8080/ws');
+  //   const stompClient = new Client({
+  //     webSocketFactory: () => socket as any,
+  //     onConnect: () => {
+  //       console.log('WebSocket connection opened');
 
-        stompClient.subscribe('/user/00001/check-notification', msg => {
-          const newNotification = JSON.parse(msg.body);
-          setNotifications(prevNotifications => {
-            const newNotifications = new Map(prevNotifications);
-            newNotifications.set(newNotification.id, newNotification.message);
-            return newNotifications;
-          });
-        });
-      },
-    });
-    stompClient.activate();
+  //       stompClient.subscribe('/user/00001/check-notification', msg => {
+  //         const newNotification = JSON.parse(msg.body);
+  //         setNotifications(prevNotifications => {
+  //           const newNotifications = new Map(prevNotifications);
+  //           newNotifications.set(newNotification.id, newNotification.message);
+  //           return newNotifications;
+  //         });
+  //       });
+  //     },
+  //   });
+  //   stompClient.activate();
 
-    return () => {
-      stompClient.deactivate();
-      setNotifications(new Map<string, any>());
-      console.log('WebSocket connection closed');
-    };
-  }, []);
+  //   return () => {
+  //     stompClient.deactivate();
+  //     setNotifications(new Map<string, any>());
+  //     console.log('WebSocket connection closed');
+  //   };
+  // }, []);
 
   useEffect(() => {
     console.log('Notification state: ', notifications);
