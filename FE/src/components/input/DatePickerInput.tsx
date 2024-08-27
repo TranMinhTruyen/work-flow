@@ -40,7 +40,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     onFocus,
     onBlur,
     onClose,
-    error,
+    error = false,
     helperText,
   } = props;
   const [selectedDate, setSelectedDate] = useState<DateType>(defaultValue ?? '');

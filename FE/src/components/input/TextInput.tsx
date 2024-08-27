@@ -1,17 +1,26 @@
 import { styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { ChangeEvent, useLayoutEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useLayoutEffect, useState } from 'react';
 
-export type TextInputProps = Omit<TextFieldProps, 'onChange'> & {
+export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
   label?: string;
   width?: number;
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
 };
 
 const TextInput = (props: TextInputProps) => {
-  const { label, width, value: valueProps, defaultValue, onChange, ...restProps } = props;
+  const {
+    label,
+    width,
+    value: valueProps,
+    defaultValue,
+    onChange: onChangeProps,
+    onBlur: onBlurProps,
+    ...restProps
+  } = props;
   const [value, setValue] = useState<string>(defaultValue ?? '');
 
   useLayoutEffect(() => {
@@ -25,7 +34,12 @@ const TextInput = (props: TextInputProps) => {
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-    onChange?.(event.target.value);
+    onChangeProps?.(event.target.value);
+  };
+
+  const handleOnBlur = (event: FocusEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    onBlurProps?.(event.target.value);
   };
 
   return (
@@ -33,6 +47,7 @@ const TextInput = (props: TextInputProps) => {
       value={value}
       sx={{ width: width }}
       onChange={handleOnChange}
+      onBlur={handleOnBlur}
       label={label}
       InputLabelProps={{
         shrink: true,

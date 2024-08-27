@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { SelectDataType } from 'common/constants/type';
 import { useTranslation } from 'react-i18next';
 import DatePickerInput from 'components/form/DatePickerInput';
+import SelectInput from 'components/form/SelectInput';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -118,6 +119,17 @@ const Register = () => {
               required
               name={'authorities'}
               label={t('Authorities')}
+              data={selectValue}
+              width={500}
+              onChange={value => console.log(value)}
+            />
+
+            <SelectInput
+              control={control}
+              displayNone
+              required
+              name={'test'}
+              label={t('Test')}
               data={selectValue}
               width={500}
             />

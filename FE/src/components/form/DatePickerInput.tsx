@@ -5,31 +5,22 @@ import UncontrolledDatePickerInput, {
 import { useCallback } from 'react';
 import { isNullOrEmpry } from 'common/utils/stringUtil';
 
-export type DatePickerInputProps = Omit<
-  UncontrolledDatePickerProps,
-  'onChange' | 'onBlur' | 'onFocus'
-> & {
+export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
   control?: UseControllerProps['control'];
-  onChange?: (value: string) => void;
-  onFocus?: (value: string) => void;
-  onBlur?: (value: string) => void;
 };
 
 const DatePickerInput = (props: DatePickerInputProps) => {
   const {
     name,
     control,
-    value: valueProps,
-    defaultValue,
-    required,
-    onChange: onChangeProps,
-    onFocus,
-    onBlur,
     label,
-    width,
-    height,
+    required,
     inputFormat = 'DD/MM/YYYY',
+    value: valueProps,
+    onChange: onChangeProps,
+    onFocus: onFocusProps,
+    onBlur: onBlurProps,
     ...restProps
   } = props;
 
@@ -43,14 +34,14 @@ const DatePickerInput = (props: DatePickerInputProps) => {
 
   const handleOnBlur = useCallback(
     (value: string) => {
-      if ((required && value === inputFormat) || isNullOrEmpry(value)) {
+      if (required && (value === inputFormat || isNullOrEmpry(value))) {
         control?.setError(name, { type: 'required', message: `${label} is required!` });
       } else {
         control?.setError(name, { type: 'valid' });
       }
-      onBlur?.(value);
+      onBlurProps?.(value);
     },
-    [control, inputFormat, label, name, onBlur, required]
+    [control, inputFormat, label, name, onBlurProps, required]
   );
 
   return (
@@ -62,12 +53,9 @@ const DatePickerInput = (props: DatePickerInputProps) => {
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledDatePickerInput
-          height={height}
-          width={width}
+          label={label}
           value={value}
           inputFormat={inputFormat}
-          defaultValue={defaultValue}
-          label={label}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           onClose={handleOnBlur}

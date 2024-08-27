@@ -1,52 +1,57 @@
+import { isNullOrEmpry } from 'common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
 } from 'components/input/TextInput';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 
-export type TextInputProps = Omit<UncontrolledTextInputProps, 'onChange' | 'onBlur'> & {
+export type TextInputProps = UncontrolledTextInputProps & {
   name: string;
   control?: UseControllerProps['control'];
   defaultValue?: string | number | boolean;
   messageErr?: string;
-  onChange?: (value: string) => void;
-  onBlur?: () => void;
 };
 
 const TextInput = (props: TextInputProps) => {
   const {
     name,
     control,
+    label,
     value: valueProps,
-    defaultValue,
     messageErr,
     required,
     inputProps,
-    width,
     onChange: onChangeProps,
-    onBlur,
-    label,
+    onBlur: onBlurProps,
     ...restProps
   } = props;
 
-  const handleOnChange = useCallback(
-    (onChange: (...event: any[]) => void) => (value: string) => {
-      onChange(value);
-      onChangeProps?.(value);
-    },
-    [onChangeProps]
-  );
-
-  const handleOnBlur = useCallback(
-    (value: any) => () => {
-      if (required && (value === undefined || value === null || value === '')) {
+  const checkRequired = useCallback(
+    (value: string) => {
+      if (required && isNullOrEmpry(value)) {
         control?.setError(name, { type: 'required', message: `${label} is required!` });
       } else {
         control?.setError(name, { type: 'valid' });
       }
-      onBlur?.();
     },
-    [control, label, name, onBlur, required]
+    [control, label, name, required]
+  );
+
+  const handleOnChange = useCallback(
+    (onChange: (...event: any[]) => void) => (value: string) => {
+      checkRequired(value);
+      onChange(value);
+      onChangeProps?.(value);
+    },
+    [checkRequired, onChangeProps]
+  );
+
+  const handleOnBlur = useCallback(
+    (value: string) => {
+      checkRequired(value);
+      onBlurProps?.(value);
+    },
+    [checkRequired, onBlurProps]
   );
 
   return (
@@ -58,12 +63,10 @@ const TextInput = (props: TextInputProps) => {
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledTextInput
-          width={width}
           label={label}
           value={value ?? ''}
-          defaultValue={defaultValue}
           onChange={handleOnChange(onChange)}
-          onBlur={handleOnBlur(value)}
+          onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={!!error ? error.message : null}
           inputProps={{

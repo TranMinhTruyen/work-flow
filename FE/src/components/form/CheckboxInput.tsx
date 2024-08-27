@@ -6,7 +6,6 @@ import { Controller, UseControllerProps } from 'react-hook-form';
 export type CheckboxProps = UncontrolledCheckboxProps & {
   name: string;
   control?: UseControllerProps['control'];
-  disabled?: boolean;
 };
 
 const CheckBox = (props: CheckboxProps) => {

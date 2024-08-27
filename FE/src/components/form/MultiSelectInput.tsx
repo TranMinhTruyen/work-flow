@@ -1,18 +1,12 @@
 import UncontrolledMultiSelectInput from 'components/input/MultiSelectInput';
 import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/input/MultiSelectInput';
+import { useCallback } from 'react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 
-export type MultiSelectInputProps = Omit<
-  UncontrolledMultiSelectInputProps,
-  'onChange' | 'value'
-> & {
+export type MultiSelectInputProps = UncontrolledMultiSelectInputProps & {
   name: string;
   label?: string;
   control?: UseControllerProps['control'];
-  value?: string[];
-  defaultValue?: string[];
-  messageErr?: string;
-  onChange?: (value: string) => void;
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
@@ -20,15 +14,32 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     name,
     label,
     control,
-    value: valueProps,
-    defaultValue,
-    data,
-    messageErr,
-    width,
     required,
-    onChange,
+    value: valueProps,
+    onChange: onChangeProps,
+    onBlur: onBlurProps,
     ...restProps
   } = props;
+
+  const handleOnChange = useCallback(
+    (onChange: (...event: any[]) => void) => (value: string[]) => {
+      onChange(value);
+      onChangeProps?.(value);
+    },
+    [onChangeProps]
+  );
+
+  const handleOnBlur = useCallback(
+    (value: string[]) => {
+      if (required && value.length === 0) {
+        control?.setError(name, { type: 'required', message: `${label} is required!` });
+      } else {
+        control?.setError(name, { type: 'valid' });
+      }
+      onBlurProps?.(value);
+    },
+    [control, label, name, onBlurProps, required]
+  );
 
   return (
     <Controller
@@ -39,14 +50,12 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       }}
       render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledMultiSelectInput
-          width={width}
           label={label}
           value={value ?? []}
-          defaultValue={defaultValue}
-          data={data}
-          onChange={onChange}
-          error={!!error}
-          helperText={error?.message}
+          onChange={handleOnChange(onChange)}
+          onBlur={handleOnBlur}
+          error={!!(error && error.type !== 'valid')}
+          helperText={!!error ? error.message : null}
           {...restProps}
         />
       )}

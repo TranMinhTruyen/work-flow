@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
@@ -9,11 +8,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { SelectDataType } from 'common/constants/type';
-import { ReactNode, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 
 export type SelectInputProps = Omit<
   SelectProps,
-  'multiple' | 'defaultValue' | 'displayEmpty' | 'value'
+  'multiple' | 'defaultValue' | 'displayEmpty' | 'value' | 'onChange' | 'onBlur'
 > & {
   label?: string;
   width?: number;
@@ -22,52 +21,70 @@ export type SelectInputProps = Omit<
   defaultValue?: string;
   displayNone?: boolean;
   helperText?: string | null;
+  onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
+};
+
+const ITEM_HEIGHT = 50;
+const ITEM_PADDING_TOP = 5;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
 };
 
 const SelectInput = (props: SelectInputProps) => {
   const {
     label,
     width = 200,
-    value: valueProps,
     data,
-    onChange,
+    value: valueProps,
+    onChange: onChangeProps,
+    onBlur: onBlurProps,
     defaultValue,
     placeholder,
     displayNone,
-    error,
+    error = false,
     helperText,
     ...restProps
   } = props;
 
-  const [selectValues, setSelectValues] = useState<string>(defaultValue ?? '');
+  const [selectValue, setSelectValue] = useState<string>(defaultValue ?? '');
 
   useLayoutEffect(() => {
-    if (valueProps !== undefined && selectValues.includes(valueProps)) {
+    if (valueProps !== undefined && selectValue.includes(valueProps)) {
       return;
     }
     if (valueProps !== undefined) {
-      setSelectValues(valueProps);
+      setSelectValue(valueProps);
     }
-  }, [selectValues, valueProps]);
+  }, [selectValue, valueProps]);
 
-  const handleChange = useCallback(
-    (event: SelectChangeEvent<any>, child: ReactNode) => {
-      setSelectValues(event.target.value);
-      onChange?.(event, child);
+  const handleOnChange = useCallback(
+    (event: SelectChangeEvent<any>) => {
+      setSelectValue(event.target.value);
+      onChangeProps?.(event.target.value as string);
     },
-    [onChange]
+    [onChangeProps]
   );
+
+  const handleOnBlur = useCallback(() => {
+    onBlurProps?.(selectValue);
+  }, [onBlurProps, selectValue]);
 
   const noneValue = useMemo(() => {
     return (
       displayNone && (
         <MenuItem value={''} sx={{ padding: '5px' }}>
-          <Checkbox checked={selectValues === ''} />
+          <Checkbox checked={selectValue === ''} />
           <Typography>None</Typography>
         </MenuItem>
       )
     );
-  }, [displayNone, selectValues]);
+  }, [displayNone, selectValue]);
 
   return (
     <FormControlStyled sx={{ width: width }} error={error}>
@@ -79,8 +96,9 @@ const SelectInput = (props: SelectInputProps) => {
         label={label}
         notched={true}
         error={error}
-        value={selectValues}
-        onChange={handleChange}
+        value={selectValue}
+        onChange={handleOnChange}
+        onBlur={handleOnBlur}
         renderValue={selected => {
           const renderValue = data.find(x => x.key === (selected as string));
           if (renderValue === undefined) {
@@ -88,12 +106,13 @@ const SelectInput = (props: SelectInputProps) => {
           }
           return <Chip label={renderValue.value} />;
         }}
+        MenuProps={MenuProps}
         {...restProps}
       >
         {noneValue}
         {data.map((item, index) => (
           <MenuItem key={index} value={item.key} sx={{ padding: '5px' }}>
-            <Checkbox checked={selectValues === item.key} />
+            <Checkbox checked={selectValue === item.key} />
             <Typography>{item.value}</Typography>
           </MenuItem>
         ))}

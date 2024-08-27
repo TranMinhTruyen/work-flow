@@ -3,15 +3,14 @@ import UncontrolledFileInput, {
 } from 'components/input/FileInput';
 import { Controller, UseControllerProps } from 'react-hook-form';
 
-export type FileInputProps = Omit<UncontrolledFileInputProps, 'onChange' | 'onBlur'> & {
+export type FileInputProps = UncontrolledFileInputProps & {
   name: string;
   control?: UseControllerProps['control'];
   required?: boolean;
-  onChange?: (value: Uint8Array | null) => void;
 };
 
 const FileInput = (props: FileInputProps) => {
-  const { name, control, label, width, required, onChange, ...restProps } = props;
+  const { name, control, label, required, onChange: onChangeProps, ...restProps } = props;
 
   return (
     <Controller
@@ -23,7 +22,6 @@ const FileInput = (props: FileInputProps) => {
       render={({ field: { onChange }, fieldState: { error } }) => (
         <UncontrolledFileInput
           label={label}
-          width={width}
           onChange={onChange}
           error={!!error}
           helperText={error?.message}

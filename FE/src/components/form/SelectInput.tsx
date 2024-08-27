@@ -1,33 +1,48 @@
+import { isNullOrEmpry } from 'common/utils/stringUtil';
 import UncontrolledSelectInput, {
   SelectInputProps as UncontrolledSelectInputProps,
 } from 'components/input/SelectInput';
+import { useCallback } from 'react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 
 export type SelectInputProps = UncontrolledSelectInputProps & {
   name: string;
   control?: UseControllerProps['control'];
-  value?: string;
   required?: boolean;
   helperText?: string;
-  onChange?: (value: string) => void;
-  onBlur?: () => void;
 };
 
 const SelectInput = (props: SelectInputProps) => {
   const {
-    width,
     label,
     name,
     control,
     required,
     value: valueProps,
-    data,
-    defaultValue,
-    placeholder,
-    displayNone,
     onChange: onChangeProps,
+    onBlur: onBlurProps,
     ...restProps
   } = props;
+
+  const handleOnChange = useCallback(
+    (onChange: (...event: any[]) => void) => (value: string) => {
+      onChange(value);
+      onChangeProps?.(value);
+    },
+    [onChangeProps]
+  );
+
+  const handleOnBlur = useCallback(
+    (value: string) => {
+      if (required && isNullOrEmpry(value)) {
+        control?.setError(name, { type: 'required', message: `${label} is required!` });
+      } else {
+        control?.setError(name, { type: 'valid' });
+      }
+      onBlurProps?.(value);
+    },
+    [control, label, name, onBlurProps, required]
+  );
 
   return (
     <Controller
@@ -38,11 +53,10 @@ const SelectInput = (props: SelectInputProps) => {
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledSelectInput
-          width={width}
           label={label}
-          data={data}
           value={value ?? ''}
-          onChange={onChange}
+          onChange={handleOnChange(onChange)}
+          onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={!!error ? error.message : null}
           {...restProps}

@@ -15,7 +15,7 @@ const CheckBox = (props: CheckBoxProps) => {
 
   return (
     <FormGroup>
-      <FormControlLabel control={<Checkbox {...restProps} />} label={label || ''} />
+      <FormControlLabel control={<Checkbox {...restProps} />} label={label ?? ''} />
     </FormGroup>
   );
 };

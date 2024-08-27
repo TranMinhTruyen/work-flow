@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
-import { ReactNode, useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,12 +11,17 @@ import { SelectDataType } from 'common/constants/type';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 
-export type MultiSelectInputProps = Omit<SelectProps, 'multiple' | 'value'> & {
+export type MultiSelectInputProps = Omit<
+  SelectProps,
+  'multiple' | 'value' | 'onChange' | 'onBlur'
+> & {
   width?: number;
   value?: string[];
   defaultValue?: string[];
   data: SelectDataType[];
   helperText?: string | null;
+  onChange?: (value: string[]) => void;
+  onBlur?: (value: string[]) => void;
 };
 
 const ITEM_HEIGHT = 50;
@@ -36,9 +41,10 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     data,
     value: valueProps,
     defaultValue,
-    onChange,
+    onChange: onChangeProps,
+    onBlur: onBlurProps,
     label,
-    error,
+    error = false,
     helperText,
     ...restProps
   } = props;
@@ -55,25 +61,26 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   }, [selectValues, valueProps]);
 
   const handleOnChange = useCallback(
-    (event: SelectChangeEvent<any[]>, child: ReactNode) => {
+    (event: SelectChangeEvent<string[]>) => {
       const currentValue = event.target.value;
 
       // On autofill we get a stringified value.
-      let newValues: any[];
-      if (typeof currentValue === 'number') {
-        newValues = [currentValue];
-      } else if (typeof currentValue === 'string') {
+      let newValues: string[];
+      if (typeof currentValue === 'string') {
         newValues = currentValue.split(',');
       } else {
         newValues = currentValue;
       }
 
       setSelectValues(newValues);
-
-      onChange?.(event, child);
+      onChangeProps?.(newValues);
     },
-    [onChange]
+    [onChangeProps]
   );
+
+  const handleOnBlur = useCallback(() => {
+    onBlurProps?.(selectValues);
+  }, [onBlurProps, selectValues]);
 
   return (
     <FormControlStyled sx={{ width: width }} error={error}>
@@ -89,6 +96,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         // @ts-ignore
         defaultValue={selectValues}
         onChange={handleOnChange}
+        onBlur={handleOnBlur}
         multiple
         renderValue={selected => {
           const renderValue = data.filter(x => selected.includes(x.key));

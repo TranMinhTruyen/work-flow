@@ -45,7 +45,7 @@ const FileInput = (props: FileInputProps) => {
     height,
     acceptFile,
     multipleFile = true,
-    error,
+    error = false,
     helperText,
     onChange,
   } = props;
