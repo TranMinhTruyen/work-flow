@@ -28,19 +28,19 @@ import SelectInput from 'components/form/SelectInput';
 export const selectValue: SelectDataType[] = [
   {
     key: 'CREATE',
-    value: 'Can CREATE',
+    value: 'Allow CREATE permission',
   },
   {
     key: 'GET',
-    value: 'Can GET',
+    value: 'Allow GET permission',
   },
   {
     key: 'UPDATE',
-    value: 'Can UPDATE',
+    value: 'Allow UPDATE permission',
   },
   {
     key: 'DELETE',
-    value: 'Can DELETE',
+    value: 'Allow DELETE permission',
   },
 ];
 
