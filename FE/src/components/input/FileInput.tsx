@@ -41,7 +41,7 @@ export interface FileInputData {
 const FileInput = (props: FileInputProps) => {
   const {
     label,
-    width = 500,
+    width = 200,
     height,
     acceptFile,
     multipleFile = true,
@@ -74,9 +74,7 @@ const FileInput = (props: FileInputProps) => {
           return prev;
         });
 
-        if (onChange) {
-          onChange(fileList);
-        }
+        onChange?.(fileList);
       }
     },
     [fileList, onChange]
@@ -112,9 +110,7 @@ const FileInput = (props: FileInputProps) => {
         newFileList.splice(index, 1);
         setFileList(newFileList);
 
-        if (onChange) {
-          onChange(newFileList);
-        }
+        onChange?.(newFileList);
       }
     },
     [fileList, onChange]

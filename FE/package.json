@@ -23,6 +23,7 @@
     "@hello-pangea/dnd": "^16.6.0",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.13",
+    "@mui/x-date-pickers": "^7.14.0",
     "@reduxjs/toolkit": "^2.2.6",
     "@stomp/stompjs": "^7.0.0",
     "@types/lodash": "^4.17.0",

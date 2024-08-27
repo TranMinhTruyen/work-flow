@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useLayoutEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,10 +11,12 @@ import { SelectDataType } from 'common/constants/type';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 
-export type MultiSelectInputProps = Omit<SelectProps, 'multiple'> & {
+export type MultiSelectInputProps = Omit<SelectProps, 'multiple' | 'value'> & {
   width?: number;
+  value?: string[];
+  defaultValue?: string[];
   data: SelectDataType[];
-  helperText?: string;
+  helperText?: string | null;
 };
 
 const ITEM_HEIGHT = 50;
@@ -32,7 +34,8 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   const {
     width = 200,
     data,
-    value: propsValue,
+    value: valueProps,
+    defaultValue,
     onChange,
     label,
     error,
@@ -40,13 +43,18 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     ...restProps
   } = props;
 
-  const [values, setValues] = useState<SelectDataType[]>([]);
+  const [selectValues, setSelectValues] = useState<string[]>(defaultValue ?? []);
 
-  const selectValues = useMemo(() => {
-    return values.filter(value => (data || []).some(item => item.key === value));
-  }, [data, values]);
+  useLayoutEffect(() => {
+    if (valueProps?.every(element => selectValues.includes(element))) {
+      return;
+    }
+    if (valueProps !== undefined) {
+      setSelectValues(valueProps);
+    }
+  }, [selectValues, valueProps]);
 
-  const handleChange = useCallback(
+  const handleOnChange = useCallback(
     (event: SelectChangeEvent<any[]>, child: ReactNode) => {
       const currentValue = event.target.value;
 
@@ -60,11 +68,9 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         newValues = currentValue;
       }
 
-      setValues(newValues);
+      setSelectValues(newValues);
 
-      if (onChange) {
-        onChange(event, child);
-      }
+      onChange?.(event, child);
     },
     [onChange]
   );
@@ -82,7 +88,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         value={selectValues}
         // @ts-ignore
         defaultValue={selectValues}
-        onChange={handleChange}
+        onChange={handleOnChange}
         multiple
         renderValue={selected => {
           const renderValue = data.filter(x => selected.includes(x.key));
@@ -112,6 +118,15 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 export default MultiSelectInput;
 
 const FormControlStyled = styled(FormControl)(({ error }) => ({
+  '& .MuiInputLabel-root': {
+    color: 'rgba(13, 13, 13) !important',
+    marginLeft: '10px',
+  },
+
+  '& .MuiOutlinedInput-notchedOutline legend': {
+    marginLeft: '10px',
+  },
+
   '& .MuiInputBase-formControl': {
     height: '50px !important',
   },
@@ -133,17 +148,6 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
     },
     '&.Mui-focused fieldset': {
       borderColor: '#00b2ff !important',
-    },
-  },
-
-  '& .MuiInputLabel-root': {
-    color: 'rgba(13, 13, 13)',
-    marginLeft: 10,
-  },
-
-  '& .MuiOutlinedInput-notchedOutline': {
-    legend: {
-      marginLeft: 10,
     },
   },
 

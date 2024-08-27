@@ -22,6 +22,7 @@ import registerStyles from 'assets/styles/login/registerStyles';
 import { useNavigate } from 'react-router-dom';
 import { SelectDataType } from 'common/constants/type';
 import { useTranslation } from 'react-i18next';
+import DatePickerInput from 'components/form/DatePickerInput';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -121,11 +122,20 @@ const Register = () => {
               width={500}
             />
 
+            <DatePickerInput
+              control={control}
+              required
+              name={'birthday'}
+              label={t('Birthday')}
+              width={500}
+            />
+
             <FileInput
               control={control}
               name={'image'}
               acceptFile={IMAGE_FILE_TYPE}
               label={t('Upload image')}
+              width={500}
             />
           </Stack>
         </CardContent>

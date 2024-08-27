@@ -1,31 +1,35 @@
-import UncontrolledTextInput, {
-  TextInputProps as UncontrolledTextInputProps,
-} from 'components/input/TextInput';
-import { useCallback, useRef } from 'react';
 import { Controller, UseControllerProps } from 'react-hook-form';
+import UncontrolledDatePickerInput, {
+  DatePickerProps as UncontrolledDatePickerProps,
+} from 'components/input/DatePickerInput';
+import { useCallback } from 'react';
+import { isNullOrEmpry } from 'common/utils/stringUtil';
 
-export type TextInputProps = Omit<UncontrolledTextInputProps, 'onChange' | 'onBlur'> & {
+export type DatePickerInputProps = Omit<
+  UncontrolledDatePickerProps,
+  'onChange' | 'onBlur' | 'onFocus'
+> & {
   name: string;
   control?: UseControllerProps['control'];
-  defaultValue?: string | number | boolean;
-  messageErr?: string;
   onChange?: (value: string) => void;
-  onBlur?: () => void;
+  onFocus?: (value: string) => void;
+  onBlur?: (value: string) => void;
 };
 
-const TextInput = (props: TextInputProps) => {
+const DatePickerInput = (props: DatePickerInputProps) => {
   const {
     name,
     control,
     value: valueProps,
     defaultValue,
-    messageErr,
     required,
-    inputProps,
-    width,
     onChange: onChangeProps,
+    onFocus,
     onBlur,
     label,
+    width,
+    height,
+    inputFormat = 'DD/MM/YYYY',
     ...restProps
   } = props;
 
@@ -38,15 +42,15 @@ const TextInput = (props: TextInputProps) => {
   );
 
   const handleOnBlur = useCallback(
-    (value: any) => () => {
-      if (required && (value === undefined || value === null || value === '')) {
+    (value: string) => {
+      if ((required && value === inputFormat) || isNullOrEmpry(value)) {
         control?.setError(name, { type: 'required', message: `${label} is required!` });
       } else {
         control?.setError(name, { type: 'valid' });
       }
-      onBlur?.();
+      onBlur?.(value);
     },
-    [control, label, name, onBlur, required]
+    [control, inputFormat, label, name, onBlur, required]
   );
 
   return (
@@ -57,19 +61,18 @@ const TextInput = (props: TextInputProps) => {
         required: required ? `${label} is required!` : '',
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
-        <UncontrolledTextInput
+        <UncontrolledDatePickerInput
+          height={height}
           width={width}
-          label={label}
-          value={value ?? ''}
+          value={value}
+          inputFormat={inputFormat}
           defaultValue={defaultValue}
+          label={label}
           onChange={handleOnChange(onChange)}
-          onBlur={handleOnBlur(value)}
+          onBlur={handleOnBlur}
+          onClose={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={!!error ? error.message : null}
-          inputProps={{
-            ...inputProps,
-            'text-input-id': name,
-          }}
           {...restProps}
         />
       )}
@@ -77,4 +80,4 @@ const TextInput = (props: TextInputProps) => {
   );
 };
 
-export default TextInput;
+export default DatePickerInput;
