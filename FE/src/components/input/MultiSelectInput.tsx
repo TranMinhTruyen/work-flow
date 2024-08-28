@@ -82,6 +82,15 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     onBlurProps?.(selectValues);
   }, [onBlurProps, selectValues]);
 
+  const handleDelete = useCallback(
+    (key: string) => () => {
+      const newSelectValues = selectValues.filter(item => item !== key);
+      setSelectValues(newSelectValues);
+      onChangeProps?.(newSelectValues);
+    },
+    [onChangeProps, selectValues]
+  );
+
   return (
     <FormControlStyled sx={{ width: width }} error={error}>
       <InputLabel shrink={true}>
@@ -99,12 +108,23 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         onBlur={handleOnBlur}
         multiple
         renderValue={selected => {
-          const renderValue = data.filter(x => selected.includes(x.key));
-
+          const renderValue = data.filter(item => selected.includes(item.key));
           return (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               {renderValue.map((item, index) => (
-                <Chip key={index} label={item.value} />
+                <Chip
+                  key={index}
+                  label={item.value}
+                  color={'primary'}
+                  onDelete={handleDelete(item.key)}
+                  onMouseDown={event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }}
+                  sx={{
+                    height: '30px',
+                  }}
+                />
               ))}
             </Box>
           );

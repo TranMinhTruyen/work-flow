@@ -134,6 +134,7 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
 
   '& .MuiInputBase-formControl': {
     height: '50px !important',
+    minHeight: '50px !important',
   },
 
   '& .MuiOutlinedInput-input': {

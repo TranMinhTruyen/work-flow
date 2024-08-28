@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateView } from '@mui/x-date-pickers/models/views';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateType } from 'common/utils/dateUtil';
-import { FocusEvent, useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
 import { isNullOrEmpry } from 'common/utils/stringUtil';
 
@@ -69,19 +69,13 @@ const DatePickerInput = (props: DatePickerProps) => {
     [inputFormat, onChange, onClose]
   );
 
-  const handleOnBlur = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      onBlur?.(event.target.value);
-    },
-    [onBlur]
-  );
+  const handleOnBlur = useCallback(() => {
+    onBlur?.(moment(selectedDate).format(inputFormat));
+  }, [inputFormat, onBlur, selectedDate]);
 
-  const handleOnFocus = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      onFocus?.(event.target.value);
-    },
-    [onFocus]
-  );
+  const handleOnFocus = useCallback(() => {
+    onFocus?.(moment(selectedDate).format(inputFormat));
+  }, [inputFormat, onFocus, selectedDate]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -114,7 +108,8 @@ const DatePickerInput = (props: DatePickerProps) => {
 
               '& .MuiOutlinedInput-root': {
                 width: width,
-                height: 50,
+                height: '50px !important',
+                minHeight: '50px !important',
                 '& fieldset': {
                   borderColor: 'rgba(13, 13, 13, 0.8)',
                   borderRadius: 50,

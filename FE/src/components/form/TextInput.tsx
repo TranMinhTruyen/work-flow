@@ -17,6 +17,7 @@ const TextInput = (props: TextInputProps) => {
     name,
     control,
     label,
+    type,
     value: valueProps,
     messageErr,
     required,
@@ -26,15 +27,27 @@ const TextInput = (props: TextInputProps) => {
     ...restProps
   } = props;
 
+  const checkDataInput = useCallback(
+    (value: string): boolean => {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+      if (type === 'email' && !emailPattern.test(value)) {
+        control?.setError(name, { type: 'format', message: `${label} format email error!` });
+        return false;
+      }
+      return true;
+    },
+    [control, label, name, type]
+  );
+
   const checkRequired = useCallback(
     (value: string) => {
       if (required && isNullOrEmpry(value)) {
         control?.setError(name, { type: 'required', message: `${label} is required!` });
-      } else {
+      } else if (checkDataInput(value)) {
         control?.setError(name, { type: 'valid' });
       }
     },
-    [control, label, name, required]
+    [checkDataInput, control, label, name, required]
   );
 
   const handleOnChange = useCallback(
@@ -64,6 +77,7 @@ const TextInput = (props: TextInputProps) => {
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledTextInput
           label={label}
+          type={type}
           value={value ?? ''}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}

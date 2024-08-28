@@ -1,6 +1,6 @@
 export interface IRegisterForm {
-  email?: string;
   username?: string;
+  email?: string;
   loginPassword?: string;
   fullName?: string;
   birthday?: string;

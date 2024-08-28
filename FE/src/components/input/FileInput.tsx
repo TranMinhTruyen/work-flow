@@ -21,37 +21,37 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Accept, useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
+import { FileInputData } from 'common/constants/type';
 
 export type FileInputProps = {
   label?: string;
   height?: number;
   width?: number;
+  value?: FileInputData[];
   acceptFile?: Accept;
   multipleFile?: boolean;
   error?: boolean;
-  helperText?: string;
-  onChange?: (value: FileInputData[] | null) => void;
+  helperText?: string | null;
+  onChange?: (value: FileInputData[]) => void;
+  onBlur?: (value: FileInputData[]) => void;
 };
-
-export interface FileInputData {
-  file?: File;
-  fileData?: Uint8Array;
-}
 
 const FileInput = (props: FileInputProps) => {
   const {
     label,
-    width = 200,
     height,
+    width = 200,
+    value: valueProps,
     acceptFile,
     multipleFile = true,
     error = false,
     helperText,
     onChange,
+    onBlur,
   } = props;
   const { t } = useTranslation();
 
-  const [fileList, setFileList] = useState<FileInputData[]>([]);
+  const [fileList, setFileList] = useState<FileInputData[]>(valueProps ?? []);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -109,12 +109,15 @@ const FileInput = (props: FileInputProps) => {
         const newFileList = [...fileList];
         newFileList.splice(index, 1);
         setFileList(newFileList);
-
         onChange?.(newFileList);
       }
     },
     [fileList, onChange]
   );
+
+  const handleOnBlur = useCallback(() => {
+    onBlur?.(fileList);
+  }, [fileList, onBlur]);
 
   return (
     <Box {...getRootProps()}>
@@ -124,6 +127,7 @@ const FileInput = (props: FileInputProps) => {
         error={error}
         placeholder={t('Total file: ') + `${fileList.length}`}
         sx={{ width: width, height: height }}
+        onBlur={handleOnBlur}
         InputProps={{
           readOnly: true,
           startAdornment: (

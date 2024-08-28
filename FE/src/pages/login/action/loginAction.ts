@@ -8,7 +8,7 @@ import { loginService } from './loginService';
  * Handle click submit button.
  * @param data
  */
-export const handleSubmitLogin = async (data: ILoginForm) => {
+export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
   const loginRequest: ILoginRequest = {
     username: data.username,
     password: data.password,
@@ -21,6 +21,9 @@ export const handleSubmitLogin = async (data: ILoginForm) => {
 
   if (response !== undefined) {
     setToken(response, data.isRemember);
+    return true;
+  } else {
+    return false;
   }
 };
 
@@ -38,5 +41,4 @@ const setToken = (loginResponse: ILoginResponse, isRemember: boolean = false) =>
   }
   store.dispatch(setLoginData(loginResponse));
   store.dispatch(toggleLogin());
-  window.location.replace('/');
 };

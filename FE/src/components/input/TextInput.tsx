@@ -68,7 +68,8 @@ const StyledTextInput = styled(TextField)({
   },
 
   '& .MuiOutlinedInput-root': {
-    height: 50,
+    height: '50px !important',
+    minHeight: '50px !important',
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
       borderRadius: 50,

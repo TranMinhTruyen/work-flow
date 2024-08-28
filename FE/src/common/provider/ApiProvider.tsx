@@ -7,6 +7,7 @@ import { selectIsLoading, selectLoginData, toggleLoading } from 'common/commonSl
 import { openDialogContainer } from 'components/dialog/DialogContainer';
 import { ILoginResponse } from 'model/login/LoginModel';
 import { MessageType } from 'common/enums/MessageEnum';
+import { useNavigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
   baseURL: process.env.SERVER_URL,
@@ -20,6 +21,7 @@ export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
   const isLoading: boolean = useAppSelector(selectIsLoading);
   const loginData: ILoginResponse | undefined = useAppSelector(selectLoginData);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSet) return;
@@ -28,7 +30,7 @@ export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
       if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
         // If login data is undefined, back to login screen
         if (loginData === undefined) {
-          window.location.replace('/auth/login');
+          navigate('/auth/login', { replace: true });
         } else {
           // Set token to header
           config.headers['Authorization'] = `Bearer ${loginData.token}`;

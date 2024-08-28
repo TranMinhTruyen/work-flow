@@ -74,8 +74,8 @@ const Header = (props: IHeaderProps) => {
   }, [dispatch]);
 
   const handleLogout = useCallback(() => {
-    window.location.replace('/auth/login');
-  }, []);
+    navigate('/auth/login', { replace: true });
+  }, [navigate]);
 
   return (
     <AppBar drawerWidth={drawerWidth} position="fixed" open={openDrawer}>

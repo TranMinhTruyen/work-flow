@@ -32,8 +32,8 @@ const AuthLayout = () => {
   }, [i18n, language]);
 
   const handleChangeLanguage = useCallback(
-    (event: SelectChangeEvent<any>) => {
-      dispatch(setLanguage(event.target.value));
+    (value: string) => {
+      dispatch(setLanguage(value));
     },
     [dispatch]
   );

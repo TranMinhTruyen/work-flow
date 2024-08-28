@@ -24,24 +24,32 @@ const DatePickerInput = (props: DatePickerInputProps) => {
     ...restProps
   } = props;
 
-  const handleOnChange = useCallback(
-    (onChange: (...event: any[]) => void) => (value: string) => {
-      onChange(value);
-      onChangeProps?.(value);
-    },
-    [onChangeProps]
-  );
-
-  const handleOnBlur = useCallback(
+  const checkRequired = useCallback(
     (value: string) => {
       if (required && (value === inputFormat || isNullOrEmpry(value))) {
         control?.setError(name, { type: 'required', message: `${label} is required!` });
       } else {
         control?.setError(name, { type: 'valid' });
       }
+    },
+    [control, inputFormat, label, name, required]
+  );
+
+  const handleOnChange = useCallback(
+    (onChange: (...event: any[]) => void) => (value: string) => {
+      checkRequired(value);
+      onChange(value);
+      onChangeProps?.(value);
+    },
+    [checkRequired, onChangeProps]
+  );
+
+  const handleOnBlur = useCallback(
+    (value: string) => {
+      checkRequired(value);
       onBlurProps?.(value);
     },
-    [control, inputFormat, label, name, onBlurProps, required]
+    [checkRequired, onBlurProps]
   );
 
   return (

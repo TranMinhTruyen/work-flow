@@ -1,6 +1,8 @@
+import { FileInputData } from 'common/constants/type';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
 } from 'components/input/FileInput';
+import { useCallback } from 'react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 
 export type FileInputProps = UncontrolledFileInputProps & {
@@ -10,7 +12,44 @@ export type FileInputProps = UncontrolledFileInputProps & {
 };
 
 const FileInput = (props: FileInputProps) => {
-  const { name, control, label, required, onChange: onChangeProps, ...restProps } = props;
+  const {
+    name,
+    control,
+    label,
+    required,
+    value: valueProps,
+    onChange: onChangeProps,
+    onBlur: onBlurProps,
+    ...restProps
+  } = props;
+
+  const checkRequired = useCallback(
+    (value: FileInputData[]) => {
+      if (required && value.length === 0) {
+        control?.setError(name, { type: 'required', message: `${label} is required!` });
+      } else {
+        control?.setError(name, { type: 'valid' });
+      }
+    },
+    [control, label, name, required]
+  );
+
+  const handleOnChange = useCallback(
+    (onChange: (...event: any[]) => void) => (value: FileInputData[]) => {
+      checkRequired(value);
+      onChange(value);
+      onChangeProps?.(value);
+    },
+    [checkRequired, onChangeProps]
+  );
+
+  const handleOnBlur = useCallback(
+    (value: FileInputData[]) => {
+      checkRequired(value);
+      onBlurProps?.(value);
+    },
+    [checkRequired, onBlurProps]
+  );
 
   return (
     <Controller
@@ -19,12 +58,14 @@ const FileInput = (props: FileInputProps) => {
       rules={{
         required: required ? `${label} is required!` : '',
       }}
-      render={({ field: { onChange }, fieldState: { error } }) => (
+      render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledFileInput
           label={label}
-          onChange={onChange}
-          error={!!error}
-          helperText={error?.message}
+          value={value}
+          onChange={handleOnChange(onChange)}
+          onBlur={handleOnBlur}
+          error={!!(error && error.type !== 'valid')}
+          helperText={!!error ? error.message : null}
           {...restProps}
         />
       )}

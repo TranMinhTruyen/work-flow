@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { SelectDataType } from 'common/constants/type';
 import { useTranslation } from 'react-i18next';
 import DatePickerInput from 'components/form/DatePickerInput';
-import SelectInput from 'components/form/SelectInput';
+import EmailIcon from '@mui/icons-material/Email';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -79,7 +79,7 @@ const Register = () => {
             <TextInput
               control={control}
               name={'username'}
-              label={t('Username or email')}
+              label={t('Username')}
               required
               sx={registerStyles.textInput}
               InputProps={{
@@ -114,6 +114,21 @@ const Register = () => {
               }}
             />
 
+            <TextInput
+              control={control}
+              name={'email'}
+              label={t('Email')}
+              type={'email'}
+              sx={registerStyles.textInput}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <EmailIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
             <MultiSelectInput
               control={control}
               required
@@ -122,16 +137,6 @@ const Register = () => {
               data={selectValue}
               width={500}
               onChange={value => console.log(value)}
-            />
-
-            <SelectInput
-              control={control}
-              displayNone
-              required
-              name={'test'}
-              label={t('Test')}
-              data={selectValue}
-              width={500}
             />
 
             <DatePickerInput
@@ -145,8 +150,8 @@ const Register = () => {
             <FileInput
               control={control}
               name={'image'}
-              acceptFile={IMAGE_FILE_TYPE}
               label={t('Upload image')}
+              acceptFile={IMAGE_FILE_TYPE}
               width={500}
             />
           </Stack>

@@ -42,9 +42,12 @@ const Login = () => {
   const handleLogin = useCallback(
     async (data: ILoginForm) => {
       await trigger();
-      await handleSubmitLogin(data);
+      const result = await handleSubmitLogin(data);
+      if (result) {
+        navigate('/', { replace: true });
+      }
     },
-    [trigger]
+    [navigate, trigger]
   );
 
   return (
