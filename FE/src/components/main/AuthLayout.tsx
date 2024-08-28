@@ -1,7 +1,6 @@
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import authStyles from 'assets/styles/main/AuthLayout';
 import { selectLanguage, setLanguage } from 'common/commonSlice';
 import { SelectDataType } from 'common/constants/type';
@@ -39,9 +38,15 @@ const AuthLayout = () => {
   );
 
   return (
-    <Box>
-      <Container sx={authStyles.rootContainer}>
-        <Stack spacing={2} sx={{ alignItems: 'flex-end' }}>
+    <Grid2
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ minHeight: '100vh' }}
+    >
+      <Stack spacing={2}>
+        <Stack sx={{ alignItems: 'flex-end' }}>
           <SelectInput
             width={150}
             data={languageTypeSelect}
@@ -49,10 +54,10 @@ const AuthLayout = () => {
             label={t('Language')}
             onChange={handleChangeLanguage}
           />
-          <Outlet />
         </Stack>
-      </Container>
-    </Box>
+        <Outlet />
+      </Stack>
+    </Grid2>
   );
 };
 export default AuthLayout;

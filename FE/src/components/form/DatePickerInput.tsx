@@ -1,4 +1,4 @@
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import UncontrolledDatePickerInput, {
   DatePickerProps as UncontrolledDatePickerProps,
 } from 'components/input/DatePickerInput';
@@ -7,7 +7,7 @@ import { isNullOrEmpry } from 'common/utils/stringUtil';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
-  control?: UseControllerProps['control'];
+  control: Control;
 };
 
 const DatePickerInput = (props: DatePickerInputProps) => {
@@ -37,11 +37,11 @@ const DatePickerInput = (props: DatePickerInputProps) => {
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
-      checkRequired(value);
+      control?.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);
     },
-    [checkRequired, onChangeProps]
+    [control, name, onChangeProps]
   );
 
   const handleOnBlur = useCallback(

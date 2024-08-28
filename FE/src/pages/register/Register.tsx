@@ -62,7 +62,7 @@ const Register = () => {
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
-      <Card elevation={5} sx={{ width: 700, maxWidth: 700, maxHeight: 800 }}>
+      <Card elevation={5} sx={{ width: 700, maxWidth: 700 }}>
         <CardHeader
           sx={registerStyles.header}
           title={
@@ -129,14 +129,11 @@ const Register = () => {
               }}
             />
 
-            <MultiSelectInput
+            <TextInput
               control={control}
-              required
-              name={'authorities'}
-              label={t('Authorities')}
-              data={selectValue}
-              width={500}
-              onChange={value => console.log(value)}
+              name={'fullName'}
+              label={t('Full name')}
+              sx={registerStyles.textInput}
             />
 
             <DatePickerInput
@@ -145,6 +142,16 @@ const Register = () => {
               name={'birthday'}
               label={t('Birthday')}
               width={500}
+            />
+
+            <MultiSelectInput
+              control={control}
+              required
+              name={'authorities'}
+              label={t('Authorities')}
+              data={selectValue}
+              width={500}
+              onChange={value => console.log(value)}
             />
 
             <FileInput

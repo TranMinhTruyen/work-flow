@@ -17,3 +17,5 @@ export const EXCEL_FILE_TYPE: Accept = {
 export const TEXT_FILE_TYPE: Accept = {
   'text/plain': [],
 };
+
+export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;

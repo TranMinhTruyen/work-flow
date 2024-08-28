@@ -3,11 +3,11 @@ import UncontrolledSelectInput, {
   SelectInputProps as UncontrolledSelectInputProps,
 } from 'components/input/SelectInput';
 import { useCallback } from 'react';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 
 export type SelectInputProps = UncontrolledSelectInputProps & {
   name: string;
-  control?: UseControllerProps['control'];
+  control: Control;
   required?: boolean;
   helperText?: string;
 };
@@ -27,9 +27,9 @@ const SelectInput = (props: SelectInputProps) => {
   const checkRequired = useCallback(
     (value: string) => {
       if (required && isNullOrEmpry(value)) {
-        control?.setError(name, { type: 'required', message: `${label} is required!` });
+        control.setError(name, { type: 'required', message: `${label} is required!` });
       } else {
-        control?.setError(name, { type: 'valid' });
+        control.setError(name, { type: 'valid' });
       }
     },
     [control, label, name, required]
@@ -37,11 +37,11 @@ const SelectInput = (props: SelectInputProps) => {
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
-      checkRequired(value);
+      control.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);
     },
-    [checkRequired, onChangeProps]
+    [control, name, onChangeProps]
   );
 
   const handleOnBlur = useCallback(

@@ -3,11 +3,11 @@ import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
 } from 'components/input/FileInput';
 import { useCallback } from 'react';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 
 export type FileInputProps = UncontrolledFileInputProps & {
   name: string;
-  control?: UseControllerProps['control'];
+  control: Control;
   required?: boolean;
 };
 
@@ -36,11 +36,11 @@ const FileInput = (props: FileInputProps) => {
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: FileInputData[]) => {
-      checkRequired(value);
+      control?.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);
     },
-    [checkRequired, onChangeProps]
+    [control, name, onChangeProps]
   );
 
   const handleOnBlur = useCallback(

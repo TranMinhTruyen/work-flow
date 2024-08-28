@@ -1,12 +1,12 @@
 import UncontrolledMultiSelectInput from 'components/input/MultiSelectInput';
 import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/input/MultiSelectInput';
 import { useCallback } from 'react';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 
 export type MultiSelectInputProps = UncontrolledMultiSelectInputProps & {
   name: string;
   label?: string;
-  control?: UseControllerProps['control'];
+  control: Control;
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
@@ -34,11 +34,11 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string[]) => {
-      checkRequired(value);
+      control?.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);
     },
-    [checkRequired, onChangeProps]
+    [control, name, onChangeProps]
   );
 
   const handleOnBlur = useCallback(

@@ -1,13 +1,14 @@
+import { EMAIL_PATTERN } from 'common/constants/commonConst';
 import { isNullOrEmpry } from 'common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
 } from 'components/input/TextInput';
 import { useCallback } from 'react';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 
 export type TextInputProps = UncontrolledTextInputProps & {
   name: string;
-  control?: UseControllerProps['control'];
+  control: Control;
   defaultValue?: string | number | boolean;
   messageErr?: string;
 };
@@ -28,43 +29,37 @@ const TextInput = (props: TextInputProps) => {
   } = props;
 
   const checkDataInput = useCallback(
-    (value: string): boolean => {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
-      if (type === 'email' && !emailPattern.test(value)) {
-        control?.setError(name, { type: 'format', message: `${label} format email error!` });
-        return false;
-      }
-      return true;
-    },
-    [control, label, name, type]
-  );
-
-  const checkRequired = useCallback(
     (value: string) => {
       if (required && isNullOrEmpry(value)) {
-        control?.setError(name, { type: 'required', message: `${label} is required!` });
-      } else if (checkDataInput(value)) {
-        control?.setError(name, { type: 'valid' });
+        control.setError(name, { type: 'required', message: `${label} is required!` });
+        return;
       }
+
+      if (type === 'email' && !EMAIL_PATTERN.test(value)) {
+        control.setError(name, { type: 'format', message: `${label} format email error!` });
+        return;
+      }
+
+      control.setError(name, { type: 'valid' });
     },
-    [checkDataInput, control, label, name, required]
+    [control, label, name, required, type]
   );
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
-      checkRequired(value);
+      control.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);
     },
-    [checkRequired, onChangeProps]
+    [control, name, onChangeProps]
   );
 
   const handleOnBlur = useCallback(
     (value: string) => {
-      checkRequired(value);
+      checkDataInput(value);
       onBlurProps?.(value);
     },
-    [checkRequired, onBlurProps]
+    [checkDataInput, onBlurProps]
   );
 
   return (
