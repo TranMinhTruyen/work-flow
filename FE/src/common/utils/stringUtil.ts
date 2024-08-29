@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import { DateType } from './dateUtil';
 
-export const isNullOrEmpry = (value?: string | null ) => {
+export const isNullOrEmpty = (value?: string | null) => {
   return _.isNil(value) || _.isEmpty(value);
 };

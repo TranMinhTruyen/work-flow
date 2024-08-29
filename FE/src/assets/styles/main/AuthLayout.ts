@@ -1,9 +1,8 @@
 const authStyles = {
   rootContainer: {
-    height: '100vh',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    minHeight: '100vh',
   },
 };
 export default authStyles;

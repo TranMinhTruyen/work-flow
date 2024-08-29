@@ -4,61 +4,61 @@ import IContent from 'model/draganddrop/Content';
 
 export const issueTypeSelect: SelectDataType[] = [
   {
-    key: 0,
+    key: '0',
     value: 'Error',
   },
   {
-    key: 1,
+    key: '1',
     value: 'Info',
   },
   {
-    key: 2,
+    key: '2',
     value: 'Warning',
   },
 ];
 
 export const statusTypeSelect: SelectDataType[] = [
   {
-    key: 0,
+    key: '0',
     value: 'Open',
   },
   {
-    key: 1,
+    key: '1',
     value: 'In progress',
   },
   {
-    key: 2,
+    key: '2',
     value: 'Done',
   },
   {
-    key: 3,
+    key: '3',
     value: 'Review',
   },
   {
-    key: 4,
+    key: '4',
     value: 'Close',
   },
 ];
 
 export const assigneeSelect: SelectDataType[] = [
   {
-    key: 0,
+    key: '0',
     value: 'Assignee 1',
   },
   {
-    key: 1,
+    key: '1',
     value: 'Assignee 2',
   },
   {
-    key: 2,
+    key: '2',
     value: 'Assignee 3',
   },
   {
-    key: 3,
+    key: '3',
     value: 'Assignee 4',
   },
   {
-    key: 4,
+    key: '4',
     value: 'Assignee 5',
   },
 ];

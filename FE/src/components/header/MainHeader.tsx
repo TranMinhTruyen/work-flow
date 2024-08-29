@@ -27,7 +27,7 @@ type AppBarProps = MuiAppBarProps & {
   open?: boolean;
 };
 
-const Header = (props: IHeaderProps) => {
+const MainHeader = (props: IHeaderProps) => {
   const { drawerWidth } = props;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -112,7 +112,7 @@ const Header = (props: IHeaderProps) => {
     </AppBar>
   );
 };
-export default memo(Header);
+export default memo(MainHeader);
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',

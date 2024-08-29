@@ -7,7 +7,7 @@ import { StrictMode } from 'react';
 import { CssBaseline } from '@mui/material';
 import './i18n.ts';
 import store from './common/store';
-import DialogContainer from './components/dialog/DialogContainer';
+import PopupDialogContainer from 'components/dialog/PopupDialogContainer.tsx';
 
 const render = async () => {
   const rootNode = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -16,7 +16,7 @@ const render = async () => {
     <StrictMode>
       <Provider store={store}>
         <App />
-        <DialogContainer />
+        <PopupDialogContainer />
         <CssBaseline />
       </Provider>
     </StrictMode>

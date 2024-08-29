@@ -1,5 +1,6 @@
 import { EMAIL_PATTERN } from 'common/constants/commonConst';
-import { isNullOrEmpry } from 'common/utils/stringUtil';
+import useCheckRequired from 'common/hooks/useCheckRequied';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
 } from 'components/input/TextInput';
@@ -28,22 +29,7 @@ const TextInput = (props: TextInputProps) => {
     ...restProps
   } = props;
 
-  const checkDataInput = useCallback(
-    (value: string) => {
-      if (required && isNullOrEmpry(value)) {
-        control.setError(name, { type: 'required', message: `${label} is required!` });
-        return;
-      }
-
-      if (type === 'email' && !EMAIL_PATTERN.test(value)) {
-        control.setError(name, { type: 'format', message: `${label} format email error!` });
-        return;
-      }
-
-      control.setError(name, { type: 'valid' });
-    },
-    [control, label, name, required, type]
-  );
+  const { checkDataInput } = useCheckRequired<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {

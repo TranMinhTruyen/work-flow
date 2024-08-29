@@ -1,3 +1,4 @@
+import useCheckRequired from 'common/hooks/useCheckRequied';
 import UncontrolledMultiSelectInput from 'components/input/MultiSelectInput';
 import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/input/MultiSelectInput';
 import { useCallback } from 'react';
@@ -21,16 +22,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     ...restProps
   } = props;
 
-  const checkRequired = useCallback(
-    (value: string[]) => {
-      if (required && value.length === 0) {
-        control?.setError(name, { type: 'required', message: `${label} is required!` });
-      } else {
-        control?.setError(name, { type: 'valid' });
-      }
-    },
-    [control, label, name, required]
-  );
+  const { checkDataInput } = useCheckRequired<string[]>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string[]) => {
@@ -43,10 +35,10 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 
   const handleOnBlur = useCallback(
     (value: string[]) => {
-      checkRequired(value);
+      checkDataInput(value);
       onBlurProps?.(value);
     },
-    [checkRequired, onBlurProps]
+    [checkDataInput, onBlurProps]
   );
 
   return (

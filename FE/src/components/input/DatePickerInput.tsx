@@ -6,7 +6,9 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateType } from 'common/utils/dateUtil';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
-import { isNullOrEmpry } from 'common/utils/stringUtil';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
+import InputAdornment from '@mui/material/InputAdornment';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
@@ -70,17 +72,21 @@ const DatePickerInput = (props: DatePickerProps) => {
   );
 
   const handleOnBlur = useCallback(() => {
-    onBlur?.(moment(selectedDate).format(inputFormat));
+    onBlur?.(
+      isNullOrEmpty(selectedDate?.toString()) ? '' : moment(selectedDate).format(inputFormat)
+    );
   }, [inputFormat, onBlur, selectedDate]);
 
   const handleOnFocus = useCallback(() => {
-    onFocus?.(moment(selectedDate).format(inputFormat));
+    onFocus?.(
+      isNullOrEmpty(selectedDate?.toString()) ? '' : moment(selectedDate).format(inputFormat)
+    );
   }, [inputFormat, onFocus, selectedDate]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <DatePicker
-        value={isNullOrEmpry(selectedDate?.toString()) ? null : moment(selectedDate, inputFormat)}
+        value={isNullOrEmpty(selectedDate?.toString()) ? null : moment(selectedDate, inputFormat)}
         views={views}
         format={inputFormat}
         openTo={openTo}
@@ -95,6 +101,13 @@ const DatePickerInput = (props: DatePickerProps) => {
             helperText: helperText,
             InputLabelProps: {
               shrink: true,
+            },
+            InputProps: {
+              startAdornment: (
+                <InputAdornment position={'start'} sx={{ marginBottom: '2px' }}>
+                  <CalendarMonthIcon />
+                </InputAdornment>
+              ),
             },
             sx: {
               '& .MuiInputLabel-root': {

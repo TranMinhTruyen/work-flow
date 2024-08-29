@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
 import { TIME_OUT } from 'common/constants/commonConst';
 import IBaseResponse from '../api/baseResponse';
 import { selectIsLoading, selectLoginData, toggleLoading } from 'common/commonSlice';
-import { openDialogContainer } from 'components/dialog/DialogContainer';
 import { ILoginResponse } from 'model/login/LoginModel';
 import { MessageType } from 'common/enums/MessageEnum';
 import { useNavigate } from 'react-router-dom';
+import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
 
 const axiosInstance = axios.create({
   baseURL: process.env.SERVER_URL,
@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 
 const whiteList: string[] = ['/api/user-account/login'];
 
-export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
+export const ApiProvider = ({ children }: { children: ReactElement }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const isLoading: boolean = useAppSelector(selectIsLoading);
   const loginData: ILoginResponse | undefined = useAppSelector(selectLoginData);
@@ -104,7 +104,7 @@ export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
           }
         }
 
-        openDialogContainer({
+        openPopupDialogContainer({
           type: 'message',
           title: 'Error',
           messageType: MessageType.ERROR,
@@ -117,7 +117,7 @@ export const ApiProvider = ({ children }: { children: React.ReactElement }) => {
     );
 
     setIsSet(true);
-  }, [dispatch, isLoading, isSet, loginData]);
+  }, [dispatch, isLoading, isSet, loginData, navigate]);
 
   return <>{isSet && children}</>;
 };

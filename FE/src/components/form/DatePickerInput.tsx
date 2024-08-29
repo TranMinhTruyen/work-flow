@@ -3,7 +3,7 @@ import UncontrolledDatePickerInput, {
   DatePickerProps as UncontrolledDatePickerProps,
 } from 'components/input/DatePickerInput';
 import { useCallback } from 'react';
-import { isNullOrEmpry } from 'common/utils/stringUtil';
+import useCheckRequired from 'common/hooks/useCheckRequied';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
@@ -24,16 +24,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
     ...restProps
   } = props;
 
-  const checkRequired = useCallback(
-    (value: string) => {
-      if (required && (value === inputFormat || isNullOrEmpry(value))) {
-        control?.setError(name, { type: 'required', message: `${label} is required!` });
-      } else {
-        control?.setError(name, { type: 'valid' });
-      }
-    },
-    [control, inputFormat, label, name, required]
-  );
+  const { checkDataInput } = useCheckRequired<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
@@ -46,10 +37,10 @@ const DatePickerInput = (props: DatePickerInputProps) => {
 
   const handleOnBlur = useCallback(
     (value: string) => {
-      checkRequired(value);
+      checkDataInput(value);
       onBlurProps?.(value);
     },
-    [checkRequired, onBlurProps]
+    [checkDataInput, onBlurProps]
   );
 
   return (

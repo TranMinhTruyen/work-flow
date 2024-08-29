@@ -1,10 +1,8 @@
-import { useAppDispatch, useAppSelector } from 'common/store';
 import FloatButton from 'components/button/FloatButton';
-import { memo, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { selectOpenConfirmDialog, toggleConfirmDialog } from 'common/commonSlice';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -14,7 +12,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { MessageType } from 'common/enums/MessageEnum';
 
-export type ConfirmDialogProps = Omit<DialogProps, 'open'> & {
+export type PopupConfirmDialogProps = DialogProps & {
   title?: string | JSX.Element;
   message?: string | JSX.Element;
   messageType?: MessageType;
@@ -25,8 +23,9 @@ export type ConfirmDialogProps = Omit<DialogProps, 'open'> & {
   onCancel?: () => void;
 };
 
-const ConfirmDialog = (props: ConfirmDialogProps) => {
+const PopupConfirmDialog = (props: PopupConfirmDialogProps) => {
   const {
+    open,
     title,
     message,
     messageType,
@@ -37,22 +36,14 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     onCancel,
     ...restProps
   } = props;
-  const openDialog = useAppSelector(selectOpenConfirmDialog);
-  const dispatch = useAppDispatch();
 
   const handleConfirmClick = useCallback(() => {
-    if (onConfirm) {
-      onConfirm();
-    }
-    dispatch(toggleConfirmDialog(false));
-  }, [dispatch, onConfirm]);
+    onConfirm?.();
+  }, [onConfirm]);
 
   const handleCancelClick = useCallback(() => {
-    if (onCancel) {
-      onCancel();
-    }
-    dispatch(toggleConfirmDialog(false));
-  }, [dispatch, onCancel]);
+    onCancel?.();
+  }, [onCancel]);
 
   const icon = useMemo(() => {
     switch (messageType) {
@@ -100,7 +91,14 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
   }, [cancelText, handleCancelClick, showCancelButton]);
 
   return (
-    <Dialog keepMounted open={openDialog} {...restProps} fullWidth={true} maxWidth={'xs'}>
+    <Dialog
+      keepMounted
+      open={open}
+      fullWidth={true}
+      maxWidth={'xs'}
+      onClose={handleCancelClick}
+      {...restProps}
+    >
       <Box sx={{ padding: '10px' }}>
         <Stack alignItems={'center'} justifyContent={'center'} direction={'row'} spacing={1}>
           <Typography sx={{ fontSize: 25 }}>{title ?? null}</Typography>
@@ -138,4 +136,4 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
   );
 };
 
-export default memo(ConfirmDialog);
+export default PopupConfirmDialog;

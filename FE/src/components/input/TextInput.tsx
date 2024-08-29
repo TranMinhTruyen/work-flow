@@ -1,6 +1,7 @@
-import { styled } from '@mui/material';
+import { InputAdornment, styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { ChangeEvent, FocusEvent, useLayoutEffect, useState } from 'react';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
   label?: string;
@@ -51,6 +52,13 @@ const TextInput = (props: TextInputProps) => {
       label={label}
       InputLabelProps={{
         shrink: true,
+      }}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position={'start'}>
+            <TextFieldsIcon />
+          </InputAdornment>
+        ),
       }}
       {...restProps}
     />

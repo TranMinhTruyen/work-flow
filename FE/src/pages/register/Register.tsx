@@ -4,10 +4,9 @@ import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import IconButton from '@mui/material/IconButton';
 import KeyIcon from '@mui/icons-material/Key';
 import FloatButton from 'components/button/FloatButton';
 import { IRegisterForm } from 'model/register/registerForm';
@@ -24,6 +23,9 @@ import { SelectDataType } from 'common/constants/type';
 import { useTranslation } from 'react-i18next';
 import DatePickerInput from 'components/form/DatePickerInput';
 import EmailIcon from '@mui/icons-material/Email';
+import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
+import IconButton from '@mui/material/IconButton';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 export const selectValue: SelectDataType[] = [
   {
@@ -49,6 +51,23 @@ const Register = () => {
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { setHeaderContent } = useAuthHeader();
+
+  useLayoutEffect(() => {
+    // Set button back for header
+    setHeaderContent(
+      <IconButton
+        onClick={() => navigate('/auth/login')}
+        sx={{ width: '50px', height: '50px' }}
+        color={'primary'}
+      >
+        <ChevronLeftIcon fontSize={'large'} />
+      </IconButton>
+    );
+
+    // Remove button when unmount
+    return () => setHeaderContent(null);
+  }, [navigate, setHeaderContent, t]);
 
   const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({
     defaultValues: {
@@ -168,17 +187,6 @@ const Register = () => {
 
         <CardActions sx={registerStyles.footer}>
           <Stack direction={'row'} spacing={5}>
-            <FloatButton
-              onClick={() => navigate('/auth/login')}
-              label={
-                <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  {t('Back')}
-                </Typography>
-              }
-              sx={registerStyles.button}
-              form={'register-form'}
-            />
-
             <FloatButton
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>

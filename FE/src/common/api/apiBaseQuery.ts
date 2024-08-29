@@ -2,9 +2,9 @@ import { AxiosRequestConfig, ResponseType } from 'axios';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import IBaseResponse from './baseResponse';
-import { openDialogContainer } from 'components/dialog/DialogContainer';
 import { toggleLoading } from 'common/commonSlice';
 import axiosInstance from '../provider/ApiProvider';
+import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
 
 const apiBaseQuery =
   (
@@ -30,7 +30,7 @@ const apiBaseQuery =
         timeout: 180000,
       };
 
-      openDialogContainer({
+      openPopupDialogContainer({
         type: 'loading',
         onConfirm: () => {},
       });

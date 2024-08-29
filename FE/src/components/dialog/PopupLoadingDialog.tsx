@@ -1,12 +1,11 @@
 import { useAppSelector } from 'common/store';
 import { selectIsLoading } from 'common/commonSlice';
-import { memo } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const LoadingDialog = () => {
+const PopupLoadingDialog = () => {
   const isLoading = useAppSelector(selectIsLoading);
   return (
     <Dialog keepMounted open={isLoading} maxWidth={'xs'}>
@@ -18,4 +17,4 @@ const LoadingDialog = () => {
     </Dialog>
   );
 };
-export default memo(LoadingDialog);
+export default PopupLoadingDialog;

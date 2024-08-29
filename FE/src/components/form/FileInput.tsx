@@ -1,4 +1,5 @@
 import { FileInputData } from 'common/constants/type';
+import useCheckRequired from 'common/hooks/useCheckRequied';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
 } from 'components/input/FileInput';
@@ -23,16 +24,7 @@ const FileInput = (props: FileInputProps) => {
     ...restProps
   } = props;
 
-  const checkRequired = useCallback(
-    (value: FileInputData[]) => {
-      if (required && value.length === 0) {
-        control?.setError(name, { type: 'required', message: `${label} is required!` });
-      } else {
-        control?.setError(name, { type: 'valid' });
-      }
-    },
-    [control, label, name, required]
-  );
+  const { checkDataInput } = useCheckRequired<FileInputData[]>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: FileInputData[]) => {
@@ -45,10 +37,10 @@ const FileInput = (props: FileInputProps) => {
 
   const handleOnBlur = useCallback(
     (value: FileInputData[]) => {
-      checkRequired(value);
+      checkDataInput(value);
       onBlurProps?.(value);
     },
-    [checkRequired, onBlurProps]
+    [checkDataInput, onBlurProps]
   );
 
   return (

@@ -1,4 +1,5 @@
-import { isNullOrEmpry } from 'common/utils/stringUtil';
+import useCheckRequired from 'common/hooks/useCheckRequied';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledSelectInput, {
   SelectInputProps as UncontrolledSelectInputProps,
 } from 'components/input/SelectInput';
@@ -24,16 +25,7 @@ const SelectInput = (props: SelectInputProps) => {
     ...restProps
   } = props;
 
-  const checkRequired = useCallback(
-    (value: string) => {
-      if (required && isNullOrEmpry(value)) {
-        control.setError(name, { type: 'required', message: `${label} is required!` });
-      } else {
-        control.setError(name, { type: 'valid' });
-      }
-    },
-    [control, label, name, required]
-  );
+  const { checkDataInput } = useCheckRequired<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
@@ -46,10 +38,10 @@ const SelectInput = (props: SelectInputProps) => {
 
   const handleOnBlur = useCallback(
     (value: string) => {
-      checkRequired(value);
+      checkDataInput(value);
       onBlurProps?.(value);
     },
-    [checkRequired, onBlurProps]
+    [checkDataInput, onBlurProps]
   );
 
   return (

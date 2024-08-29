@@ -1,5 +1,5 @@
 import { ILoginResponse } from 'model/login/LoginModel';
-import { isNullOrEmpry } from './utils/stringUtil';
+import { isNullOrEmpty } from './utils/stringUtil';
 import store from './store';
 import { setLoginData } from './commonSlice';
 
@@ -11,11 +11,11 @@ import { setLoginData } from './commonSlice';
 export const checkLogin = () => {
   let login = localStorage.getItem('login');
 
-  if (isNullOrEmpry(login)) {
+  if (isNullOrEmpty(login)) {
     login = sessionStorage.getItem('login');
   }
 
-  if (!isNullOrEmpry(login)) {
+  if (!isNullOrEmpty(login)) {
     const data: ILoginResponse = JSON.parse(login);
     store.dispatch(setLoginData(data));
     return true;

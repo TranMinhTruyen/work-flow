@@ -4,7 +4,7 @@ import { useAppSelector } from 'common/store';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { selectOpenDrawer } from 'common/commonSlice';
 import Drawer from 'components/drawer/Drawer';
-import Header from 'components/header/Header';
+import MainHeader from 'components/header/MainHeader';
 
 const DRAWER_WIDTH: number = 250;
 
@@ -13,7 +13,7 @@ const MainLayout = () => {
 
   return (
     <Grid2>
-      <Header drawerWidth={DRAWER_WIDTH} />
+      <MainHeader drawerWidth={DRAWER_WIDTH} />
       <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
       <ScreenLayout openDrawer={openDrawer}>
         <Outlet />
