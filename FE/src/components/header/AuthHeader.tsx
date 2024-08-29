@@ -1,5 +1,6 @@
 import Stack from '@mui/material/Stack';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Typography from '@mui/material/Typography';
+import authStyles from 'assets/styles/authStyles';
 import { selectLanguage, setLanguage } from 'common/commonSlice';
 import { SelectDataType } from 'common/constants/type';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
@@ -24,7 +25,7 @@ export const languageTypeSelect: SelectDataType[] = [
 ];
 
 const AuthHeader = () => {
-  const { headerContent } = useAuthHeader();
+  const { headerContent, headerTitle } = useAuthHeader();
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const language: string = useAppSelector(selectLanguage);
@@ -41,11 +42,18 @@ const AuthHeader = () => {
   );
 
   return (
-    <Stack direction={'row'} spacing={2}>
-      <Grid2 container spacing={2} alignItems={'center'} justifyContent={'center'}>
+    <Stack direction={'row'} sx={authStyles.header}>
+      <Stack direction={'row'} spacing={2} sx={authStyles.headerContent}>
         {headerContent}
-      </Grid2>
-      <Stack direction={'row'} justifyContent={'flex-end'} width={'100%'}>
+      </Stack>
+
+      <Stack sx={authStyles.headerTitle}>
+        <Typography variant={'h4'} sx={authStyles.textTitle}>
+          {headerTitle}
+        </Typography>
+      </Stack>
+
+      <Stack direction={'row'} sx={authStyles.headerSelect}>
         <SelectInput
           width={150}
           data={languageTypeSelect}

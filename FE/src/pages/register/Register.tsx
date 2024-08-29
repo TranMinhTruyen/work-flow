@@ -1,4 +1,3 @@
-import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -15,9 +14,8 @@ import TextInput from 'components/form/TextInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
 import FileInput from 'components/form/FileInput';
 import { IMAGE_FILE_TYPE } from 'common/constants/commonConst';
-import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
-import registerStyles from 'assets/styles/login/registerStyles';
+import registerStyles from 'assets/styles/registerStyles';
 import { useNavigate } from 'react-router-dom';
 import { SelectDataType } from 'common/constants/type';
 import { useTranslation } from 'react-i18next';
@@ -46,14 +44,32 @@ export const selectValue: SelectDataType[] = [
   },
 ];
 
+export const languageTypeSelect: SelectDataType[] = [
+  {
+    key: 'EN',
+    value: 'English',
+  },
+  {
+    key: 'VI',
+    value: 'Việt Nam',
+  },
+  {
+    key: 'JP',
+    value: 'Japan',
+  },
+];
+
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { setHeaderContent } = useAuthHeader();
+  const { setHeaderTitle, setHeaderContent } = useAuthHeader();
 
   useLayoutEffect(() => {
+    // Set title for header
+    setHeaderTitle(t('Register'));
+
     // Set button back for header
     setHeaderContent(
       <IconButton
@@ -65,9 +81,12 @@ const Register = () => {
       </IconButton>
     );
 
-    // Remove button when unmount
-    return () => setHeaderContent(null);
-  }, [navigate, setHeaderContent, t]);
+    // Remove when unmount
+    return () => {
+      setHeaderTitle(null);
+      setHeaderContent(null);
+    };
+  }, [navigate, setHeaderContent, setHeaderTitle, t]);
 
   const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({
     defaultValues: {
@@ -81,125 +100,111 @@ const Register = () => {
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
-      <Card elevation={5} sx={{ width: 700, maxWidth: 700 }}>
-        <CardHeader
-          sx={registerStyles.header}
-          title={
-            <Typography variant="h4" align="center" sx={registerStyles.textTitle}>
-              {t('Register')}
-            </Typography>
-          }
-        />
+      <CardContent>
+        <Stack alignItems={'center'} spacing={3}>
+          <TextInput
+            control={control}
+            name={'username'}
+            label={t('Username')}
+            required
+            sx={registerStyles.textInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position={'start'}>
+                  <AccountCircleIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
 
-        <Divider />
+          <TextInput
+            control={control}
+            name={'password'}
+            label={t('Password')}
+            required
+            type={isShowPassword ? 'text' : 'password'}
+            sx={registerStyles.textInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position={'start'}>
+                  <KeyIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position={'end'}>
+                  <IconButton onClick={handleClickShowPassword} edge={'end'}>
+                    {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-        <CardContent>
-          <Stack alignItems={'center'} spacing={3}>
-            <TextInput
-              control={control}
-              name={'username'}
-              label={t('Username')}
-              required
-              sx={registerStyles.textInput}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position={'start'}>
-                    <AccountCircleIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <TextInput
+            control={control}
+            name={'email'}
+            label={t('Email')}
+            type={'email'}
+            sx={registerStyles.textInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position={'start'}>
+                  <EmailIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
 
-            <TextInput
-              control={control}
-              name={'password'}
-              label={t('Password')}
-              required
-              type={isShowPassword ? 'text' : 'password'}
-              sx={registerStyles.textInput}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position={'start'}>
-                    <KeyIcon />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position={'end'}>
-                    <IconButton onClick={handleClickShowPassword} edge={'end'}>
-                      {isShowPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <TextInput
+            control={control}
+            name={'fullName'}
+            label={t('Full name')}
+            sx={registerStyles.textInput}
+          />
 
-            <TextInput
-              control={control}
-              name={'email'}
-              label={t('Email')}
-              type={'email'}
-              sx={registerStyles.textInput}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position={'start'}>
-                    <EmailIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <DatePickerInput
+            control={control}
+            required
+            name={'birthday'}
+            label={t('Birthday')}
+            width={500}
+          />
 
-            <TextInput
-              control={control}
-              name={'fullName'}
-              label={t('Full name')}
-              sx={registerStyles.textInput}
-            />
+          <MultiSelectInput
+            control={control}
+            required
+            name={'authorities'}
+            label={t('Authorities')}
+            data={selectValue}
+            width={500}
+          />
 
-            <DatePickerInput
-              control={control}
-              required
-              name={'birthday'}
-              label={t('Birthday')}
-              width={500}
-            />
+          <FileInput
+            control={control}
+            name={'image'}
+            label={t('Upload image')}
+            acceptFile={IMAGE_FILE_TYPE}
+            width={500}
+          />
+        </Stack>
+      </CardContent>
 
-            <MultiSelectInput
-              control={control}
-              required
-              name={'authorities'}
-              label={t('Authorities')}
-              data={selectValue}
-              width={500}
-              onChange={value => console.log(value)}
-            />
+      <Divider />
 
-            <FileInput
-              control={control}
-              name={'image'}
-              label={t('Upload image')}
-              acceptFile={IMAGE_FILE_TYPE}
-              width={500}
-            />
-          </Stack>
-        </CardContent>
-
-        <Divider />
-
-        <CardActions sx={registerStyles.footer}>
-          <Stack direction={'row'} spacing={5}>
-            <FloatButton
-              label={
-                <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  {t('Register')}
-                </Typography>
-              }
-              sx={registerStyles.button}
-              form={'register-form'}
-              type={'submit'}
-            />
-          </Stack>
-        </CardActions>
-      </Card>
+      <CardActions sx={registerStyles.footer}>
+        <Stack direction={'row'} spacing={5}>
+          <FloatButton
+            label={
+              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                {t('Register')}
+              </Typography>
+            }
+            sx={registerStyles.button}
+            form={'register-form'}
+            type={'submit'}
+          />
+        </Stack>
+      </CardActions>
     </form>
   );
 };

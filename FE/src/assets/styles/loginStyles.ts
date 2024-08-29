@@ -1,17 +1,4 @@
 const loginStyles = {
-  header: {
-    height: 70,
-    display: 'flex',
-    alignItems: 'center',
-  },
-
-  textTitle: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    width: '100%',
-  },
-
   avatar: {
     width: 150,
     maxWidth: 150,

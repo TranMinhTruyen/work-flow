@@ -1,17 +1,4 @@
 const registerStyles = {
-  header: {
-    height: 70,
-    display: 'flex',
-    alignItems: 'center',
-  },
-
-  textTitle: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    width: '100%',
-  },
-
   textInput: {
     width: 500,
     maxWidth: 500,

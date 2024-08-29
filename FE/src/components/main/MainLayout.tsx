@@ -28,9 +28,7 @@ interface ScreenLayoutProps {
   openDrawer: boolean;
 }
 
-const ScreenLayout = styled(Grid2, {
-  shouldForwardProp: prop => prop !== 'openDrawer',
-})<ScreenLayoutProps>(({ theme, openDrawer }) => ({
+const ScreenLayout = styled(Grid2)<ScreenLayoutProps>(({ theme, openDrawer }) => ({
   zIndex: theme.zIndex.drawer + 1,
   marginTop: 75,
   paddingLeft: 10,
