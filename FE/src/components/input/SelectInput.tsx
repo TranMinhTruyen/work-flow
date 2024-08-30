@@ -104,7 +104,15 @@ const SelectInput = (props: SelectInputProps) => {
           if (renderValue === undefined) {
             return <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>;
           }
-          return <Chip label={renderValue.value} />;
+          return (
+            <Chip
+              color={'primary'}
+              label={renderValue.value}
+              sx={{
+                height: '30px',
+              }}
+            />
+          );
         }}
         MenuProps={MenuProps}
         {...restProps}

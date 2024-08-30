@@ -22,7 +22,7 @@ public class UserAccountHistory extends AbstractDocument implements Serializable
   private ChangeValue email;
 
   @Field(name = "login_password", write = Write.ALWAYS)
-  private ChangeValue loginPassword;
+  private ChangeValue password;
 
   @Field(name = "full_name", write = Write.ALWAYS)
   private ChangeValue fullName;

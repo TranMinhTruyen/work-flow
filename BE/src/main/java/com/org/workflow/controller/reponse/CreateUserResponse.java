@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CreateUserAccountResponse {
+public class CreateUserResponse {
 
-  private String username;
+  private String userName;
 
   private String fullName;
 

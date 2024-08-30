@@ -5,7 +5,7 @@ export interface ILoginResponse {
 }
 
 export interface ILoginRequest {
-  username?: string;
+  userName?: string;
   password?: string;
   isRemember?: boolean;
 }

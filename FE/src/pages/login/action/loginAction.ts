@@ -3,6 +3,7 @@ import store from 'common/store';
 import { ILoginForm } from 'model/login/LoginForm';
 import { ILoginRequest, ILoginResponse } from 'model/login/LoginModel';
 import { loginService } from './loginService';
+import { encryptWithRSA } from 'common/authServices';
 
 /**
  * Handle click submit button.
@@ -10,9 +11,8 @@ import { loginService } from './loginService';
  */
 export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
   const loginRequest: ILoginRequest = {
-    username: data.username,
-    password: data.password,
-    isRemember: data.isRemember,
+    ...data,
+    password: encryptWithRSA(data.password),
   };
 
   const response = await store

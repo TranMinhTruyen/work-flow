@@ -33,10 +33,13 @@ public enum MessageEnum {
   ITEM_MASTER_EXISTS("ERROR", "E0005", "Item master already exists", HttpStatus.CONFLICT),
 
   CREATE_USER_ACCOUNT_SUCCESS("SUCCESS", "UA001", "Create username: {0} success!", HttpStatus.OK),
+  
+  WRITE_FILE_ERROR("ERROR", "E9999", "Write file: {0} error!", HttpStatus.INTERNAL_SERVER_ERROR),
 
 
   //@formatter:on
   ;
+
   private final String messageType;
 
   private final String messageCode;

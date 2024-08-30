@@ -3,12 +3,12 @@ package com.org.workflow.controller;
 import com.org.workflow.common.cnst.CoreConst;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
-import com.org.workflow.controller.reponse.CreateUserAccountResponse;
+import com.org.workflow.controller.reponse.CreateUserResponse;
 import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.reponse.UpdateUserResponse;
 import com.org.workflow.controller.reponse.UserAccountResponse;
 import com.org.workflow.controller.request.ChangePasswordRequest;
-import com.org.workflow.controller.request.CreateUserAccountRequest;
+import com.org.workflow.controller.request.CreateUserRequest;
 import com.org.workflow.controller.request.LoginRequest;
 import com.org.workflow.controller.request.UpdateUserRequest;
 import com.org.workflow.core.exception.WorkFlowException;
@@ -40,7 +40,7 @@ public class UserAccountController extends AbstractController {
   /**
    * Create AppUser.
    *
-   * @param createUserAccountRequest CreateAppUserRequest
+   * @param createUserRequest CreateAppUserRequest
    * @return ResponseEntity<BaseResponse>
    * @throws WorkFlowException AppException
    */
@@ -52,11 +52,11 @@ public class UserAccountController extends AbstractController {
   })
   @PostMapping(value = "/create")
   public ResponseEntity<BaseResponse> createUserAccount(
-      @RequestBody CreateUserAccountRequest createUserAccountRequest)
+      @RequestBody CreateUserRequest createUserRequest)
       throws WorkFlowException {
-    CreateUserAccountResponse result = userService.createAppUser(createUserAccountRequest);
+    CreateUserResponse result = userService.createAppUser(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
-        result.getUsername());
+        result.getUserName());
   }
 
   /**

@@ -4,11 +4,11 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CreateUserAccountRequest {
+public class CreateUserRequest {
 
   private String email;
 
-  private String username;
+  private String userName;
 
   private String password;
 
@@ -20,6 +20,6 @@ public class CreateUserAccountRequest {
 
   private List<String> authorities;
 
-  private byte[] image;
+  private FileData image;
 
 }

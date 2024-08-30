@@ -19,3 +19,6 @@ export const TEXT_FILE_TYPE: Accept = {
 };
 
 export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+
+export const PUBLIC_RSA_KEY =
+  '-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJiJWaAKg7c+D918vcnuLImPJTmCEa+rxGGXzr/XPcYSHcZag0akfL6ZvISVaL62fyACtEKmFD8SNflqBXd0mlcCAwEAAQ==-----END PUBLIC KEY-----';

@@ -1,5 +1,5 @@
 export interface ILoginForm {
-  username?: string;
+  userName?: string;
   password?: string;
   isRemember?: boolean;
 }

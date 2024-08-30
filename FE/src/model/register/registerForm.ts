@@ -1,10 +1,12 @@
+import { FileInputData } from 'common/constants/type';
+
 export interface IRegisterForm {
-  username?: string;
-  loginPassword?: string;
+  userName?: string;
+  password?: string;
   email?: string;
   fullName?: string;
-  birthday?: string;
+  birthDay?: string;
   role?: string;
   authorities?: string[];
-  image?: Uint8Array;
+  image?: FileInputData[];
 }

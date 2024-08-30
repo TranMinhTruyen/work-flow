@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
   timeout: TIME_OUT,
 });
 
-const whiteList: string[] = ['/api/user-account/login'];
+const whiteList: string[] = ['/api/user-account/login', '/api/user-account/create'];
 
 export const ApiProvider = ({ children }: { children: ReactElement }) => {
   const [isSet, setIsSet] = useState<boolean>(false);

@@ -64,7 +64,7 @@ const Login = () => {
           <Avatar sx={loginStyles.avatar} />
 
           <TextInput
-            name={'username'}
+            name={'userName'}
             control={control}
             label={t('Username or email')}
             required

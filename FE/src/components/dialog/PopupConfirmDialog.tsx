@@ -1,5 +1,5 @@
 import FloatButton from 'components/button/FloatButton';
-import { useCallback, useMemo } from 'react';
+import { ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -13,8 +13,8 @@ import DialogActions from '@mui/material/DialogActions';
 import { MessageType } from 'common/enums/MessageEnum';
 
 export type PopupConfirmDialogProps = DialogProps & {
-  title?: string | JSX.Element;
-  message?: string | JSX.Element;
+  title?: string | ReactElement | ReactNode;
+  message?: string | ReactElement | ReactNode;
   messageType?: MessageType;
   cancelText?: string;
   confirmText?: string;

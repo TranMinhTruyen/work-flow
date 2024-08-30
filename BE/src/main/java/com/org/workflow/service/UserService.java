@@ -4,13 +4,15 @@ import com.google.common.hash.Hashing;
 import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.AuthUtil;
+import com.org.workflow.common.utils.FileUtil;
 import com.org.workflow.common.utils.HistoryUtil;
-import com.org.workflow.controller.reponse.CreateUserAccountResponse;
+import com.org.workflow.common.utils.RSAUtil;
+import com.org.workflow.controller.reponse.CreateUserResponse;
 import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.reponse.UpdateUserResponse;
 import com.org.workflow.controller.reponse.UserAccountResponse;
 import com.org.workflow.controller.request.ChangePasswordRequest;
-import com.org.workflow.controller.request.CreateUserAccountRequest;
+import com.org.workflow.controller.request.CreateUserRequest;
 import com.org.workflow.controller.request.LoginRequest;
 import com.org.workflow.controller.request.UpdateUserRequest;
 import com.org.workflow.core.exception.ErrorDetail;
@@ -29,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -50,43 +53,49 @@ public class UserService extends AbstractService {
 
   private static final String USER_ID_PREFIX = "WF";
 
-  public static final String ID_FULL_TIME = "HHmmssddMMyyyy";
+  public static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
+
+  @Value("${rsa.private-key}")
+  private String privateKey;
 
   /**
    * Create new user.
    *
-   * @param createUserAccountRequest CreateUserAccountRequest
-   * @return CreateUserAccountResponse
+   * @param createUserRequest CreateUserRequest
+   * @return CreateUserResponse
    * @throws WorkFlowException AppException
    */
-  public CreateUserAccountResponse createAppUser(CreateUserAccountRequest createUserAccountRequest)
+  public CreateUserResponse createAppUser(CreateUserRequest createUserRequest)
       throws WorkFlowException {
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(
-        createUserAccountRequest.getUsername());
+        createUserRequest.getUserName());
     if (result.isPresent()) {
       throw new WorkFlowException(MessageEnum.USER_NAME_EXISTS);
     }
     LocalDateTime now = LocalDateTime.now();
     UserAccount userAccount = new UserAccount();
 
-    String useId = USER_ID_PREFIX.concat(
+    String userId = USER_ID_PREFIX.concat(
         LocalDateTime.now().format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
-    userAccount.setUserId(useId);
-    userAccount.setUserName(createUserAccountRequest.getUsername());
+    userAccount.setUserId(userId);
+    userAccount.setUserName(createUserRequest.getUserName());
+
+    String passwordDecrypted = RSAUtil.decryptRSA(createUserRequest.getPassword(), privateKey);
+
     userAccount.setPassword(
-        Hashing.sha512()
-            .hashString(createUserAccountRequest.getPassword(), StandardCharsets.UTF_16)
-            .toString());
-    userAccount.setFullName(createUserAccountRequest.getFullName());
-    userAccount.setBirthDay(createUserAccountRequest.getBirthDay());
-    userAccount.setEmail(createUserAccountRequest.getEmail());
-    userAccount.setRole(createUserAccountRequest.getRole());
-    userAccount.setAuthorities(createUserAccountRequest.getAuthorities());
+        Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16).toString());
+    userAccount.setFullName(createUserRequest.getFullName());
+    userAccount.setBirthDay(createUserRequest.getBirthDay());
+    userAccount.setEmail(createUserRequest.getEmail());
+    userAccount.setRole(createUserRequest.getRole());
+    userAccount.setAuthorities(createUserRequest.getAuthorities());
+    userAccount.setImagePath(FileUtil.writeImage(createUserRequest.getImage().getData(),
+        userId + "_" + createUserRequest.getImage().getName()));
     userAccount.setIsActive(true);
     userAccount.setLoginFailCount(0);
-    userAccount.setCreatedBy(createUserAccountRequest.getFullName());
+    userAccount.setCreatedBy(createUserRequest.getFullName());
     userAccount.setCreateDatetime(now);
-    userAccount.setUpdateBy(createUserAccountRequest.getFullName());
+    userAccount.setUpdateBy(createUserRequest.getFullName());
     userAccount.setUpdateDatetime(now);
     UserAccount saveUserAccount = userAccountRepository.save(userAccount);
 
@@ -96,24 +105,23 @@ public class UserService extends AbstractService {
   }
 
   /**
-   * Create CreateUserAccountResponse
+   * Create CreateUserResponse
    *
    * @param saveUserAccount UserAccount
-   * @return CreateUserAccountResponse
+   * @return CreateUserResponse
    */
-  private static CreateUserAccountResponse getCreateUserAccountResponse(
-      UserAccount saveUserAccount) {
-    CreateUserAccountResponse createUserAccountResponse = new CreateUserAccountResponse();
-    createUserAccountResponse.setUsername(saveUserAccount.getUserName());
-    createUserAccountResponse.setFullName(saveUserAccount.getFullName());
-    createUserAccountResponse.setBirthDay(saveUserAccount.getBirthDay());
-    createUserAccountResponse.setRole(saveUserAccount.getRole());
-    createUserAccountResponse.setAuthorities(saveUserAccount.getAuthorities());
-    createUserAccountResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
-    createUserAccountResponse.setCreatedBy(saveUserAccount.getCreatedBy());
-    createUserAccountResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
-    createUserAccountResponse.setUpdateBy(saveUserAccount.getUpdateBy());
-    return createUserAccountResponse;
+  private static CreateUserResponse getCreateUserAccountResponse(UserAccount saveUserAccount) {
+    CreateUserResponse createUserResponse = new CreateUserResponse();
+    createUserResponse.setUserName(saveUserAccount.getUserName());
+    createUserResponse.setFullName(saveUserAccount.getFullName());
+    createUserResponse.setBirthDay(saveUserAccount.getBirthDay());
+    createUserResponse.setRole(saveUserAccount.getRole());
+    createUserResponse.setAuthorities(saveUserAccount.getAuthorities());
+    createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
+    createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
+    createUserResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
+    createUserResponse.setUpdateBy(saveUserAccount.getUpdateBy());
+    return createUserResponse;
   }
 
   /**
@@ -125,17 +133,18 @@ public class UserService extends AbstractService {
    */
   public LoginResponse login(LoginRequest loginRequest) throws WorkFlowException {
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(
-        loginRequest.getUsername());
-    UserAccount userAccount = result.orElseThrow(
-        () -> new WorkFlowException(MessageEnum.NOT_FOUND,
-            "Username: " + loginRequest.getUsername()));
+        loginRequest.getUserName());
+    UserAccount userAccount = result.orElseThrow(() -> new WorkFlowException(MessageEnum.NOT_FOUND,
+        "Username: " + loginRequest.getUserName()));
 
     if (!userAccount.getIsActive()) {
       throw new WorkFlowException(new ErrorDetail("Account is disable", HttpStatus.NOT_ACCEPTABLE));
     }
 
-    String loginPassword = Hashing.sha512()
-        .hashString(loginRequest.getPassword(), StandardCharsets.UTF_16).toString();
+    String passwordDecrypted = RSAUtil.decryptRSA(loginRequest.getPassword(), privateKey);
+
+    String loginPassword = Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16)
+        .toString();
 
     if (userAccount.getPassword().equals(loginPassword)) {
       LoginResponse loginResponse = new LoginResponse();
@@ -211,8 +220,7 @@ public class UserService extends AbstractService {
    * @throws NoSuchMethodException     NoSuchMethodException
    */
   public UpdateUserResponse updateUserAccount(UpdateUserRequest updateUserRequest)
-      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException,
-      NoSuchMethodException {
+      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userAccountRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount oldUserAccount = result.orElseThrow(
@@ -296,7 +304,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueAfter(after.getPassword());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
         changeValue.getFieldValueAfter(), changeType));
-    userAccountHistory.setLoginPassword(changeValue);
+    userAccountHistory.setPassword(changeValue);
 
     // Set change value for full name
     changeValue = new ChangeValue();

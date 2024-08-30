@@ -3,12 +3,11 @@ import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useLayoutEffect, useState } from 'react';
+import { memo, useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
 import FloatButton from 'components/button/FloatButton';
-import { IRegisterForm } from 'model/register/registerForm';
 import { useForm } from 'react-hook-form';
 import TextInput from 'components/form/TextInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
@@ -24,8 +23,13 @@ import EmailIcon from '@mui/icons-material/Email';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import SelectInput from 'components/form/SelectInput';
+import { handleSubmitRegister } from './action/registerAction';
+import { IRegisterForm } from 'model/register/RegisterForm';
+import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
+import { MessageType } from 'common/enums/MessageEnum';
 
-export const selectValue: SelectDataType[] = [
+export const authorities: SelectDataType[] = [
   {
     key: 'CREATE',
     value: 'Allow CREATE permission',
@@ -44,18 +48,14 @@ export const selectValue: SelectDataType[] = [
   },
 ];
 
-export const languageTypeSelect: SelectDataType[] = [
+export const role: SelectDataType[] = [
   {
-    key: 'EN',
-    value: 'English',
+    key: 'ADMIN',
+    value: 'Role Administrator',
   },
   {
-    key: 'VI',
-    value: 'Việt Nam',
-  },
-  {
-    key: 'JP',
-    value: 'Japan',
+    key: 'USER',
+    value: 'Role User',
   },
 ];
 
@@ -66,12 +66,8 @@ const Register = () => {
   const { t } = useTranslation();
   const { setHeaderTitle, setHeaderContent } = useAuthHeader();
 
-  useLayoutEffect(() => {
-    // Set title for header
-    setHeaderTitle(t('Register'));
-
-    // Set button back for header
-    setHeaderContent(
+  const backButton = useMemo(
+    () => (
       <IconButton
         onClick={() => navigate('/auth/login')}
         sx={{ width: '50px', height: '50px' }}
@@ -79,24 +75,44 @@ const Register = () => {
       >
         <ChevronLeftIcon fontSize={'large'} />
       </IconButton>
-    );
+    ),
+    [navigate]
+  );
+
+  useLayoutEffect(() => {
+    // Set title for header
+    setHeaderTitle(t('Register'));
+
+    // Set button back for header
+    setHeaderContent(backButton);
 
     // Remove when unmount
     return () => {
       setHeaderTitle(null);
       setHeaderContent(null);
     };
-  }, [navigate, setHeaderContent, setHeaderTitle, t]);
+  }, [backButton, navigate, setHeaderContent, setHeaderTitle, t]);
 
-  const { control, reset, trigger, handleSubmit } = useForm<IRegisterForm>({
-    defaultValues: {
-      authorities: [],
+  const { control, trigger, handleSubmit } = useForm<IRegisterForm>();
+
+  const handleRegister = useCallback(
+    async (formData: IRegisterForm) => {
+      await trigger();
+      const response = await handleSubmitRegister(formData);
+      if (response !== undefined) {
+        openPopupDialogContainer({
+          type: 'message',
+          title: 'SUCCESS',
+          messageType: MessageType.SUCCESS,
+          message: `Create username: ${response.userName} success`,
+          onConfirm: () => {
+            navigate('/auth/login');
+          },
+        });
+      }
     },
-  });
-
-  const handleRegister = useCallback(async (data: IRegisterForm) => {
-    console.log(data);
-  }, []);
+    [navigate, trigger]
+  );
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
@@ -104,7 +120,7 @@ const Register = () => {
         <Stack alignItems={'center'} spacing={3}>
           <TextInput
             control={control}
-            name={'username'}
+            name={'userName'}
             label={t('Username')}
             required
             sx={registerStyles.textInput}
@@ -165,8 +181,18 @@ const Register = () => {
           <DatePickerInput
             control={control}
             required
-            name={'birthday'}
+            name={'birthDay'}
             label={t('Birthday')}
+            width={500}
+          />
+
+          <SelectInput
+            control={control}
+            required
+            displayNone
+            name={'role'}
+            label={t('Role')}
+            data={role}
             width={500}
           />
 
@@ -175,7 +201,7 @@ const Register = () => {
             required
             name={'authorities'}
             label={t('Authorities')}
-            data={selectValue}
+            data={authorities}
             width={500}
           />
 
