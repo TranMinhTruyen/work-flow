@@ -40,5 +40,5 @@ const setToken = (loginResponse: ILoginResponse, isRemember: boolean = false) =>
     localStorage.setItem('login', JSON.stringify(loginResponse) ?? '');
   }
   store.dispatch(setLoginData(loginResponse));
-  store.dispatch(toggleLogin());
+  store.dispatch(toggleLogin(true));
 };

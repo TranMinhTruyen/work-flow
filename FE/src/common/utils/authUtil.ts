@@ -1,7 +1,7 @@
 import { ILoginResponse } from 'model/login/loginModel';
 import { isNullOrEmpty } from './stringUtil';
 import store from '../store';
-import { setLoginData } from '../commonSlice';
+import { setLoginData, toggleLogin } from '../commonSlice';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import forge from 'node-forge';
 
@@ -24,6 +24,7 @@ export const checkLogin = () => {
   if (!isNullOrEmpty(login)) {
     const data: ILoginResponse = JSON.parse(login);
     store.dispatch(setLoginData(data));
+    store.dispatch(toggleLogin(true));
     return true;
   }
 

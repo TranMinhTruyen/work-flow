@@ -8,7 +8,7 @@ const usePopupDialog = () => {
     open: false,
   });
 
-  const openDialog = useCallback((newState?: DialogContainerProps) => {
+  const openDialog = useCallback((newState: DialogContainerProps) => {
     setState(prev => ({
       ...prev,
       open: true,
@@ -34,7 +34,7 @@ const usePopupDialog = () => {
     }));
   }, [state.dialogState]);
 
-  // return all props og dialog
+  // return all props of dialog
   const dialogProps = useMemo(
     () => ({
       ...state.dialogState,

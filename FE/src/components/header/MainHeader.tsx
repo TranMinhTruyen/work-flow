@@ -18,6 +18,7 @@ import { Client } from '@stomp/stompjs';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
 import Stack from '@mui/material/Stack';
 import { getUserInfo } from './action/headerAction';
+import { RESET_ALL } from 'common/constants/commonConst';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -78,7 +79,8 @@ const MainHeader = (props: IHeaderProps) => {
 
   const handleLogout = useCallback(() => {
     navigate('/auth/login', { replace: true });
-  }, [navigate]);
+    dispatch({ type: RESET_ALL });
+  }, [dispatch, navigate]);
 
   return (
     <AppBar drawerWidth={drawerWidth} position="fixed" open={opendrawer}>

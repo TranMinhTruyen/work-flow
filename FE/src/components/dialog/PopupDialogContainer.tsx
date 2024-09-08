@@ -12,7 +12,7 @@ type DialogType = 'confirm' | 'loading' | 'message';
 export let openPopupDialogContainer = (_props: DialogContainerProps) => {};
 
 const PopupDialogContainer = () => {
-  const { isPropsNull, openDialog, dialogProps, dialogType } = usePopupDialog();
+  const { openDialog, dialogProps, isPropsNull, dialogType } = usePopupDialog();
 
   useEffect(() => {
     openPopupDialogContainer = (props: DialogContainerProps) => openDialog(props);

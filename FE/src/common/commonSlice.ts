@@ -40,10 +40,11 @@ export const commonSlice = createSlice({
         isOpenDrawer: !state.isOpenDrawer,
       };
     },
-    toggleLogin: state => {
+    toggleLogin: (state, action: PayloadAction<boolean>) => {
+      const { payload } = action;
       return {
         ...state,
-        isLogin: !state.isLogin,
+        isLogin: payload,
       };
     },
     toggleLoading: (state, action: PayloadAction<boolean>) => {
@@ -74,6 +75,9 @@ export const commonSlice = createSlice({
         userInfo: payload,
       };
     },
+    resetCommon: () => {
+      return initialState;
+    },
   },
 });
 
@@ -85,6 +89,7 @@ export const {
   toggleConfirmDialog,
   setLanguage,
   setUserInfo,
+  resetCommon,
 } = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;

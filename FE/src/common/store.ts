@@ -1,18 +1,27 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import boardSlice from '../pages/kanban-board/action/boardSlice';
 import baseApi from 'common/api/apiBaseQuery';
 import commonSlice from 'common/commonSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { RESET_ALL } from './constants/commonConst';
+
+const combineReducer = combineReducers({
+  [baseApi.reducerPath]: baseApi.reducer, // add Reducer from apiBaseQuery,
+  commonState: commonSlice,
+  boardState: boardSlice,
+});
+
+const rootReducer = (state: any, action: any) => {
+  if (RESET_ALL === action.type) {
+    state = undefined;
+  }
+  return combineReducer(state, action);
+};
 
 export const store = configureStore({
-  reducer: {
-    [baseApi.reducerPath]: baseApi.reducer, // add Reducer from apiBaseQuery,
-    commonState: commonSlice,
-    boardState: boardSlice,
-  },
-  // GetDefaultMiddleware and add Middleware from apiBaseQuery
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([baseApi.middleware]),
+  reducer: rootReducer,
+  middleware: gDM => gDM().concat([baseApi.middleware]), // GetDefaultMiddleware and add Middleware from apiBaseQuery
   devTools: true,
 });
 
