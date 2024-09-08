@@ -36,6 +36,8 @@ public enum MessageEnum {
   
   WRITE_FILE_ERROR("ERROR", "E9999", "Write file: {0} error!", HttpStatus.INTERNAL_SERVER_ERROR),
 
+  READ_FILE_ERROR("ERROR", "E9999", "Read file: {0} error!", HttpStatus.INTERNAL_SERVER_ERROR),
+
 
   //@formatter:on
   ;

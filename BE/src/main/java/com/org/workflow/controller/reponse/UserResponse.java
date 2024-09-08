@@ -1,5 +1,6 @@
 package com.org.workflow.controller.reponse;
 
+import com.org.workflow.controller.request.FileData;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountResponse implements Serializable {
+public class UserResponse implements Serializable {
 
   private String userId;
 
@@ -31,6 +32,8 @@ public class UserAccountResponse implements Serializable {
   private Boolean isActive;
 
   private List<String> authorities;
+
+  private FileData image;
 
   private LocalDateTime createDatetime;
 

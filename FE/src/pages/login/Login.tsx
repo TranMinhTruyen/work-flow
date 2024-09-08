@@ -5,7 +5,6 @@ import KeyIcon from '@mui/icons-material/Key';
 import { useNavigate } from 'react-router-dom';
 import TextInput from 'components/form/TextInput';
 import CheckBox from 'components/form/CheckboxInput';
-import { ILoginForm } from 'model/login/LoginForm';
 import { handleSubmitLogin } from './action/loginAction';
 import loginStyles from 'assets/styles/loginStyles';
 import Typography from '@mui/material/Typography';
@@ -21,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import FloatButton from 'components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
+import { ILoginForm } from 'model/login/loginForm';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

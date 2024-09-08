@@ -14,7 +14,7 @@ import IconButton from 'components/button/IconButton';
 import Avatar from '@mui/material/Avatar';
 import { memo, useCallback, MouseEvent } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
-import IContent from 'model/draganddrop/Content';
+import IContent from 'model/draganddrop/content';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;

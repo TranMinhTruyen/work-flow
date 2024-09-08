@@ -46,4 +46,5 @@ const useCheckRequired = <T>(props: UseCheckRequiredProps) => {
     checkDataInput,
   };
 };
+
 export default useCheckRequired;

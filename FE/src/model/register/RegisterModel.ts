@@ -17,6 +17,7 @@ export interface IRegisterResponse {
   birthDay?: string;
   role?: string;
   authorities?: string[];
+  imagePath?: string;
   createDatetime?: string;
   createdBy?: string;
   updateDatetime?: string;

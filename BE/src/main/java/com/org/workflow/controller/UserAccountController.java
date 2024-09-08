@@ -6,7 +6,7 @@ import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.reponse.CreateUserResponse;
 import com.org.workflow.controller.reponse.LoginResponse;
 import com.org.workflow.controller.reponse.UpdateUserResponse;
-import com.org.workflow.controller.reponse.UserAccountResponse;
+import com.org.workflow.controller.reponse.UserResponse;
 import com.org.workflow.controller.request.ChangePasswordRequest;
 import com.org.workflow.controller.request.CreateUserRequest;
 import com.org.workflow.controller.request.LoginRequest;
@@ -94,7 +94,7 @@ public class UserAccountController extends AbstractController {
   })
   @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile() throws WorkFlowException {
-    UserAccountResponse result = userService.getProfile();
+    UserResponse result = userService.getProfile();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 

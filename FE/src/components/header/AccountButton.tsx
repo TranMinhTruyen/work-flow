@@ -1,4 +1,4 @@
-import { memo, useState, MouseEvent } from 'react';
+import { memo, useState, MouseEvent, useLayoutEffect } from 'react';
 import IconButton from '../button/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
@@ -7,10 +7,13 @@ import { styled } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
+import { useAppSelector } from 'common/store';
+import { selectUserInfo } from 'common/commonSlice';
 
 const AccountButton = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const buttonImage = useAppSelector(selectUserInfo);
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -18,9 +21,26 @@ const AccountButton = () => {
     setAnchorEl(null);
   };
 
+  useLayoutEffect(() => {}, []);
+
   return (
     <>
-      <IconButton onClick={handleClick} badgeContent={1} icon={<AccountCircleIcon />} />
+      <IconButton
+        onClick={handleClick}
+        badgeContent={1}
+        sx={{
+          backgroundImage: buttonImage?.image
+            ? `url(data:image/png;base64,${buttonImage?.image?.data})`
+            : '',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          width: 40,
+          height: 40,
+          '&:hover': {
+            backgroundColor: 'transparent',
+          },
+        }}
+      />
       <StyledMenu
         anchorEl={anchorEl}
         id="account-menu"

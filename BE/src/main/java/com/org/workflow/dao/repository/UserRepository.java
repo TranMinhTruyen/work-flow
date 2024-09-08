@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserAccountRepository extends MongoRepository<UserAccount, Long> {
+public interface UserRepository extends MongoRepository<UserAccount, Long> {
 
   @Query(value = "{ $and: [{user_name: ?0}, {login_password: ?1}] }")
   Optional<UserAccount> findUserAccountByUserNameAndLoginPassword(String username, String password);

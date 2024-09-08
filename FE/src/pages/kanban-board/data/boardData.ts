@@ -1,6 +1,6 @@
 import { SelectDataType } from 'common/constants/type';
-import ICategory from 'model/draganddrop/Category';
-import IContent from 'model/draganddrop/Content';
+import ICategory from 'model/draganddrop/category';
+import IContent from 'model/draganddrop/content';
 
 export const issueTypeSelect: SelectDataType[] = [
   {

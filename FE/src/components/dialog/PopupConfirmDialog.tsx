@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { MessageType } from 'common/enums/MessageEnum';
+import { MessageType } from 'common/enums/messageEnum';
 
 export type PopupConfirmDialogProps = DialogProps & {
   title?: string | ReactElement | ReactNode;

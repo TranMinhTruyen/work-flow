@@ -44,7 +44,16 @@ const DrawerItemList: Array<DrawerItem> = [
     componentLabel: 'Master',
     componentPath: '/master',
     componentRole: null,
-    componentChild: null,
+    componentChild: [
+      {
+        componentKey: '3.1',
+        componentIcon: <ListAltIcon />,
+        componentLabel: 'Role',
+        componentPath: '/master-role',
+        componentRole: null,
+        componentChild: null,
+      },
+    ],
   },
 ];
 export default DrawerItemList;

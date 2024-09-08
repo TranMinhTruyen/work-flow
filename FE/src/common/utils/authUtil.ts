@@ -1,8 +1,8 @@
-import { ILoginResponse } from 'model/login/LoginModel';
-import { isNullOrEmpty } from './utils/stringUtil';
-import store from './store';
-import { setLoginData } from './commonSlice';
-import { PUBLIC_RSA_KEY } from './constants/commonConst';
+import { ILoginResponse } from 'model/login/loginModel';
+import { isNullOrEmpty } from './stringUtil';
+import store from '../store';
+import { setLoginData } from '../commonSlice';
+import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import forge from 'node-forge';
 
 /**
@@ -11,6 +11,10 @@ import forge from 'node-forge';
  * @returns
  */
 export const checkLogin = () => {
+  if (store.getState().commonState.loginData !== undefined) {
+    return true;
+  }
+
   let login = localStorage.getItem('login');
 
   if (isNullOrEmpty(login)) {
@@ -24,6 +28,10 @@ export const checkLogin = () => {
   }
 
   return false;
+};
+
+export const getLoginData = (): ILoginResponse | undefined => {
+  return store.getState().commonState.loginData;
 };
 
 export const encryptWithRSA = (data?: string) => {

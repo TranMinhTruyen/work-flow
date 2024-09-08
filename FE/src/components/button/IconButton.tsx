@@ -1,11 +1,11 @@
 import { CircularProgress, Badge, Fab, FabProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { memo, ReactNode } from 'react';
+import { memo, ReactElement, ReactNode } from 'react';
 
 type IconButtonProps = FabProps & {
   width?: number;
   height?: number;
-  icon?: ReactNode;
+  icon?: ReactNode | ReactElement;
   isLoading?: boolean;
   badgeContent?: number;
 };
@@ -31,7 +31,7 @@ const IconButton = (props: IconButtonProps) => {
         badgeContent={badgeContent}
         max={99}
         color={'error'}
-        sx={{ transform: 'translate(30px, -20px)' }}
+        sx={{ transform: icon ? 'translate(30px, -20px)' : 'translate(18px, -20px)' }}
       />
       {loadingComponent}
     </StyleIconButton>

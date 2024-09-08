@@ -5,7 +5,7 @@ import { IconButton as MuiIconButton } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../common/store';
 import FloatButton from '../button/FloatButton';
@@ -17,6 +17,7 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
 import Stack from '@mui/material/Stack';
+import { getUserInfo } from './action/headerAction';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -31,7 +32,7 @@ const MainHeader = (props: IHeaderProps) => {
   const { drawerWidth } = props;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const openDrawer = useAppSelector(selectOpenDrawer);
+  const opendrawer = useAppSelector(selectOpenDrawer);
   const theme = useTheme();
 
   const [notifications, setNotifications] = useState<Map<string, any>>(new Map());
@@ -64,10 +65,12 @@ const MainHeader = (props: IHeaderProps) => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    console.log('Notification state: ', notifications);
-    setNotificationsSize(notifications?.size);
-  }, [notifications]);
+  useLayoutEffect(() => {
+    // console.log('Notification state: ', notifications);
+    // setNotificationsSize(notifications?.size);
+
+    getUserInfo();
+  }, []);
 
   const handleDrawerOpen = useCallback(() => {
     dispatch(toggleDrawer());
@@ -78,7 +81,7 @@ const MainHeader = (props: IHeaderProps) => {
   }, [navigate]);
 
   return (
-    <AppBar drawerWidth={drawerWidth} position="fixed" open={openDrawer}>
+    <AppBar drawerWidth={drawerWidth} position="fixed" open={opendrawer}>
       <Toolbar>
         <MuiIconButton
           color="inherit"
@@ -88,7 +91,7 @@ const MainHeader = (props: IHeaderProps) => {
             width: `calc(${theme.spacing(5)} + 6px)`,
             marginRight: 4,
             marginLeft: '-13px',
-            ...(openDrawer && { display: 'none' }),
+            ...(opendrawer && { display: 'none' }),
           }}
         >
           <MenuIcon />

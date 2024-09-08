@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field.Write;
 @Data
 @Document(value = "user_account_history")
 @EqualsAndHashCode(callSuper = false)
-public class UserAccountHistory extends AbstractDocument implements Serializable {
+public class UserHistory extends AbstractDocument implements Serializable {
 
   @Field(name = "user_id", write = Write.ALWAYS)
   private String userId;

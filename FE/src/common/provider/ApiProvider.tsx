@@ -3,11 +3,12 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
 import { TIME_OUT } from 'common/constants/commonConst';
 import IBaseResponse from '../api/baseResponse';
-import { selectIsLoading, selectLoginData, toggleLoading } from 'common/commonSlice';
-import { ILoginResponse } from 'model/login/LoginModel';
-import { MessageType } from 'common/enums/MessageEnum';
+import { selectIsLoading, toggleLoading } from 'common/commonSlice';
+import { ILoginResponse } from 'model/login/loginModel';
+import { MessageType } from 'common/enums/messageEnum';
 import { useNavigate } from 'react-router-dom';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
+import { getLoginData } from 'common/utils/authUtil';
 
 const axiosInstance = axios.create({
   baseURL: process.env.SERVER_URL,
@@ -19,7 +20,6 @@ const whiteList: string[] = ['/api/user-account/login', '/api/user-account/creat
 export const ApiProvider = ({ children }: { children: ReactElement }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const isLoading: boolean = useAppSelector(selectIsLoading);
-  const loginData: ILoginResponse | undefined = useAppSelector(selectLoginData);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,6 +28,8 @@ export const ApiProvider = ({ children }: { children: ReactElement }) => {
 
     axiosInstance.interceptors.request.use(config => {
       if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+        const loginData: ILoginResponse | undefined = getLoginData();
+
         // If login data is undefined, back to login screen
         if (loginData === undefined) {
           navigate('/auth/login', { replace: true });
@@ -117,7 +119,7 @@ export const ApiProvider = ({ children }: { children: ReactElement }) => {
     );
 
     setIsSet(true);
-  }, [dispatch, isLoading, isSet, loginData, navigate]);
+  }, [dispatch, isLoading, isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

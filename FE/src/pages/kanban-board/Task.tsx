@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import IContent from '../../model/draganddrop/Content';
+import IContent from '../../model/draganddrop/content';
 import { Draggable } from '@hello-pangea/dnd';
 import Item from './Item';
 

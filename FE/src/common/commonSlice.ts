@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'common/store';
-import { ILoginResponse } from 'model/login/LoginModel';
+import { ILoginResponse } from 'model/login/loginModel';
+import { IUserResponse } from 'model/user/userModel';
 
 interface CommonState {
   theme: string;
@@ -10,6 +11,7 @@ interface CommonState {
   isLoading: boolean;
   openConfirmDialog: boolean;
   loginData?: ILoginResponse;
+  userInfo?: IUserResponse;
 }
 
 const initialState: CommonState = {
@@ -65,6 +67,13 @@ export const commonSlice = createSlice({
         language: payload,
       };
     },
+    setUserInfo: (state, action: PayloadAction<IUserResponse>) => {
+      const { payload } = action;
+      return {
+        ...state,
+        userInfo: payload,
+      };
+    },
   },
 });
 
@@ -75,6 +84,7 @@ export const {
   toggleLoading,
   toggleConfirmDialog,
   setLanguage,
+  setUserInfo,
 } = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;
@@ -83,5 +93,6 @@ export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
 export const selectOpenConfirmDialog = (state: RootState) => state.commonState.openConfirmDialog;
 export const selectLanguage = (state: RootState) => state.commonState.language;
+export const selectUserInfo = (state: RootState) => state.commonState.userInfo;
 
 export default commonSlice.reducer;

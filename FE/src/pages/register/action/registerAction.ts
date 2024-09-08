@@ -1,8 +1,8 @@
 import store from 'common/store';
-import { IRegisterRequest } from 'model/register/RegisterModel';
+import { IRegisterRequest } from 'model/register/registerModel';
 import { registerService } from './registerService';
-import { IRegisterForm } from 'model/register/RegisterForm';
-import { encryptWithRSA } from 'common/authServices';
+import { IRegisterForm } from 'model/register/registerForm';
+import { encryptWithRSA } from 'common/utils/authUtil';
 
 export const handleSubmitRegister = async (formData: IRegisterForm) => {
   const registerRequest: IRegisterRequest = {

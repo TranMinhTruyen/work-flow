@@ -25,9 +25,9 @@ import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import SelectInput from 'components/form/SelectInput';
 import { handleSubmitRegister } from './action/registerAction';
-import { IRegisterForm } from 'model/register/RegisterForm';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
-import { MessageType } from 'common/enums/MessageEnum';
+import { MessageType } from 'common/enums/messageEnum';
+import { IRegisterForm } from 'model/register/registerForm';
 
 export const authorities: SelectDataType[] = [
   {

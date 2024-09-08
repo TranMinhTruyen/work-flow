@@ -2,7 +2,7 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { memo } from 'react';
 import FloatButton from '../../components/button/FloatButton';
 import AddIcon from '@mui/icons-material/Add';
-import ICategory from '../../model/draganddrop/Category';
+import ICategory from '../../model/draganddrop/category';
 import Task from './Task';
 import { Droppable } from '@hello-pangea/dnd';
 import Stack from '@mui/material/Stack';

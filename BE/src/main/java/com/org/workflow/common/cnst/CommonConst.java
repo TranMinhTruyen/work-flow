@@ -26,4 +26,6 @@ public class CommonConst {
       M6qDwlUtAPS2ZRWrKk9l
       """;
 
+  public static final String IMAGE_PATH = "D:/work-flow/image/";
+
 }

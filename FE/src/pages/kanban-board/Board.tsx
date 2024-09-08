@@ -1,6 +1,6 @@
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import ICategory from '../../model/draganddrop/Category';
+import ICategory from '../../model/draganddrop/category';
 import Category from './Category';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';

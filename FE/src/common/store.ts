@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import boardSlice from '../pages/kanban-board/action/boardSlice';
 import baseApi from 'common/api/apiBaseQuery';
 import commonSlice from 'common/commonSlice';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
 export const store = configureStore({
   reducer: {
@@ -11,8 +12,11 @@ export const store = configureStore({
     boardState: boardSlice,
   },
   // GetDefaultMiddleware and add Middleware from apiBaseQuery
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([baseApi.middleware]),
+  devTools: true,
 });
+
+setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
