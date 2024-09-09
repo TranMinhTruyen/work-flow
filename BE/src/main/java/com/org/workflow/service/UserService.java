@@ -101,7 +101,7 @@ public class UserService extends AbstractService {
 
     this.saveHistory(new UserAccount(), saveUserAccount, ChangeTypeEnum.CREATE);
 
-    return getCreateUserAccountResponse(saveUserAccount);
+    return setCreateUserResponse(saveUserAccount);
   }
 
   /**
@@ -110,7 +110,7 @@ public class UserService extends AbstractService {
    * @param saveUserAccount UserAccount
    * @return CreateUserResponse
    */
-  private static CreateUserResponse getCreateUserAccountResponse(UserAccount saveUserAccount) {
+  private static CreateUserResponse setCreateUserResponse(UserAccount saveUserAccount) {
     CreateUserResponse createUserResponse = new CreateUserResponse();
     createUserResponse.setUserName(saveUserAccount.getUserName());
     createUserResponse.setFullName(saveUserAccount.getFullName());
@@ -153,7 +153,7 @@ public class UserService extends AbstractService {
           loginRequest.getIsRemember());
       loginResponse.setToken(token);
       loginResponse.setTokenType(BEARER);
-      loginResponse.setUserId(userAccount.getUserId());
+      loginResponse.setUserResponse(setUserResponse(userAccount));
       return loginResponse;
     } else {
       if (userAccount.getLoginFailCount() == null) {
@@ -167,6 +167,23 @@ public class UserService extends AbstractService {
       userRepository.save(userAccount);
       throw new WorkFlowException(new ErrorDetail("Wrong password", HttpStatus.NOT_FOUND));
     }
+  }
+
+  private static UserResponse setUserResponse(UserAccount userAccount) throws WorkFlowException {
+    UserResponse userResponse = new UserResponse();
+    userResponse.setUserId(userAccount.getUserId());
+    userResponse.setEmail(userAccount.getEmail());
+    userResponse.setUsername(userAccount.getUserName());
+    userResponse.setFullName(userAccount.getFullName());
+    userResponse.setBirthDay(userAccount.getBirthDay());
+    userResponse.setRole(userAccount.getRole());
+    userResponse.setAuthorities(userAccount.getAuthorities());
+    userResponse.setImage(FileUtil.readFile(userAccount.getImagePath()));
+    userResponse.setLoginFailCount(userAccount.getLoginFailCount());
+    userResponse.setIsActive(userAccount.getIsActive());
+    userResponse.setCreateDatetime(userAccount.getCreateDatetime());
+    userResponse.setUpdateDatetime(userAccount.getUpdateDatetime());
+    return userResponse;
   }
 
   /**
@@ -194,20 +211,7 @@ public class UserService extends AbstractService {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
         () -> new WorkFlowException(MessageEnum.NOT_FOUND, "user"));
-    UserResponse userResponse = new UserResponse();
-    userResponse.setUserId(userAccount.getUserId());
-    userResponse.setEmail(userAccount.getEmail());
-    userResponse.setUsername(userAccount.getUserName());
-    userResponse.setFullName(userAccount.getFullName());
-    userResponse.setBirthDay(userAccount.getBirthDay());
-    userResponse.setRole(userAccount.getRole());
-    userResponse.setAuthorities(userAccount.getAuthorities());
-    userResponse.setImage(FileUtil.readFile(userAccount.getImagePath()));
-    userResponse.setLoginFailCount(userAccount.getLoginFailCount());
-    userResponse.setIsActive(userAccount.getIsActive());
-    userResponse.setCreateDatetime(userAccount.getCreateDatetime());
-    userResponse.setUpdateDatetime(userAccount.getUpdateDatetime());
-    return userResponse;
+    return setUserResponse(userAccount);
   }
 
   /**

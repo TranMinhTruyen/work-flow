@@ -1,4 +1,4 @@
-import { memo, useState, MouseEvent, useLayoutEffect } from 'react';
+import { memo, useState, MouseEvent } from 'react';
 import IconButton from '../button/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
@@ -8,12 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import { useAppSelector } from 'common/store';
-import { selectUserInfo } from 'common/commonSlice';
+import { selectLoginData } from 'common/commonSlice';
 
 const AccountButton = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const buttonImage = useAppSelector(selectUserInfo);
+  const loginData = useAppSelector(selectLoginData);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -22,16 +22,14 @@ const AccountButton = () => {
     setAnchorEl(null);
   };
 
-  useLayoutEffect(() => {}, []);
-
   return (
     <>
       <IconButton
         onClick={handleClick}
         badgeContent={1}
         sx={{
-          backgroundImage: buttonImage?.image
-            ? `url(data:image/png;base64,${buttonImage?.image?.data})`
+          backgroundImage: loginData?.userResponse?.image
+            ? `url(data:image/png;base64,${loginData?.userResponse?.image?.data})`
             : '',
           backgroundSize: 'cover',
           backgroundPosition: 'center',

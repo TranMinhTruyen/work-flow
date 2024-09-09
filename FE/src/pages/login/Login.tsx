@@ -29,7 +29,10 @@ const Login = () => {
   const { setHeaderTitle } = useAuthHeader();
 
   useLayoutEffect(() => {
+    // Set title for header
     setHeaderTitle(t('Login'));
+
+    // Remove when unmount
     return () => {
       setHeaderTitle(null);
     };

@@ -5,7 +5,7 @@ import { IconButton as MuiIconButton } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../common/store';
 import FloatButton from '../button/FloatButton';
@@ -17,7 +17,6 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
 import Stack from '@mui/material/Stack';
-import { getUserInfo } from './action/headerAction';
 import { RESET_ALL } from 'common/constants/commonConst';
 
 type IHeaderProps = {
@@ -66,11 +65,9 @@ const MainHeader = (props: IHeaderProps) => {
   //   };
   // }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // console.log('Notification state: ', notifications);
     // setNotificationsSize(notifications?.size);
-
-    getUserInfo();
   }, []);
 
   const handleDrawerOpen = useCallback(() => {
@@ -80,6 +77,8 @@ const MainHeader = (props: IHeaderProps) => {
   const handleLogout = useCallback(() => {
     navigate('/auth/login', { replace: true });
     dispatch({ type: RESET_ALL });
+    localStorage.removeItem('login');
+    sessionStorage.removeItem('login');
   }, [dispatch, navigate]);
 
   return (
