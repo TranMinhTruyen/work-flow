@@ -4,6 +4,7 @@ import UncontrolledDatePickerInput, {
 } from 'components/input/DatePickerInput';
 import { useCallback } from 'react';
 import useCheckRequired from 'common/hooks/useCheckRequied';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
@@ -59,7 +60,11 @@ const DatePickerInput = (props: DatePickerInputProps) => {
           onBlur={handleOnBlur}
           onClose={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
-          helperText={!!error ? error.message : null}
+          helperText={
+            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+              ? error.message
+              : undefined
+          }
           {...restProps}
         />
       )}

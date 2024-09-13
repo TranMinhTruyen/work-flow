@@ -63,7 +63,11 @@ const TextInput = (props: TextInputProps) => {
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
-          helperText={!!error ? error.message : null}
+          helperText={
+            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+              ? error.message
+              : undefined
+          }
           inputProps={{
             ...inputProps,
             'text-input-id': name,

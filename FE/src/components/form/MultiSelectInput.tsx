@@ -1,4 +1,5 @@
 import useCheckRequired from 'common/hooks/useCheckRequied';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledMultiSelectInput from 'components/input/MultiSelectInput';
 import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/input/MultiSelectInput';
 import { useCallback } from 'react';
@@ -55,7 +56,11 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
-          helperText={!!error ? error.message : null}
+          helperText={
+            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+              ? error.message
+              : undefined
+          }
           {...restProps}
         />
       )}

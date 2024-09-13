@@ -7,8 +7,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../common/store';
-import FloatButton from '../button/FloatButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountButton from './AccountButton';
 import IconButton from '../button/IconButton';
@@ -18,6 +16,8 @@ import { Client } from '@stomp/stompjs';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
 import Stack from '@mui/material/Stack';
 import { RESET_ALL } from 'common/constants/commonConst';
+import { useAppDispatch, useAppSelector } from 'common/store';
+import FloatButton from 'components/button/FloatButton';
 
 type IHeaderProps = {
   drawerWidth: number;

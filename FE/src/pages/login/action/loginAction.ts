@@ -2,8 +2,8 @@ import { setLoginData, toggleLogin } from 'common/commonSlice';
 import store from 'common/store';
 import { ILoginRequest, ILoginResponse } from 'model/login/loginModel';
 import { loginService } from './loginService';
-import { ILoginForm } from 'model/login/loginForm';
 import { encryptWithRSA } from 'common/utils/authUtil';
+import { ILoginForm } from 'model/login/loginForm';
 
 /**
  * Handle click submit button.

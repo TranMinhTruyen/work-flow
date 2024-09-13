@@ -1,5 +1,6 @@
 import { FileInputData } from 'common/constants/type';
 import useCheckRequired from 'common/hooks/useCheckRequied';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
 } from 'components/input/FileInput';
@@ -57,7 +58,11 @@ const FileInput = (props: FileInputProps) => {
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
-          helperText={!!error ? error.message : null}
+          helperText={
+            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+              ? error.message
+              : undefined
+          }
           {...restProps}
         />
       )}

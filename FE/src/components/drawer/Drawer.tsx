@@ -4,10 +4,10 @@ import { DrawerProps } from '@mui/material/Drawer/Drawer';
 import IconButton from '@mui/material/IconButton';
 import { memo, useCallback } from 'react';
 import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
-import { useAppDispatch, useAppSelector } from '../../common/store';
 import DrawerMenu from './DrawerMenu';
 import { ChevronLeft } from '@mui/icons-material';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
+import { useAppDispatch, useAppSelector } from 'common/store';
 
 type IDrawerProps = {
   drawerWidth: number;
@@ -55,9 +55,9 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 3px)`,
+  width: `calc(${theme.spacing(7)} + 6px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 3px)`,
+    width: `calc(${theme.spacing(8)} + 6px)`,
   },
 });
 

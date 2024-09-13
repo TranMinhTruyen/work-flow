@@ -58,7 +58,11 @@ const SelectInput = (props: SelectInputProps) => {
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
-          helperText={!!error ? error.message : null}
+          helperText={
+            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+              ? error.message
+              : undefined
+          }
           {...restProps}
         />
       )}
