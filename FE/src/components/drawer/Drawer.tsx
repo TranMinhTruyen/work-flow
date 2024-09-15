@@ -20,7 +20,6 @@ type ICustomDrawerProps = DrawerProps & {
 const Drawer = (props: IDrawerProps) => {
   const { drawerWidth } = props;
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const openDrawer = useAppSelector(selectOpenDrawer);
 
   const handleOpenDrawer = useCallback(() => {
@@ -28,7 +27,7 @@ const Drawer = (props: IDrawerProps) => {
   }, [dispatch]);
 
   return (
-    <CustomDrawer theme={theme} drawerWidth={drawerWidth} variant="permanent" open={openDrawer}>
+    <CustomDrawer drawerWidth={drawerWidth} variant="permanent" open={openDrawer}>
       <DrawerHeader>
         <IconButton onClick={handleOpenDrawer} sx={{ justifyContent: 'center' }}>
           <ChevronLeft fontSize="large" />

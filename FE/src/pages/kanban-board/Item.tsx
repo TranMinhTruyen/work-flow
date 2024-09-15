@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import { memo, useCallback, MouseEvent } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import IContent from 'model/draganddrop/content';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Grid2 from '@mui/material/Grid2';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;

@@ -13,7 +13,7 @@ import ICategory from 'model/draganddrop/category';
 import TextInput from 'components/input/TextInput';
 import IconButton from 'components/button/IconButton';
 import FloatButton from 'components/button/FloatButton';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Grid2 from '@mui/material/Grid2';
 
 const Kanban = () => {
   const [state, setState] = useState<ICategory[]>([]);
@@ -157,8 +157,8 @@ const Kanban = () => {
 
       {filter}
 
-      <Grid2 spacing={2} container xs={12}>
-        <Grid2 xs={12}>
+      <Grid2 spacing={2} container size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Stack
               spacing={2}

@@ -1,6 +1,5 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import Grid2 from '@mui/material/Unstable_Grid2';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -17,6 +16,7 @@ import { useAppSelector } from 'common/store';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+import Grid2 from '@mui/material/Grid2';
 
 const itemList = DrawerItemList;
 
@@ -44,13 +44,13 @@ const DrawerMenu = () => {
         continue;
       } else if (componentItem.componentChild == null) {
         returnItem.push(
-          <Grid2 key={componentItem.componentKey} xs={12}>
+          <Grid2 key={componentItem.componentKey} size={{ xs: 12 }}>
             <DrawerMenuItem item={componentItem} />
           </Grid2>
         );
       } else {
         returnItem.push(
-          <Grid2 key={componentItem.componentKey} xs={12}>
+          <Grid2 key={componentItem.componentKey} size={{ xs: 12 }}>
             <DrawerMenuItemWithChild item={componentItem} />
           </Grid2>
         );

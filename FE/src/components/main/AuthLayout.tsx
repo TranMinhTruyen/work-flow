@@ -1,6 +1,6 @@
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Grid2 from '@mui/material/Grid2';
 import authStyles from 'assets/styles/authStyles';
 import { AuthHeaderProvider } from 'common/contexts/AuthHeaderContext';
 import AuthHeader from 'components/header/AuthHeader';

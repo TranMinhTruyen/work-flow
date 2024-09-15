@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import Task from './Task';
 import { Droppable } from '@hello-pangea/dnd';
@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import FloatButton from 'components/button/FloatButton';
 import ICategory from 'model/draganddrop/category';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Grid2 from '@mui/material/Grid2';
 
 type CategoryProps = {
   categoryItem: ICategory;
@@ -25,7 +25,7 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
             alignItems={'center'}
             sx={{ width: 400, maxWidth: 400, height: 55, maxHeight: 55 }}
           >
-            <Grid2 xs={6} sx={{ paddingLeft: 0 }}>
+            <Grid2 size={{ xs: 6 }} sx={{ paddingLeft: 0 }}>
               <Stack direction={'row'} spacing={1}>
                 <Typography variant={'h5'}>{categoryItem.name}</Typography>
                 <Typography
@@ -43,7 +43,7 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
             </Grid2>
 
             {index === 0 && (
-              <Grid2 xs={6} sx={{ paddingRight: 0 }}>
+              <Grid2 size={{ xs: 6 }} sx={{ paddingRight: 0 }}>
                 <Stack
                   direction={'row'}
                   sx={{ justifyContent: ' flex-end', alignItems: 'center' }}
@@ -64,7 +64,7 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
           </Grid2>
 
           <Grid2
-            xs={12}
+            size={{ xs: 6 }}
             sx={{
               width: 400,
               maxWidth: 400,
@@ -78,6 +78,7 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
           >
             <Grid2
               sx={{
+                padding: 2,
                 height: `calc(78vh - 16px)`,
                 maxHeight: `calc(78vh - 16px)`,
                 overflow: 'auto',
@@ -88,11 +89,9 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {categoryItem.content !== undefined && categoryItem.content !== null
-                ? categoryItem.content.map((data, index) => {
-                    return <Task key={`task-${data.id}`} index={index} data={data} />;
-                  })
-                : null}
+              {categoryItem.content.map((data, index) => {
+                return <Task key={`task-${data.id}`} index={index} data={data} />;
+              })}
             </Grid2>
             {provided.placeholder}
           </Grid2>

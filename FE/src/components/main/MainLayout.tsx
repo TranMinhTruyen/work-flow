@@ -1,10 +1,10 @@
 import { styled } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { useAppSelector } from 'common/store';
-import Grid2 from '@mui/material/Unstable_Grid2';
 import { selectOpenDrawer } from 'common/commonSlice';
 import Drawer from 'components/drawer/Drawer';
 import MainHeader from 'components/header/MainHeader';
+import Grid2 from '@mui/material/Grid2';
 
 const DRAWER_WIDTH: number = 250;
 

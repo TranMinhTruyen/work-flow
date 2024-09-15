@@ -2,8 +2,9 @@ import { styled } from '@mui/material/styles';
 import { memo, ReactNode, ReactElement } from 'react';
 import Fab, { FabProps } from '@mui/material/Fab';
 import CircularProgress from '@mui/material/CircularProgress';
-import Grid2 from '@mui/material/Unstable_Grid2';
-import { Badge, Stack } from '@mui/material';
+import Grid2 from '@mui/material/Grid2';
+import Stack from '@mui/material/Stack';
+import Badge from '@mui/material/Badge';
 
 export type ButtonProps = FabProps & {
   label?: string | ReactElement;
