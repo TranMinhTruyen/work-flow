@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-const Board = lazy(() => import('../../pages/kanban-board/Board'));
+const Kanban = lazy(() => import('../../pages/kanban-board/Kanban'));
 const Issue = lazy(() => import('../../pages/issue/Issue'));
 const Home = lazy(() => import('../../pages/home/Home'));
 const Master = lazy(() => import('../../pages/master/Master'));
@@ -17,8 +17,8 @@ const RouterItems: Array<RouterItem> = [
     componentPath: '/',
   },
   {
-    componentElement: <Board />,
-    componentPath: '/board',
+    componentElement: <Kanban />,
+    componentPath: '/kanban',
   },
   {
     componentElement: <Issue />,

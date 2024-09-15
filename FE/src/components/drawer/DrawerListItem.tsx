@@ -17,7 +17,7 @@ const DrawerItemList: Array<DrawerItem> = [
   {
     componentKey: '0',
     componentIcon: <HomeOutlinedIcon />,
-    componentLabel: 'Home',
+    componentLabel: 'Home page',
     componentPath: '/',
     componentRole: null,
     componentChild: null,
@@ -25,15 +25,15 @@ const DrawerItemList: Array<DrawerItem> = [
   {
     componentKey: '1',
     componentIcon: <ViewKanbanOutlinedIcon />,
-    componentLabel: 'Board',
-    componentPath: '/board',
+    componentLabel: 'Kanban page',
+    componentPath: '/kanban',
     componentRole: null,
     componentChild: null,
   },
   {
     componentKey: '2',
     componentIcon: <ListAltIcon />,
-    componentLabel: 'Issue',
+    componentLabel: 'Issue page',
     componentPath: '/issue',
     componentRole: null,
     componentChild: null,
@@ -41,7 +41,7 @@ const DrawerItemList: Array<DrawerItem> = [
   {
     componentKey: '3',
     componentIcon: <DashboardIcon />,
-    componentLabel: 'Master',
+    componentLabel: 'Master page',
     componentPath: '/master',
     componentRole: ['ADMIN', 'USER'],
     componentChild: [

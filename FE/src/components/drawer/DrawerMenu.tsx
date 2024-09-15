@@ -13,8 +13,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { Stack, Typography } from '@mui/material';
 import { useAppSelector } from 'common/store';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Zoom from '@mui/material/Zoom';
 
 const itemList = DrawerItemList;
 
@@ -98,35 +100,51 @@ const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemPr
     () => (
       <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
         {item.componentIcon}
-        {!openDrawer && (
-          <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>
+        {/* {!openDrawer && (
+          <Typography
+            sx={{
+              fontSize: '11px',
+              fontWeight: 'bold',
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
+              maxWidth: 50,
+              textAlign: 'center',
+            }}
+          >
             {item.componentLabel}
           </Typography>
-        )}
+        )} */}
       </Stack>
     ),
-    [item.componentIcon, item.componentLabel, openDrawer]
+    [item.componentIcon]
   );
 
   return (
-    <Box>
-      <CustomListItem
-        style={customListItemSx}
-        onClick={handleOnClickItem(item.componentPath)}
-        disablePadding
-      >
-        <CustomListItemButton sx={customListItemButtonSx}>
-          <CustomListItemIcon style={customListItemIconAndTextSx} sx={customListItemIconSx}>
-            {itemCustomListItemIcon}
-          </CustomListItemIcon>
-          <ListItemText
-            primary={item.componentLabel}
-            style={customListItemIconAndTextSx}
-            sx={listItemTextSx}
-          />
-        </CustomListItemButton>
-      </CustomListItem>
-    </Box>
+    <Tooltip
+      TransitionComponent={Zoom}
+      title={!openDrawer ? item.componentLabel : ''}
+      placement={'right'}
+      arrow
+    >
+      <Box>
+        <CustomListItem
+          style={customListItemSx}
+          onClick={handleOnClickItem(item.componentPath)}
+          disablePadding
+        >
+          <CustomListItemButton sx={customListItemButtonSx}>
+            <CustomListItemIcon style={customListItemIconAndTextSx} sx={customListItemIconSx}>
+              {itemCustomListItemIcon}
+            </CustomListItemIcon>
+            <ListItemText
+              primary={item.componentLabel}
+              style={customListItemIconAndTextSx}
+              sx={listItemTextSx}
+            />
+          </CustomListItemButton>
+        </CustomListItem>
+      </Box>
+    </Tooltip>
   );
 };
 
@@ -153,14 +171,23 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
     () => (
       <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
         {item.componentIcon}
-        {!openDrawer && (
-          <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>
+        {/* {!openDrawer && (
+          <Typography
+            sx={{
+              fontSize: '11px',
+              fontWeight: 'bold',
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
+              maxWidth: 50,
+              textAlign: 'center',
+            }}
+          >
             {item.componentLabel}
           </Typography>
-        )}
+        )} */}
       </Stack>
     ),
-    [item.componentIcon, item.componentLabel, openDrawer]
+    [item.componentIcon]
   );
 
   const childItem = useMemo(() => {
@@ -211,15 +238,22 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
 
       return (
         <>
-          <CustomListItem onClick={handleExpand} disablePadding>
-            <CustomListItemButton sx={customListItemButtonSx}>
-              <CustomListItemIcon sx={customListItemIconSx}>
-                {itemCustomListItemIcon}
-              </CustomListItemIcon>
-              <ListItemText primary={item.componentLabel} sx={listItemTextSx} />
-              {expandButton}
-            </CustomListItemButton>
-          </CustomListItem>
+          <Tooltip
+            TransitionComponent={Zoom}
+            title={!openDrawer ? item.componentLabel : ''}
+            placement={'right'}
+            arrow
+          >
+            <CustomListItem onClick={handleExpand} disablePadding>
+              <CustomListItemButton sx={customListItemButtonSx}>
+                <CustomListItemIcon sx={customListItemIconSx}>
+                  {itemCustomListItemIcon}
+                </CustomListItemIcon>
+                <ListItemText primary={item.componentLabel} sx={listItemTextSx} />
+                {expandButton}
+              </CustomListItemButton>
+            </CustomListItem>
+          </Tooltip>
 
           <Collapse in={openChild} unmountOnExit>
             <Divider style={{ marginTop: 8 }} />

@@ -1,12 +1,12 @@
-import Grid2 from '@mui/material/Unstable_Grid2';
 import { memo } from 'react';
-import FloatButton from '../../components/button/FloatButton';
 import AddIcon from '@mui/icons-material/Add';
-import ICategory from '../../model/draganddrop/category';
 import Task from './Task';
 import { Droppable } from '@hello-pangea/dnd';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import FloatButton from 'components/button/FloatButton';
+import ICategory from 'model/draganddrop/category';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 type CategoryProps = {
   categoryItem: ICategory;
@@ -23,14 +23,14 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
             direction={'row'}
             spacing={2.5}
             alignItems={'center'}
-            sx={{ width: 500, maxWidth: 500, height: 55, maxHeight: 55 }}
+            sx={{ width: 400, maxWidth: 400, height: 55, maxHeight: 55 }}
           >
             <Grid2 xs={6} sx={{ paddingLeft: 0 }}>
               <Stack direction={'row'} spacing={1}>
-                <Typography variant="h5">{categoryItem.name}</Typography>
+                <Typography variant={'h5'}>{categoryItem.name}</Typography>
                 <Typography
-                  variant="h6"
-                  align="center"
+                  variant={'h6'}
+                  align={'center'}
                   sx={{
                     backgroundColor: categoryItem.color ?? 'rgba(100, 255, 255)',
                     borderRadius: 25,
@@ -44,10 +44,14 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
 
             {index === 0 && (
               <Grid2 xs={6} sx={{ paddingRight: 0 }}>
-                <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
+                <Stack
+                  direction={'row'}
+                  sx={{ justifyContent: ' flex-end', alignItems: 'center' }}
+                  spacing={2}
+                >
                   <FloatButton
                     startIcon={<AddIcon />}
-                    label="Add issue"
+                    label={'Add issue'}
                     sx={{
                       width: 120,
                       height: 30,
@@ -62,8 +66,8 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
           <Grid2
             xs={12}
             sx={{
-              width: 500,
-              maxWidth: 500,
+              width: 400,
+              maxWidth: 400,
               height: '78vh',
               maxHeight: '78vh',
               backgroundColor: snapshot.isDraggingOver

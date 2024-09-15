@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
@@ -15,6 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import { memo, useCallback, MouseEvent } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import IContent from 'model/draganddrop/content';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;
@@ -39,10 +39,10 @@ const Item = (props: ItemProps) => {
       <Grid2 container>
         <Card
           sx={{
-            width: 500,
-            maxWidth: 500,
-            height: 230,
-            maxHeight: 230,
+            width: 400,
+            maxWidth: 400,
+            height: 200,
+            maxHeight: 200,
             borderRadius: 2,
             backgroundColor: snapshot.isDragging ? 'rgba(120, 255, 120)' : '#ffffff',
           }}
@@ -51,7 +51,7 @@ const Item = (props: ItemProps) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <Stack direction={'row'} sx={{ padding: 1.4, height: 54 }}>
+          <Stack direction={'row'} sx={{ padding: 1.4, height: 54, maxHeight: 54 }}>
             <Stack direction={'row'} sx={{ flexGrow: 1 }} spacing={2}>
               <Box>
                 <Tooltip title={data.title.length >= 20 ? data.title : undefined}>
@@ -121,13 +121,13 @@ const Item = (props: ItemProps) => {
 
           <Divider />
 
-          <CardContent sx={{ padding: 1, height: 117 }}>
+          <CardContent sx={{ padding: 1, height: 87, maxHeight: 87 }}>
             <Stack direction={'row'}>
               <Typography
                 variant="body1"
                 sx={{
                   display: '-webkit-box',
-                  WebkitLineClamp: 4,
+                  WebkitLineClamp: 3,
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
                 }}

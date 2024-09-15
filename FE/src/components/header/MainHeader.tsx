@@ -7,17 +7,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LogoutIcon from '@mui/icons-material/Logout';
 import AccountButton from './AccountButton';
 import IconButton from '../button/IconButton';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
+import { selectLanguage, selectOpenDrawer, setLanguage, toggleDrawer } from 'common/commonSlice';
 import Stack from '@mui/material/Stack';
-import { RESET_ALL } from 'common/constants/commonConst';
 import { useAppDispatch, useAppSelector } from 'common/store';
-import FloatButton from 'components/button/FloatButton';
+import SelectInput from 'components/input/SelectInput';
+import { useTranslation } from 'react-i18next';
+import { languageTypeSelect } from 'common/constants/commonConst';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -34,6 +34,8 @@ const MainHeader = (props: IHeaderProps) => {
   const navigate = useNavigate();
   const opendrawer = useAppSelector(selectOpenDrawer);
   const theme = useTheme();
+  const { t, i18n } = useTranslation();
+  const language: string = useAppSelector(selectLanguage);
 
   const [notifications, setNotifications] = useState<Map<string, any>>(new Map());
   const [notificationsSize, setNotificationsSize] = useState<number>();
@@ -70,19 +72,23 @@ const MainHeader = (props: IHeaderProps) => {
     // setNotificationsSize(notifications?.size);
   }, []);
 
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [i18n, language]);
+
   const handleDrawerOpen = useCallback(() => {
     dispatch(toggleDrawer());
   }, [dispatch]);
 
-  const handleLogout = useCallback(() => {
-    navigate('/auth/login', { replace: true });
-    dispatch({ type: RESET_ALL });
-    localStorage.removeItem('login');
-    sessionStorage.removeItem('login');
-  }, [dispatch, navigate]);
+  const handleChangeLanguage = useCallback(
+    (value: string) => {
+      dispatch(setLanguage(value));
+    },
+    [dispatch]
+  );
 
   return (
-    <AppBar drawerWidth={drawerWidth} position="fixed" open={opendrawer}>
+    <AppBar drawerWidth={drawerWidth} position={'fixed'} open={opendrawer}>
       <Toolbar>
         <MuiIconButton
           color="inherit"
@@ -97,16 +103,36 @@ const MainHeader = (props: IHeaderProps) => {
         >
           <MenuIcon />
         </MuiIconButton>
+
         <Typography
           variant="h5"
           component="span"
           sx={{ flexGrow: 1, cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase' }}
-          onClick={() => navigate('/board')}
+          onClick={() => navigate('/kanban')}
         >
           WORK FLOW
         </Typography>
-        <Stack direction={'row'} spacing={2}>
-          <FloatButton startIcon={<LogoutIcon />} label="Logout" onClick={handleLogout} />
+
+        <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
+          <SelectInput
+            id={'languageSelect'}
+            width={150}
+            data={languageTypeSelect}
+            defaultValue={language}
+            label={t('Language')}
+            onChange={handleChangeLanguage}
+            sx={{
+              '& .MuiInputBase-formControl': {
+                height: '40px !important',
+              },
+              '& .MuiChip-root': {
+                height: '20px',
+              },
+              '& .MuiSelect-select': {
+                marginTop: '-3px',
+              },
+            }}
+          />
 
           <AccountButton />
 
@@ -116,11 +142,13 @@ const MainHeader = (props: IHeaderProps) => {
     </AppBar>
   );
 };
+
 export default memo(MainHeader);
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',
 })<AppBarProps>(({ theme, open, drawerWidth }) => ({
+  backgroundColor: 'rgba(0, 200, 255)',
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -128,7 +156,7 @@ const AppBar = styled(MuiAppBar, {
   }),
   marginLeft: `-${drawerWidth}px`,
   ...(open && {
-    marginLeft: drawerWidth,
+    marginLeft: `${drawerWidth}px`,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,

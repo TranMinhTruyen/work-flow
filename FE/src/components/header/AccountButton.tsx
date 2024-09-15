@@ -1,5 +1,5 @@
-import { memo, useState, MouseEvent } from 'react';
-import IconButton from '../button/IconButton';
+import { memo, useState, MouseEvent, useCallback } from 'react';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
 import { Logout, Settings } from '@mui/icons-material';
@@ -7,13 +7,18 @@ import { styled } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
-import { useAppSelector } from 'common/store';
+import { useAppDispatch, useAppSelector } from 'common/store';
 import { selectLoginData } from 'common/commonSlice';
+import { RESET_ALL } from 'common/constants/commonConst';
+import { useNavigate } from 'react-router-dom';
+import IconButton from 'components/button/IconButton';
 
 const AccountButton = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +26,13 @@ const AccountButton = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = useCallback(() => {
+    navigate('/auth/login', { replace: true });
+    dispatch({ type: RESET_ALL });
+    localStorage.removeItem('login');
+    sessionStorage.removeItem('login');
+  }, [dispatch, navigate]);
 
   return (
     <>
@@ -74,14 +86,17 @@ const AccountButton = () => {
           </ListItemIcon>
           Profile
         </MenuItem>
+
         <Divider />
+
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="medium" />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="medium" />
           </ListItemIcon>

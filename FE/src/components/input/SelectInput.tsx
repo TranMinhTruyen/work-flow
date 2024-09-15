@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
@@ -6,8 +5,10 @@ import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
+import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { SelectDataType } from 'common/constants/type';
+import { capitalizeFirst } from 'common/utils/stringUtil';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 
 export type SelectInputProps = Omit<
@@ -16,6 +17,7 @@ export type SelectInputProps = Omit<
 > & {
   label?: string;
   width?: number;
+  sx?: SxProps<Theme>;
   value?: string;
   data: SelectDataType[];
   defaultValue?: string;
@@ -25,21 +27,12 @@ export type SelectInputProps = Omit<
   onBlur?: (value: string) => void;
 };
 
-const ITEM_HEIGHT = 50;
-const ITEM_PADDING_TOP = 5;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
 const SelectInput = (props: SelectInputProps) => {
   const {
+    id,
     label,
     width = 200,
+    sx,
     data,
     value: valueProps,
     onChange: onChangeProps,
@@ -87,11 +80,13 @@ const SelectInput = (props: SelectInputProps) => {
   }, [displayNone, selectValue]);
 
   return (
-    <FormControlStyled sx={{ width: width }} error={error}>
-      <InputLabel shrink={true}>
-        <Typography sx={{ color: 'rgba(13, 13, 13)' }}>{label}</Typography>
+    <FormControlStyled id={`form${capitalizeFirst(id)}`} sx={{ width: width, ...sx }} error={error}>
+      <InputLabel id={`label${capitalizeFirst(id)}`} sx={sx} shrink={true}>
+        {label}
       </InputLabel>
       <Select
+        id={`input${capitalizeFirst(id)}`}
+        labelId={id}
         displayEmpty
         label={label}
         notched={true}
@@ -99,6 +94,7 @@ const SelectInput = (props: SelectInputProps) => {
         value={selectValue}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
+        sx={sx}
         renderValue={selected => {
           const renderValue = data.find(x => x.key === (selected as string));
           if (renderValue === undefined) {
@@ -106,15 +102,15 @@ const SelectInput = (props: SelectInputProps) => {
           }
           return (
             <Chip
-              color={'primary'}
+              color={'error'}
               label={renderValue.value}
               sx={{
                 height: '30px',
+                ...sx,
               }}
             />
           );
         }}
-        MenuProps={MenuProps}
         {...restProps}
       >
         {noneValue}
@@ -132,7 +128,7 @@ const SelectInput = (props: SelectInputProps) => {
 
 const FormControlStyled = styled(FormControl)(({ error }) => ({
   '& .MuiInputLabel-root': {
-    color: 'rgba(13, 13, 13) !important',
+    color: 'rgba(13, 13, 13)',
     marginLeft: '10px',
   },
 
@@ -141,40 +137,26 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
   },
 
   '& .MuiInputBase-formControl': {
-    height: '50px !important',
-    minHeight: '50px !important',
+    height: '50px',
   },
 
   '& .MuiOutlinedInput-input': {
     minWidth: '94%',
     padding: '12px',
-    color: 'rgba(13, 13, 13, 0.8) !important',
+    color: 'rgba(13, 13, 13, 0.8)',
   },
 
   '& .MuiOutlinedInput-root': {
-    borderRadius: '50px !important',
+    borderRadius: '50px',
     '& fieldset': {
-      borderWidth: '1px !important',
-      borderColor: error === false ? 'rgba(13, 13, 13, 0.8) !important' : '#ff0000',
+      borderWidth: '1px',
+      borderColor: error === false ? 'rgba(13, 13, 13, 0.8)' : '#ff0000',
     },
     '&:hover fieldset': {
-      borderColor: '#00b2ff !important',
+      borderColor: '#00b2ff',
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#00b2ff !important',
-    },
-  },
-
-  '& label': {
-    fontSize: '16px',
-    color: 'rgba(13, 13, 13) !important',
-
-    '&.MuiInputLabel-outlined': {
-      top: '-8px',
-    },
-
-    '&.MuiInputLabel-shrink': {
-      top: 0,
+      borderColor: '#00b2ff',
     },
   },
 }));

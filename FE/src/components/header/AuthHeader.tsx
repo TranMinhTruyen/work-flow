@@ -2,27 +2,12 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import authStyles from 'assets/styles/authStyles';
 import { selectLanguage, setLanguage } from 'common/commonSlice';
-import { SelectDataType } from 'common/constants/type';
+import { languageTypeSelect } from 'common/constants/commonConst';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import { useAppDispatch, useAppSelector } from 'common/store';
 import SelectInput from 'components/input/SelectInput';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-export const languageTypeSelect: SelectDataType[] = [
-  {
-    key: 'EN',
-    value: 'English',
-  },
-  {
-    key: 'VI',
-    value: 'Việt Nam',
-  },
-  {
-    key: 'JP',
-    value: 'Japan',
-  },
-];
 
 const AuthHeader = () => {
   const { headerContent, headerTitle } = useAuthHeader();
@@ -60,6 +45,17 @@ const AuthHeader = () => {
           defaultValue={language}
           label={t('Language')}
           onChange={handleChangeLanguage}
+          sx={{
+            '& .MuiInputBase-formControl': {
+              height: '40px !important',
+            },
+            '& .MuiChip-root': {
+              height: '20px',
+            },
+            '& .MuiSelect-select': {
+              marginTop: '-3px',
+            },
+          }}
         />
       </Stack>
     </Stack>

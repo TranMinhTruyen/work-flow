@@ -1,4 +1,5 @@
 import { Accept } from 'react-dropzone';
+import { SelectDataType } from './type';
 
 //#region Axios config
 export const TIME_OUT: number = 60000;
@@ -33,4 +34,21 @@ export const PUBLIC_RSA_KEY =
 
 //#region Redux constant
 export const RESET_ALL: string = 'RESET_ALL';
+//#endregion
+
+//#region Language
+export const languageTypeSelect: SelectDataType[] = [
+  {
+    key: 'EN',
+    value: 'English',
+  },
+  {
+    key: 'VI',
+    value: 'Việt Nam',
+  },
+  {
+    key: 'JP',
+    value: 'Japan',
+  },
+];
 //#endregion

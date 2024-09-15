@@ -1,12 +1,8 @@
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Category from './Category';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '../../components/button/IconButton';
-import TextInput from '../../components/input/TextInput';
-import FloatButton from '../../components/button/FloatButton';
 import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/boardData';
 import SelectInput from 'components/input/SelectInput';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
@@ -14,10 +10,14 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ICategory from 'model/draganddrop/category';
+import TextInput from 'components/input/TextInput';
+import IconButton from 'components/button/IconButton';
+import FloatButton from 'components/button/FloatButton';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
-const Board = () => {
+const Kanban = () => {
   const [state, setState] = useState<ICategory[]>([]);
-  const [isFilter, setIsFilter] = useState<boolean>(true);
+  const [isShowFilter, setIsShowFilter] = useState<boolean>(true);
 
   useEffect(() => {
     setState(sampleData);
@@ -76,7 +76,7 @@ const Board = () => {
   }, []);
 
   const onClickFilter = useCallback(() => {
-    setIsFilter(prevState => {
+    setIsShowFilter(prevState => {
       return !prevState;
     });
   }, []);
@@ -92,17 +92,61 @@ const Board = () => {
     }
   }, [state]);
 
+  const filter = useMemo(
+    () =>
+      isShowFilter ? (
+        <Stack direction={'row'} spacing={2} alignItems={'center'}>
+          <SelectInput
+            displayNone
+            data={issueTypeSelect}
+            defaultValue={''}
+            label={'Issue Type'}
+            disabled={!isShowFilter}
+          />
+
+          <SelectInput
+            displayNone
+            data={statusTypeSelect}
+            defaultValue={''}
+            label={'Status'}
+            disabled={!isShowFilter}
+          />
+
+          <SelectInput
+            displayNone
+            data={assigneeSelect}
+            defaultValue={''}
+            label={'Assignee'}
+            disabled={!isShowFilter}
+          />
+
+          <TextInput label={'Title'} disabled={!isShowFilter} />
+
+          <IconButton
+            icon={<SearchIcon />}
+            disabled={!isShowFilter}
+            sx={{
+              width: 40,
+              height: 40,
+              backgroundColor: 'rgba(190, 190, 190, 0.8)',
+            }}
+          />
+        </Stack>
+      ) : undefined,
+    [isShowFilter]
+  );
+
   return (
     <Stack spacing={2} sx={{ paddingLeft: 2, height: '80vh' }}>
       <Stack direction={'row'} spacing={4} alignItems={'center'}>
         <Typography variant="h5" component="span">
-          Board
+          Kanban board
         </Typography>
 
         <FloatButton
           onClick={onClickFilter}
-          startIcon={isFilter ? <FilterAltOffIcon /> : <FilterAltIcon />}
-          label={isFilter ? 'Hide filter' : 'Show filter'}
+          startIcon={isShowFilter ? <FilterAltOffIcon /> : <FilterAltIcon />}
+          label={isShowFilter ? 'Hide filter' : 'Show filter'}
           sx={{
             width: 130,
             height: 40,
@@ -111,45 +155,7 @@ const Board = () => {
         />
       </Stack>
 
-      {isFilter ? (
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <SelectInput
-            displayNone
-            data={issueTypeSelect}
-            defaultValue={''}
-            label={'Issue Type'}
-            disabled={!isFilter}
-          />
-
-          <SelectInput
-            displayNone
-            data={statusTypeSelect}
-            defaultValue={''}
-            label={'Status'}
-            disabled={!isFilter}
-          />
-
-          <SelectInput
-            displayNone
-            data={assigneeSelect}
-            defaultValue={''}
-            label={'Assignee'}
-            disabled={!isFilter}
-          />
-
-          <TextInput label={'Title'} disabled={!isFilter} />
-
-          <IconButton
-            icon={<SearchIcon />}
-            disabled={!isFilter}
-            sx={{
-              width: 40,
-              height: 40,
-              backgroundColor: 'rgba(190, 190, 190, 0.8)',
-            }}
-          />
-        </Stack>
-      ) : undefined}
+      {filter}
 
       <Grid2 spacing={2} container xs={12}>
         <Grid2 xs={12}>
@@ -168,4 +174,4 @@ const Board = () => {
   );
 };
 
-export default memo(Board);
+export default memo(Kanban);
