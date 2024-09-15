@@ -7,7 +7,6 @@ import TextInput from './TextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
-import styled from '@emotion/styled';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
@@ -22,6 +21,7 @@ import { Accept, useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { FileInputData } from 'common/constants/type';
+import { styled } from '@mui/material/styles';
 
 export type FileInputProps = {
   label?: string;
