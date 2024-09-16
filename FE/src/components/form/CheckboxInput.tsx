@@ -1,6 +1,6 @@
 import UncontrolledCheckBoxInput, {
   CheckBoxProps as UncontrolledCheckboxProps,
-} from 'components/input/CheckboxInput';
+} from 'components/inputs/CheckboxInput';
 import { Controller, UseControllerProps } from 'react-hook-form';
 
 export type CheckboxProps = UncontrolledCheckboxProps & {

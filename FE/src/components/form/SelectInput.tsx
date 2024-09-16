@@ -2,7 +2,7 @@ import useCheckRequired from 'common/hooks/useCheckRequied';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledSelectInput, {
   SelectInputProps as UncontrolledSelectInputProps,
-} from 'components/input/SelectInput';
+} from 'components/inputs/SelectInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

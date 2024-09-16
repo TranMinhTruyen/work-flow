@@ -10,7 +10,8 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
     const isLogin = checkLogin();
     if (!isLogin) {
       navigate('/auth/login', { replace: true });
-      return;
+    } else {
+      navigate('/', { replace: true });
     }
     setIsSet(true);
   }, [navigate]);

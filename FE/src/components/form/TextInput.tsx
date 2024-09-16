@@ -3,7 +3,7 @@ import useCheckRequired from 'common/hooks/useCheckRequied';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
-} from 'components/input/TextInput';
+} from 'components/inputs/TextInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

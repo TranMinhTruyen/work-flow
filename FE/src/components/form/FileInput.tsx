@@ -3,7 +3,7 @@ import useCheckRequired from 'common/hooks/useCheckRequied';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
-} from 'components/input/FileInput';
+} from 'components/inputs/FileInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

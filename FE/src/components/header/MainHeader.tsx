@@ -15,7 +15,7 @@ import { Client } from '@stomp/stompjs';
 import { selectLanguage, selectOpenDrawer, setLanguage, toggleDrawer } from 'common/commonSlice';
 import Stack from '@mui/material/Stack';
 import { useAppDispatch, useAppSelector } from 'common/store';
-import SelectInput from 'components/input/SelectInput';
+import SelectInput from 'components/inputs/SelectInput';
 import { useTranslation } from 'react-i18next';
 import { languageTypeSelect } from 'common/constants/commonConst';
 

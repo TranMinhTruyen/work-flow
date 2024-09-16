@@ -5,7 +5,7 @@ import { selectLanguage, setLanguage } from 'common/commonSlice';
 import { languageTypeSelect } from 'common/constants/commonConst';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import { useAppDispatch, useAppSelector } from 'common/store';
-import SelectInput from 'components/input/SelectInput';
+import SelectInput from 'components/inputs/SelectInput';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 

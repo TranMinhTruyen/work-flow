@@ -1,7 +1,7 @@
 import useCheckRequired from 'common/hooks/useCheckRequied';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
-import UncontrolledMultiSelectInput from 'components/input/MultiSelectInput';
-import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/input/MultiSelectInput';
+import UncontrolledMultiSelectInput from 'components/inputs/MultiSelectInput';
+import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/inputs/MultiSelectInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

@@ -1,7 +1,7 @@
 import { Control, Controller } from 'react-hook-form';
 import UncontrolledDatePickerInput, {
   DatePickerProps as UncontrolledDatePickerProps,
-} from 'components/input/DatePickerInput';
+} from 'components/inputs/DatePickerInput';
 import { useCallback } from 'react';
 import useCheckRequired from 'common/hooks/useCheckRequied';
 import { isNullOrEmpty } from 'common/utils/stringUtil';

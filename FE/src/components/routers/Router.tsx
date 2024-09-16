@@ -4,8 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Backdrop, CircularProgress } from '@mui/material';
 import { ApiProvider } from 'common/provider/ApiProvider';
 import AuthProvider from 'common/provider/AuthProvider';
-import MainLayout from '../main/MainLayout';
-import AuthLayout from 'components/main/AuthLayout';
+import MainLayout from '../layouts/MainLayout';
+import AuthLayout from 'components/layouts/AuthLayout';
 
 const Login = lazy(() => import('../../pages/login/Login'));
 const Register = lazy(() => import('../../pages/register/Register'));
@@ -35,7 +35,9 @@ const Router = () => {
             path={'/auth'}
             element={
               <BackgroundLoading>
-                <AuthLayout />
+                <AuthProvider>
+                  <AuthLayout />
+                </AuthProvider>
               </BackgroundLoading>
             }
           >
