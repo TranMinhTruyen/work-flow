@@ -32,6 +32,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,8 @@ public class UserService extends AbstractService {
   private final UserHistoryRepository userHistoryRepository;
 
   private final JwtProvider jwtProvider;
+
+  private final RedisTemplate<Object, Object> redisTemplate;
 
   private static final String BEARER = "Bearer";
 
@@ -133,10 +136,17 @@ public class UserService extends AbstractService {
    * @throws WorkFlowException AppException
    */
   public LoginResponse login(LoginRequest loginRequest) throws WorkFlowException {
-    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-        loginRequest.getUserName());
-    UserAccount userAccount = result.orElseThrow(() -> new WorkFlowException(MessageEnum.NOT_FOUND,
-        "Username: " + loginRequest.getUserName()));
+    UserAccount userAccount;
+    try {
+      Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
+          loginRequest.getUserName());
+
+      userAccount = result.orElseThrow();
+    } catch (Exception e) {
+      redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
+      throw new WorkFlowException(MessageEnum.NOT_FOUND,
+          "Username: " + loginRequest.getUserName());
+    }
 
     if (!userAccount.getIsActive()) {
       throw new WorkFlowException(new ErrorDetail("Account is disable", HttpStatus.NOT_ACCEPTABLE));

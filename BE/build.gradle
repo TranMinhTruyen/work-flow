@@ -2,10 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.5'
+    id 'war'
 }
 
 group = 'com.org'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1-Development'
 
 java {
     toolchain {
@@ -40,6 +41,10 @@ dependencies {
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:3.3.1'
     implementation 'org.apache.commons:commons-lang3:3.16.0'
+    implementation 'io.lettuce:lettuce-core:6.4.0.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.3.4'
+    implementation 'org.springframework.data:spring-data-redis:3.3.4'
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -53,4 +58,17 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+// Build war command: ./gradlew build
+bootWar {
+    enabled = true
+}
+
+war {
+    archiveFileName = 'work-flow.war'
 }

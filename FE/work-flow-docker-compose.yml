@@ -22,7 +22,7 @@ services:
       - app-network
 
   work-flow-db:
-    container_name: work-flow-db
+    container_name: db-dev
     image: mongo:latest
     restart: always
     volumes:
