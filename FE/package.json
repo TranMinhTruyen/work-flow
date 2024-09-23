@@ -14,7 +14,7 @@
     "preview": "serve build/ -s",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "container": "docker-compose -f docker-compose.yml up"
+    "container": "docker compose -f work-flow-docker-compose.yml -p work-flow  up -d"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -49,8 +49,7 @@
     "serve": "^14.2.3",
     "sockjs-client": "^1.6.1",
     "typescript": "^5.6.2",
-    "web-vitals": "^2.1.4",
-    "work-flow-client": "file:"
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.0",

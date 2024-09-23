@@ -72,12 +72,14 @@ const Login = () => {
             label={t('Username or email')}
             required
             sx={loginStyles.textInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position={'start'}>
-                  <AccountCircleIcon />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <AccountCircleIcon />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
 
@@ -88,19 +90,21 @@ const Login = () => {
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={loginStyles.textInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position={'start'}>
-                  <KeyIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position={'end'}>
-                  <IconButton onClick={handleClickShowPassword} edge={'end'}>
-                    {isShowPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <KeyIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position={'end'}>
+                    <IconButton onClick={handleClickShowPassword} edge={'end'}>
+                      {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
             }}
           />
         </Stack>

@@ -9,13 +9,14 @@ services:
       context: .
       target: development
       dockerfile: Dockerfile
+    volumes:
+      - .:/app
     ports:
       - '3000:3000'
-    volumes:
-      - ./src:/app/src
     restart: unless-stopped
     stdin_open: true
     tty: true
+    command: yarn dev
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true

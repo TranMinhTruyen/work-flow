@@ -35,9 +35,7 @@ const Router = () => {
             path={'/auth'}
             element={
               <BackgroundLoading>
-                <AuthProvider>
-                  <AuthLayout />
-                </AuthProvider>
+                <AuthLayout />
               </BackgroundLoading>
             }
           >
