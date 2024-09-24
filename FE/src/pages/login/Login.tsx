@@ -21,6 +21,8 @@ import FloatButton from 'components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import { ILoginForm } from 'model/login/loginForm';
+import { translate } from 'common/utils/i18nUtil';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -30,7 +32,8 @@ const Login = () => {
 
   useLayoutEffect(() => {
     // Set title for header
-    setHeaderTitle(t('Login'));
+
+    setHeaderTitle(t(translate('title', I18nEnum.LOGIN_I18N)));
 
     // Remove when unmount
     return () => {
@@ -69,7 +72,7 @@ const Login = () => {
           <TextInput
             name={'userName'}
             control={control}
-            label={t('Username or email')}
+            label={t(translate('label.username', I18nEnum.LOGIN_I18N))}
             required
             sx={loginStyles.textInput}
             slotProps={{
@@ -86,7 +89,7 @@ const Login = () => {
           <TextInput
             name={'password'}
             control={control}
-            label={t('Password')}
+            label={t(translate('label.password', I18nEnum.LOGIN_I18N))}
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={loginStyles.textInput}
@@ -110,13 +113,21 @@ const Login = () => {
         </Stack>
 
         <Stack alignItems={'end'} sx={{ paddingRight: 10 }}>
-          <CheckBox name={'isRemember'} control={control} label={t('Remember me')} />
+          <CheckBox
+            name={'isRemember'}
+            control={control}
+            label={t(translate('label.remember', I18nEnum.LOGIN_I18N))}
+          />
         </Stack>
 
         <Stack alignItems={'center'}>
           <Typography sx={{ fontSize: 18 }}>
-            {t("If you don't have account, please ")}
-            {<Link onClick={() => navigate('/auth/register')}>{t('register')}</Link>}
+            {t(translate('label.noAcccount', I18nEnum.LOGIN_I18N))}
+            {
+              <Link onClick={() => navigate('/auth/register')}>
+                {t(translate('label.register', I18nEnum.LOGIN_I18N))}
+              </Link>
+            }
           </Typography>
         </Stack>
       </CardContent>
@@ -127,7 +138,7 @@ const Login = () => {
         <FloatButton
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {t('Login')}
+              {t(translate('button.login', I18nEnum.LOGIN_I18N))}
             </Typography>
           }
           sx={loginStyles.button}

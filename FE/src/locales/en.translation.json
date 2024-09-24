@@ -1,0 +1,43 @@
+{
+  "common": {
+    "language": "Language",
+    "inputRequired": "Input required",
+    "label": {
+      "totalFile": "Total file: "
+    },
+    "button": {
+      "save": "Save",
+      "back": "Back",
+      "cancel": "Cancel"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "label": {
+      "username": "Username or email",
+      "password": "Password",
+      "remember": "Remember me",
+      "noAcccount": "If you don't have account please, ",
+      "register": "register"
+    },
+    "button": {
+      "login": "Login"
+    }
+  },
+  "register": {
+    "title": "Register",
+    "label": {
+      "username": "Username",
+      "password": "Password",
+      "email": "Email",
+      "fullName": "Full name",
+      "birthday": "Birthday",
+      "role": "Role",
+      "authorities": "Authorities",
+      "uploadImage": "Upload image"
+    },
+    "button": {
+      "register": "Register"
+    }
+  }
+}

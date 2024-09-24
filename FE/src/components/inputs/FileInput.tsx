@@ -22,6 +22,8 @@ import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { FileInputData } from 'common/constants/type';
 import { styled } from '@mui/material/styles';
+import { translate } from 'common/utils/i18nUtil';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 export type FileInputProps = {
   label?: string;
@@ -125,112 +127,114 @@ const FileInput = (props: FileInputProps) => {
         size={'small'}
         label={label}
         error={error}
-        placeholder={t('Total file: ') + `${fileList.length}`}
+        placeholder={t(translate('label.totalFile', I18nEnum.COMMON_I18N)) + `${fileList.length}`}
         sx={{ width: width, height: height }}
         onBlur={handleOnBlur}
-        InputProps={{
-          readOnly: true,
-          startAdornment: (
-            <InputAdornment position={'start'}>
-              <FolderIcon color={fileList.length === 0 ? 'inherit' : 'primary'} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position={'end'} sx={{ marginRight: '-7px' }}>
-              <ButtonGroup variant={'contained'} sx={{ borderRadius: 25 }}>
-                <Button
-                  component={'label'}
-                  tabIndex={-1}
-                  sx={{
-                    width: 100,
-                    borderRadius: 25,
-                    '&:hover': {
-                      backgroundColor: 'rgba(210, 210, 210, 0.8)',
-                      color: '#000000',
+        slotProps={{
+          input: {
+            readOnly: true,
+            startAdornment: (
+              <InputAdornment position={'start'}>
+                <FolderIcon color={fileList.length === 0 ? 'inherit' : 'primary'} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position={'end'} sx={{ marginRight: '-7px' }}>
+                <ButtonGroup variant={'contained'} sx={{ borderRadius: 25 }}>
+                  <Button
+                    component={'label'}
+                    tabIndex={-1}
+                    sx={{
+                      width: 100,
+                      borderRadius: 25,
+                      '&:hover': {
+                        backgroundColor: 'rgba(210, 210, 210, 0.8)',
+                        color: '#000000',
+                      },
+                    }}
+                  >
+                    <FileUploadIcon />
+                    <input
+                      type={'file'}
+                      multiple={multipleFile}
+                      hidden
+                      onChange={handleFileUpload}
+                      {...getInputProps()}
+                    />
+                  </Button>
+                  <Button
+                    sx={{
+                      width: 40,
+                      borderRadius: 25,
+                      '&:hover': {
+                        backgroundColor: 'rgba(210, 210, 210, 0.8)',
+                        color: '#000000',
+                      },
+                    }}
+                    onClick={handleClick}
+                  >
+                    {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  </Button>
+                </ButtonGroup>
+                <StyledMenu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        width: 400,
+                        overflow: 'auto',
+                        maxHeight: 300,
+                        backgroundColor: 'rgba(255, 255, 255)',
+                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.8)',
+                      },
                     },
                   }}
                 >
-                  <FileUploadIcon />
-                  <input
-                    type={'file'}
-                    multiple={multipleFile}
-                    hidden
-                    onChange={handleFileUpload}
-                    {...getInputProps()}
-                  />
-                </Button>
-                <Button
-                  sx={{
-                    width: 40,
-                    borderRadius: 25,
-                    '&:hover': {
-                      backgroundColor: 'rgba(210, 210, 210, 0.8)',
-                      color: '#000000',
-                    },
-                  }}
-                  onClick={handleClick}
-                >
-                  {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </Button>
-              </ButtonGroup>
-              <StyledMenu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                slotProps={{
-                  paper: {
-                    sx: {
-                      width: 400,
-                      overflow: 'auto',
-                      maxHeight: 300,
-                      backgroundColor: 'rgba(255, 255, 255)',
-                      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.8)',
-                    },
-                  },
-                }}
-              >
-                {fileList.length === 0 ? (
-                  <MenuItem onClick={handleClose}>
-                    <Typography>Empty</Typography>
-                  </MenuItem>
-                ) : (
-                  fileList.map((item, index) => (
-                    <ListItem
-                      key={index}
-                      secondaryAction={
-                        <IconButton
-                          size={'large'}
-                          edge={'end'}
-                          color={'error'}
-                          onClick={handleDeleteFile(index)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemAvatar>
-                        <Avatar>
-                          <InsertDriveFileIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <Typography
+                  {fileList.length === 0 ? (
+                    <MenuItem onClick={handleClose}>
+                      <Typography>Empty</Typography>
+                    </MenuItem>
+                  ) : (
+                    fileList.map((item, index) => (
+                      <ListItem
                         key={index}
-                        sx={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}
+                        secondaryAction={
+                          <IconButton
+                            size={'large'}
+                            edge={'end'}
+                            color={'error'}
+                            onClick={handleDeleteFile(index)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        }
                       >
-                        {item.file?.name}
-                      </Typography>
-                    </ListItem>
-                  ))
-                )}
-              </StyledMenu>
-            </InputAdornment>
-          ),
+                        <ListItemAvatar>
+                          <Avatar>
+                            <InsertDriveFileIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <Typography
+                          key={index}
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {item.file?.name}
+                        </Typography>
+                      </ListItem>
+                    ))
+                  )}
+                </StyledMenu>
+              </InputAdornment>
+            ),
+          },
         }}
         helperText={helperText}
       />

@@ -1,31 +1,46 @@
 {
-  "Language": "言語",
-  "language": "言語",
-  "Login": "ログイン",
-  "login": "ログイン",
-  "Username": "ユーザー名",
-  "username": "ユーザー名",
-  "Username or email": "ユーザー名またはメールアドレス",
-  "username or email": "ユーザー名またはメールアドレス",
-  "Password": "パスワード",
-  "password": "パスワード",
-  "Remember me": "ログイン状態を保持する",
-  "remember me": "ログイン状態を保持する",
-  "Input required": "入力必須",
-  "input required": "入力必須",
-  "If you don't have account, please ": "アカウントをお持ちでない場合、",
-  "if you don't have account, please ": "アカウントをお持ちでない場合、",
-  "Register": "登録",
-  "register": "登録",
-  "Back": "戻る",
-  "back": "戻る",
-  "Authorities": "権限",
-  "authorities": "権限",
-  "Birthday": "生年月日",
-  "birthday": "生年月日",
-  "Upload image": "画像をアップロード",
-  "upload image": "画像をアップロード",
-  "Total file: ": "ファイル合計: ",
-  "Full name": "フルネーム",
-  "full name": "フルネーム"
+  "common": {
+    "eng": "英語",
+    "vn": "ベトナム語",
+    "jp": "日本語",
+    "language": "言語",
+    "inputRequired": "入力必須",
+    "label": {
+      "totalFile": "ファイル合計: "
+    },
+    "button": {
+      "save": "保存",
+      "back": "戻る",
+      "cancel": "取消"
+    }
+  },
+  "login": {
+    "title": "ログイン",
+    "label": {
+      "username": "ユーザー名またはメールアドレス",
+      "password": "パスワード",
+      "remember": "ログイン状態を保持する",
+      "noAcccount": "アカウントをお持ちでない場合、",
+      "register": "登録"
+    },
+    "button": {
+      "login": "ログイン"
+    }
+  },
+  "register": {
+    "title": "登録",
+    "label": {
+      "username": "ユーザー名",
+      "password": "パスワード",
+      "email": "メール",
+      "fullName": "フルネーム",
+      "birthday": "生年月日",
+      "role": "役割",
+      "authorities": "権限",
+      "uploadImage": "画像をアップロード"
+    },
+    "button": {
+      "register": "登録"
+    }
+  }
 }

@@ -7,6 +7,8 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (isSet) return;
+
     const isLogin = checkLogin();
     if (!isLogin) {
       navigate('/auth/login', { replace: true });
@@ -14,7 +16,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
       navigate('/', { replace: true });
     }
     setIsSet(true);
-  }, [navigate]);
+  }, [isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

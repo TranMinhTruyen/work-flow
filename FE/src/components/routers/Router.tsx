@@ -70,7 +70,7 @@ const Router = () => {
             {routerItems.map((item, index) => (
               <Route
                 key={index}
-                index={item.componentPath === '/board' ? true : false}
+                index={item.componentPath === '/' ? true : false}
                 path={item.componentPath}
                 element={<BackgroundLoading>{item.componentElement}</BackgroundLoading>}
               />

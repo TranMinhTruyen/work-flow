@@ -1,29 +1,46 @@
 {
-  "Language": "Ngôn ngữ",
-  "language": "ngôn ngữ",
-  "Login": "Đăng nhập",
-  "login": "đăng nhập",
-  "Username or email": "Username hoặc email",
-  "username or email": "username hoặc email",
-  "Password": "Mật khẩu",
-  "password": "mật khẩu",
-  "Remember me": "Ghi nhớ tài khoản",
-  "remember me": "ghi nhớ tài khoản",
-  "Input required": "Trường bắt buộc",
-  "input required": "trường bắt buộc",
-  "If you don't have account, please ": "Nếu bạn chưa có tài khoản, hãy ",
-  "if you don't have account, please ": "nếu bạn chưa có tài khoản, hãy ",
-  "Register": "Đăng ký",
-  "register": "đăng ký",
-  "Back": "Quay lại",
-  "back": "quay lại",
-  "Authorities": "Các loại quyền",
-  "authorities": "các loại quyền",
-  "Birthday": "Ngày tháng năm sinh",
-  "birthday": "ngày tháng năm sinh",
-  "Upload image": "Tải lên tệp hình ảnh",
-  "upload image": "tải lên tệp hình ảnh",
-  "Total file: ": "Tổng số file: ",
-  "Full name": "Tên đầy đủ",
-  "full name": "tên đầy đủ"
+  "common": {
+    "eng": "Tiếng Anh",
+    "vn": "Tiếng Việt",
+    "jp": "Tiếng Nhật",
+    "language": "Ngôn ngữ",
+    "inputRequired": "Trường bắt buộc",
+    "label": {
+      "totalFile": "Tổng số file: "
+    },
+    "button": {
+      "save": "Lưu",
+      "back": "Quay lại",
+      "cancel": "Hủy"
+    }
+  },
+  "login": {
+    "title": "Đăng nhập",
+    "label": {
+      "username": "Tài khoản hoặc email",
+      "password": "Mật khẩu",
+      "remember": "Ghi nhớ tài khoản",
+      "noAcccount": "Nếu bạn chưa có tài khoản hãy, ",
+      "register": "đăng kí"
+    },
+    "button": {
+      "login": "Đăng nhập"
+    }
+  },
+  "register": {
+    "title": "Đăng kí",
+    "label": {
+      "username": "Tài khoản",
+      "password": "Mật khẩu",
+      "email": "Email",
+      "fullName": "Tên đầy đủ",
+      "birthday": "Ngày sinh",
+      "role": "Vai trò",
+      "authorities": "Quyền hạn",
+      "uploadImage": "Tải lên tệp hình ảnh"
+    },
+    "button": {
+      "register": "Đăng kí"
+    }
+  }
 }

@@ -28,6 +28,8 @@ import { handleSubmitRegister } from './action/registerAction';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
 import { MessageType } from 'common/enums/messageEnum';
 import { IRegisterForm } from 'model/register/registerForm';
+import { translate } from 'common/utils/i18nUtil';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 export const authorities: SelectDataType[] = [
   {
@@ -81,7 +83,7 @@ const Register = () => {
 
   useLayoutEffect(() => {
     // Set title for header
-    setHeaderTitle(t('Register'));
+    setHeaderTitle(t(translate('title', I18nEnum.REGISTER_I18N)));
 
     // Set button back for header
     setHeaderContent(backButton);
@@ -121,60 +123,66 @@ const Register = () => {
           <TextInput
             control={control}
             name={'userName'}
-            label={t('Username')}
+            label={t(translate('label.username', I18nEnum.REGISTER_I18N))}
             required
             sx={registerStyles.textInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position={'start'}>
-                  <AccountCircleIcon />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <AccountCircleIcon />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
 
           <TextInput
             control={control}
             name={'password'}
-            label={t('Password')}
+            label={t(translate('label.password', I18nEnum.REGISTER_I18N))}
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={registerStyles.textInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position={'start'}>
-                  <KeyIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position={'end'}>
-                  <IconButton onClick={handleClickShowPassword} edge={'end'}>
-                    {isShowPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <KeyIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position={'end'}>
+                    <IconButton onClick={handleClickShowPassword} edge={'end'}>
+                      {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
             }}
           />
 
           <TextInput
             control={control}
             name={'email'}
-            label={t('Email')}
+            label={t(translate('label.email', I18nEnum.REGISTER_I18N))}
             type={'email'}
             sx={registerStyles.textInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position={'start'}>
-                  <EmailIcon />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <EmailIcon />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
 
           <TextInput
             control={control}
             name={'fullName'}
-            label={t('Full name')}
+            label={t(translate('label.fullName', I18nEnum.REGISTER_I18N))}
             sx={registerStyles.textInput}
           />
 
@@ -182,7 +190,7 @@ const Register = () => {
             control={control}
             required
             name={'birthDay'}
-            label={t('Birthday')}
+            label={t(translate('label.birthday', I18nEnum.REGISTER_I18N))}
             width={500}
           />
 
@@ -191,7 +199,7 @@ const Register = () => {
             required
             displayNone
             name={'role'}
-            label={t('Role')}
+            label={t(translate('label.role', I18nEnum.REGISTER_I18N))}
             data={role}
             width={500}
           />
@@ -200,7 +208,7 @@ const Register = () => {
             control={control}
             required
             name={'authorities'}
-            label={t('Authorities')}
+            label={t(translate('label.authorities', I18nEnum.REGISTER_I18N))}
             data={authorities}
             width={500}
           />
@@ -208,7 +216,7 @@ const Register = () => {
           <FileInput
             control={control}
             name={'image'}
-            label={t('Upload image')}
+            label={t(translate('label.uploadImage', I18nEnum.REGISTER_I18N))}
             acceptFile={IMAGE_FILE_TYPE}
             width={500}
           />
@@ -222,7 +230,7 @@ const Register = () => {
           <FloatButton
             label={
               <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {t('Register')}
+                {t(translate('button.register', I18nEnum.REGISTER_I18N))}
               </Typography>
             }
             sx={registerStyles.button}
