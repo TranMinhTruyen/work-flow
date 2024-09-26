@@ -121,9 +121,9 @@ const Register = () => {
       <CardContent>
         <Stack alignItems={'center'} spacing={3}>
           <TextInput
-            control={control}
             name={'userName'}
-            label={t(translate('label.username', I18nEnum.REGISTER_I18N))}
+            control={control}
+            i18n={I18nEnum.REGISTER_I18N}
             required
             sx={registerStyles.textInput}
             slotProps={{
@@ -138,9 +138,9 @@ const Register = () => {
           />
 
           <TextInput
-            control={control}
             name={'password'}
-            label={t(translate('label.password', I18nEnum.REGISTER_I18N))}
+            control={control}
+            i18n={I18nEnum.REGISTER_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={registerStyles.textInput}
@@ -163,9 +163,9 @@ const Register = () => {
           />
 
           <TextInput
-            control={control}
             name={'email'}
-            label={t(translate('label.email', I18nEnum.REGISTER_I18N))}
+            control={control}
+            i18n={I18nEnum.REGISTER_I18N}
             type={'email'}
             sx={registerStyles.textInput}
             slotProps={{
@@ -180,42 +180,42 @@ const Register = () => {
           />
 
           <TextInput
-            control={control}
             name={'fullName'}
-            label={t(translate('label.fullName', I18nEnum.REGISTER_I18N))}
+            control={control}
+            i18n={I18nEnum.REGISTER_I18N}
             sx={registerStyles.textInput}
           />
 
           <DatePickerInput
+            name={'birthDay'}
             control={control}
             required
-            name={'birthDay'}
             label={t(translate('label.birthday', I18nEnum.REGISTER_I18N))}
             width={500}
           />
 
           <SelectInput
+            name={'role'}
             control={control}
             required
             displayNone
-            name={'role'}
             label={t(translate('label.role', I18nEnum.REGISTER_I18N))}
             data={role}
             width={500}
           />
 
           <MultiSelectInput
+            name={'authorities'}
             control={control}
             required
-            name={'authorities'}
             label={t(translate('label.authorities', I18nEnum.REGISTER_I18N))}
             data={authorities}
             width={500}
           />
 
           <FileInput
-            control={control}
             name={'image'}
+            control={control}
             label={t(translate('label.uploadImage', I18nEnum.REGISTER_I18N))}
             acceptFile={IMAGE_FILE_TYPE}
             width={500}

@@ -37,18 +37,15 @@ export const RESET_ALL: string = 'RESET_ALL';
 //#endregion
 
 //#region Language
-export const languageTypeSelect: SelectDataType[] = [
+export const languageConst = [
   {
-    key: 'EN',
-    value: 'English',
+    id: 'EN',
   },
   {
-    key: 'VI',
-    value: 'Việt Nam',
+    id: 'VN',
   },
   {
-    key: 'JP',
-    value: 'Japan',
+    id: 'JP',
   },
 ];
 //#endregion

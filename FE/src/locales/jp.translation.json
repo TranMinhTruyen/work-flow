@@ -1,8 +1,8 @@
 {
   "common": {
-    "eng": "英語",
-    "vn": "ベトナム語",
-    "jp": "日本語",
+    "EN": "英語",
+    "VN": "ベトナム語",
+    "JP": "日本語",
     "language": "言語",
     "inputRequired": "入力必須",
     "label": {
@@ -17,7 +17,7 @@
   "login": {
     "title": "ログイン",
     "label": {
-      "username": "ユーザー名またはメールアドレス",
+      "userName": "ユーザー名またはメールアドレス",
       "password": "パスワード",
       "remember": "ログイン状態を保持する",
       "noAcccount": "アカウントをお持ちでない場合、",
@@ -30,7 +30,7 @@
   "register": {
     "title": "登録",
     "label": {
-      "username": "ユーザー名",
+      "userName": "ユーザー名",
       "password": "パスワード",
       "email": "メール",
       "fullName": "フルネーム",

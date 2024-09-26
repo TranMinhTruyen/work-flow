@@ -12,3 +12,10 @@ export type FileData = {
   name?: string;
   data?: number[];
 };
+
+export type Obj<V = any> = { [attr: string]: V };
+
+export type SelectDataFunc = (
+  items: Obj[],
+  keys: { key?: string; value?: string }
+) => SelectDataType[];

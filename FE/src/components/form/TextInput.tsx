@@ -1,4 +1,4 @@
-import { EMAIL_PATTERN } from 'common/constants/commonConst';
+import { I18nEnum } from 'common/enums/i18nEnum';
 import useCheckRequired from 'common/hooks/useCheckRequied';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledTextInput, {
@@ -10,6 +10,7 @@ import { Control, Controller } from 'react-hook-form';
 export type TextInputProps = UncontrolledTextInputProps & {
   name: string;
   control: Control;
+  i18n: I18nEnum;
   defaultValue?: string | number | boolean;
   messageErr?: string;
 };
@@ -18,18 +19,21 @@ const TextInput = (props: TextInputProps) => {
   const {
     name,
     control,
+    i18n,
     label,
     type,
     value: valueProps,
     messageErr,
     required,
-    inputProps,
+    slotProps,
     onChange: onChangeProps,
     onBlur: onBlurProps,
     ...restProps
   } = props;
 
-  const { checkDataInput } = useCheckRequired<string>({ ...props });
+  const { checkDataInput, translateLabel, translateError } = useCheckRequired<string>({
+    ...props,
+  });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
@@ -53,11 +57,11 @@ const TextInput = (props: TextInputProps) => {
       name={name}
       control={control}
       rules={{
-        required: required ? `${label} is required!` : '',
+        required: required,
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledTextInput
-          label={label}
+          label={translateLabel()}
           type={type}
           value={value ?? ''}
           onChange={handleOnChange(onChange)}
@@ -65,13 +69,10 @@ const TextInput = (props: TextInputProps) => {
           error={!!(error && error.type !== 'valid')}
           helperText={
             !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
-              ? error.message
+              ? translateError(error.message)
               : undefined
           }
-          inputProps={{
-            ...inputProps,
-            'text-input-id': name,
-          }}
+          slotProps={slotProps}
           {...restProps}
         />
       )}

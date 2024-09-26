@@ -3,7 +3,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';
 import IconButton from '@mui/material/IconButton';
 import { memo, useCallback } from 'react';
-import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
+import { CSSObject, styled, Theme } from '@mui/material/styles';
 import DrawerMenu from './DrawerMenu';
 import { ChevronLeft } from '@mui/icons-material';
 import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';

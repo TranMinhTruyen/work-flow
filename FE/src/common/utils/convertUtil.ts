@@ -1,3 +1,5 @@
+import { SelectDataFunc } from 'common/constants/type';
+
 /**
  * Read file and convert to byte array.
  *
@@ -16,3 +18,9 @@ export const readFileAsByte = (file: File): Promise<Uint8Array> => {
     };
   });
 };
+
+export const toSelectData: SelectDataFunc = (items, keys) =>
+  items.map(item => ({
+    key: item[keys?.key || 'key'],
+    value: item[keys?.value || 'value'],
+  }));

@@ -72,7 +72,7 @@ const Login = () => {
           <TextInput
             name={'userName'}
             control={control}
-            label={t(translate('label.username', I18nEnum.LOGIN_I18N))}
+            i18n={I18nEnum.LOGIN_I18N}
             required
             sx={loginStyles.textInput}
             slotProps={{
@@ -89,7 +89,7 @@ const Login = () => {
           <TextInput
             name={'password'}
             control={control}
-            label={t(translate('label.password', I18nEnum.LOGIN_I18N))}
+            i18n={I18nEnum.LOGIN_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={loginStyles.textInput}

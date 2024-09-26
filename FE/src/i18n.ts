@@ -10,7 +10,7 @@ i18n.use(initReactI18next).init({
     EN: {
       translation: enTranslation,
     },
-    VI: {
+    VN: {
       translation: viTranslation,
     },
     JP: {

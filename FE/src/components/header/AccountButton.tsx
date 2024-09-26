@@ -38,7 +38,6 @@ const AccountButton = () => {
     <>
       <IconButton
         onClick={handleClick}
-        badgeContent={1}
         sx={{
           backgroundImage: loginData?.userResponse?.image
             ? `url(data:image/png;base64,${loginData?.userResponse?.image?.data})`
@@ -82,7 +81,7 @@ const AccountButton = () => {
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <AccountCircleIcon fontSize="medium" />
+            <AccountCircleIcon fontSize={'medium'} />
           </ListItemIcon>
           Profile
         </MenuItem>
@@ -91,14 +90,14 @@ const AccountButton = () => {
 
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="medium" />
+            <Settings fontSize={'medium'} />
           </ListItemIcon>
           Settings
         </MenuItem>
 
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
-            <Logout fontSize="medium" />
+            <Logout fontSize={'medium'} />
           </ListItemIcon>
           Logout
         </MenuItem>

@@ -1,8 +1,8 @@
 {
   "common": {
-    "eng": "Tiếng Anh",
-    "vn": "Tiếng Việt",
-    "jp": "Tiếng Nhật",
+    "EN": "Tiếng Anh",
+    "VN": "Tiếng Việt",
+    "JP": "Tiếng Nhật",
     "language": "Ngôn ngữ",
     "inputRequired": "Trường bắt buộc",
     "label": {
@@ -17,7 +17,7 @@
   "login": {
     "title": "Đăng nhập",
     "label": {
-      "username": "Tài khoản hoặc email",
+      "userName": "Tài khoản hoặc email",
       "password": "Mật khẩu",
       "remember": "Ghi nhớ tài khoản",
       "noAcccount": "Nếu bạn chưa có tài khoản hãy, ",
@@ -30,7 +30,7 @@
   "register": {
     "title": "Đăng kí",
     "label": {
-      "username": "Tài khoản",
+      "userName": "Tài khoản",
       "password": "Mật khẩu",
       "email": "Email",
       "fullName": "Tên đầy đủ",

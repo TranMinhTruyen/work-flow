@@ -5,7 +5,7 @@ import { IconButton as MuiIconButton } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AccountButton from './AccountButton';
 import IconButton from '../button/IconButton';
@@ -17,7 +17,10 @@ import Stack from '@mui/material/Stack';
 import { useAppDispatch, useAppSelector } from 'common/store';
 import SelectInput from 'components/inputs/SelectInput';
 import { useTranslation } from 'react-i18next';
-import { languageTypeSelect } from 'common/constants/commonConst';
+import { toSelectData } from 'common/utils/convertUtil';
+import { languageConst } from 'common/constants/commonConst';
+import { translate } from 'common/utils/i18nUtil';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -87,6 +90,15 @@ const MainHeader = (props: IHeaderProps) => {
     [dispatch]
   );
 
+  const languageData = useMemo(
+    () =>
+      languageConst.map(item => ({
+        id: item.id,
+        label: t(translate(item.id, I18nEnum.COMMON_I18N)),
+      })),
+    [t]
+  );
+
   return (
     <AppBar drawerWidth={drawerWidth} position={'fixed'} open={opendrawer}>
       <Toolbar>
@@ -115,11 +127,10 @@ const MainHeader = (props: IHeaderProps) => {
 
         <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
           <SelectInput
-            id={'languageSelect'}
             width={150}
-            data={languageTypeSelect}
+            data={toSelectData(languageData, { key: 'id', value: 'label' })}
             defaultValue={language}
-            label={t('Language')}
+            label={t(translate('language', I18nEnum.COMMON_I18N))}
             onChange={handleChangeLanguage}
             sx={{
               '& .MuiInputBase-formControl': {
@@ -129,7 +140,7 @@ const MainHeader = (props: IHeaderProps) => {
                 height: '20px',
               },
               '& .MuiSelect-select': {
-                marginTop: '-3px',
+                marginTop: '-1px',
               },
             }}
           />

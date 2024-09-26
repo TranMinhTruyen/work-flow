@@ -2,11 +2,14 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import authStyles from 'assets/styles/authStyles';
 import { selectLanguage, setLanguage } from 'common/commonSlice';
-import { languageTypeSelect } from 'common/constants/commonConst';
+import { languageConst } from 'common/constants/commonConst';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
+import { I18nEnum } from 'common/enums/i18nEnum';
 import { useAppDispatch, useAppSelector } from 'common/store';
+import { toSelectData } from 'common/utils/convertUtil';
+import { translate } from 'common/utils/i18nUtil';
 import SelectInput from 'components/inputs/SelectInput';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const AuthHeader = () => {
@@ -26,6 +29,15 @@ const AuthHeader = () => {
     [dispatch]
   );
 
+  const languageData = useMemo(
+    () =>
+      languageConst.map(item => ({
+        id: item.id,
+        label: t(translate(item.id, I18nEnum.COMMON_I18N)),
+      })),
+    [t]
+  );
+
   return (
     <Stack direction={'row'} sx={authStyles.header}>
       <Stack direction={'row'} spacing={2} sx={authStyles.headerContent}>
@@ -41,9 +53,9 @@ const AuthHeader = () => {
       <Stack direction={'row'} sx={authStyles.headerSelect}>
         <SelectInput
           width={150}
-          data={languageTypeSelect}
+          data={toSelectData(languageData, { key: 'id', value: 'label' })}
           defaultValue={language}
-          label={t('Language')}
+          label={t(translate('language', I18nEnum.COMMON_I18N))}
           onChange={handleChangeLanguage}
           sx={{
             '& .MuiInputBase-formControl': {

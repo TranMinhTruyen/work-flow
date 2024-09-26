@@ -17,6 +17,7 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
 import Grid2 from '@mui/material/Grid2';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const itemList = DrawerItemList;
 
@@ -157,9 +158,9 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
     () =>
       openDrawer ? (
         openChild ? (
-          <ExpandLess sx={{ color: 'rgba(98, 98, 98)' }} />
-        ) : (
           <ExpandMore sx={{ color: 'rgba(98, 98, 98)' }} />
+        ) : (
+          <KeyboardArrowRightIcon sx={{ color: 'rgba(98, 98, 98)' }} />
         )
       ) : (
         <></>

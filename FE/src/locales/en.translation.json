@@ -1,5 +1,8 @@
 {
   "common": {
+    "EN": "English",
+    "VN": "Vietnamese",
+    "JP": "Japanese",
     "language": "Language",
     "inputRequired": "Input required",
     "label": {
@@ -14,7 +17,7 @@
   "login": {
     "title": "Login",
     "label": {
-      "username": "Username or email",
+      "userName": "Username or email",
       "password": "Password",
       "remember": "Remember me",
       "noAcccount": "If you don't have account please, ",
@@ -27,7 +30,7 @@
   "register": {
     "title": "Register",
     "label": {
-      "username": "Username",
+      "userName": "Username",
       "password": "Password",
       "email": "Email",
       "fullName": "Full name",
