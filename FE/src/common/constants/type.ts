@@ -5,7 +5,7 @@ export type SelectDataType = {
 
 export type FileInputData = {
   file?: File;
-  fileData?: Uint8Array;
+  fileData?: Uint8Array | number[];
 };
 
 export type FileData = {

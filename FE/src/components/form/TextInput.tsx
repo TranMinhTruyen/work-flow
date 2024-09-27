@@ -1,5 +1,4 @@
-import { I18nEnum } from 'common/enums/i18nEnum';
-import useCheckRequired from 'common/hooks/useCheckRequied';
+import useInput from 'common/hooks/useInput';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
@@ -10,7 +9,6 @@ import { Control, Controller } from 'react-hook-form';
 export type TextInputProps = UncontrolledTextInputProps & {
   name: string;
   control: Control;
-  i18n: I18nEnum;
   defaultValue?: string | number | boolean;
   messageErr?: string;
 };
@@ -19,7 +17,6 @@ const TextInput = (props: TextInputProps) => {
   const {
     name,
     control,
-    i18n,
     label,
     type,
     value: valueProps,
@@ -31,7 +28,7 @@ const TextInput = (props: TextInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput, translateLabel, translateError } = useCheckRequired<string>({
+  const { checkDataInput, translateLabel, translateError } = useInput<string>({
     ...props,
   });
 

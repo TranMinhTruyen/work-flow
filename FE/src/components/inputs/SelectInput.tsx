@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { SelectDataType } from 'common/constants/type';
+import { I18nEnum } from 'common/enums/i18nEnum';
 import { capitalizeFirst } from 'common/utils/stringUtil';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 
@@ -15,6 +16,7 @@ export type SelectInputProps = Omit<
   SelectProps,
   'multiple' | 'defaultValue' | 'displayEmpty' | 'value' | 'onChange' | 'onBlur'
 > & {
+  i18n: I18nEnum;
   label?: string;
   width?: number;
   sx?: SxProps<Theme>;

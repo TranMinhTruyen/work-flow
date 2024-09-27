@@ -30,6 +30,7 @@ import { MessageType } from 'common/enums/messageEnum';
 import { IRegisterForm } from 'model/register/registerForm';
 import { translate } from 'common/utils/i18nUtil';
 import { I18nEnum } from 'common/enums/i18nEnum';
+import ImageInput from 'components/inputs/ImageInput';
 
 export const authorities: SelectDataType[] = [
   {
@@ -220,6 +221,8 @@ const Register = () => {
             acceptFile={IMAGE_FILE_TYPE}
             width={500}
           />
+
+          <ImageInput />
         </Stack>
       </CardContent>
 

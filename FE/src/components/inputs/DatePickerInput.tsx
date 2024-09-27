@@ -9,11 +9,13 @@ import moment, { Moment } from 'moment';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import InputAdornment from '@mui/material/InputAdornment';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
   'value' | 'onChange' | 'onBlur' | 'onFocus' | 'onClose'
 > & {
+  i18n: I18nEnum;
   height?: number;
   width?: number;
   value?: DateType;

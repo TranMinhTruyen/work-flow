@@ -2,34 +2,58 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { IMAGE_FILE_TYPE } from 'common/constants/commonConst';
 import { FileInputData } from 'common/constants/type';
-import { readFileAsByte } from 'common/utils/convertUtil';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { convertToDataURL, readFileAsByte, readFileAsDataURL } from 'common/utils/convertUtil';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import Avatar from '@mui/material/Avatar';
+import ClearIcon from '@mui/icons-material/Clear';
+import { capitalizeFirst, isNullOrEmpty } from 'common/utils/stringUtil';
 
 export type ImageInputProps = {
-  label?: string;
+  id?: string;
   height?: number;
-  width?: number;
   value?: FileInputData;
-  error?: boolean;
-  helperText?: string | null;
   onChange?: (value: FileInputData) => void;
-  onBlur?: (value: FileInputData) => void;
 };
 
 const ImageInput = (props: ImageInputProps) => {
-  const {
-    label,
-    height,
-    width = 200,
-    value: valueProps,
-    error = false,
-    helperText,
-    onChange,
-    onBlur,
-  } = props;
+  const { id, height = 150, value: valueProps, onChange } = props;
 
-  const [imageFile, setImageFile] = useState<FileInputData>(valueProps ?? {});
+  const [imageFile, setImageFile] = useState<FileInputData | null>(valueProps ?? null);
+  const imageRef = useRef<string | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const convertAndSetImage = async () => {
+      imageRef.current = await convertToDataURL(imageFile?.fileData);
+    };
+    convertAndSetImage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const settingFileList = useCallback(
+    async (fileInputList: FileList | any[] | null) => {
+      if (fileInputList && fileInputList.length > 0) {
+        const fileItem: FileInputData = {};
+        fileItem.fileData = await readFileAsByte(fileInputList[0] as File);
+        fileItem.file = fileInputList[0] as File;
+
+        imageRef.current = await readFileAsDataURL(fileInputList[0] as File);
+
+        setImageFile(prev => {
+          prev = fileItem;
+          return prev;
+        });
+
+        onChange?.(fileItem);
+
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+      }
+    },
+    [onChange]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: IMAGE_FILE_TYPE,
@@ -39,56 +63,59 @@ const ImageInput = (props: ImageInputProps) => {
     },
   });
 
-  const settingFileList = useCallback(
-    async (fileInputList: FileList | any[] | null) => {
-      if (fileInputList) {
-        let fileDataList: FileInputData[] = [];
-
-        for (var i = 0; i < fileInputList.length; i++) {
-          let fileItem: FileInputData = {};
-          fileItem.fileData = await readFileAsByte(fileInputList[i] as File);
-          fileItem.file = fileInputList[i] as File;
-          fileDataList.push(fileItem);
-        }
-
-        setImageFile(prev => {
-          fileDataList.forEach(item => {
-            prev = item;
-          });
-          return prev;
-        });
-
-        onChange?.(imageFile);
-      }
-    },
-    [imageFile, onChange]
-  );
-
-  const handleFileUpload = useCallback(
+  const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
       await settingFileList(event.target.files);
     },
     [settingFileList]
   );
 
+  const handleDeleteImage = useCallback(() => {
+    imageRef.current = null;
+    setImageFile(null);
+    onChange?.({});
+  }, [onChange]);
+
   return (
     <Box {...getRootProps()}>
-      <IconButton
-        sx={{
-          backgroundImage: imageFile.fileData
-            ? `url(data:image/png;base64,${imageFile.fileData})`
-            : '',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          width: 40,
-          height: 40,
-          '&:hover': {
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <input type={'file'} hidden onChange={handleFileUpload} {...getInputProps()} />
-      </IconButton>
+      <input
+        id={`fileUpload${capitalizeFirst(id)}`}
+        type={'file'}
+        hidden
+        onChange={handleImageUpload}
+        {...getInputProps()}
+        ref={inputRef}
+      />
+      <label htmlFor={`fileUpload${capitalizeFirst(id)}`}>
+        <IconButton
+          component={'span'}
+          sx={{
+            width: height,
+            height: height,
+          }}
+        >
+          <Avatar src={imageRef.current ?? ''} sx={{ width: height, height: height }} />
+        </IconButton>
+      </label>
+      {!isNullOrEmpty(imageRef.current) && (
+        <IconButton
+          id={`fileUpload${capitalizeFirst(id)}ClearButton`}
+          onClick={handleDeleteImage}
+          sx={{
+            width: '30px',
+            height: '30px',
+            position: 'absolute',
+            marginLeft: '-30px',
+            color: 'white',
+            backgroundColor: 'red',
+            '&:hover': {
+              backgroundColor: 'darkred',
+            },
+          }}
+        >
+          <ClearIcon id={`fileUpload${capitalizeFirst(id)}ClearIcon`} />
+        </IconButton>
+      )}
     </Box>
   );
 };

@@ -15,7 +15,7 @@ type UseCheckRequiredProps = {
   i18n: I18nEnum;
 };
 
-const useCheckRequired = <T>(props: UseCheckRequiredProps) => {
+const useInput = <T>(props: UseCheckRequiredProps) => {
   const { name, control, required, type, i18n } = props;
   const { t } = useTranslation();
 
@@ -65,4 +65,4 @@ const useCheckRequired = <T>(props: UseCheckRequiredProps) => {
   };
 };
 
-export default useCheckRequired;
+export default useInput;

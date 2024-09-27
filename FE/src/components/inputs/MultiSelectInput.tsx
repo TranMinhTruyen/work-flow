@@ -11,11 +11,13 @@ import { SelectDataType } from 'common/constants/type';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import { capitalizeFirst } from 'common/utils/stringUtil';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 export type MultiSelectInputProps = Omit<
   SelectProps,
   'multiple' | 'value' | 'onChange' | 'onBlur'
 > & {
+  i18n: I18nEnum;
   width?: number;
   sx?: SxProps<Theme>;
   value?: string[];

@@ -2,8 +2,10 @@ import { InputAdornment, styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { ChangeEvent, FocusEvent, useLayoutEffect, useState } from 'react';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import { I18nEnum } from 'common/enums/i18nEnum';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
+  i18n: I18nEnum;
   label?: string;
   width?: number;
   value?: string;
@@ -50,15 +52,17 @@ const TextInput = (props: TextInputProps) => {
       onChange={handleOnChange}
       onBlur={handleOnBlur}
       label={label}
-      InputLabelProps={{
-        shrink: true,
-      }}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position={'start'}>
-            <TextFieldsIcon />
-          </InputAdornment>
-        ),
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position={'start'}>
+              <TextFieldsIcon />
+            </InputAdornment>
+          ),
+        },
+        inputLabel: {
+          shrink: true,
+        },
       }}
       {...restProps}
     />

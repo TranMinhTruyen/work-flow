@@ -1,5 +1,4 @@
 import { Accept } from 'react-dropzone';
-import { SelectDataType } from './type';
 
 //#region Axios config
 export const TIME_OUT: number = 60000;

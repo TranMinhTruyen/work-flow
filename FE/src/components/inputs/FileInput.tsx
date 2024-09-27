@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import { ChangeEvent, useCallback, useState, MouseEvent } from 'react';
+import { ChangeEvent, useCallback, useState, MouseEvent, useRef } from 'react';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Typography from '@mui/material/Typography';
 import { readFileAsByte } from 'common/utils/convertUtil';
@@ -26,6 +26,7 @@ import { translate } from 'common/utils/i18nUtil';
 import { I18nEnum } from 'common/enums/i18nEnum';
 
 export type FileInputProps = {
+  i18n: I18nEnum;
   label?: string;
   height?: number;
   width?: number;
@@ -40,6 +41,7 @@ export type FileInputProps = {
 
 const FileInput = (props: FileInputProps) => {
   const {
+    i18n,
     label,
     height,
     width = 200,
@@ -55,6 +57,7 @@ const FileInput = (props: FileInputProps) => {
 
   const [fileList, setFileList] = useState<FileInputData[]>(valueProps ?? []);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const open = Boolean(anchorEl);
 
   const settingFileList = useCallback(
@@ -76,10 +79,14 @@ const FileInput = (props: FileInputProps) => {
           return prev;
         });
 
-        onChange?.(fileList);
+        onChange?.(fileDataList);
+
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
       }
     },
-    [fileList, onChange]
+    [onChange]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -127,6 +134,7 @@ const FileInput = (props: FileInputProps) => {
         size={'small'}
         label={label}
         error={error}
+        i18n={i18n}
         placeholder={t(translate('label.totalFile', I18nEnum.COMMON_I18N)) + `${fileList.length}`}
         sx={{ width: width, height: height }}
         onBlur={handleOnBlur}
@@ -160,6 +168,7 @@ const FileInput = (props: FileInputProps) => {
                       hidden
                       onChange={handleFileUpload}
                       {...getInputProps()}
+                      ref={inputRef}
                     />
                   </Button>
                   <Button

@@ -3,7 +3,7 @@ import UncontrolledDatePickerInput, {
   DatePickerProps as UncontrolledDatePickerProps,
 } from 'components/inputs/DatePickerInput';
 import { useCallback } from 'react';
-import useCheckRequired from 'common/hooks/useCheckRequied';
+import useInput from 'common/hooks/useInput';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
@@ -25,7 +25,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useCheckRequired<string>({ ...props });
+  const { checkDataInput } = useInput<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {

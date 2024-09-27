@@ -20,7 +20,7 @@
       "userName": "Username or email",
       "password": "Password",
       "remember": "Remember me",
-      "noAcccount": "If you don't have account please, ",
+      "noAcccount": "If you don't have account, please ",
       "register": "register"
     },
     "button": {

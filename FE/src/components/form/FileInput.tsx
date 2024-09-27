@@ -1,5 +1,6 @@
 import { FileInputData } from 'common/constants/type';
-import useCheckRequired from 'common/hooks/useCheckRequied';
+import { I18nEnum } from 'common/enums/i18nEnum';
+import useInput from 'common/hooks/useInput';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
@@ -10,6 +11,7 @@ import { Control, Controller } from 'react-hook-form';
 export type FileInputProps = UncontrolledFileInputProps & {
   name: string;
   control: Control;
+  i18n: I18nEnum;
   required?: boolean;
 };
 
@@ -25,7 +27,7 @@ const FileInput = (props: FileInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useCheckRequired<FileInputData[]>({ ...props });
+  const { checkDataInput } = useInput<FileInputData[]>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: FileInputData[]) => {

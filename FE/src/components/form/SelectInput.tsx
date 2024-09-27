@@ -1,4 +1,4 @@
-import useCheckRequired from 'common/hooks/useCheckRequied';
+import useInput from 'common/hooks/useInput';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledSelectInput, {
   SelectInputProps as UncontrolledSelectInputProps,
@@ -25,7 +25,7 @@ const SelectInput = (props: SelectInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useCheckRequired<string>({ ...props });
+  const { checkDataInput } = useInput<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
