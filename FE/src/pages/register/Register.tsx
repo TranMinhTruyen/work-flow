@@ -11,8 +11,6 @@ import FloatButton from 'components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import TextInput from 'components/form/TextInput';
 import MultiSelectInput from 'components/form/MultiSelectInput';
-import FileInput from 'components/form/FileInput';
-import { IMAGE_FILE_TYPE } from 'common/constants/commonConst';
 import CardActions from '@mui/material/CardActions';
 import registerStyles from 'assets/styles/registerStyles';
 import { useNavigate } from 'react-router-dom';
@@ -28,9 +26,8 @@ import { handleSubmitRegister } from './action/registerAction';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
 import { MessageType } from 'common/enums/messageEnum';
 import { IRegisterForm } from 'model/register/registerForm';
-import { translate } from 'common/utils/i18nUtil';
 import { I18nEnum } from 'common/enums/i18nEnum';
-import ImageInput from 'components/inputs/ImageInput';
+import ImageInput from 'components/form/ImageInput';
 
 export const authorities: SelectDataType[] = [
   {
@@ -66,7 +63,7 @@ const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(I18nEnum.REGISTER_I18N);
   const { setHeaderTitle, setHeaderContent } = useAuthHeader();
 
   const backButton = useMemo(
@@ -84,7 +81,7 @@ const Register = () => {
 
   useLayoutEffect(() => {
     // Set title for header
-    setHeaderTitle(t(translate('title', I18nEnum.REGISTER_I18N)));
+    setHeaderTitle(t('title'));
 
     // Set button back for header
     setHeaderContent(backButton);
@@ -100,6 +97,7 @@ const Register = () => {
 
   const handleRegister = useCallback(
     async (formData: IRegisterForm) => {
+      console.log(formData);
       await trigger();
       const response = await handleSubmitRegister(formData);
       if (response !== undefined) {
@@ -121,6 +119,8 @@ const Register = () => {
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
       <CardContent>
         <Stack alignItems={'center'} spacing={3}>
+          <ImageInput name={'image'} control={control} />
+
           <TextInput
             name={'userName'}
             control={control}
@@ -190,8 +190,8 @@ const Register = () => {
           <DatePickerInput
             name={'birthDay'}
             control={control}
+            i18n={I18nEnum.REGISTER_I18N}
             required
-            label={t(translate('label.birthday', I18nEnum.REGISTER_I18N))}
             width={500}
           />
 
@@ -200,7 +200,7 @@ const Register = () => {
             control={control}
             required
             displayNone
-            label={t(translate('label.role', I18nEnum.REGISTER_I18N))}
+            i18n={I18nEnum.REGISTER_I18N}
             data={role}
             width={500}
           />
@@ -209,20 +209,10 @@ const Register = () => {
             name={'authorities'}
             control={control}
             required
-            label={t(translate('label.authorities', I18nEnum.REGISTER_I18N))}
+            i18n={I18nEnum.REGISTER_I18N}
             data={authorities}
             width={500}
           />
-
-          <FileInput
-            name={'image'}
-            control={control}
-            label={t(translate('label.uploadImage', I18nEnum.REGISTER_I18N))}
-            acceptFile={IMAGE_FILE_TYPE}
-            width={500}
-          />
-
-          <ImageInput />
         </Stack>
       </CardContent>
 
@@ -233,7 +223,7 @@ const Register = () => {
           <FloatButton
             label={
               <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {t(translate('button.register', I18nEnum.REGISTER_I18N))}
+                {t('button.register')}
               </Typography>
             }
             sx={registerStyles.button}

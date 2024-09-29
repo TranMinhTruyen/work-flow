@@ -9,8 +9,8 @@ export const handleSubmitRegister = async (formData: IRegisterForm) => {
     ...formData,
     password: encryptWithRSA(formData.password),
     image: {
-      name: formData?.image?.[0].file?.name,
-      data: Array.from(formData?.image?.[0].fileData ?? []),
+      name: formData?.image?.file?.name,
+      data: Array.from(formData?.image?.fileData ?? []),
     },
   };
 

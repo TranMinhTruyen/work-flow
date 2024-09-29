@@ -25,7 +25,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useInput<string>({ ...props });
+  const { checkDataInput, translateLabel, translateError } = useInput<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
@@ -53,7 +53,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledDatePickerInput
-          label={label}
+          label={translateLabel()}
           value={value}
           inputFormat={inputFormat}
           onChange={handleOnChange(onChange)}
@@ -62,7 +62,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
           error={!!(error && error.type !== 'valid')}
           helperText={
             !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
-              ? error.message
+              ? translateError(error.message)
               : undefined
           }
           {...restProps}

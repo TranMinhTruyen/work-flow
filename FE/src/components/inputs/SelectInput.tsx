@@ -16,7 +16,7 @@ export type SelectInputProps = Omit<
   SelectProps,
   'multiple' | 'defaultValue' | 'displayEmpty' | 'value' | 'onChange' | 'onBlur'
 > & {
-  i18n: I18nEnum;
+  i18n?: I18nEnum;
   label?: string;
   width?: number;
   sx?: SxProps<Theme>;
@@ -87,7 +87,7 @@ const SelectInput = (props: SelectInputProps) => {
         {label}
       </InputLabel>
       <Select
-        id={`input${capitalizeFirst(id)}`}
+        id={`select${capitalizeFirst(id)}`}
         labelId={id}
         displayEmpty
         label={label}

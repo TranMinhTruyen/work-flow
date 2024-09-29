@@ -1,5 +1,6 @@
 import Checkbox, { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox';
 import { FormControlLabel, FormGroup } from '@mui/material';
+import { capitalizeFirst } from 'common/utils/stringUtil';
 
 export type CheckBoxProps = MuiCheckboxProps & {
   label?: string;
@@ -7,15 +8,19 @@ export type CheckBoxProps = MuiCheckboxProps & {
 };
 
 const CheckBox = (props: CheckBoxProps) => {
-  const { label, ...restProps } = props;
+  const { id, label, ...restProps } = props;
 
   if (!label) {
-    return <Checkbox {...restProps} />;
+    return <Checkbox id={`checkBox${capitalizeFirst(id)}`} {...restProps} />;
   }
 
   return (
-    <FormGroup>
-      <FormControlLabel control={<Checkbox {...restProps} />} label={label ?? ''} />
+    <FormGroup id={`checkBoxFormGroup${capitalizeFirst(id)}`}>
+      <FormControlLabel
+        id={`checkBoxLabel${capitalizeFirst(id)}`}
+        control={<Checkbox id={`checkBox${capitalizeFirst(id)}`} {...restProps} />}
+        label={label ?? ''}
+      />
     </FormGroup>
   );
 };

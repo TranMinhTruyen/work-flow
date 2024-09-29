@@ -27,7 +27,9 @@ const FileInput = (props: FileInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useInput<FileInputData[]>({ ...props });
+  const { checkDataInput, translateLabel, translateError } = useInput<FileInputData[]>({
+    ...props,
+  });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: FileInputData[]) => {
@@ -55,14 +57,14 @@ const FileInput = (props: FileInputProps) => {
       }}
       render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledFileInput
-          label={label}
+          label={translateLabel()}
           value={value}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={
             !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
-              ? error.message
+              ? translateError(error.message)
               : undefined
           }
           {...restProps}

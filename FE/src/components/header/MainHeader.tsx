@@ -19,7 +19,6 @@ import SelectInput from 'components/inputs/SelectInput';
 import { useTranslation } from 'react-i18next';
 import { toSelectData } from 'common/utils/convertUtil';
 import { languageConst } from 'common/constants/commonConst';
-import { translate } from 'common/utils/i18nUtil';
 import { I18nEnum } from 'common/enums/i18nEnum';
 
 type IHeaderProps = {
@@ -37,7 +36,7 @@ const MainHeader = (props: IHeaderProps) => {
   const navigate = useNavigate();
   const opendrawer = useAppSelector(selectOpenDrawer);
   const theme = useTheme();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
   const language: string = useAppSelector(selectLanguage);
 
   const [notifications, setNotifications] = useState<Map<string, any>>(new Map());
@@ -94,7 +93,7 @@ const MainHeader = (props: IHeaderProps) => {
     () =>
       languageConst.map(item => ({
         id: item.id,
-        label: t(translate(item.id, I18nEnum.COMMON_I18N)),
+        label: t(item.id),
       })),
     [t]
   );
@@ -130,7 +129,7 @@ const MainHeader = (props: IHeaderProps) => {
             width={150}
             data={toSelectData(languageData, { key: 'id', value: 'label' })}
             defaultValue={language}
-            label={t(translate('language', I18nEnum.COMMON_I18N))}
+            label={t('label.language')}
             onChange={handleChangeLanguage}
             sx={{
               '& .MuiInputBase-formControl': {

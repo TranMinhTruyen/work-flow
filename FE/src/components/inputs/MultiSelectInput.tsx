@@ -92,7 +92,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         {label}
       </InputLabel>
       <Select
-        id={`input${capitalizeFirst(id)}`}
+        id={`multiSelect${capitalizeFirst(id)}`}
         labelId={id}
         displayEmpty
         label={label}

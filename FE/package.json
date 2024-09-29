@@ -14,7 +14,7 @@
     "preview": "serve build/ -s",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "container": "docker compose -f work-flow-docker-compose.yml -p work-flow  up -d"
+    "container": "docker compose -f work-flow-docker-compose.yml -p work-flow up -d"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

@@ -22,10 +22,11 @@ import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { FileInputData } from 'common/constants/type';
 import { styled } from '@mui/material/styles';
-import { translate } from 'common/utils/i18nUtil';
 import { I18nEnum } from 'common/enums/i18nEnum';
+import { capitalizeFirst } from 'common/utils/stringUtil';
 
 export type FileInputProps = {
+  id?: string;
   i18n: I18nEnum;
   label?: string;
   height?: number;
@@ -41,6 +42,7 @@ export type FileInputProps = {
 
 const FileInput = (props: FileInputProps) => {
   const {
+    id,
     i18n,
     label,
     height,
@@ -53,12 +55,12 @@ const FileInput = (props: FileInputProps) => {
     onChange,
     onBlur,
   } = props;
-  const { t } = useTranslation();
 
   const [fileList, setFileList] = useState<FileInputData[]>(valueProps ?? []);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const open = Boolean(anchorEl);
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const settingFileList = useCallback(
     async (fileInputList: FileList | any[] | null) => {
@@ -97,11 +99,11 @@ const FileInput = (props: FileInputProps) => {
     },
   });
 
-  const handleClick = useCallback((event: MouseEvent<HTMLElement>) => {
+  const handleClickShowFile = useCallback((event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   }, []);
 
-  const handleClose = useCallback(() => {
+  const handleCloseShowFile = useCallback(() => {
     setAnchorEl(null);
   }, []);
 
@@ -131,14 +133,18 @@ const FileInput = (props: FileInputProps) => {
   return (
     <Box {...getRootProps()}>
       <TextInput
+        id={`fileUpload${capitalizeFirst(id)}`}
         size={'small'}
         label={label}
         error={error}
         i18n={i18n}
-        placeholder={t(translate('label.totalFile', I18nEnum.COMMON_I18N)) + `${fileList.length}`}
+        placeholder={t('label.totalFile') + `${fileList.length}`}
         sx={{ width: width, height: height }}
         onBlur={handleOnBlur}
         slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
           input: {
             readOnly: true,
             startAdornment: (
@@ -150,6 +156,7 @@ const FileInput = (props: FileInputProps) => {
               <InputAdornment position={'end'} sx={{ marginRight: '-7px' }}>
                 <ButtonGroup variant={'contained'} sx={{ borderRadius: 25 }}>
                   <Button
+                    id={`fileUpload${capitalizeFirst(id)}Button`}
                     component={'label'}
                     tabIndex={-1}
                     sx={{
@@ -163,6 +170,7 @@ const FileInput = (props: FileInputProps) => {
                   >
                     <FileUploadIcon />
                     <input
+                      id={`fileUpload${capitalizeFirst(id)}`}
                       type={'file'}
                       multiple={multipleFile}
                       hidden
@@ -172,6 +180,7 @@ const FileInput = (props: FileInputProps) => {
                     />
                   </Button>
                   <Button
+                    id={`fileUpload${capitalizeFirst(id)}ShowFile`}
                     sx={{
                       width: 40,
                       borderRadius: 25,
@@ -180,15 +189,16 @@ const FileInput = (props: FileInputProps) => {
                         color: '#000000',
                       },
                     }}
-                    onClick={handleClick}
+                    onClick={handleClickShowFile}
                   >
                     {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                   </Button>
                 </ButtonGroup>
                 <StyledMenu
+                  id={`fileUpload${capitalizeFirst(id)}FileMenu`}
                   anchorEl={anchorEl}
                   open={open}
-                  onClose={handleClose}
+                  onClose={handleCloseShowFile}
                   transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   slotProps={{
@@ -204,12 +214,13 @@ const FileInput = (props: FileInputProps) => {
                   }}
                 >
                   {fileList.length === 0 ? (
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleCloseShowFile}>
                       <Typography>Empty</Typography>
                     </MenuItem>
                   ) : (
                     fileList.map((item, index) => (
                       <ListItem
+                        id={`fileUpload${capitalizeFirst(id)}FileItem${index}`}
                         key={index}
                         secondaryAction={
                           <IconButton

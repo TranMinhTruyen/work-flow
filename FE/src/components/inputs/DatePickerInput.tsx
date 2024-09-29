@@ -6,7 +6,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateType } from 'common/utils/dateUtil';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
-import { isNullOrEmpty } from 'common/utils/stringUtil';
+import { capitalizeFirst, isNullOrEmpty } from 'common/utils/stringUtil';
 import InputAdornment from '@mui/material/InputAdornment';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { I18nEnum } from 'common/enums/i18nEnum';
@@ -33,6 +33,7 @@ export type DatePickerProps = Omit<
 
 const DatePickerInput = (props: DatePickerProps) => {
   const {
+    id,
     width = 200,
     label,
     value,
@@ -96,13 +97,16 @@ const DatePickerInput = (props: DatePickerProps) => {
         slotProps={{
           field: { clearable: true },
           textField: {
+            id: `datePicker${capitalizeFirst(id)}`,
             onBlur: handleOnBlur,
             onFocus: handleOnFocus,
             label: label,
             error: error,
             helperText: helperText,
-            InputLabelProps: {
-              shrink: true,
+            slotProps: {
+              inputLabel: {
+                shrink: true,
+              },
             },
             InputProps: {
               startAdornment: (

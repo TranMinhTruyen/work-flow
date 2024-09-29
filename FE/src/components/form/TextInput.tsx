@@ -22,7 +22,6 @@ const TextInput = (props: TextInputProps) => {
     value: valueProps,
     messageErr,
     required,
-    slotProps,
     onChange: onChangeProps,
     onBlur: onBlurProps,
     ...restProps
@@ -69,7 +68,6 @@ const TextInput = (props: TextInputProps) => {
               ? translateError(error.message)
               : undefined
           }
-          slotProps={slotProps}
           {...restProps}
         />
       )}

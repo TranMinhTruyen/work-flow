@@ -25,7 +25,7 @@ const SelectInput = (props: SelectInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useInput<string>({ ...props });
+  const { checkDataInput, translateLabel, translateError } = useInput<string>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string) => {
@@ -53,14 +53,14 @@ const SelectInput = (props: SelectInputProps) => {
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledSelectInput
-          label={label}
+          label={translateLabel()}
           value={value ?? ''}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={
             !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
-              ? error.message
+              ? translateError(error.message)
               : undefined
           }
           {...restProps}

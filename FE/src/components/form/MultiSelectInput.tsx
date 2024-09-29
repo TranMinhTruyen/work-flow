@@ -23,7 +23,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput } = useInput<string[]>({ ...props });
+  const { checkDataInput, translateLabel, translateError } = useInput<string[]>({ ...props });
 
   const handleOnChange = useCallback(
     (onChange: (...event: any[]) => void) => (value: string[]) => {
@@ -51,14 +51,14 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       }}
       render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledMultiSelectInput
-          label={label}
+          label={translateLabel()}
           value={value ?? []}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={
             !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
-              ? error.message
+              ? translateError(error.message)
               : undefined
           }
           {...restProps}

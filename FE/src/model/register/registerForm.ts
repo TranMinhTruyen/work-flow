@@ -8,5 +8,5 @@ export interface IRegisterForm {
   birthDay?: string;
   role?: string;
   authorities?: string[];
-  image?: FileInputData[];
+  image?: FileInputData;
 }

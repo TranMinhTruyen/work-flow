@@ -79,14 +79,14 @@ const ImageInput = (props: ImageInputProps) => {
   return (
     <Box {...getRootProps()}>
       <input
-        id={`fileUpload${capitalizeFirst(id)}`}
+        id={`imageUpload${capitalizeFirst(id)}`}
         type={'file'}
         hidden
         onChange={handleImageUpload}
         {...getInputProps()}
         ref={inputRef}
       />
-      <label htmlFor={`fileUpload${capitalizeFirst(id)}`}>
+      <label htmlFor={`imageUpload${capitalizeFirst(id)}`}>
         <IconButton
           component={'span'}
           sx={{
@@ -94,12 +94,21 @@ const ImageInput = (props: ImageInputProps) => {
             height: height,
           }}
         >
-          <Avatar src={imageRef.current ?? ''} sx={{ width: height, height: height }} />
+          <Avatar
+            src={imageRef.current ?? ''}
+            sx={{
+              width: height,
+              height: height,
+              maxWidth: height,
+              maxHeight: height,
+              bgcolor: 'rgba(0, 170, 255, 0.8)',
+            }}
+          />
         </IconButton>
       </label>
       {!isNullOrEmpty(imageRef.current) && (
         <IconButton
-          id={`fileUpload${capitalizeFirst(id)}ClearButton`}
+          id={`imageUpload${capitalizeFirst(id)}ClearButton`}
           onClick={handleDeleteImage}
           sx={{
             width: '30px',
@@ -113,7 +122,7 @@ const ImageInput = (props: ImageInputProps) => {
             },
           }}
         >
-          <ClearIcon id={`fileUpload${capitalizeFirst(id)}ClearIcon`} />
+          <ClearIcon id={`imageUpload${capitalizeFirst(id)}ClearIcon`} />
         </IconButton>
       )}
     </Box>

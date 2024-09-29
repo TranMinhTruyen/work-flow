@@ -7,14 +7,13 @@ import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import { I18nEnum } from 'common/enums/i18nEnum';
 import { useAppDispatch, useAppSelector } from 'common/store';
 import { toSelectData } from 'common/utils/convertUtil';
-import { translate } from 'common/utils/i18nUtil';
 import SelectInput from 'components/inputs/SelectInput';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const AuthHeader = () => {
   const { headerContent, headerTitle } = useAuthHeader();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
   const dispatch = useAppDispatch();
   const language: string = useAppSelector(selectLanguage);
 
@@ -33,7 +32,7 @@ const AuthHeader = () => {
     () =>
       languageConst.map(item => ({
         id: item.id,
-        label: t(translate(item.id, I18nEnum.COMMON_I18N)),
+        label: t(item.id),
       })),
     [t]
   );
@@ -55,7 +54,7 @@ const AuthHeader = () => {
           width={150}
           data={toSelectData(languageData, { key: 'id', value: 'label' })}
           defaultValue={language}
-          label={t(translate('language', I18nEnum.COMMON_I18N))}
+          label={t('label.language')}
           onChange={handleChangeLanguage}
           sx={{
             '& .MuiInputBase-formControl': {

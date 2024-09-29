@@ -21,19 +21,18 @@ import FloatButton from 'components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import { ILoginForm } from 'model/login/loginForm';
-import { translate } from 'common/utils/i18nUtil';
 import { I18nEnum } from 'common/enums/i18nEnum';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(I18nEnum.LOGIN_I18N);
   const { setHeaderTitle } = useAuthHeader();
 
   useLayoutEffect(() => {
     // Set title for header
 
-    setHeaderTitle(t(translate('title', I18nEnum.LOGIN_I18N)));
+    setHeaderTitle(t('title'));
 
     // Remove when unmount
     return () => {
@@ -113,21 +112,13 @@ const Login = () => {
         </Stack>
 
         <Stack alignItems={'end'} sx={{ paddingRight: 10 }}>
-          <CheckBox
-            name={'isRemember'}
-            control={control}
-            label={t(translate('label.remember', I18nEnum.LOGIN_I18N))}
-          />
+          <CheckBox name={'isRemember'} control={control} label={t('label.remember')} />
         </Stack>
 
         <Stack alignItems={'center'}>
           <Typography sx={{ fontSize: 18 }}>
-            {t(translate('label.noAcccount', I18nEnum.LOGIN_I18N))}
-            {
-              <Link onClick={() => navigate('/auth/register')}>
-                {t(translate('label.register', I18nEnum.LOGIN_I18N))}
-              </Link>
-            }
+            {t('label.noAcccount')}
+            {<Link onClick={() => navigate('/auth/register')}>{t('label.register')}</Link>}
           </Typography>
         </Stack>
       </CardContent>
@@ -138,7 +129,7 @@ const Login = () => {
         <FloatButton
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {t(translate('button.login', I18nEnum.LOGIN_I18N))}
+              {t('button.login')}
             </Typography>
           }
           sx={loginStyles.button}

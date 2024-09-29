@@ -1,33 +1,32 @@
 import { EMAIL_PATTERN } from 'common/constants/commonConst';
 import { I18nEnum } from 'common/enums/i18nEnum';
-import { translate } from 'common/utils/i18nUtil';
 import { isNullOrEmpty } from 'common/utils/stringUtil';
 import { useCallback } from 'react';
 import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 type UseCheckRequiredProps = {
-  label?: string;
   name: string;
   control: Control;
   required?: boolean;
   type?: string;
-  i18n: I18nEnum;
+  i18n?: I18nEnum;
 };
 
 const useInput = <T>(props: UseCheckRequiredProps) => {
   const { name, control, required, type, i18n } = props;
-  const { t } = useTranslation();
+  const { t } = useTranslation(i18n);
+  const { t: commonTranslate } = useTranslation(I18nEnum.COMMON_I18N);
 
   const checkDataInput = useCallback(
     (value: T) => {
       if (required) {
         if (Array.isArray(value) && value.length === 0) {
-          control?.setError(name, { type: 'required', message: `is required!` });
+          control?.setError(name, { type: 'required', message: 'isRequired' });
           return;
         }
         if (typeof value === 'string' && isNullOrEmpty(value)) {
-          control?.setError(name, { type: 'required', message: `is required!` });
+          control?.setError(name, { type: 'required', message: 'isRequired' });
           return;
         }
       }
@@ -48,14 +47,14 @@ const useInput = <T>(props: UseCheckRequiredProps) => {
   );
 
   const translateLabel = useCallback(() => {
-    return `${t(translate(`label.${name}`, i18n))}`;
-  }, [i18n, name, t]);
+    return `${t(`label.${name}`)}`;
+  }, [name, t]);
 
   const translateError = useCallback(
     (message: string) => {
-      return `${t(translate(`label.${name}`, i18n))} ${message}`;
+      return `${t(`label.${name}`)} ${commonTranslate(message)}`;
     },
-    [i18n, name, t]
+    [commonTranslate, name, t]
   );
 
   return {

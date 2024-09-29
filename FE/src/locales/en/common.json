@@ -1,0 +1,15 @@
+{
+  "EN": "English",
+  "VN": "Vietnamese",
+  "JP": "Japanese",
+  "isRequired": "is required",
+  "label": {
+    "language": "Language",
+    "totalFile": "Total file: "
+  },
+  "button": {
+    "save": "Save",
+    "back": "Back",
+    "cancel": "Cancel"
+  }
+}
