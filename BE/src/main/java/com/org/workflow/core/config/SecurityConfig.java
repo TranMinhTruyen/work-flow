@@ -34,68 +34,78 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
-  private final UserService userService;
+    private final UserService userService;
 
-  @Value(value = "${client.url}")
-  private String clientUrl;
+    @Value(value = "${client.url}")
+    private String clientUrl;
 
-  private static final String[] WHITE_LIST = {"/v3/api-docs/**", "/swagger-ui/**",
-      "/swagger-ui.html", "/api/user-account/login", "/api/user-account/create",
-      "/api/master-item/get", "/ws/**"};
+    private static final String[] WHITE_LIST = {
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/api-docs",
+        "/swagger-ui/index.html",
+        "/api/user-account/login",
+        "/api/user-account/create",
+        "/api/master-item/get",
+        "/ws/**",
+        "/work-flow/v3/api-docs/**",
+        "/work-flow/swagger-ui/**"
+    };
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(12);
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
 
-  @Bean
-  public JwtFilter jwtAuthenticationFilter() {
-    return new JwtFilter(jwtProvider, userService);
-  }
+    @Bean
+    public JwtFilter jwtAuthenticationFilter() {
+        return new JwtFilter(jwtProvider, userService);
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager() {
-    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    authProvider.setPasswordEncoder(passwordEncoder());
-    List<AuthenticationProvider> providers = List.of(authProvider);
-    return new ProviderManager(providers);
-  }
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setPasswordEncoder(passwordEncoder());
+        List<AuthenticationProvider> providers = List.of(authProvider);
+        return new ProviderManager(providers);
+    }
 
-  @Bean
-  public AuthenticationEntryPoint authenticationEntryPoint() {
-    return new CustomAuthenticationEntryPoint();
-  }
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .csrf(AbstractHttpConfigurer::disable)
-        .exceptionHandling(
-            exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-        .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.GET).permitAll()
-            .requestMatchers(WHITE_LIST).permitAll()
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    return http.build();
-  }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
+            .exceptionHandling(
+                exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.GET).permitAll()
+                .requestMatchers(WHITE_LIST).permitAll()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of(clientUrl, "*"));
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(clientUrl, "*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }
