@@ -92,8 +92,10 @@ public class UserService extends AbstractService {
     userAccount.setEmail(createUserRequest.getEmail());
     userAccount.setRole(createUserRequest.getRole());
     userAccount.setAuthorities(createUserRequest.getAuthorities());
-    userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
-        userId + "_" + createUserRequest.getImage().getName()));
+    if (createUserRequest.getImage() != null) {
+      userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
+          userId + "_" + createUserRequest.getImage().getName()));
+    }
     userAccount.setIsActive(true);
     userAccount.setLoginFailCount(0);
     userAccount.setCreatedBy(createUserRequest.getFullName());

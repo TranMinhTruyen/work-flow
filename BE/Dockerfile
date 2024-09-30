@@ -1,3 +1,4 @@
+# Springboot
 # Sử dụng JDK 21 với Tomcat 11
 FROM eclipse-temurin:21-jdk-noble AS builder
 
@@ -10,8 +11,11 @@ WORKDIR /app
 # Copy mã nguồn và Gradle
 COPY . .
 
+#Tạo file gradlew
+RUN ./gradlew wrapper
+
 # Cấp quyền thực thi cho gradlew
-RUN chmod +x ./gradlew
+RUN chmod +x gradlew
 
 # Build ứng dụng để tạo file WAR
 RUN ./gradlew clean build
@@ -21,10 +25,10 @@ FROM tomcat:11.0-jdk21
 
 # Cài đặt Tomcat Manager và Host Manager
 RUN apt-get update && apt-get install -y curl && \
-    curl -O https://downloads.apache.org/tomcat/tomcat-11/v11.0.0-M26/bin/apache-tomcat-11.0.0-M26.tar.gz && \
-    tar -xzvf apache-tomcat-11.0.0-M26.tar.gz && \
-    mv apache-tomcat-11.0.0-M26/webapps/manager /usr/local/tomcat/webapps/manager && \
-    mv apache-tomcat-11.0.0-M26/webapps/host-manager /usr/local/tomcat/webapps/host-manager 
+  curl -O https://downloads.apache.org/tomcat/tomcat-11/v11.0.0-M26/bin/apache-tomcat-11.0.0-M26.tar.gz && \
+  tar -xzvf apache-tomcat-11.0.0-M26.tar.gz && \
+  mv apache-tomcat-11.0.0-M26/webapps/manager /usr/local/tomcat/webapps/manager && \
+  mv apache-tomcat-11.0.0-M26/webapps/host-manager /usr/local/tomcat/webapps/host-manager 
 
 # Thêm người dùng quản lý vào Tomcat
 RUN echo '<tomcat-users>\n' \

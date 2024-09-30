@@ -1,8 +1,9 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/docker-in-docker
 {
-	"name": "React Dev Container",
+  "additionalProperties": {},
+  "name": "Work-Flow Dev Container",
   "dockerComposeFile": "../work-flow-docker-compose.yml",
   "service": "react-app",
-  "workspaceFolder": "/app"
+  "workspaceFolder": "/app",
+  "runServices": ["react-app", "work-flow-db", "redis"],
+  "overrideCommand": false
 }
