@@ -45,7 +45,9 @@ out/
 /coverage
 
 ### production ###
-/build
+/FE/dist
+mongodb-data
+redis-data
 
 ### misc ###
 .DS_Store

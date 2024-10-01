@@ -1,4 +1,3 @@
-# Springboot
 # Sử dụng JDK 21 với Tomcat 11
 FROM eclipse-temurin:21-jdk-noble AS builder
 

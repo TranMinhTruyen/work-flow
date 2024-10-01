@@ -1,4 +1,4 @@
-# docker compose -f work-flow-docker-compose.yml -p work-flow up -d
+# docker compose -f docker-compose-dev.yml -p work-flow up -d
 services:
   work-flow-db:
     container_name: dev-db
@@ -9,7 +9,7 @@ services:
     volumes:
       - mongodb-data:/data
     ports:
-      - '27017:27017'
+      - "27017:27017"
     networks:
       - app-network
 
@@ -20,7 +20,7 @@ services:
     volumes:
       - redis-data:/data
     ports:
-      - '6379:6379'
+      - "6379:6379"
     networks:
       - app-network
 
@@ -50,11 +50,11 @@ services:
     build:
       context: ./FE
       target: development
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - ./FE:/app
     ports:
-      - '3000:3000'
+      - "3000:3000"
     restart: unless-stopped
     stdin_open: true
     tty: true
@@ -66,12 +66,6 @@ services:
       - tomcat
     networks:
       - app-network
-
-volumes:
-  mongodb-data:
-    driver: local
-  redis-data:
-    driver: local
 
 networks:
   app-network:

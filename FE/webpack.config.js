@@ -35,6 +35,11 @@ module.exports = (env, argv) => {
       vendor: ['react', 'react-dom', 'react-router'],
     },
 
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].bundle.js',
+    },
+
     module: {
       rules: [
         {
@@ -61,20 +66,12 @@ module.exports = (env, argv) => {
 
     target: 'web',
 
-    output: {
-      filename: 'static/js/main.[contenthash:6].js',
-      path: path.resolve(__dirname, 'build'),
-      publicPath: '/',
-    },
-
     devServer: {
       hot: true,
       port: 3000,
       historyApiFallback: true,
       static: {
-        directory: path.resolve(__dirname, 'public', 'index.html'),
-        serveIndex: true,
-        watch: true,
+        directory: path.join(__dirname, 'dist'),
       },
     },
 
