@@ -16,17 +16,6 @@ module.exports = (env, argv) => {
   const envFile = isProduction ? '.env.production' : '.env.development';
 
   const config = {
-    resolve: {
-      extensions: ['.tsx', '.ts', '.jsx', '.js'],
-      alias: {
-        assets: path.resolve(__dirname, 'src/assets'),
-        common: path.resolve(__dirname, 'src/common'),
-        components: path.resolve(__dirname, 'src/components'),
-        model: path.resolve(__dirname, 'src/model'),
-        pages: path.resolve(__dirname, 'src/pages'),
-      },
-    },
-
     entry: {
       app: {
         import: path.join(__dirname, 'src', 'index.tsx'),
@@ -38,6 +27,17 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].bundle.js',
+    },
+
+    resolve: {
+      extensions: ['.tsx', '.ts', '.jsx', '.js'],
+      alias: {
+        assets: path.resolve(__dirname, 'src/assets'),
+        common: path.resolve(__dirname, 'src/common'),
+        components: path.resolve(__dirname, 'src/components'),
+        model: path.resolve(__dirname, 'src/model'),
+        pages: path.resolve(__dirname, 'src/pages'),
+      },
     },
 
     module: {
