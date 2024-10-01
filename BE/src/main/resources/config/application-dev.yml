@@ -14,48 +14,13 @@ spring:
       host: localhost
       port: 27017
       database: work-flow
-  jpa:
-    properties:
-      hibernate:
-        SpringSessionContext: org.springframework.orm.hibernate5.SpringSessionContext
-    open-in-view: false
 
 #logging
 logging:
-  level:
-    root: INFO
-    org:
-      springframework:
-        data:
-          mongodb:
-            core:
-              MongoTemplate: INFO
-              MongoOperations: INFO
-              MongoDatabaseFactorySupport: INFO
-              MongoTemplate.MongoClientSession: INFO
-              MongoClient: INFO
-              MongoClientImpl: INFO
-              Mongo: INFO
-              MongoDbFactory: INFO
-    mongodb:
-      driver: INFO
   file:
     name: D:/work-flow/work-flow.log
   pattern:
     dateformat: dd-MM-yyyy HH:mm:ss
 
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui/index.html
-
 file-utils:
   image-path: D:/work-flow/image/
-
-rsa:
-  public-key: "-----BEGIN PUBLIC KEY-----
-MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJiJWaAKg7c+D918vcnuLImPJTmCEa+r
-xGGXzr/XPcYSHcZag0akfL6ZvISVaL62fyACtEKmFD8SNflqBXd0mlcCAwEAAQ==
------END PUBLIC KEY-----"
-  private-key: "MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAmIlZoAqDtz4P3Xy9ye4siY8lOYIRr6vEYZfOv9c9xhIdxlqDRqR8vpm8hJVovrZ/IAK0QqYUPxI1+WoFd3SaVwIDAQABAkEAiI29TIbdL7hBn7jCdvnfqS4a1wbYKnoNDolGr3tTc/L2C0Zdo1fXJsxQw7T60lDEzloeKNG5bqr7Rr+Fb8kvsQIhAMn4GogpLqUQmWHYs4Ry4ipPIkaSXQYZGpa2Kn4S/KllAiEAwVfX3dIQMNsYT6QDD1k1mFa9zGMzxz3VTMl/VphoVwsCIQCMRbm/qcKQuBefYo9DxTqZIf7vPsZG7vaNiBW5HFzJFQIgXNE0+nJr/2hPBXyxU176UcXinApLwyy2B4T8MrA79v0CIQCyfLgRk+35bRA0bRvo3og2xXH5xtlwVlYXW2lURu6f+g=="

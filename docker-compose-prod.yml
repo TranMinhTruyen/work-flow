@@ -32,6 +32,8 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    volumes:
+      - D:\work-flow:/work-flow
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - MONGO_HOST=work-flow-mongodb
@@ -53,8 +55,6 @@ services:
     ports:
       - "3000:80"
     restart: always
-    volumes:
-      - ./FE:/app
     environment:
       - NODE_ENV=production
     depends_on:

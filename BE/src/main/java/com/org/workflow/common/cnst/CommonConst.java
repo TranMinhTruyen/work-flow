@@ -8,7 +8,7 @@ public class CommonConst {
 
   public static final String ZONE_ID = "UTC+7";
 
-  //JWT
+  // JWT
   public static final long EXPIRATIONTIME = 1800000L;
 
   public static final long EXPIRATIONTIME_FOR_REMEMBER = 2592000000L;

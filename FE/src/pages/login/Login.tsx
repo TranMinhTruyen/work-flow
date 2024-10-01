@@ -57,6 +57,7 @@ const Login = () => {
       const result = await handleSubmitLogin(data);
       if (result) {
         navigate('/', { replace: true });
+        sessionStorage.setItem('currentPath', '/');
       }
     },
     [navigate, trigger]

@@ -32,6 +32,7 @@ const AccountButton = () => {
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
+    sessionStorage.removeItem('currentPath');
   }, [dispatch, navigate]);
 
   return (

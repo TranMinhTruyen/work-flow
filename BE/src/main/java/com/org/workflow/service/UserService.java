@@ -61,6 +61,9 @@ public class UserService extends AbstractService {
   @Value("${rsa.private-key}")
   private String privateKey;
 
+  @Value("${file-utils.image-path}")
+  public String IMAGE_PATH;
+
   /**
    * Create new user.
    *
@@ -94,7 +97,7 @@ public class UserService extends AbstractService {
     userAccount.setAuthorities(createUserRequest.getAuthorities());
     if (createUserRequest.getImage() != null) {
       userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
-          userId + "_" + createUserRequest.getImage().getName()));
+          userId + "_" + createUserRequest.getImage().getName(), IMAGE_PATH));
     }
     userAccount.setIsActive(true);
     userAccount.setLoginFailCount(0);

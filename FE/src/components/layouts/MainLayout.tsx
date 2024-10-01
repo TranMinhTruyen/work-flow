@@ -1,15 +1,21 @@
 import { styled } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useAppSelector } from 'common/store';
 import { selectOpenDrawer } from 'common/commonSlice';
 import Drawer from 'components/drawer/Drawer';
 import MainHeader from 'components/header/MainHeader';
 import Grid2 from '@mui/material/Grid2';
+import { useEffect } from 'react';
 
 const DRAWER_WIDTH: number = 250;
 
 const MainLayout = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
+  const location = useLocation();
+
+  useEffect(() => {
+    sessionStorage.setItem('currentPath', location.pathname);
+  }, [location.pathname]);
 
   return (
     <Grid2>

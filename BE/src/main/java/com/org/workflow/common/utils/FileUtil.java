@@ -1,7 +1,5 @@
 package com.org.workflow.common.utils;
 
-import static com.org.workflow.common.cnst.CommonConst.IMAGE_PATH;
-
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.request.FileData;
 import com.org.workflow.core.exception.WorkFlowException;
@@ -9,11 +7,13 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
+
 public class FileUtil {
 
-  public static String writeFile(byte[] fileContent, String fileName) throws WorkFlowException {
+  public static String writeFile(byte[] fileContent, String fileName, String filePath)
+      throws WorkFlowException {
     try {
-      File file = new File(IMAGE_PATH + fileName);
+      File file = new File(filePath + fileName);
       FileUtils.writeByteArrayToFile(file, fileContent);
       return file.getPath();
     } catch (IOException e) {
@@ -21,9 +21,9 @@ public class FileUtil {
     }
   }
 
-  public static String writeFile(FileData fileData) throws WorkFlowException {
+  public static String writeFile(FileData fileData, String filePath) throws WorkFlowException {
     try {
-      File file = new File(IMAGE_PATH + fileData.getName());
+      File file = new File(filePath + fileData.getName());
       FileUtils.writeByteArrayToFile(file, fileData.getData());
       return file.getPath();
     } catch (IOException e) {

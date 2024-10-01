@@ -21,12 +21,14 @@ module.exports = (env, argv) => {
         import: path.join(__dirname, 'src', 'index.tsx'),
         dependOn: 'vendor',
       },
-      vendor: ['react', 'react-dom', 'react-router'],
+      vendor: ['react', 'react-dom', 'react-router-dom'],
     },
 
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].bundle.js',
+      publicPath: '/',
+      clean: true,
     },
 
     resolve: {
@@ -43,28 +45,42 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
+          test: /\.m?js$/,
+          resolve: { fullySpecified: false },
+        },
+        {
           test: /\.tsx?$/,
           exclude: /node_modules/,
           use: ['babel-loader'],
         },
         {
-          test: /\.(s[ac]ss|css)$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: 'css-loader',
-              options: { sourceMap: !isProduction },
-            },
-            {
-              loader: 'sass-loader',
-              options: { sourceMap: !isProduction },
-            },
-          ],
+          test: /\.(css|scss)$/i,
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
         },
       ],
     },
 
-    target: 'web',
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: isProduction ? 'static/css/[name].[contenthash:6].css' : '[name].css',
+      }),
+
+      new Dotenv({
+        path: path.resolve(__dirname, envFile),
+      }),
+
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, 'public', 'index.html'),
+        filename: 'index.html',
+      }),
+    ],
+
+    optimization: {
+      minimizer: ['...', new CssMinimizerPlugin()],
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
 
     devServer: {
       hot: true,
@@ -76,33 +92,6 @@ module.exports = (env, argv) => {
     },
 
     devtool: isProduction ? false : 'source-map',
-
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: isProduction ? 'static/css/[name].[contenthash:6].css' : '[name].css',
-      }),
-
-      new Dotenv({
-        path: path.resolve(__dirname, envFile),
-      }),
-
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: 'public',
-            to: '.',
-            filter: name => {
-              return !name.endsWith('index.html');
-            },
-          },
-        ],
-      }),
-
-      new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'public', 'index.html'),
-        filename: 'index.html',
-      }),
-    ],
   };
 
   if (isProduction) {
