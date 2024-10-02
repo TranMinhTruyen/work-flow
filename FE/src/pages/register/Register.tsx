@@ -24,10 +24,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import SelectInput from 'components/form/SelectInput';
 import { handleSubmitRegister } from './action/registerAction';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
-import { MessageType } from 'common/enums/messageEnum';
 import { IRegisterForm } from 'model/register/registerForm';
 import { I18nEnum } from 'common/enums/i18nEnum';
 import ImageInput from 'components/form/ImageInput';
+import { MessageType } from 'common/enums/messageEnum';
 
 export const authorities: SelectDataType[] = [
   {

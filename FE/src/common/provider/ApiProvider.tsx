@@ -2,13 +2,13 @@ import axios from 'axios';
 import { ReactElement, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
 import { TIME_OUT } from 'common/constants/commonConst';
-import IBaseResponse from '../api/baseResponse';
 import { selectIsLoading, toggleLoading } from 'common/commonSlice';
 import { ILoginResponse } from 'model/login/loginModel';
-import { MessageType } from 'common/enums/messageEnum';
 import { useNavigate } from 'react-router-dom';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
 import { getLoginData } from 'common/utils/authUtil';
+import IBaseResponse from 'common/api/baseResponse';
+import { MessageType } from 'common/enums/messageEnum';
 
 const axiosInstance = axios.create({
   baseURL: process.env.SERVER_URL,
