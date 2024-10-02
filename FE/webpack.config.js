@@ -33,20 +33,20 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
       alias: {
-        assets: path.resolve(__dirname, 'src/assets'),
-        common: path.resolve(__dirname, 'src/common'),
-        components: path.resolve(__dirname, 'src/components'),
-        model: path.resolve(__dirname, 'src/model'),
-        pages: path.resolve(__dirname, 'src/pages'),
+        assets: path.resolve(__dirname, 'src/assets/'),
+        common: path.resolve(__dirname, 'src/common/'),
+        components: path.resolve(__dirname, 'src/components/'),
+        model: path.resolve(__dirname, 'src/model/'),
+        pages: path.resolve(__dirname, 'src/pages/'),
       },
     },
 
     module: {
       rules: [
-        {
-          test: /\.m?js$/,
-          resolve: { fullySpecified: false },
-        },
+        // {
+        //   test: /\.m?js$/,
+        //   resolve: { fullySpecified: false },
+        // },
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,

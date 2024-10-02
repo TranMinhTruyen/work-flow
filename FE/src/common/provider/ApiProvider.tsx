@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { openPopupDialogContainer } from 'components/dialog/PopupDialogContainer';
 import { getLoginData } from 'common/utils/authUtil';
 import IBaseResponse from 'common/api/baseResponse';
-import { MessageType } from 'common/enums/messageEnum';
+import { MessageType } from 'common/enums/messageEnums';
 
 const axiosInstance = axios.create({
   baseURL: process.env.SERVER_URL,
