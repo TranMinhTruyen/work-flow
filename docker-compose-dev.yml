@@ -26,6 +26,7 @@ services:
 
   tomcat:
     container_name: tomcat-server
+    privileged: true
     build:
       context: ./BE
       dockerfile: Dockerfile

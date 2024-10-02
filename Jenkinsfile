@@ -74,4 +74,13 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            echo 'Deployment Successful!'
+        }
+        failure {
+            echo 'Deployment Failed!'
+        }
+    }
 }

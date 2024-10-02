@@ -26,6 +26,7 @@ services:
 
   work-flow-tomcat:
     container_name: work-flow-tomcat
+    privileged: true
     build:
       context: ./BE
       dockerfile: Dockerfile

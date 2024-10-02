@@ -1,0 +1,24 @@
+# docker compose -f docker-compose-jenkins.yml -p jenkins-container up -d
+services:
+  jenkins:
+    container_name: jenkins
+    privileged: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - DOCKER_HOST=tcp://host.docker.internal:2375
+    volumes:
+      - D:\JenkinsHome:/var/jenkins_home
+      - C:\nginx-1.26.2\html:/nginx-1.26.2/html
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8086:8080"
+      - "50003:50000"
+    networks:
+      - jenkins
+
+networks:
+  jenkins:
+    driver: bridge
