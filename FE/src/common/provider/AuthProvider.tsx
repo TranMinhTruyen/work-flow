@@ -12,14 +12,14 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
     const isLogin = checkLogin();
     const savedPath = sessionStorage.getItem('currentPath');
 
-    if (!isLogin) {
-      navigate('/auth/login', { replace: true });
+    if (isLogin) {
+      navigate('/', { replace: true });
       return;
     } else {
       if (savedPath) {
-        navigate(savedPath, { replace: true });
+        navigate(savedPath);
       } else {
-        navigate('/', { replace: true });
+        navigate('/auth/login', { replace: true });
       }
     }
     setIsSet(true);
