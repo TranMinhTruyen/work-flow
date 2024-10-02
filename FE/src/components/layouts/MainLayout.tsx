@@ -6,6 +6,7 @@ import Drawer from 'components/drawer/Drawer';
 import MainHeader from 'components/header/MainHeader';
 import Grid2 from '@mui/material/Grid2';
 import { useEffect } from 'react';
+import { CURRENT_PATH } from 'common/constants/commonConst';
 
 const DRAWER_WIDTH: number = 250;
 
@@ -14,7 +15,7 @@ const MainLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    sessionStorage.setItem('currentPath', location.pathname);
+    sessionStorage.setItem(CURRENT_PATH, location.pathname);
   }, [location.pathname]);
 
   return (

@@ -9,11 +9,11 @@ import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import ICategory from 'model/draganddrop/category';
 import TextInput from 'components/inputs/TextInput';
 import IconButton from 'components/button/IconButton';
 import FloatButton from 'components/button/FloatButton';
 import Grid2 from '@mui/material/Grid2';
+import { ICategory } from 'model/kanban-board/Category';
 
 const Kanban = () => {
   const [state, setState] = useState<ICategory[]>([]);

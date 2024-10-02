@@ -48,3 +48,7 @@ export const languageConst = [
   },
 ];
 //#endregion
+
+//#region
+export const CURRENT_PATH: string = 'currentPath';
+//#endregion

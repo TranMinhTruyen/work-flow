@@ -13,8 +13,8 @@ import IconButton from 'components/button/IconButton';
 import Avatar from '@mui/material/Avatar';
 import { memo, useCallback, MouseEvent } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
-import IContent from 'model/draganddrop/content';
 import Grid2 from '@mui/material/Grid2';
+import { IContent } from 'model/kanban-board/Content';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;

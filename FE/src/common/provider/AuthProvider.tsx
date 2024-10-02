@@ -1,3 +1,4 @@
+import { CURRENT_PATH } from 'common/constants/commonConst';
 import { checkLogin } from 'common/utils/authUtil';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +11,7 @@ const AuthProvider = ({ children }: { children: React.ReactElement }) => {
     if (isSet) return;
 
     const isLogin = checkLogin();
-    const savedPath = sessionStorage.getItem('currentPath');
+    const savedPath = sessionStorage.getItem(CURRENT_PATH);
 
     if (isLogin) {
       navigate('/', { replace: true });

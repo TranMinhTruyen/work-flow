@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
 import { ILoginForm } from 'model/login/loginForm';
 import { I18nEnum } from 'common/enums/i18nEnum';
+import { CURRENT_PATH } from 'common/constants/commonConst';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -57,7 +58,7 @@ const Login = () => {
       const result = await handleSubmitLogin(data);
       if (result) {
         navigate('/', { replace: true });
-        sessionStorage.setItem('currentPath', '/');
+        sessionStorage.setItem(CURRENT_PATH, '/');
       }
     },
     [navigate, trigger]

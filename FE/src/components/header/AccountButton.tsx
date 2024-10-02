@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import { useAppDispatch, useAppSelector } from 'common/store';
 import { selectLoginData } from 'common/commonSlice';
-import { RESET_ALL } from 'common/constants/commonConst';
+import { CURRENT_PATH, RESET_ALL } from 'common/constants/commonConst';
 import { useNavigate } from 'react-router-dom';
 import IconButton from 'components/button/IconButton';
 
@@ -32,7 +32,7 @@ const AccountButton = () => {
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
-    sessionStorage.removeItem('currentPath');
+    sessionStorage.removeItem(CURRENT_PATH);
   }, [dispatch, navigate]);
 
   return (

@@ -6,7 +6,7 @@ import { I18nEnum } from 'common/enums/i18nEnum';
 import { capitalizeFirst } from 'common/utils/stringUtil';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
-  i18n: I18nEnum;
+  i18n?: I18nEnum;
   label?: string;
   width?: number;
   value?: string;

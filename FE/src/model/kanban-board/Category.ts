@@ -1,6 +1,6 @@
-import IContent from './content';
+import { IContent } from './content';
 
-export default interface ICategory {
+export interface ICategory {
   id: number;
   name: string;
   color?: string;

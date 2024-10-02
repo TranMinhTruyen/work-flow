@@ -1,12 +1,12 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import Task from './Task';
 import { Droppable } from '@hello-pangea/dnd';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import FloatButton from 'components/button/FloatButton';
-import ICategory from 'model/draganddrop/category';
 import Grid2 from '@mui/material/Grid2';
+import { ICategory } from 'model/kanban-board/Category';
 
 type CategoryProps = {
   categoryItem: ICategory;

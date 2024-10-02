@@ -1,4 +1,4 @@
-export default interface IContent {
+export interface IContent {
   id: number;
   categoryId?: number;
   title: string;
