@@ -33,7 +33,7 @@ services:
       - "8080:8080"
     restart: always
     volumes:
-      - D:\work-flow:/work-flow
+      - D:\\work-flow:/work-flow
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - MONGO_HOST=work-flow-mongodb
