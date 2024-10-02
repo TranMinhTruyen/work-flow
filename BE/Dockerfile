@@ -10,11 +10,11 @@ WORKDIR /app
 # Copy mã nguồn và Gradle
 COPY . .
 
+# Thêm quyền thực thi cho gradlew
+RUN chmod +x ./gradlew
+
 #Tạo file gradlew
 RUN ./gradlew wrapper
-
-# Cấp quyền thực thi cho gradlew
-RUN chmod +x gradlew
 
 # Build ứng dụng để tạo file WAR
 RUN ./gradlew clean build
