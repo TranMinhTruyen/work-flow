@@ -84,3 +84,102 @@ pipeline {
         }
     }
 }
+
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Clean workspace when start') {
+//             steps {
+//                 cleanWs()
+//             }
+//         }
+
+//         stage('Clone code') {
+//             steps {
+//                 git url: 'https://github.com/TranMinhTruyen/work-flow', branch: 'main'
+//             }
+//         }
+        
+//         stage('Install dependencies') {
+//             steps {
+//                 dir('FE') {
+//                     script {
+//                     sh '''
+//                         yarn install
+//                     '''
+//                 }
+//                 }
+//             }
+//         }
+
+//         stage('Build') {
+//             steps {
+//                 dir('FE') {
+//                     script {
+//                     sh '''
+//                         yarn build
+//                     '''
+//                 }
+//                 }
+//             }
+//         }
+        
+//         stage('Clean nginx') {
+//             steps {
+//                 dir('FE') {
+//                     script {
+//                         sh '''
+//                             if [ -d /nginx-1.26.2/html ]; then rm -rf /nginx-1.26.2/html/*; fi
+//                         '''
+//                     }
+//                 }
+//             }
+//         }
+        
+//         stage('Deploy') {
+//             steps {
+//                 dir('FE') {
+//                     script {
+//                         sh '''
+//                             mv dist/* /nginx-1.26.2/html
+//                         '''
+//                     }
+//                 }
+//             }
+//         }
+        
+//         stage('Reload nginx') {
+//             steps {
+//                 script {
+//                     sh '''
+//                         sshpass -p "Qwerty@092024" ssh minh-truyen@192.168.111.50 "
+//                             if (Get-Service -Name nginx -ErrorAction SilentlyContinue) {
+//                                 if ((Get-Service -Name nginx).Status -eq 'Running') {
+//                                     nginx -s reload
+//                                 } else {
+//                                     Start-Service nginx
+//                                 }
+//                             }
+//                         "
+//                     '''
+//                 }
+//             }
+//         }
+
+//         stage('Clean workspace when finish') {
+//             steps {
+//                 cleanWs()
+//             }
+//         }
+//     }
+
+//     post {
+//         success {
+//             echo 'Deployment Successful!'
+//         }
+//         failure {
+//             echo 'Deployment Failed!'
+//         }
+//     }
+// }
