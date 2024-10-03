@@ -18,7 +18,10 @@ services:
       - "50003:50000"
     networks:
       - jenkins
+      - work-flow-prod_work-flow-network
 
 networks:
+  work-flow-prod_work-flow-network:
+    external: true
   jenkins:
     driver: bridge
