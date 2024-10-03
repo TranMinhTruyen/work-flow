@@ -100,7 +100,7 @@ pipeline {
 //                 git url: 'https://github.com/TranMinhTruyen/work-flow', branch: 'main'
 //             }
 //         }
-        
+
 //         stage('Install dependencies') {
 //             steps {
 //                 dir('FE') {
@@ -124,7 +124,7 @@ pipeline {
 //                 }
 //             }
 //         }
-        
+
 //         stage('Clean nginx') {
 //             steps {
 //                 dir('FE') {
@@ -136,7 +136,7 @@ pipeline {
 //                 }
 //             }
 //         }
-        
+
 //         stage('Deploy') {
 //             steps {
 //                 dir('FE') {
@@ -148,21 +148,23 @@ pipeline {
 //                 }
 //             }
 //         }
-        
+
 //         stage('Reload nginx') {
 //             steps {
 //                 script {
-//                     sh '''
-//                         sshpass -p "Qwerty@092024" ssh minh-truyen@192.168.111.50 "
-//                             if (Get-Service -Name nginx -ErrorAction SilentlyContinue) {
-//                                 if ((Get-Service -Name nginx).Status -eq 'Running') {
-//                                     nginx -s reload
-//                                 } else {
-//                                     Start-Service nginx
+//                     withCredentials([usernamePassword(credentialsId: 'ssh-windows', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+//                         sh """
+//                             sshpass -p "\$PASS" ssh \$USER@192.168.1.7 "
+//                                 if (Get-Service -Name nginx -ErrorAction SilentlyContinue) {
+//                                     if ((Get-Service -Name nginx).Status -eq 'Running') {
+//                                         nginx -s reload
+//                                     } else {
+//                                         Start-Service nginx
+//                                     }
 //                                 }
-//                             }
-//                         "
-//                     '''
+//                             "
+//                         """
+//                     }
 //                 }
 //             }
 //         }
