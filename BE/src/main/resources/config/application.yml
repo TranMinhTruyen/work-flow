@@ -21,7 +21,7 @@ logging:
         data:
           mongodb:
             core:
-              MongoTemplate: INFO
+              MongoTemplate: DEBUG
               MongoOperations: INFO
               MongoDatabaseFactorySupport: INFO
               MongoTemplate.MongoClientSession: INFO
@@ -30,7 +30,7 @@ logging:
               Mongo: INFO
               MongoDbFactory: INFO
     mongodb:
-      driver: INFO
+      driver: DEBUG
 
 springdoc:
   api-docs:

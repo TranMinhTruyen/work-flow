@@ -11,7 +11,7 @@ services:
       - DOCKER_HOST=tcp://host.docker.internal:2375
     volumes:
       - D:\JenkinsHome:/var/jenkins_home
-      - C:\nginx-1.26.2\html:/nginx-1.26.2/html
+      - D:\nginx-1.26.2\html:/nginx-1.26.2/html
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "8086:8080"
