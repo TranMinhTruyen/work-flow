@@ -6,6 +6,7 @@ pipeline {
         redisContainerName = 'work-flow-redis' // Container Redis
         tomcatContainerName = 'work-flow-tomcat' // Container Redis
         reactContainerName = 'work-flow-react' // Container Redis
+        location = 'Asia/Ho_Chi_Minh'
         backupDir = '/data'
         dbName = 'work-flow'
         dropDb = false
@@ -16,7 +17,7 @@ pipeline {
             steps {
                 cleanWs()
                 script {
-                    def dateTime = sh(script: "date +%Y%m%d_%H%M%S", returnStdout: true).trim()
+                    def dateTime = sh(script: "TZ=${location} date +%Y%m%d_%H%M%S", returnStdout: true).trim()
                     def tomcatExists = sh(script: "docker ps -q -f name=${tomcatContainerName}", returnStdout: true).trim()
                     def reactExists = sh(script: "docker ps -q -f name=${reactContainerName}", returnStdout: true).trim()
                     def mongoExists = sh(script: "docker ps -q -f name=${mongoContainerName}", returnStdout: true).trim()
@@ -39,11 +40,7 @@ pipeline {
                     if (env.mongoExists) {
                         echo "Creating backup for MongoDB..."
 
-                        sh "docker exec ${mongoContainerName} mkdir -p ${backupDir}"
-
                         sh "docker exec ${mongoContainerName} mongodump --archive=${env.backupFileMongo} --gzip"
-
-                        sh "docker cp ${mongoContainerName}:${env.backupFileMongo} /var/jenkins_home/backup/work-flow-db"
 
                         echo "Backup created at ${env.backupFileMongo}"
                     } else {
@@ -57,8 +54,6 @@ pipeline {
 
                         sh "docker exec ${redisContainerName} cp /data/dump.rdb ${env.backupFileRedis}"
 
-                        sh "docker cp ${redisContainerName}:${env.backupFileRedis} /var/jenkins_home/backup/work-flow-db"
-
                         echo "Backup created at ${env.backupFileRedis}"
                     } else {
                         echo "Container ${redisContainerName} does not exist. Skipping backup."
@@ -70,32 +65,6 @@ pipeline {
         stage('Pull code') {
             steps {
                 git url: 'https://github.com/TranMinhTruyen/work-flow', branch: 'main'
-            }
-        }
-
-        stage('Stop container') {
-            steps {
-                script {
-                    if (env.tomcatExists) {
-                        echo "Stop container ${tomcatContainerName}..."
-                        sh "docker compose -f docker-compose-prod.yml stop ${tomcatContainerName}"
-                    }
-
-                    if (env.reactExists) {
-                        echo "Stop container ${reactContainerName}..."
-                        sh "docker compose -f docker-compose-prod.yml stop ${reactContainerName}"
-                    }
-
-                    if (env.mongoExists) {
-                        echo "Stop container ${mongoContainerName}..."
-                        sh "docker compose -f docker-compose-prod.yml stop ${mongoContainerName}"
-                    }
-
-                    if (env.redisExists) {
-                        echo "Stop container ${redisContainerName}..."
-                        sh "docker compose -f docker-compose-prod.yml stop ${redisContainerName}"
-                    }
-                }
             }
         }
 
@@ -112,12 +81,22 @@ pipeline {
                         sh "docker compose -f docker-compose-prod.yml down --rmi all --volumes ${reactContainerName}"
                     }
 
-                    if (dropDb) {
-                        echo "Detete container ${mongoContainerName}..."
-                        sh "docker compose -f docker-compose-prod.yml down --rmi all --volumes ${mongoContainerName}"
+                    if (dropDb == true) {
+                        if (env.mongoExists) {
+                            echo "Stop container ${mongoContainerName}..."
+                            sh "docker compose -f docker-compose-prod.yml stop ${mongoContainerName}"
 
-                        echo "Detete container ${redisContainerName}..."
-                        sh "docker compose -f docker-compose-prod.yml down --rmi all --volumes ${redisContainerName}"
+                            echo "Detete container ${mongoContainerName}..."
+                            sh "docker compose -f docker-compose-prod.yml rm -f ${mongoContainerName}"
+                        }
+
+                        if (env.redisExists) {
+                            echo "Stop container ${redisContainerName}..."
+                            sh "docker compose -f docker-compose-prod.yml stop ${redisContainerName}"
+
+                            echo "Detete container ${redisContainerName}..."
+                            sh "docker compose -f docker-compose-prod.yml rm -f ${redisContainerName}"
+                        }
                     }
                 }
             }
@@ -126,7 +105,7 @@ pipeline {
         stage('Build & run') {
             steps {
                 script {
-                    if (dropDb) {
+                    if (dropDb == true) {
                         echo "Build & run all services."
                         sh "docker compose -f docker-compose-prod.yml -p work-flow-prod up -d"
                     } else {
@@ -140,12 +119,21 @@ pipeline {
         stage('Import backup') {
             steps {
                 script {
-                    def fileExists = sh(script: "docker exec ${mongoContainerName} test -f ${env.backupFileMongo} && echo 'true' || echo 'false'", returnStdout: true).trim()
+                    def mongodb = sh(script: "docker exec ${mongoContainerName} test -f ${env.backupFileMongo} && echo 'true' || echo 'false'", returnStdout: true).trim()
+                    def redis = sh(script: "docker exec ${redisContainerName} test -f ${env.backupFileRedis} && echo 'true' || echo 'false'", returnStdout: true).trim()
 
-                    if (fileExists == 'true') {
+                    if (mongodb == 'true') {
+                        echo "Start restore mongodb..."
                         sh "docker exec -i ${mongoContainerName} mongorestore --gzip --archive=${env.backupFileMongo} --db ${dbName}"
                     } else {
-                        echo "File backup does not exist. Skipping import."
+                        echo "File backup does not exist. Skipping restore."
+                    }
+
+                    if (redis == 'true') {
+                        echo "Start restore redis..."
+                        sh "docker exec ${redisContainerName} cp ${env.backupFileRedis} /data/dump.rdb"
+                    } else {
+                        echo "File backup does not exist. Skipping restore."
                     }
                 }
             }
