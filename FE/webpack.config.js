@@ -86,13 +86,6 @@ module.exports = (env, argv) => {
 
     target: 'web',
 
-    // output: {
-    //   path: path.resolve(__dirname, 'dist'),
-    //   filename: '[name].bundle.js',
-    //   publicPath: '/',
-    //   clean: true,
-    // },
-
     output: {
       filename: 'static/js/[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
@@ -108,12 +101,6 @@ module.exports = (env, argv) => {
         serveIndex: true,
         watch: true,
       },
-      // open: {
-      //   app: {
-      //     name: 'chrome',
-      //     arguments: ['--new-window', '--incognito'],
-      //   },
-      // },
     },
 
     devtool: isProduction ? false : 'source-map',
