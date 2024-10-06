@@ -14,7 +14,17 @@ const combineReducer = combineReducers({
 
 const rootReducer = (state: any, action: any) => {
   if (RESET_ALL === action.type) {
-    state = undefined;
+    const { commonState } = state;
+
+    const resetCommonState = {
+      ...commonState,
+      isLogin: false,
+      loginData: undefined,
+    };
+
+    state = {
+      commonState: resetCommonState,
+    };
   }
   return combineReducer(state, action);
 };

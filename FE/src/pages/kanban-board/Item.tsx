@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import { memo, useCallback, MouseEvent } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import Grid2 from '@mui/material/Grid2';
-import { IContent } from 'model/kanban-board/Content';
+import { IContent } from 'model/kanban-board/content';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;

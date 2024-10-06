@@ -28,11 +28,11 @@ const AccountButton = () => {
   };
 
   const handleLogout = useCallback(() => {
-    navigate('/auth/login', { replace: true });
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
     sessionStorage.removeItem(CURRENT_PATH);
+    navigate('/auth/login', { replace: true });
   }, [dispatch, navigate]);
 
   return (

@@ -54,7 +54,7 @@ public class UserAccountController extends AbstractController {
   public ResponseEntity<BaseResponse> createUserAccount(
       @RequestBody CreateUserRequest createUserRequest)
       throws WorkFlowException {
-    CreateUserResponse result = userService.createAppUser(createUserRequest);
+    CreateUserResponse result = userService.createUserAccount(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
         result.getUserName());
   }

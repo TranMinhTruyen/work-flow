@@ -71,7 +71,7 @@ public class UserService extends AbstractService {
    * @return CreateUserResponse
    * @throws WorkFlowException AppException
    */
-  public CreateUserResponse createAppUser(CreateUserRequest createUserRequest)
+  public CreateUserResponse createUserAccount(CreateUserRequest createUserRequest)
       throws WorkFlowException {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
         createUserRequest.getUserName());
@@ -95,6 +95,7 @@ public class UserService extends AbstractService {
     userAccount.setEmail(createUserRequest.getEmail());
     userAccount.setRole(createUserRequest.getRole());
     userAccount.setAuthorities(createUserRequest.getAuthorities());
+    userAccount.setLevel(createUserRequest.getLevel());
     if (createUserRequest.getImage() != null) {
       userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
           userId + "_" + createUserRequest.getImage().getName(), IMAGE_PATH));
@@ -125,6 +126,7 @@ public class UserService extends AbstractService {
     createUserResponse.setBirthDay(saveUserAccount.getBirthDay());
     createUserResponse.setRole(saveUserAccount.getRole());
     createUserResponse.setAuthorities(saveUserAccount.getAuthorities());
+    createUserResponse.setLevel(saveUserAccount.getLevel());
     createUserResponse.setImagePath(saveUserAccount.getImagePath());
     createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
     createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
@@ -366,6 +368,14 @@ public class UserService extends AbstractService {
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
         changeValue.getFieldValueAfter(), changeType));
     userHistory.setAuthorities(changeValue);
+
+    // Set change value for level
+    changeValue = new ChangeValue();
+    changeValue.setFieldValueBefore(before.getLevel());
+    changeValue.setFieldValueAfter(after.getLevel());
+    changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
+        changeValue.getFieldValueAfter(), changeType));
+    userHistory.setLevel(changeValue);
 
     // Set change value for login fail count
     changeValue = new ChangeValue();

@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import FloatButton from 'components/button/FloatButton';
 import Grid2 from '@mui/material/Grid2';
-import { ICategory } from 'model/kanban-board/Category';
+import { ICategory } from 'model/kanban-board/category';
 
 type CategoryProps = {
   categoryItem: ICategory;

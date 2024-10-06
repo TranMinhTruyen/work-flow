@@ -38,6 +38,14 @@ public enum MessageEnum {
 
   READ_FILE_ERROR("ERROR", "E9999", "Read file: {0} error!", HttpStatus.INTERNAL_SERVER_ERROR),
 
+  AUTHENTICATION_ERROR("ERROR", "EA001", "Authority not found!", HttpStatus.UNAUTHORIZED),
+
+  ROLE_ERROR("ERROR", "EA002", "Role not accept!", HttpStatus.UNAUTHORIZED),
+
+  AUTHORITY_ERROR("ERROR", "EA003", "Authority not accept!", HttpStatus.UNAUTHORIZED),
+
+  LEVEL_ERROR("ERROR", "EA004", "Level not accept!", HttpStatus.UNAUTHORIZED),
+
 
   //@formatter:on
   ;

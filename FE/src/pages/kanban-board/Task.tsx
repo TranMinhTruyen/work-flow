@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Draggable } from '@hello-pangea/dnd';
-import { IContent } from 'model/kanban-board/Content';
+import { IContent } from 'model/kanban-board/content';
 import Item from './Item';
 
 type TaskProps = {

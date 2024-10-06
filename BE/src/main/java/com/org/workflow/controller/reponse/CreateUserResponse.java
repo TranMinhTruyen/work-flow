@@ -17,6 +17,8 @@ public class CreateUserResponse {
 
   private List<String> authorities;
 
+  private Integer level;
+
   private String imagePath;
 
   private LocalDateTime createDatetime;

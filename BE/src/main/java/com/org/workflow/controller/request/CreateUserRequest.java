@@ -20,6 +20,8 @@ public class CreateUserRequest {
 
   private List<String> authorities;
 
+  private Integer level;
+
   private FileData image;
 
 }

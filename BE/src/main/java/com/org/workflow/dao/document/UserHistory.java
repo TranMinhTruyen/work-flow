@@ -36,6 +36,9 @@ public class UserHistory extends AbstractDocument implements Serializable {
   @Field(name = "authorities", write = Write.ALWAYS)
   private ChangeValue authorities;
 
+  @Field(name = "level", write = Write.ALWAYS)
+  private ChangeValue level;
+
   @Field(name = "login_fail_count", write = Write.ALWAYS)
   private ChangeValue loginFailCount;
 

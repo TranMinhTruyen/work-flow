@@ -13,7 +13,7 @@ import TextInput from 'components/inputs/TextInput';
 import IconButton from 'components/button/IconButton';
 import FloatButton from 'components/button/FloatButton';
 import Grid2 from '@mui/material/Grid2';
-import { ICategory } from 'model/kanban-board/Category';
+import { ICategory } from 'model/kanban-board/category';
 
 const Kanban = () => {
   const [state, setState] = useState<ICategory[]>([]);
