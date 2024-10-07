@@ -18,10 +18,10 @@ pipeline {
                 cleanWs()
                 script {
                     def dateTime = sh(script: "TZ=${location} date +%Y%m%d_%H%M%S", returnStdout: true).trim()
-                    def tomcatExists = sh(script: "docker ps -q -f name=${tomcatContainerName}", returnStdout: true).trim()
-                    def reactExists = sh(script: "docker ps -q -f name=${reactContainerName}", returnStdout: true).trim()
-                    def mongoExists = sh(script: "docker ps -q -f name=${mongoContainerName}", returnStdout: true).trim()
-                    def redisExists = sh(script: "docker ps -q -f name=${redisContainerName}", returnStdout: true).trim()
+                    def tomcatExists = sh(script: "docker ps -a -q -f name=${tomcatContainerName}", returnStdout: true).trim()
+                    def reactExists = sh(script: "docker ps -a -q -f name=${reactContainerName}", returnStdout: true).trim()
+                    def mongoExists = sh(script: "docker ps -a -q -f name=${mongoContainerName}", returnStdout: true).trim()
+                    def redisExists = sh(script: "docker ps -a -q -f name=${redisContainerName}", returnStdout: true).trim()
 
                     env.backupFileMongo = "${backupDir}/mongo_backup_${dateTime}.gz"
                     env.backupFileRedis = "${backupDir}/redis_backup_${dateTime}.rdb"
@@ -74,11 +74,15 @@ pipeline {
                     if (env.tomcatExists) {
                         echo "Delete container ${tomcatContainerName}..."
                         sh "docker compose -f docker-compose-prod.yml down --rmi all --volumes ${tomcatContainerName}"
+                    } else {
+                        echo "Container ${tomcatContainerName} not exist"
                     }
 
                     if (env.reactExists) {
                         echo "Detete container ${reactContainerName}..."
                         sh "docker compose -f docker-compose-prod.yml down --rmi all --volumes ${reactContainerName}"
+                    } else {
+                        echo "Container ${reactContainerName} not exist"
                     }
 
                     if (dropDb == true) {
@@ -88,6 +92,8 @@ pipeline {
 
                             echo "Detete container ${mongoContainerName}..."
                             sh "docker compose -f docker-compose-prod.yml rm -f ${mongoContainerName}"
+                        } else {
+                            echo "Container ${mongoContainerName} not exist"
                         }
 
                         if (env.redisExists) {
@@ -96,6 +102,8 @@ pipeline {
 
                             echo "Detete container ${redisContainerName}..."
                             sh "docker compose -f docker-compose-prod.yml rm -f ${redisContainerName}"
+                        } else {
+                            echo "Container ${redisContainerName} not exist"
                         }
                     }
                 }
