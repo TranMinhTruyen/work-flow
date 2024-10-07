@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -28,17 +27,19 @@ public class ServiceAop {
     try {
       value = joinPoint.proceed();
       LOGGER.info("Service name: [{}], run method: [{}] do commit.", serviceName, methodName);
-    } catch (WorkFlowException exception) {
+    } catch (WorkFlowException error) {
       LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
-          methodName, exception.getMessage());
-      throw exception;
-    } catch (Throwable e) {
-      throw new WorkFlowException(
-          new ErrorDetail(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+        methodName, error.getErrorDetail().getMessage());
+      ErrorDetail errorDetail = error.getErrorDetail();
+      throw new WorkFlowException(errorDetail);
+    } catch (RuntimeException error) {
+      LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
+        methodName, error.getMessage());
+      throw error;
     } finally {
       Long timeTaken = System.currentTimeMillis() - startTime;
       LOGGER.info("Service name: [{}], method: [{}] time taken {} ms", serviceName, methodName,
-          timeTaken);
+        timeTaken);
     }
     return value;
   }

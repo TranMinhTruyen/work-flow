@@ -1,6 +1,7 @@
 package com.org.workflow.controller;
 
-import com.org.workflow.common.cnst.CoreConst;
+import static com.org.workflow.common.cnst.CommonConst.API_PREFIX;
+
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.reponse.CreateUserResponse;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "UserAccountController")
-@RequestMapping(path = CoreConst.API_PREFIX + "/user-account")
+@RequestMapping(path = API_PREFIX + "/user-account")
 public class UserAccountController extends AbstractController {
 
   private final UserService userService;
@@ -45,18 +46,18 @@ public class UserAccountController extends AbstractController {
    * @throws WorkFlowException AppException
    */
   @Operation(responses = {
-      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(responseCode = "400", description = "Bad request"),
+    @ApiResponse(responseCode = "500", description = "Server error"),
+    @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PostMapping(value = "/create")
   public ResponseEntity<BaseResponse> createUserAccount(
-      @RequestBody CreateUserRequest createUserRequest)
-      throws WorkFlowException {
+    @RequestBody CreateUserRequest createUserRequest)
+    throws WorkFlowException {
     CreateUserResponse result = userService.createUserAccount(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
-        result.getUserName());
+      result.getUserName());
   }
 
   /**
@@ -67,14 +68,14 @@ public class UserAccountController extends AbstractController {
    * @throws WorkFlowException AppException
    */
   @Operation(responses = {
-      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(responseCode = "400", description = "Bad request"),
+    @ApiResponse(responseCode = "500", description = "Server error"),
+    @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PostMapping("/login")
   public ResponseEntity<BaseResponse> loginUserAccount(@RequestBody LoginRequest loginRequest)
-      throws WorkFlowException {
+    throws WorkFlowException {
     LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
@@ -86,14 +87,15 @@ public class UserAccountController extends AbstractController {
    * @throws WorkFlowException AppException
    */
   @Operation(responses = {
-      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(responseCode = "400", description = "Bad request"),
+    @ApiResponse(responseCode = "500", description = "Server error"),
+    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+    @SecurityRequirement(name = "Authorization")
   })
   @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile() throws WorkFlowException {
+    
     UserResponse result = userService.getProfile();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
@@ -106,17 +108,17 @@ public class UserAccountController extends AbstractController {
    * @throws WorkFlowException AppException
    */
   @Operation(responses = {
-      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(responseCode = "400", description = "Bad request"),
+    @ApiResponse(responseCode = "500", description = "Server error"),
+    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+    @SecurityRequirement(name = "Authorization")
   })
   @PostMapping("/update-user-account")
   public ResponseEntity<BaseResponse> updateUserAccount(
-      @RequestBody UpdateUserRequest updateUserRequest)
-      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException,
-      NoSuchMethodException {
+    @RequestBody UpdateUserRequest updateUserRequest)
+    throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException,
+    NoSuchMethodException {
     UpdateUserResponse result = userService.updateUserAccount(updateUserRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
@@ -129,15 +131,16 @@ public class UserAccountController extends AbstractController {
    * @throws WorkFlowException AppException
    */
   @Operation(responses = {
-      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(responseCode = "400", description = "Bad request"),
+    @ApiResponse(responseCode = "500", description = "Server error"),
+    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+    @SecurityRequirement(name = "Authorization")
   })
   @PostMapping("/change-login-password")
   public ResponseEntity<BaseResponse> changeLoginPassword(
-      @RequestBody ChangePasswordRequest changePasswordRequest) throws WorkFlowException {
+    @RequestBody ChangePasswordRequest changePasswordRequest)
+    throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
     userService.changeLoginPassword(changePasswordRequest);
     return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
   }

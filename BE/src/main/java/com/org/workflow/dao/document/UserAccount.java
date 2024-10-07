@@ -47,6 +47,6 @@ public class UserAccount extends AbstractDocument implements Serializable {
   private Integer loginFailCount;
 
   @Field(name = "is_active", write = Write.ALWAYS)
-  private Boolean isActive;
+  private boolean isActive;
 
 }

@@ -18,17 +18,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder(value = {"timestamp", "messageCode", "message", "body"})
+@JsonPropertyOrder(value = {"timestamp", "messageType", "messageCode", "message", "errorList",
+  "body"})
 public class BaseResponse implements Serializable {
 
   private final String timestamp = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-      .format(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(ZONE_ID)));
+    .format(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(ZONE_ID)));
 
   private String messageType;
 
   private String messageCode;
 
   private String message;
+
+  private transient Object errorList;
 
   private transient Object body;
 

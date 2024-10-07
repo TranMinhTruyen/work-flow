@@ -1,6 +1,7 @@
 package com.org.workflow.controller;
 
-import com.org.workflow.common.cnst.CoreConst;
+import static com.org.workflow.common.cnst.CommonConst.API_PREFIX;
+
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.request.NotificationCreateRequest;
 import com.org.workflow.service.NotificationService;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "NotificationController")
-@RequestMapping(path = CoreConst.API_PREFIX + "/notification")
+@RequestMapping(path = API_PREFIX + "/notification")
 public class NotificationController extends AbstractController {
 
   private final NotificationService notificationService;
@@ -31,19 +32,20 @@ public class NotificationController extends AbstractController {
   private final SimpMessagingTemplate messagingTemplate;
 
   @Operation(responses = {
-      @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "500", description = "Server error"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-      @SecurityRequirement(name = "Authorization")})
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(responseCode = "400", description = "Bad request"),
+    @ApiResponse(responseCode = "500", description = "Server error"),
+    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
+    @SecurityRequirement(name = "Authorization")})
   @PostMapping("/create")
   public ResponseEntity<BaseResponse> createNotification(
-      NotificationCreateRequest notificationCreateRequest) {
+    NotificationCreateRequest notificationCreateRequest) {
     notificationService.createNotification(notificationCreateRequest);
     messagingTemplate.convertAndSendToUser(
-        notificationCreateRequest.getUserId(), "/check-notification",
-        notificationCreateRequest);
-    return this.returnBaseResponse(notificationCreateRequest, "Create success", HttpStatus.OK);
+      notificationCreateRequest.getUserId(), "/check-notification",
+      notificationCreateRequest);
+    return this.returnBaseResponse(notificationCreateRequest, "Create success", "SUCCESS",
+      HttpStatus.OK);
   }
 
 }

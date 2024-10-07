@@ -1,9 +1,11 @@
 package com.org.workflow.controller;
 
+import static com.org.workflow.common.enums.MessageEnum.SERVER_ERROR;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
+import com.org.workflow.core.exception.WorkFlowException;
 import jakarta.annotation.Nullable;
 import java.text.MessageFormat;
 import org.springframework.http.HttpHeaders;
@@ -22,8 +24,9 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-      @Nullable String message, HttpStatus httpStatus) {
+    @Nullable String message, @Nullable String messageType, HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setMessageType(messageType);
     baseResponse.setMessage(message);
     baseResponse.setBody(body);
     HttpHeaders header = new HttpHeaders();
@@ -38,7 +41,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(HttpStatus httpStatus,
-      @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
+    @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
@@ -56,7 +59,7 @@ public abstract class AbstractController {
    * @return ResponseEntity<BaseResponse>
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-      MessageEnum messageEnum, Object... messageArgs) {
+    MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
@@ -65,6 +68,31 @@ public abstract class AbstractController {
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
     return new ResponseEntity<>(baseResponse, header, messageEnum.getHttpStatus());
+  }
+
+  protected ResponseEntity<BaseResponse> returnErrorBaseResponse(
+    WorkFlowException workFlowException) {
+    BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setMessageType(SERVER_ERROR.getMessageType());
+    baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
+    baseResponse.setMessage(SERVER_ERROR.getMessage());
+    baseResponse.setErrorList(workFlowException.getErrorDetail().getMessage());
+    HttpHeaders header = new HttpHeaders();
+    header.setContentType(APPLICATION_JSON);
+    return new ResponseEntity<>(baseResponse, header,
+      workFlowException.getErrorDetail().getHttpStatus());
+  }
+
+  protected ResponseEntity<BaseResponse> returnErrorBaseResponse(Throwable exception,
+    HttpStatus httpStatus) {
+    BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setMessageType(SERVER_ERROR.getMessageType());
+    baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
+    baseResponse.setMessage(SERVER_ERROR.getMessage());
+    baseResponse.setErrorList(exception);
+    HttpHeaders header = new HttpHeaders();
+    header.setContentType(APPLICATION_JSON);
+    return new ResponseEntity<>(baseResponse, header, httpStatus);
   }
 
 }

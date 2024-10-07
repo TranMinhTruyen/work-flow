@@ -1,6 +1,7 @@
 package com.org.workflow.core.exception;
 
-import com.org.workflow.common.cnst.CoreConst;
+import static com.org.workflow.common.cnst.CommonConst.CLASS_NAME;
+
 import com.org.workflow.controller.AbstractController;
 import com.org.workflow.controller.reponse.BaseResponse;
 import java.util.ArrayList;
@@ -29,24 +30,22 @@ public class ExceptionInterceptor extends AbstractController {
   public ResponseEntity<BaseResponse> handleAppException(WorkFlowException workFlowException) {
     List<StackTrace> stackTraceList = new ArrayList<>();
     if (workFlowException.getStackTrace() != null && Arrays.stream(
-            workFlowException.getStackTrace())
-        .findAny().isPresent()) {
+      workFlowException.getStackTrace()).findAny().isPresent()) {
       StackTrace stackTrace;
       for (StackTraceElement item : workFlowException.getStackTrace()) {
-        if (item.getClassName().contains(CoreConst.CLASS_NAME)) {
+        if (item.getClassName().contains(CLASS_NAME)) {
           stackTrace = new StackTrace();
           stackTrace.setClassName(item.getClassName());
           stackTrace.setMethodName(item.getMethodName());
           stackTrace.setLineNumber(item.getLineNumber());
           stackTraceList.add(stackTrace);
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
-              item.getClassName(), item.getMethodName(), item.getLineNumber(),
-              workFlowException.getErrorDetail().getMessage());
+            item.getClassName(), item.getMethodName(), item.getLineNumber(),
+            workFlowException.getErrorDetail().getMessage());
         }
       }
     }
-    return returnBaseResponse(stackTraceList, workFlowException.getErrorDetail().getMessage(),
-        workFlowException.getErrorDetail().getHttpStatus());
+    return returnErrorBaseResponse(workFlowException);
   }
 
   @ExceptionHandler(Throwable.class)
@@ -55,30 +54,30 @@ public class ExceptionInterceptor extends AbstractController {
 
     List<StackTrace> stackTraceList = new ArrayList<>();
     if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
-        .isPresent()) {
+      .isPresent()) {
       StackTrace stackTrace;
       for (StackTraceElement item : exception.getStackTrace()) {
-        if (item.getClassName().contains(CoreConst.CLASS_NAME)) {
+        if (item.getClassName().contains(CLASS_NAME)) {
           stackTrace = new StackTrace();
           stackTrace.setClassName(item.getClassName());
           stackTrace.setMethodName(item.getMethodName());
           stackTrace.setLineNumber(item.getLineNumber());
           stackTraceList.add(stackTrace);
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
-              item.getClassName(), item.getMethodName(), item.getLineNumber(),
-              exception.getMessage());
+            item.getClassName(), item.getMethodName(), item.getLineNumber(),
+            exception.getMessage());
         }
       }
       baseResponse.setBody(stackTraceList);
     }
-    return returnBaseResponse(stackTraceList, null,
-        !(exception instanceof AccessDeniedException) ? HttpStatus.INTERNAL_SERVER_ERROR
-            : HttpStatus.UNAUTHORIZED);
+    return returnErrorBaseResponse(exception,
+      !(exception instanceof AccessDeniedException) ? HttpStatus.INTERNAL_SERVER_ERROR
+        : HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<BaseResponse> handleValidationExceptions(
-      MethodArgumentNotValidException exception) {
+    MethodArgumentNotValidException exception) {
     BaseResponse baseResponse = new BaseResponse();
     Map<String, String> errors = new HashMap<>();
     exception.getBindingResult().getAllErrors().forEach((error) -> {
@@ -87,7 +86,7 @@ public class ExceptionInterceptor extends AbstractController {
       errors.put(fieldName, errorMessage);
     });
     baseResponse.setMessage("Validation failed");
-    baseResponse.setBody(errors);
+    baseResponse.setErrorList(errors);
     return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
   }
 

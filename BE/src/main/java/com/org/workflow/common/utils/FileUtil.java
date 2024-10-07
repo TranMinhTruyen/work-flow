@@ -1,7 +1,10 @@
 package com.org.workflow.common.utils;
 
-import com.org.workflow.common.enums.MessageEnum;
+import static com.org.workflow.common.enums.MessageEnum.READ_FILE_ERROR;
+import static com.org.workflow.common.enums.MessageEnum.WRITE_FILE_ERROR;
+
 import com.org.workflow.controller.request.FileData;
+import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
 import java.io.File;
 import java.io.IOException;
@@ -10,14 +13,17 @@ import org.apache.commons.io.FileUtils;
 
 public class FileUtil {
 
+  private FileUtil() {
+  }
+
   public static String writeFile(byte[] fileContent, String fileName, String filePath)
-      throws WorkFlowException {
+    throws WorkFlowException {
     try {
       File file = new File(filePath + fileName);
       FileUtils.writeByteArrayToFile(file, fileContent);
       return file.getPath();
     } catch (IOException e) {
-      throw new WorkFlowException(MessageEnum.WRITE_FILE_ERROR, fileName);
+      throw new WorkFlowException(new ErrorDetail(WRITE_FILE_ERROR, fileName));
     }
   }
 
@@ -27,7 +33,7 @@ public class FileUtil {
       FileUtils.writeByteArrayToFile(file, fileData.getData());
       return file.getPath();
     } catch (IOException e) {
-      throw new WorkFlowException(MessageEnum.WRITE_FILE_ERROR, fileData.getName());
+      throw new WorkFlowException(new ErrorDetail(WRITE_FILE_ERROR, fileData.getName()));
     }
   }
 
@@ -42,7 +48,7 @@ public class FileUtil {
 
       return outputFile;
     } catch (IOException e) {
-      throw new WorkFlowException(MessageEnum.READ_FILE_ERROR, filePath);
+      throw new WorkFlowException(new ErrorDetail(READ_FILE_ERROR, filePath));
     }
   }
 
