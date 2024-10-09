@@ -4,9 +4,10 @@ pipeline {
     environment {
         mongoContainerName = 'work-flow-mongodb' // Container MongoDB
         redisContainerName = 'work-flow-redis' // Container Redis
-        tomcatContainerName = 'work-flow-tomcat' // Container Redis
-        reactContainerName = 'work-flow-react' // Container Redis
         location = 'Asia/Ho_Chi_Minh'
+        htmlDir = '/var/www/html'
+        warFile = '/build/libs/work-flow.war'
+        springAppDir = '/opt/tomcat/webapps/work-flow'
         backupDir = '/data'
         dbName = 'work-flow'
         dropDb = false
@@ -18,16 +19,12 @@ pipeline {
                 cleanWs()
                 script {
                     def dateTime = sh(script: "TZ=${location} date +%Y%m%d_%H%M%S", returnStdout: true).trim()
-                    def tomcatExists = sh(script: "docker ps -q -f name=${tomcatContainerName}", returnStdout: true).trim()
-                    def reactExists = sh(script: "docker ps -q -f name=${reactContainerName}", returnStdout: true).trim()
                     def mongoExists = sh(script: "docker ps -q -f name=${mongoContainerName}", returnStdout: true).trim()
                     def redisExists = sh(script: "docker ps -q -f name=${redisContainerName}", returnStdout: true).trim()
 
                     env.backupFileMongo = "${backupDir}/mongo_backup_${dateTime}.gz"
                     env.backupFileRedis = "${backupDir}/redis_backup_${dateTime}.rdb"
 
-                    env.tomcatExists = "${tomcatExists}"
-                    env.reactExists = "${reactExists}"
                     env.mongoExists = "${mongoExists}"
                     env.redisExists = "${redisExists}"
                 }
@@ -68,70 +65,110 @@ pipeline {
             }
         }
         
-        stage('Install dependencies') {
+        stage('Install & build FE') {
             steps {
-                dir('FE') {
-                    script {
-                    sh '''
-                        yarn install
-                    '''
+                try {
+                    dir('FE') {
+                        script {
+                            echo "Start build FE..."
+                            sh """
+                                yarn install
+                                yarn build
+                            """
+                            echo "Build FE finish..."
+                        }
+                    }
+                } catch (Exception e) {
+                    echo "Build FE error: ${e.getMessage()}"
                 }
+            }
+        }
+        
+        stage('Deploy FE') {
+            steps {
+                try {
+                    dir('FE') {
+                        echo "Start deploy FE..."
+                        script {
+                            def checkHtmlDir = sh(script: "sudo find ${htmlDir} -mindepth 1 -print -quit", returnStdout: true)
+
+                            // If folder not empty clear folder
+                            if (checkHtmlDir == 0) {
+                                sh "sudo rm -rf ${htmlDir}/*"
+                            }
+
+                            // Copy webpack bundle to html
+                            sh "sudo mv dist/* ${htmlDir}"
+                        }
+
+                        // Check status nginx
+                        def nginxStatus = sh(script: 'sudo systemctl is-active nginx', returnStatus: true)
+
+                        if (nginxStatus == 0) {
+                            echo "Nginx service is active, reload nginx..."
+                            sh 'sudo systemctl reload nginx'
+                        } else {
+                            echo "Nginx service deactive, start nginx..."
+                            sh 'sudo systemctl start nginx'
+                        }
+
+                        echo "Deploy FE finish..."
+                    }
+                } catch (Exception e) {
+                    echo "Deploy FE error: ${e.getMessage()}"
                 }
             }
         }
 
-        stage('Build') {
+        stage('Install & build BE') {
             steps {
-                dir('FE') {
-                    script {
-                    sh '''
-                        yarn build
-                    '''
-                }
+                try {
+                    dir('BE') {
+                        script {
+                            echo "Start build FE..."
+                            sh "./gradlew clean build -x test"
+                            echo "Build FE finish..."
+                        }
+                    }
+                } catch (Exception e) {
+                    echo "Build FE error: ${e.getMessage()}"
                 }
             }
         }
-        
-        stage('Clean nginx') {
+
+        stage('Deploy BE') {
             steps {
-                dir('FE') {
+                try {
+                    echo "Start deploy BE..."
                     script {
-                        sh '''
-                            if [ -d /nginx-1.26.2/html ]; then rm -rf /nginx-1.26.2/html/*; fi
-                        '''
+                        def springAppDirExists = sh(script: "test -d ${springAppDir} && echo 'true' || echo 'false'", returnStdout: true).trim()
+
+                        if (springAppDirExists == 'true') {
+                            // If folder exist
+                            def checkSpringAppDir = sh(script: "sudo find ${springAppDir} -mindepth 1 -print -quit", returnStdout: true)
+
+                            // If folder not empty clear folder
+                            if (checkSpringAppDir == 0) {
+                                sh "sudo rm -rf ${checkSpringAppDir}/*"
+                            }
+                        } esle {
+                            // If folder not exist
+                            sh "mkdir -p '${folderPath}'"
+                        }
+
+                        if (fileExists(warFile)) {
+                            // Copy webpack bundle to html
+                            sh "sudo mv ${warFile} ${springAppDir}"
+
+                            // Reload tomcat
+                            sh "/opt/tomcat/bin/startup.sh"
+                        } else {
+                            error "File war not exists!"
+                        }
                     }
-                }
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                dir('FE') {
-                    script {
-                        sh '''
-                            mv dist/* /nginx-1.26.2/html
-                        '''
-                    }
-                }
-            }
-        }
-        
-        stage('Reload nginx') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'system-exe', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh """
-                            sshpass -p "\$PASS" ssh \$USER@192.168.111.50 "
-                                if (Get-Service -Name nginx -ErrorAction SilentlyContinue) {
-                                    if ((Get-Service -Name nginx).Status -eq 'Running') {
-                                        nginx -s reload
-                                    } else {
-                                        Start-Service nginx
-                                    }
-                                }
-                            "
-                        """
-                    }
+                    echo "Deploy BE finish..."
+                } catch (Exception e) {
+                    echo "Deploy FE error: ${e.getMessage()}"
                 }
             }
         }
