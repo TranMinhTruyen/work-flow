@@ -13,9 +13,9 @@ spring:
 #logging
 logging:
   file:
-    name: /work-flow/work-flow.log
+    name: /var/work-flow/work-flow.log
   pattern:
     dateformat: dd-MM-yyyy HH:mm:ss
 
 file-utils:
-  image-path: /work-flow/image/
+  image-path: /var/work-flow/image/
