@@ -153,7 +153,8 @@ public class UserService extends AbstractService {
       Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
           loginRequest.getUserName());
 
-      userAccount = result.orElseThrow();
+      userAccount = result.orElseThrow(
+          () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, loginRequest.getUserName())));
     } catch (Exception e) {
       redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
       throw new WorkFlowException(new ErrorDetail(NOT_FOUND, loginRequest.getUserName()));
