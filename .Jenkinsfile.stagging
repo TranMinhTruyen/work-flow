@@ -6,7 +6,7 @@ pipeline {
         redisContainerName = 'work-flow-redis' // Container Redis
         location = 'Asia/Ho_Chi_Minh'
         htmlDir = '/var/www/html'
-        springAppDir = '/opt/tomcat/webapps/work-flow'
+        springAppDir = '/opt/tomcat/webapps'
         backupDir = '/data'
         dbName = 'work-flow'
         dropDb = false
@@ -125,21 +125,6 @@ pipeline {
             steps {
                 echo "Start deploy BE..."
                 script {
-                    def springAppDirExists = sh(script: "test -d ${springAppDir} && echo 'true' || echo 'false'", returnStdout: true).trim()
-
-                    if (springAppDirExists == 'true') {
-                        // If folder exist
-                        def checkSpringAppDir = sh(script: "sudo find ${springAppDir} -mindepth 1 -print -quit", returnStdout: true)
-
-                        // If folder not empty clear folder
-                        if (checkSpringAppDir == 0) {
-                            sh "sudo rm -rf ${checkSpringAppDir}/*"
-                        }
-                    } else {
-                        // If folder not exist
-                        sh "mkdir -p '${springAppDir}'"
-                    }
-
                     warFile = "${WORKSPACE}/BE/build/libs/work-flow.war"
 
                     echo "Checking for file: ${warFile}"
@@ -148,7 +133,7 @@ pipeline {
                         sh "sudo mv ${warFile} ${springAppDir}"
 
                         // Reload tomcat
-                        sh "/opt/tomcat/bin/startup.sh"
+                        sh "sudo systemctl restart tomcat"
                     } else {
                         error "File war not exists!"
                     }
