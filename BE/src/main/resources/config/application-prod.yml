@@ -2,13 +2,13 @@ client:
   url: "http://192.168.1.5:3000"
 
 redis:
-  host: ${REDIS_HOST}
-  port: ${REDIS_PORT}
+  host: work-flow-redis
+  port: 6379
 
 spring:
   data:
     mongodb:
-      uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}
+      uri: mongodb://work-flow-mongodb:27017/work-flow
 
 #logging
 logging:
