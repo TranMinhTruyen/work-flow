@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Backup') {
             steps {
                 script {
@@ -63,7 +63,7 @@ pipeline {
                 git url: 'https://github.com/TranMinhTruyen/work-flow', branch: 'main'
             }
         }
-        
+
         stage('Install & build FE') {
             steps {
                 dir('FE') {
@@ -78,27 +78,27 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy FE') {
             steps {
                 dir('FE') {
                     echo "Start deploy FE..."
                     script {
                         // Clear folder html
-                        sh "sudo -S rm -rf ${htmlDir}/*"
+                        sh "sudo rm -rf ${htmlDir}/*"
 
                         // Copy webpack bundle to html
-                        sh "echo '123' | sudo -S mv dist/* ${htmlDir}"
+                        sh "sudo mv dist/* ${htmlDir}"
 
                         // Check status nginx
-                        def nginxStatus = sh(script:  "echo '123' | sudo -S systemctl is-active nginx", returnStatus: true)
+                        def nginxStatus = sh(script:  "sudo systemctl is-active nginx", returnStatus: true)
 
                         if (nginxStatus == 0) {
                             echo "Nginx service is active, reload nginx..."
-                            sh "echo '123' | sudo -S systemctl reload nginx"
+                            sh "sudo systemctl reload nginx"
                         } else {
                             echo "Nginx service deactive, start nginx..."
-                            sh "echo '123' | sudo -S systemctl start nginx"
+                            sh "sudo systemctl start nginx"
                         }
                     }
                     echo "Deploy FE finish..."
@@ -129,11 +129,11 @@ pipeline {
 
                     if (springAppDirExists == 'true') {
                         // If folder exist
-                        def checkSpringAppDir = sh(script: "echo '123' | sudo -S find ${springAppDir} -mindepth 1 -print -quit", returnStdout: true)
+                        def checkSpringAppDir = sh(script: "sudo find ${springAppDir} -mindepth 1 -print -quit", returnStdout: true)
 
                         // If folder not empty clear folder
                         if (checkSpringAppDir == 0) {
-                            sh "echo '123' | sudo -S rm -rf ${checkSpringAppDir}/*"
+                            sh "sudo rm -rf ${checkSpringAppDir}/*"
                         }
                     } else {
                         // If folder not exist
@@ -141,9 +141,9 @@ pipeline {
                     }
 
                     warFile = "${WORKSPACE}/BE/build/libs/work-flow.war"
-                    
+
                     echo "Checking for file: ${warFile}"
-                    
+
                     if (fileExists(warFile)) {
                         sh "sudo mv ${warFile} ${springAppDir}"
 
