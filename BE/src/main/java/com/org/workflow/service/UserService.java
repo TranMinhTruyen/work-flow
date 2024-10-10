@@ -77,9 +77,9 @@ public class UserService extends AbstractService {
    * @throws WorkFlowException AppException
    */
   public CreateUserResponse createUserAccount(CreateUserRequest createUserRequest)
-    throws WorkFlowException {
+      throws WorkFlowException {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-      createUserRequest.getUserName());
+        createUserRequest.getUserName());
     if (result.isPresent()) {
       throw new WorkFlowException(new ErrorDetail(USER_NAME_EXISTS));
     }
@@ -87,23 +87,23 @@ public class UserService extends AbstractService {
     UserAccount userAccount = new UserAccount();
 
     String userId = USER_ID_PREFIX.concat(
-      LocalDateTime.now().format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
     userAccount.setUserId(userId);
     userAccount.setUserName(createUserRequest.getUserName());
 
     String passwordDecrypted = RSAUtil.decryptRSA(createUserRequest.getPassword(), privateKey);
 
     userAccount.setPassword(
-      Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16).toString());
+        Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16).toString());
     userAccount.setFullName(createUserRequest.getFullName());
     userAccount.setBirthDay(createUserRequest.getBirthDay());
     userAccount.setEmail(createUserRequest.getEmail());
     userAccount.setRole(createUserRequest.getRole());
     userAccount.setAuthorities(createUserRequest.getAuthorities());
     userAccount.setLevel(createUserRequest.getLevel());
-    if (createUserRequest.getImage() != null) {
+    if (createUserRequest.getImage() != null && createUserRequest.getImage().getData().length > 0) {
       userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
-        userId + "_" + createUserRequest.getImage().getName(), imagePath));
+          userId + "_" + createUserRequest.getImage().getName(), imagePath));
     }
     userAccount.setActive(true);
     userAccount.setLoginFailCount(0);
@@ -151,7 +151,7 @@ public class UserService extends AbstractService {
     UserAccount userAccount;
     try {
       Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-        loginRequest.getUserName());
+          loginRequest.getUserName());
 
       userAccount = result.orElseThrow();
     } catch (Exception e) {
@@ -166,12 +166,12 @@ public class UserService extends AbstractService {
     String passwordDecrypted = RSAUtil.decryptRSA(loginRequest.getPassword(), privateKey);
 
     String loginPassword = Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16)
-      .toString();
+        .toString();
 
     if (userAccount.getPassword().equals(loginPassword)) {
       LoginResponse loginResponse = new LoginResponse();
       String token = jwtProvider.generateAccessToken(new CustomUserDetail(userAccount),
-        loginRequest.getIsRemember());
+          loginRequest.getIsRemember());
       loginResponse.setToken(token);
       loginResponse.setTokenType(BEARER);
       loginResponse.setUserResponse(setUserResponse(userAccount));
@@ -217,7 +217,7 @@ public class UserService extends AbstractService {
   public CustomUserDetail loadByUserName(String username) throws WorkFlowException {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
-      () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
+        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
     return new CustomUserDetail(userAccount);
   }
 
@@ -231,7 +231,7 @@ public class UserService extends AbstractService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
-      () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
+        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
     return setUserResponse(userAccount);
   }
 
@@ -247,14 +247,14 @@ public class UserService extends AbstractService {
    * @throws NoSuchMethodException     NoSuchMethodException
    */
   public UpdateUserResponse updateUserAccount(UpdateUserRequest updateUserRequest)
-    throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount oldUserAccount = result.orElseThrow(
-      () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
+        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
 
     if (updateUserRequest.getUpdateDatetime() != null && !updateUserRequest.getUpdateDatetime()
-      .equals(oldUserAccount.getUpdateDatetime())) {
+        .equals(oldUserAccount.getUpdateDatetime())) {
       throw new WorkFlowException(new ErrorDetail(UPDATE_FAILED));
     }
 
@@ -288,22 +288,22 @@ public class UserService extends AbstractService {
    * @throws WorkFlowException AppException
    */
   public void changeLoginPassword(ChangePasswordRequest changePasswordRequest)
-    throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
     UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-      userAccount.getUserName());
+        userAccount.getUserName());
     UserAccount update = result.orElseThrow(
-      () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, userAccount.getUserName())));
+        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, userAccount.getUserName())));
 
     UserAccount before = (UserAccount) BeanUtils.cloneBean(update);
 
     if (!changePasswordRequest.getNewLoginPassword()
-      .equals(changePasswordRequest.getConfirmNewLoginPassword())) {
+        .equals(changePasswordRequest.getConfirmNewLoginPassword())) {
       throw new WorkFlowException(new ErrorDetail(NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL));
     }
 
     update.setPassword(
-      BCrypt.hashpw(changePasswordRequest.getConfirmNewLoginPassword(), BCrypt.gensalt(16)));
+        BCrypt.hashpw(changePasswordRequest.getConfirmNewLoginPassword(), BCrypt.gensalt(16)));
     UserAccount userAccountUpdateResult = userRepository.save(update);
 
     this.saveHistory(before, userAccountUpdateResult, ChangeTypeEnum.UPDATE);
@@ -327,7 +327,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getEmail());
     changeValue.setFieldValueAfter(after.getEmail());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setEmail(changeValue);
 
     // Set change value for login password
@@ -335,7 +335,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getPassword());
     changeValue.setFieldValueAfter(after.getPassword());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setPassword(changeValue);
 
     // Set change value for full name
@@ -343,7 +343,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getFullName());
     changeValue.setFieldValueAfter(after.getFullName());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setFullName(changeValue);
 
     // Set change value for birthday
@@ -351,7 +351,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getBirthDay());
     changeValue.setFieldValueAfter(after.getBirthDay());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setFullName(changeValue);
 
     // Set change value for image path
@@ -359,7 +359,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getImagePath());
     changeValue.setFieldValueAfter(after.getImagePath());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setImagePath(changeValue);
 
     // Set change value for role
@@ -367,7 +367,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getRole());
     changeValue.setFieldValueAfter(after.getRole());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setRole(changeValue);
 
     // Set change value for authorities
@@ -375,7 +375,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getAuthorities());
     changeValue.setFieldValueAfter(after.getAuthorities());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setAuthorities(changeValue);
 
     // Set change value for level
@@ -383,7 +383,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getLevel());
     changeValue.setFieldValueAfter(after.getLevel());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setLevel(changeValue);
 
     // Set change value for login fail count
@@ -391,7 +391,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.getLoginFailCount());
     changeValue.setFieldValueAfter(after.getLoginFailCount());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setLoginFailCount(changeValue);
 
     // Set change value for isActive
@@ -399,7 +399,7 @@ public class UserService extends AbstractService {
     changeValue.setFieldValueBefore(before.isActive());
     changeValue.setFieldValueAfter(after.isActive());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     userHistory.setIsActive(changeValue);
 
     LocalDateTime now = LocalDateTime.now();

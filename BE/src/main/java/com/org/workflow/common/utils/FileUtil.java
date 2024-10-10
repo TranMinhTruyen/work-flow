@@ -17,13 +17,13 @@ public class FileUtil {
   }
 
   public static String writeFile(byte[] fileContent, String fileName, String filePath)
-    throws WorkFlowException {
+      throws WorkFlowException {
     try {
       File file = new File(filePath + fileName);
       FileUtils.writeByteArrayToFile(file, fileContent);
       return file.getPath();
     } catch (IOException e) {
-      throw new WorkFlowException(new ErrorDetail(WRITE_FILE_ERROR, fileName));
+      throw new WorkFlowException(new ErrorDetail(WRITE_FILE_ERROR, "", filePath + fileName));
     }
   }
 
