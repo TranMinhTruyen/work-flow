@@ -9,6 +9,7 @@ import com.org.workflow.core.exception.WorkFlowException;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 
 public class FileUtil {
@@ -38,17 +39,21 @@ public class FileUtil {
   }
 
   public static FileData readFile(String filePath) throws WorkFlowException {
-    try {
-      File file = new File(filePath);
-      byte[] content = FileUtils.readFileToByteArray(file);
+    if (!StringUtils.isBlank(filePath)) {
+      try {
+        File file = new File(filePath);
+        byte[] content = FileUtils.readFileToByteArray(file);
 
-      FileData outputFile = new FileData();
-      outputFile.setName(file.getName());
-      outputFile.setData(content);
+        FileData outputFile = new FileData();
+        outputFile.setName(file.getName());
+        outputFile.setData(content);
 
-      return outputFile;
-    } catch (IOException e) {
-      throw new WorkFlowException(new ErrorDetail(READ_FILE_ERROR, filePath));
+        return outputFile;
+      } catch (IOException e) {
+        throw new WorkFlowException(new ErrorDetail(READ_FILE_ERROR, filePath));
+      }
+    } else {
+      return null;
     }
   }
 
