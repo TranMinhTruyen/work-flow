@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,14 +21,14 @@ public class NotificationScheduler {
 
   private final SimpMessagingTemplate messagingTemplate;
 
-  @Scheduled(cron = "0 * * * * *")
+  //  @Scheduled(cron = "0 * * * * *")
   public void checkUnreadNotifications() {
     LOGGER.info("Checking unread notifications");
     List<NotificationResponse> unreadNotifications = notificationService.findResponseIsNotRead();
     for (NotificationResponse notification : unreadNotifications) {
       messagingTemplate.convertAndSendToUser(
-          notification.getUserId(), "/check-notification",
-          notification);
+        notification.getUserId(), "/check-notification",
+        notification);
     }
   }
 
