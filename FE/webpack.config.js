@@ -9,6 +9,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 // const ESLintPlugin = require('eslint-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 module.exports = (env, argv) => {
@@ -85,6 +86,16 @@ module.exports = (env, argv) => {
     },
 
     target: 'web',
+
+    performance: {
+      maxAssetSize: 2 * 1024 * 1024,
+      maxEntrypointSize: 2 * 1024 * 1024,
+    },
+
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
 
     output: {
       filename: 'static/js/[name].bundle.js',
