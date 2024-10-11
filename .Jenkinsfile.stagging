@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         mongoContainerName = 'work-flow-mongodb' // Container MongoDB
         redisContainerName = 'work-flow-redis' // Container Redis
