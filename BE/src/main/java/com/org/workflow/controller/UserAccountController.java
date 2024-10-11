@@ -95,7 +95,6 @@ public class UserAccountController extends AbstractController {
   })
   @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile() throws WorkFlowException {
-    
     UserResponse result = userService.getProfile();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }

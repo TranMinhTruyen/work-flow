@@ -15,6 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthUtil {
 
+  private AuthUtil() {
+  }
+
   public static CustomUserDetail getAuthentication() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return (CustomUserDetail) authentication.getPrincipal();

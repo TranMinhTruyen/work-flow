@@ -28,6 +28,7 @@ public enum MessageEnum {
   USER_NAME_EXISTS("ERROR", "E0004", "Username already exists", HttpStatus.CONFLICT),
   ITEM_MASTER_EXISTS("ERROR", "E0005", "Item master already exists", HttpStatus.CONFLICT),
   REQUEST_FAILED("ERROR", "E0006", "{0} failed", HttpStatus.INTERNAL_SERVER_ERROR),
+  AUTHENTICATION_FAILED("ERROR", "E0007", "Authentication failed", HttpStatus.UNAUTHORIZED),
   WRITE_FILE_ERROR("ERROR", "E1000", "Write file: {0} error!", HttpStatus.INTERNAL_SERVER_ERROR),
   READ_FILE_ERROR("ERROR", "E1001", "Read file: {0} error!", HttpStatus.INTERNAL_SERVER_ERROR),
   SERVER_ERROR("ERROR", "E9999", "Server has error!", HttpStatus.INTERNAL_SERVER_ERROR),
