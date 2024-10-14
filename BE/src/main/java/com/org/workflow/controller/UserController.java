@@ -32,9 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "UserAccountController")
+@Tag(name = "UserController")
 @RequestMapping(path = API_PREFIX + "/user-account")
-public class UserAccountController extends AbstractController {
+public class UserController extends AbstractController {
 
   private final UserService userService;
 

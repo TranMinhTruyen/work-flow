@@ -46,7 +46,6 @@ public class MasterItemController extends AbstractController {
     @ApiResponse(responseCode = "500", description = "Server error"),
     @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
     @SecurityRequirement(name = "Authorization")})
-  @PreAuthorize(AuthConst.ITEM_MASTER_CREATE)
   @PostMapping("/create")
   public ResponseEntity<BaseResponse> createItemMaster(
     @RequestBody MasterItemRequest masterItemRequest) throws WorkFlowException {

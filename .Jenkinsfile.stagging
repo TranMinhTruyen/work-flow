@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        sshHost = '172.24.25.251'
         mongoContainerName = 'work-flow-mongodb' // Container MongoDB
         redisContainerName = 'work-flow-redis' // Container Redis
         location = 'Asia/Ho_Chi_Minh'
@@ -14,31 +15,34 @@ pipeline {
 
     stages {
 
-        stage('Test ssh') {
-            steps {
-                sshagent(credentials: ['ssh-ubuntu22']) {
-                    sh """
-                        ssh-keyscan -H 192.168.1.8 >> ~/.ssh/known_hosts
-                        ssh -o StrictHostKeyChecking=no -T root@192.168.1.8 << 'EOF'
-                        mkdir /var/testssh
-                    """
-                }
-            }
-        }
-
         stage('Preparation') {
             steps {
                 cleanWs()
                 script {
                     def dateTime = sh(script: "TZ=${location} date +%Y%m%d_%H%M%S", returnStdout: true).trim()
-                    def mongoExists = sh(script: "docker ps -q -f name=${mongoContainerName}", returnStdout: true).trim()
-                    def redisExists = sh(script: "docker ps -q -f name=${redisContainerName}", returnStdout: true).trim()
 
                     env.backupFileMongo = "${backupDir}/mongo_backup_${dateTime}.gz"
                     env.backupFileRedis = "${backupDir}/redis_backup_${dateTime}.rdb"
 
-                    env.mongoExists = "${mongoExists}"
-                    env.redisExists = "${redisExists}"
+                    sshagent(credentials: ['ssh-ubuntu22']) {
+                        sh "ssh-keyscan -H ${sshHost} >> ~/.ssh/known_hosts"
+
+                        def dockerStatus = sh(script: """
+                            ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+
+                            mongoExists=\$(docker ps -q -f name=${mongoContainerName})
+                            redisExists=\$(docker ps -q -f name=${redisContainerName})
+
+                            echo "MONGO_EXISTS=\${mongoExists}"
+                            echo "REDIS_EXISTS=\${redisExists}"
+                        """, returnStdout: true).trim()
+
+                        def mongoExists = dockerStatus.split('\n').find { it.contains("MONGO_EXISTS") }.split('=')[1].trim()
+                        def redisExists = dockerStatus.split('\n').find { it.contains("REDIS_EXISTS") }.split('=')[1].trim()
+
+                        env.mongoExists = "${mongoExists}"
+                        env.redisExists = "${redisExists}"
+                    }
                 }
             }
         }
@@ -46,26 +50,35 @@ pipeline {
         stage('Backup') {
             steps {
                 script {
-                    if (env.mongoExists) {
-                        echo "Creating backup for MongoDB..."
+                    sshagent(credentials: ['ssh-ubuntu22']) {
+                        if (env.mongoExists) {
+                            echo "Creating backup for MongoDB..."
+                            echo "Script: \n docker exec ${mongoContainerName} mongodump --archive=${env.backupFileMongo} --gzip"
 
-                        sh "docker exec ${mongoContainerName} mongodump --archive=${env.backupFileMongo} --gzip"
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                docker exec ${mongoContainerName} mongodump --archive=${env.backupFileMongo} --gzip
+                            """
 
-                        echo "Backup created at ${env.backupFileMongo}"
-                    } else {
-                        echo "Container ${mongoContainerName} does not exist. Skipping backup."
-                    }
+                            echo "Backup created at ${env.backupFileMongo}"
+                        } else {
+                            echo "Container ${mongoContainerName} does not exist. Skipping backup."
+                        }
 
-                    if (env.redisExists) {
-                        echo "Creating backup for Redis..."
+                        if (env.redisExists) {
+                            echo "Creating backup for Redis..."
+                            echo "Script: \n docker exec ${redisContainerName} redis-cli SAVE \n docker exec ${redisContainerName} cp /data/dump.rdb ${env.backupFileRedis}"
 
-                        sh "docker exec ${redisContainerName} redis-cli SAVE"
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                docker exec ${redisContainerName} redis-cli SAVE
+                                docker exec ${redisContainerName} cp /data/dump.rdb ${env.backupFileRedis}
+                            """
 
-                        sh "docker exec ${redisContainerName} cp /data/dump.rdb ${env.backupFileRedis}"
-
-                        echo "Backup created at ${env.backupFileRedis}"
-                    } else {
-                        echo "Container ${redisContainerName} does not exist. Skipping backup."
+                            echo "Backup created at ${env.backupFileRedis}"
+                        } else {
+                            echo "Container ${redisContainerName} does not exist. Skipping backup."
+                        }
                     }
                 }
             }
@@ -92,33 +105,6 @@ pipeline {
             }
         }
 
-        stage('Deploy FE') {
-            steps {
-                dir('FE') {
-                    echo "Start deploy FE..."
-                    script {
-                        // Clear folder html
-                        sh "sudo rm -rf ${htmlDir}/*"
-
-                        // Copy webpack bundle to html
-                        sh "sudo mv dist/* ${htmlDir}"
-
-                        // Check status nginx
-                        def nginxStatus = sh(script:  "sudo systemctl is-active nginx", returnStatus: true)
-
-                        if (nginxStatus == 0) {
-                            echo "Nginx service is active, reload nginx..."
-                            sh "sudo systemctl reload nginx"
-                        } else {
-                            echo "Nginx service deactive, start nginx..."
-                            sh "sudo systemctl start nginx"
-                        }
-                    }
-                    echo "Deploy FE finish..."
-                }
-            }
-        }
-
         stage('Install & build BE') {
             steps {
                 dir('BE') {
@@ -134,45 +120,98 @@ pipeline {
             }
         }
 
-        stage('Deploy BE') {
+        stage('Deploy') {
             steps {
-                echo "Start deploy BE..."
                 script {
-                    warFile = "${WORKSPACE}/BE/build/libs/work-flow.war"
+                    sshagent(credentials: ['ssh-ubuntu22']) {
+                        echo "Start deploy FE..."
 
-                    echo "Checking for file: ${warFile}"
+                        // Clear folder html
+                        sh """
+                            ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                            rm -rf ${htmlDir}/*
+                        """
 
-                    if (fileExists(warFile)) {
-                        sh "sudo mv ${warFile} ${springAppDir}"
+                        // Copy webpack bundle to html
+                        sh "scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/FE/dist/* root@${sshHost}:${htmlDir}"
 
-                        // Reload tomcat
-                        sh "sudo systemctl restart tomcat"
-                    } else {
-                        error "File war not exists!"
+                        // Check status nginx
+                        def nginxStatus = sh(script: """
+                            ssh -o StrictHostKeyChecking=no root@${sshHost} << 'EOF'
+                            systemctl is-active nginx
+                        """, returnStatus: true)
+
+                        if (nginxStatus == 0) {
+                            echo "Nginx service is active, reload nginx..."
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                systemctl reload nginx
+                            """
+                        } else {
+                            echo "Nginx service deactive, start nginx..."
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                systemctl start nginx
+                            """
+                        }
+
+                        echo "Deploy FE finish..."
+
+                        echo "Start deploy BE..."
+
+                        warFile = "${WORKSPACE}/BE/build/libs/work-flow.war"
+
+                        echo "Checking for file: ${warFile}"
+
+                        if (fileExists(warFile)) {
+                            sh "scp -o StrictHostKeyChecking=no -r ${warFile} root@${sshHost}:${springAppDir}"
+
+                            // Reload tomcat
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                systemctl restart tomcat
+                            """
+                        } else {
+                            error "File war not exists!"
+                        }
                     }
                 }
-                echo "Deploy BE finish..."
             }
         }
 
         stage('Import backup') {
             steps {
                 script {
-                    def mongodb = sh(script: "docker exec ${mongoContainerName} test -f ${env.backupFileMongo} && echo 'true' || echo 'false'", returnStdout: true).trim()
-                    def redis = sh(script: "docker exec ${redisContainerName} test -f ${env.backupFileRedis} && echo 'true' || echo 'false'", returnStdout: true).trim()
+                    sshagent(credentials: ['ssh-ubuntu22']) {
+                        def mongodb = sh(script: """
+                            ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                            docker exec ${mongoContainerName} test -f ${env.backupFileMongo} && echo 'true' || echo 'false'
+                        """, returnStdout: true).trim()
 
-                    if (mongodb == 'true') {
-                        echo "Start restore mongodb..."
-                        sh "docker exec -i ${mongoContainerName} mongorestore --gzip --archive=${env.backupFileMongo} --db ${dbName}"
-                    } else {
-                        echo "File backup does not exist. Skipping restore."
-                    }
+                        def redis = sh(script: """
+                            ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                            docker exec ${redisContainerName} test -f ${env.backupFileRedis} && echo 'true' || echo 'false'
+                        """, returnStdout: true).trim()
 
-                    if (redis == 'true') {
-                        echo "Start restore redis..."
-                        sh "docker exec ${redisContainerName} cp ${env.backupFileRedis} /data/dump.rdb"
-                    } else {
-                        echo "File backup does not exist. Skipping restore."
+                        if (mongodb == 'true') {
+                            echo "Start restore mongodb..."
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                docker exec -i ${mongoContainerName} mongorestore --gzip --archive=${env.backupFileMongo} --db ${dbName}
+                            """
+                        } else {
+                            echo "File backup does not exist. Skipping restore."
+                        }
+
+                        if (redis == 'true') {
+                            echo "Start restore redis..."
+                            sh """
+                                ssh -o StrictHostKeyChecking=no -T root@${sshHost} << 'EOF'
+                                docker exec ${redisContainerName} cp ${env.backupFileRedis} /data/dump.rdb
+                            """
+                        } else {
+                            echo "File backup does not exist. Skipping restore."
+                        }
                     }
                 }
             }
