@@ -1,3 +1,4 @@
+'use client';
 import { ReactElement } from 'react';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ViewKanbanOutlinedIcon from '@mui/icons-material/ViewKanbanOutlined';

@@ -6,6 +6,8 @@ import { useAppSelector } from '../../common/store';
 import { selectOpenDrawer } from '../../common/commonSlice';
 import MainHeader from '../../components/header/MainHeader';
 import Drawer from '../../components/drawer/Drawer';
+import Backdrop from '../../components/backdrop/Backdrop';
+import MainProvider from '../../common/provider/MainProvider';
 
 const DRAWER_WIDTH: number = 200;
 
@@ -13,11 +15,15 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
   const openDrawer = useAppSelector(selectOpenDrawer);
 
   return (
-    <Grid2>
-      <MainHeader drawerWidth={DRAWER_WIDTH} />
-      <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
-      <ScreenLayout open={openDrawer}>{children}</ScreenLayout>
-    </Grid2>
+    <MainProvider>
+      <Grid2>
+        <MainHeader drawerWidth={DRAWER_WIDTH} />
+        <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
+        <ScreenLayout open={openDrawer}>
+          <Backdrop>{children}</Backdrop>
+        </ScreenLayout>
+      </Grid2>
+    </MainProvider>
   );
 };
 

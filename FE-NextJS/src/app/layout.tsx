@@ -1,7 +1,6 @@
 import { memo, ReactNode } from 'react';
 import StoreProvider from '../common/provider/StoreProvider';
 import ApiProvider from '../common/provider/ApiProvider';
-import Backdrop from '../components/backdrop/Backdrop';
 
 export const metadata = {
   title: 'Work flow',
@@ -18,9 +17,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <body>
         <div id="root">
           <StoreProvider>
-            <ApiProvider>
-              <Backdrop>{children}</Backdrop>
-            </ApiProvider>
+            <ApiProvider>{children}</ApiProvider>
           </StoreProvider>
         </div>
       </body>

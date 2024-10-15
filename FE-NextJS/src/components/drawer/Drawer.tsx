@@ -1,3 +1,4 @@
+'use client';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';

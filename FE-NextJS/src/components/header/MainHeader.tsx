@@ -1,3 +1,4 @@
+'use client';
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';

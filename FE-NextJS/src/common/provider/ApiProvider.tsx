@@ -23,14 +23,11 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('ApiProvider load');
-
     if (isSet) return;
-
-    router.push('/main/home');
 
     axiosInstance.interceptors.request.use(config => {
       if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+        router.push('/home');
         // const loginData: ILoginResponse | undefined = getLoginData();
         // // If login data is undefined, back to login screen
         // if (loginData === undefined) {

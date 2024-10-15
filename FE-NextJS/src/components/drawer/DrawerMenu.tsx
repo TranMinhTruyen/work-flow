@@ -1,3 +1,4 @@
+'use client';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
@@ -68,15 +69,15 @@ const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemPr
   const openDrawer = useAppSelector(selectOpenDrawer);
   const router = useRouter();
   const pathname = usePathname();
-  const [currentPath, setCurrentPath] = useState<string>(pathname.replace('/main', ''));
+  const [currentPath, setCurrentPath] = useState<string>(pathname);
 
   useEffect(() => {
-    setCurrentPath(pathname.replace('/main', ''));
+    setCurrentPath(pathname);
   }, [pathname]);
 
   const handleOnClickItem = useCallback(
     (path: string) => () => {
-      router.push(`/main${path}`);
+      router.push(path);
     },
     [router]
   );
