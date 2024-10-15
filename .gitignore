@@ -37,7 +37,7 @@ out/
 .vscode/
 
 ### dependencies ###
-/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 
@@ -46,6 +46,7 @@ out/
 
 ### production ###
 /FE/dist
+/FE-NextJS/.next
 mongodb-data
 redis-data
 
