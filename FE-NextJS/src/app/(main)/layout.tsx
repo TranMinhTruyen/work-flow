@@ -2,12 +2,12 @@
 import Grid2 from '@mui/material/Grid2';
 import { memo, ReactNode } from 'react';
 import { styled } from '@mui/material';
-import { useAppSelector } from '../../common/store';
-import { selectOpenDrawer } from '../../common/commonSlice';
-import MainHeader from '../../components/header/MainHeader';
-import Drawer from '../../components/drawer/Drawer';
-import Backdrop from '../../components/backdrop/Backdrop';
-import MainProvider from '../../common/provider/MainProvider';
+import MainProvider from '~/common/provider/MainProvider';
+import MainHeader from '~/components/header/MainHeader';
+import Drawer from '~/components/drawer/Drawer';
+import Backdrop from '~/components/backdrop/Backdrop';
+import { useAppSelector } from '~/common/store';
+import { selectOpenDrawer } from '~/common/commonSlice';
 
 const DRAWER_WIDTH: number = 200;
 

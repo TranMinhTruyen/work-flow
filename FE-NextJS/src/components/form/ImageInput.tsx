@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+'use client';
 import UncontrolledImageInput, {
   ImageInputProps as UncontrolledImageInputProps,
-} from '../../components/inputs/ImageInput';
+} from '~/components/inputs/ImageInput';
 import { Control, Controller } from 'react-hook-form';
 
 export type ImageInputProps = UncontrolledImageInputProps & {
@@ -10,7 +10,7 @@ export type ImageInputProps = UncontrolledImageInputProps & {
 };
 
 const ImageInput = (props: ImageInputProps) => {
-  const { name, control, value: valueProps, onChange: onChangeProps, ...restProps } = props;
+  const { name, control, value: valueProps, ...restProps } = props;
 
   return (
     <Controller

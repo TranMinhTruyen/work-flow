@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import useInput from '../../common/hooks/useInput';
-import { isNullOrEmpty } from '../../common/utils/stringUtil';
-import UncontrolledMultiSelectInput from '../../components/inputs/MultiSelectInput';
-import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from '../../components/inputs/MultiSelectInput';
+'use client';
+import useInput from '~/common/hooks/useInput';
+import { isNullOrEmpty } from '~/common/utils/stringUtil';
+import UncontrolledMultiSelectInput from '~/components/inputs/MultiSelectInput';
+import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from '~/components/inputs/MultiSelectInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
@@ -27,7 +27,8 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   const { checkDataInput, translateLabel, translateError } = useInput<string[]>({ ...props });
 
   const handleOnChange = useCallback(
-    (onChange: (...event: any[]) => void) => (value: string[]) => {
+    // eslint-disable-next-line no-unused-vars
+    (onChange: (...event: unknown[]) => void) => (value: string[]) => {
       control?.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);

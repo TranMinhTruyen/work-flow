@@ -1,0 +1,13 @@
+{
+  "title": "Login",
+  "label": {
+    "userName": "Username or email",
+    "password": "Password",
+    "remember": "Remember me",
+    "noAcccount": "If you don't have account, please ",
+    "register": "register"
+  },
+  "button": {
+    "login": "Login"
+  }
+}

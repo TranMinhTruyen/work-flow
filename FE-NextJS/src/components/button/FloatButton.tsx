@@ -1,3 +1,4 @@
+'use client';
 import { styled } from '@mui/material/styles';
 import { memo, ReactNode, ReactElement } from 'react';
 import Fab, { FabProps } from '@mui/material/Fab';

@@ -9,11 +9,11 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Stack from '@mui/material/Stack';
-import { useAppDispatch, useAppSelector } from '../../common/store';
-import { selectOpenDrawer, toggleDrawer } from '../../common/commonSlice';
-import IconButton from '../button/IconButton';
-import '../../assets/css/MainHeader.css';
+import '~/assets/css/MainHeader.css';
 import { useRouter } from 'next/navigation';
+import IconButton from '../button/IconButton';
+import { useAppDispatch, useAppSelector } from '~/common/store';
+import { selectOpenDrawer, toggleDrawer } from '~/common/commonSlice';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -96,13 +96,13 @@ const MainHeader = (props: IHeaderProps) => {
             fontWeight: 'bold',
             textTransform: 'uppercase',
           }}
-          onClick={() => router.push('/main/home')}
+          onClick={() => router.push('/home')}
         >
           WORK FLOW
         </Typography>
 
         <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
-          <IconButton icon={<NotificationsIcon />} />
+          <IconButton icon={<NotificationsIcon fontSize={'small'} />} />
         </Stack>
       </Toolbar>
     </AppBar>
@@ -114,8 +114,7 @@ export default memo(MainHeader);
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',
 })<AppBarProps>(({ theme, open, drawerWidth }) => ({
-  backgroundColor: 'rgba(0, 200, 255)',
-  height: 50,
+  height: '50px',
   position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {

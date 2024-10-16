@@ -1,0 +1,15 @@
+{
+  "en": "Tiếng Anh",
+  "vn": "Tiếng Việt",
+  "jp": "Tiếng Nhật",
+  "isRequired": "là bắt buộc",
+  "label": {
+    "language": "Ngôn ngữ",
+    "totalFile": "Tổng số file: "
+  },
+  "button": {
+    "save": "Lưu",
+    "back": "Quay lại",
+    "cancel": "Hủy"
+  }
+}

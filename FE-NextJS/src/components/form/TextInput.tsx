@@ -1,8 +1,9 @@
-import useInput from '../../common/hooks/useInput';
-import { isNullOrEmpty } from '../../common/utils/stringUtil';
+'use client';
+import useInput from '~/common/hooks/useInput';
+import { isNullOrEmpty } from '~/common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
-} from '../../components/inputs/TextInput';
+} from '~/components/inputs/TextInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
@@ -32,7 +33,8 @@ const TextInput = (props: TextInputProps) => {
   });
 
   const handleOnChange = useCallback(
-    (onChange: (...event: any[]) => void) => (value: string) => {
+    // eslint-disable-next-line no-unused-vars
+    (onChange: (...event: unknown[]) => void) => (value: string) => {
       control.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);
@@ -57,6 +59,7 @@ const TextInput = (props: TextInputProps) => {
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledTextInput
+          id={name}
           label={translateLabel()}
           type={type}
           value={value ?? ''}

@@ -1,21 +1,8 @@
-'use client';
-import { memo, useEffect } from 'react';
-import { Backdrop as MuiBackdrop } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
-import { useRouter } from 'next/navigation';
+import { AppProps } from 'next/app';
+import { memo } from 'react';
 
-const RootPage = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/home');
-  }, [router]);
-
-  return (
-    <MuiBackdrop open={true}>
-      <CircularProgress color="inherit" />
-    </MuiBackdrop>
-  );
+const RootPage = ({ Component, pageProps }: AppProps) => {
+  return <Component {...pageProps} />;
 };
 
 export default memo(RootPage);

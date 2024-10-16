@@ -10,7 +10,7 @@ type UseCheckRequiredProps = {
   control: Control;
   required?: boolean;
   type?: string;
-  i18n?: I18nEnum;
+  i18n?: string;
 };
 
 const useInput = <T>(props: UseCheckRequiredProps) => {

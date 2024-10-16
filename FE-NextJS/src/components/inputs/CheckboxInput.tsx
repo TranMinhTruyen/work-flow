@@ -1,3 +1,4 @@
+'use client';
 import Checkbox, { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import { capitalizeFirst } from '../../common/utils/stringUtil';

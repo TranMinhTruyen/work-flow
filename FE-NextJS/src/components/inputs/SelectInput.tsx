@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
@@ -60,6 +60,7 @@ const SelectInput = (props: SelectInputProps) => {
   }, [selectValue, valueProps]);
 
   const handleOnChange = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: SelectChangeEvent<any>) => {
       setSelectValue(event.target.value);
       onChangeProps?.(event.target.value as string);
@@ -140,7 +141,7 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
   },
 
   '& .MuiInputBase-formControl': {
-    height: '50px',
+    height: '40px',
   },
 
   '& .MuiOutlinedInput-input': {

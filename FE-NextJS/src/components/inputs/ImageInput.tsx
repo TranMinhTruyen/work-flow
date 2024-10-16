@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { IMAGE_FILE_TYPE } from '../../common/constants/commonConst';

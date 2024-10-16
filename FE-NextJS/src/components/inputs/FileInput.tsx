@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 import Button from '@mui/material/Button';
 import { ChangeEvent, useCallback, useState, MouseEvent, useRef } from 'react';
 import FileUploadIcon from '@mui/icons-material/FileUpload';

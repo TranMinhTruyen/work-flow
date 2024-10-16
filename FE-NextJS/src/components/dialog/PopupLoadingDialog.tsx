@@ -1,9 +1,10 @@
+'use client';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useAppSelector } from '../../common/store';
-import { selectIsLoading } from '../../common/commonSlice';
+import { useAppSelector } from '~/common/store';
+import { selectIsLoading } from '~/common/commonSlice';
 
 const PopupLoadingDialog = () => {
   const isLoading = useAppSelector(selectIsLoading);

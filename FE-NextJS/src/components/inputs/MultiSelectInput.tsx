@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+'use client';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { useCallback, useLayoutEffect, useState } from 'react';

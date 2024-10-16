@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { FileInputData } from '../../common/constants/type';
-import { I18nEnum } from '../../common/enums/i18nEnum';
-import useInput from '../../common/hooks/useInput';
-import { isNullOrEmpty } from '../../common/utils/stringUtil';
+'use client';
+import { FileInputData } from '~/common/constants/type';
+import { I18nEnum } from '~/common/enums/i18nEnum';
+import useInput from '~/common/hooks/useInput';
+import { isNullOrEmpty } from '~/common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
-} from '../../components/inputs/FileInput';
+} from '~/components/inputs/FileInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
@@ -34,7 +33,8 @@ const FileInput = (props: FileInputProps) => {
   });
 
   const handleOnChange = useCallback(
-    (onChange: (...event: any[]) => void) => (value: FileInputData[]) => {
+    // eslint-disable-next-line no-unused-vars
+    (onChange: (...event: unknown[]) => void) => (value: FileInputData[]) => {
       control?.setError(name, { type: 'valid' });
       onChange(value);
       onChangeProps?.(value);

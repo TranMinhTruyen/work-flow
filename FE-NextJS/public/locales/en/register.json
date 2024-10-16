@@ -1,0 +1,16 @@
+{
+  "title": "Register",
+  "label": {
+    "userName": "Username",
+    "password": "Password",
+    "email": "Email",
+    "fullName": "Full name",
+    "birthDay": "Birthday",
+    "role": "Role",
+    "authorities": "Authorities",
+    "uploadImage": "Upload image"
+  },
+  "button": {
+    "register": "Register"
+  }
+}

@@ -1,16 +1,8 @@
-import {
-  createContext,
-  Dispatch,
-  ReactElement,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
 
 type AuthHeaderType = {
-  headerContent: ReactNode | ReactElement;
-  setHeaderContent: Dispatch<SetStateAction<ReactNode | ReactElement>>;
+  headerContent: ReactNode;
+  setHeaderContent: Dispatch<SetStateAction<ReactNode>>;
   headerTitle: string | null;
   setHeaderTitle: Dispatch<SetStateAction<string | null>>;
 };
@@ -19,8 +11,8 @@ const AuthHeaderContext = createContext<AuthHeaderType>({} as AuthHeaderType);
 
 export const useAuthHeader = () => useContext(AuthHeaderContext);
 
-export const AuthHeaderProvider = ({ children }: { children: ReactElement }) => {
-  const [headerContent, setHeaderContent] = useState<ReactNode | ReactElement>(null);
+export const AuthHeaderProvider = ({ children }: { children: ReactNode }) => {
+  const [headerContent, setHeaderContent] = useState<ReactNode>(null);
   const [headerTitle, setHeaderTitle] = useState<string | null>(null);
 
   const value: AuthHeaderType = {

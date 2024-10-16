@@ -1,19 +1,9 @@
-import { Backdrop as MuiBackdrop } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+'use client';
 import { memo, ReactElement, ReactNode, Suspense } from 'react';
+import Loading from '~/app/loading';
 
-const Backdrop = ({ children }: { children: ReactElement | ReactNode }) => {
-  return (
-    <Suspense
-      fallback={
-        <MuiBackdrop open={true}>
-          <CircularProgress color="inherit" />
-        </MuiBackdrop>
-      }
-    >
-      {children}
-    </Suspense>
-  );
+const Backdrop = ({ children }: { children?: ReactElement | ReactNode }) => {
+  return <Suspense fallback={<Loading />}>{children}</Suspense>;
 };
 
 export default memo(Backdrop);

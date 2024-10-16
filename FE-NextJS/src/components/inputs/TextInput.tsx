@@ -1,9 +1,10 @@
+'use client';
 import { InputAdornment, styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { ChangeEvent, FocusEvent, useLayoutEffect, useState } from 'react';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
-import { I18nEnum } from '../../common/enums/i18nEnum';
-import { capitalizeFirst } from '../../common/utils/stringUtil';
+import { capitalizeFirst } from '~/common/utils/stringUtil';
+import { I18nEnum } from '~/common/enums/i18nEnum';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
   i18n?: I18nEnum;
@@ -83,8 +84,8 @@ const StyledTextInput = styled(TextField)({
   },
 
   '& .MuiOutlinedInput-root': {
-    height: '50px !important',
-    minHeight: '50px !important',
+    height: '40px !important',
+    minHeight: '40px !important',
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
       borderRadius: 50,

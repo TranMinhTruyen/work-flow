@@ -1,3 +1,4 @@
+'use client';
 import { ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
@@ -9,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { MessageType } from '../../common/enums/messageEnums';
+import { MessageType } from '~/common/enums/messageEnums';
 import FloatButton from '../button/FloatButton';
 
 export type PopupConfirmDialogProps = DialogProps & {

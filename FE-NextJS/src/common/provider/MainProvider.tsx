@@ -14,18 +14,18 @@ const MainProvider = ({ children }: { children: React.ReactElement }) => {
     const isLogin = checkLogin();
     const savedPath = sessionStorage.getItem(CURRENT_PATH);
 
-    if (!isLogin) {
-      setTimeout(() => {
-        router.replace('/login');
-      }, 5000);
-      // return;
-    } else {
-      if (savedPath) {
-        router.push(savedPath);
-      } else {
-        router.replace('/home');
-      }
-    }
+    // if (!isLogin) {
+    //   setTimeout(() => {
+    //     router.replace('/login');
+    //   }, 5000);
+    //   // return;
+    // } else {
+    //   if (savedPath) {
+    //     router.push(savedPath);
+    //   } else {
+    //     router.replace('/home');
+    //   }
+    // }
     setIsSet(true);
   }, [isSet, router]);
 

@@ -1,3 +1,4 @@
+'use client';
 import { TextFieldProps } from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

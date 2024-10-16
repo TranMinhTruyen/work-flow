@@ -1,11 +1,12 @@
+'use client';
 import { CircularProgress, Badge, Fab, FabProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { memo, ReactElement, ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 
 type IconButtonProps = FabProps & {
   width?: number;
   height?: number;
-  icon?: ReactNode | ReactElement;
+  icon?: ReactNode;
   isLoading?: boolean;
   badgeContent?: number;
 };
@@ -14,7 +15,7 @@ const IconButton = (props: IconButtonProps) => {
   const { width = 40, height = 40, icon, isLoading = false, badgeContent, ...restProps } = props;
 
   const loadingComponent = isLoading ? (
-    <CircularProgress variant="indeterminate" disableShrink size={20} sx={{ color: '#ffffff' }} />
+    <CircularProgress variant={'indeterminate'} disableShrink size={20} sx={{ color: '#ffffff' }} />
   ) : (
     icon
   );

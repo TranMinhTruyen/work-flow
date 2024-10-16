@@ -38,13 +38,13 @@ export const RESET_ALL: string = 'RESET_ALL';
 //#region Language
 export const languageConst = [
   {
-    id: 'EN',
+    id: 'en',
   },
   {
-    id: 'VN',
+    id: 'vn',
   },
   {
-    id: 'JP',
+    id: 'jp',
   },
 ];
 //#endregion

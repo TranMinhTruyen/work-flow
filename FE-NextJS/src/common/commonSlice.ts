@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { ILoginResponse } from '../model/login/LoginModel';
 
 interface CommonState {
   theme: string;
@@ -8,12 +9,12 @@ interface CommonState {
   isLogin: boolean;
   isLoading: boolean;
   openConfirmDialog: boolean;
-  // loginData?: ILoginResponse;
+  loginData?: ILoginResponse;
 }
 
 const initialState: CommonState = {
   theme: '',
-  language: 'EN',
+  language: 'en',
   isOpenDrawer: true,
   isLogin: false,
   isLoading: false,
@@ -24,13 +25,13 @@ export const commonSlice = createSlice({
   name: 'commonState',
   initialState,
   reducers: {
-    // setLoginData: (state, action: PayloadAction<ILoginResponse>) => {
-    //   const { payload } = action;
-    //   return {
-    //     ...state,
-    //     loginData: payload,
-    //   };
-    // },
+    setLoginData: (state, action: PayloadAction<ILoginResponse>) => {
+      const { payload } = action;
+      return {
+        ...state,
+        loginData: payload,
+      };
+    },
     toggleDrawer: state => {
       return {
         ...state,
@@ -72,7 +73,7 @@ export const commonSlice = createSlice({
 });
 
 export const {
-  // setLoginData,
+  setLoginData,
   toggleDrawer,
   toggleLogin,
   toggleLoading,
@@ -81,7 +82,7 @@ export const {
   resetCommon,
 } = commonSlice.actions;
 
-// export const selectLoginData = (state: RootState) => state.commonState.loginData;
+export const selectLoginData = (state: RootState) => state.commonState.loginData;
 export const selectOpenDrawer = (state: RootState) => state.commonState.isOpenDrawer;
 export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
