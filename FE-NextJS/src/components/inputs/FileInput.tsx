@@ -21,10 +21,10 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Accept, useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
-import { FileInputData } from '../../common/constants/type';
 import { styled } from '@mui/material/styles';
-import { I18nEnum } from '../../common/enums/i18nEnum';
-import { capitalizeFirst } from '../../common/utils/stringUtil';
+import { I18nEnum } from 'common/enums/i18nEnum';
+import { FileInputData } from 'common/constants/type';
+import { capitalizeFirst } from 'common/utils/stringUtil';
 
 export type FileInputProps = {
   id?: string;

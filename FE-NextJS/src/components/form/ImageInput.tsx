@@ -1,7 +1,7 @@
 'use client';
 import UncontrolledImageInput, {
   ImageInputProps as UncontrolledImageInputProps,
-} from '~/components/inputs/ImageInput';
+} from 'components/inputs/ImageInput';
 import { Control, Controller } from 'react-hook-form';
 
 export type ImageInputProps = UncontrolledImageInputProps & {

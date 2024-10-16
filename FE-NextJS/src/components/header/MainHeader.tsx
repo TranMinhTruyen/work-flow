@@ -9,11 +9,11 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Stack from '@mui/material/Stack';
-import '~/assets/css/MainHeader.css';
+import '../../assets/css/MainHeader.css';
 import { useRouter } from 'next/navigation';
 import IconButton from '../button/IconButton';
-import { useAppDispatch, useAppSelector } from '~/common/store';
-import { selectOpenDrawer, toggleDrawer } from '~/common/commonSlice';
+import { useAppDispatch, useAppSelector } from 'common/store';
+import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
 
 type IHeaderProps = {
   drawerWidth: number;

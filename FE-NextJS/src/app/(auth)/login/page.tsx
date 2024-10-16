@@ -6,19 +6,19 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import TextInput from '~/components/form/TextInput';
-import { ILoginForm } from '~/model/login/LoginForm';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import IconButton from '@mui/material/IconButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import CheckBox from '~/components/form/CheckboxInput';
 import Divider from '@mui/material/Divider';
 import CardActions from '@mui/material/CardActions';
-import FloatButton from '~/components/button/FloatButton';
-import { I18nEnum } from '~/common/enums/i18nEnum';
 import { useTranslation } from 'react-i18next';
 import Link from '@mui/material/Link';
+import { ILoginForm } from 'model/login/LoginForm';
+import { I18nEnum } from 'common/enums/i18nEnum';
+import TextInput from 'components/form/TextInput';
+import CheckBox from 'components/form/CheckboxInput';
+import FloatButton from 'components/button/FloatButton';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

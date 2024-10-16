@@ -1,9 +1,9 @@
 'use client';
-import useInput from '~/common/hooks/useInput';
-import { isNullOrEmpty } from '~/common/utils/stringUtil';
+import useInput from 'common/hooks/useInput';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 import UncontrolledSelectInput, {
   SelectInputProps as UncontrolledSelectInputProps,
-} from '~/components/inputs/SelectInput';
+} from 'components/inputs/SelectInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

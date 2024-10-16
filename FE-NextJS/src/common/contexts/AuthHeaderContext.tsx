@@ -1,3 +1,4 @@
+'use client';
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
 
 type AuthHeaderType = {
@@ -8,8 +9,6 @@ type AuthHeaderType = {
 };
 
 const AuthHeaderContext = createContext<AuthHeaderType>({} as AuthHeaderType);
-
-export const useAuthHeader = () => useContext(AuthHeaderContext);
 
 export const AuthHeaderProvider = ({ children }: { children: ReactNode }) => {
   const [headerContent, setHeaderContent] = useState<ReactNode>(null);
@@ -24,3 +23,5 @@ export const AuthHeaderProvider = ({ children }: { children: ReactNode }) => {
 
   return <AuthHeaderContext.Provider value={value}>{children}</AuthHeaderContext.Provider>;
 };
+
+export const useAuthHeader = () => useContext(AuthHeaderContext);

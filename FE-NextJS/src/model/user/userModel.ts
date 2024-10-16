@@ -1,4 +1,4 @@
-import { FileData } from '../../common/constants/type';
+import { FileData } from 'common/constants/type';
 
 export interface IUserResponse {
   userId?: string;

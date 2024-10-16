@@ -1,12 +1,10 @@
-'use client';
 import CssBaseline from '@mui/material/CssBaseline';
 import { memo, ReactNode } from 'react';
-
-import ApiProvider from '~/common/provider/ApiProvider';
-import StoreProvider from '~/common/provider/StoreProvider';
-import PopupDialogContainer from '~/components/dialog/PopupDialogContainer';
 import i18next from '../i18n';
 import { I18nextProvider } from 'react-i18next';
+import StoreProvider from 'common/provider/StoreProvider';
+import ApiProvider from 'common/provider/ApiProvider';
+import PopupDialogContainer from 'components/dialog/PopupDialogContainer';
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (

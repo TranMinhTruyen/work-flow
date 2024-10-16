@@ -1,13 +1,12 @@
-'use client';
 import Grid2 from '@mui/material/Grid2';
 import { memo, ReactNode } from 'react';
 import { styled } from '@mui/material';
-import MainProvider from '~/common/provider/MainProvider';
-import MainHeader from '~/components/header/MainHeader';
-import Drawer from '~/components/drawer/Drawer';
-import Backdrop from '~/components/backdrop/Backdrop';
-import { useAppSelector } from '~/common/store';
-import { selectOpenDrawer } from '~/common/commonSlice';
+import { useAppSelector } from 'common/store';
+import { selectOpenDrawer } from 'common/commonSlice';
+import MainProvider from 'common/provider/MainProvider';
+import MainHeader from 'components/header/MainHeader';
+import Drawer from 'components/drawer/Drawer';
+import Backdrop from 'components/backdrop/Backdrop';
 
 const DRAWER_WIDTH: number = 200;
 

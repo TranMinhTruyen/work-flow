@@ -1,9 +1,9 @@
+import { EMAIL_PATTERN } from 'common/constants/commonConst';
+import { I18nEnum } from 'common/enums/i18nEnum';
+import { isNullOrEmpty } from 'common/utils/stringUtil';
 import { useCallback } from 'react';
 import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { I18nEnum } from '../enums/i18nEnum';
-import { isNullOrEmpty } from '../utils/stringUtil';
-import { EMAIL_PATTERN } from '../constants/commonConst';
 
 type UseCheckRequiredProps = {
   name: string;

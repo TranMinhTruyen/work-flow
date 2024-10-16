@@ -3,13 +3,13 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { selectLanguage, setLanguage } from '~/common/commonSlice';
-import { languageConst } from '~/common/constants/commonConst';
-import { I18nEnum } from '~/common/enums/i18nEnum';
-import { useAppDispatch, useAppSelector } from '~/common/store';
 import SelectInput from '../inputs/SelectInput';
-import { toSelectData } from '~/common/utils/convertUtil';
-import { useAuthHeader } from '~/common/contexts/AuthHeaderContext';
+import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
+import { I18nEnum } from 'common/enums/i18nEnum';
+import { useAppDispatch, useAppSelector } from 'common/store';
+import { selectLanguage, setLanguage } from 'common/commonSlice';
+import { languageConst } from 'common/constants/commonConst';
+import { toSelectData } from 'common/utils/convertUtil';
 
 const AuthHeader = () => {
   const { headerContent, headerTitle } = useAuthHeader();

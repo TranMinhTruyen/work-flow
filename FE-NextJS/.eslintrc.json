@@ -5,6 +5,7 @@
     "no-console": "warn",
     "no-mixed-spaces-and-tabs": "warn",
     "no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "prettier/prettier": "warn"
   }
 }
