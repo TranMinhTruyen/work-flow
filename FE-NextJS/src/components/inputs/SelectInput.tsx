@@ -134,6 +134,9 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
   '& .MuiInputLabel-root': {
     color: 'rgba(13, 13, 13)',
     marginLeft: '10px',
+    '&.Mui-focused': {
+      color: 'rgba(0, 0, 0)',
+    },
   },
 
   '& .MuiOutlinedInput-notchedOutline legend': {
@@ -154,13 +157,13 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
     borderRadius: '50px',
     '& fieldset': {
       borderWidth: '1px',
-      borderColor: error === false ? 'rgba(13, 13, 13, 0.8)' : '#ff0000',
+      borderColor: error === false ? 'rgba(13, 13, 13, 0.8)' : 'rgba(0, 0, 0)',
     },
     '&:hover fieldset': {
-      borderColor: '#00b2ff',
+      borderColor: 'rgba(0, 178, 255, 1)',
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#00b2ff',
+      borderColor: 'rgba(0, 178, 255, 1)',
     },
   },
 }));

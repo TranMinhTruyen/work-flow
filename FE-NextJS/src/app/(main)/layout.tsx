@@ -1,6 +1,6 @@
 'use client';
 import Grid2 from '@mui/material/Grid2';
-import { memo, ReactNode } from 'react';
+import { memo, ReactNode, Suspense } from 'react';
 import { styled } from '@mui/material';
 import { useAppSelector } from '@/common/store';
 import { selectOpenDrawer } from '@/common/commonSlice';
@@ -18,7 +18,9 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
       <Grid2>
         <MainHeader drawerWidth={DRAWER_WIDTH} />
         <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
-        <ScreenLayout open={openDrawer}>{children}</ScreenLayout>
+        <ScreenLayout open={openDrawer}>
+          <Suspense>{children}</Suspense>
+        </ScreenLayout>
       </Grid2>
     </MainProvider>
   );

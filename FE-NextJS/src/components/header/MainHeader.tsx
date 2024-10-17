@@ -6,14 +6,19 @@ import { IconButton as MuiIconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/navigation';
 import IconButton from '../button/IconButton';
 import { useAppDispatch, useAppSelector } from '@/common/store';
-import { selectOpenDrawer, toggleDrawer } from '@/common/commonSlice';
+import { selectLanguage, selectOpenDrawer, setLanguage, toggleDrawer } from '@/common/commonSlice';
 import './main-header.css';
+import SelectInput from '../inputs/SelectInput';
+import { toSelectData } from '@/common/utils/convertUtil';
+import { useTranslation } from 'react-i18next';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { languageConst } from '@/common/constants/commonConst';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -29,6 +34,8 @@ const MainHeader = (props: IHeaderProps) => {
   const dispatch = useAppDispatch();
   const opendrawer = useAppSelector(selectOpenDrawer);
   const router = useRouter();
+  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
+  const language: string = useAppSelector(selectLanguage);
 
   // const [notifications, setNotifications] = useState<Map<string, any>>(new Map());
   // const [notificationsSize, setNotificationsSize] = useState<number>();
@@ -63,11 +70,29 @@ const MainHeader = (props: IHeaderProps) => {
   useEffect(() => {
     // console.log('Notification state: ', notifications);
     // setNotificationsSize(notifications?.size);
-  }, []);
+
+    i18n.changeLanguage(language);
+  }, [i18n, language]);
 
   const handleDrawerOpen = useCallback(() => {
     dispatch(toggleDrawer());
   }, [dispatch]);
+
+  const handleChangeLanguage = useCallback(
+    (value: string) => {
+      dispatch(setLanguage(value));
+    },
+    [dispatch]
+  );
+
+  const languageData = useMemo(
+    () =>
+      languageConst.map(item => ({
+        id: item.id,
+        label: t(item.id),
+      })),
+    [t]
+  );
 
   return (
     <AppBar drawerWidth={drawerWidth} open={opendrawer}>
@@ -102,6 +127,51 @@ const MainHeader = (props: IHeaderProps) => {
         </Typography>
 
         <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
+          <SelectInput
+            id={'language'}
+            width={150}
+            data={toSelectData(languageData, { key: 'id', value: 'label' })}
+            defaultValue={language}
+            label={t('label.language')}
+            onChange={handleChangeLanguage}
+            sx={{
+              '& .MuiInputBase-formControl': {
+                height: '40px !important',
+              },
+
+              '& .MuiChip-root': {
+                height: '20px',
+              },
+
+              '& .MuiSelect-select': {
+                marginTop: '-3px',
+              },
+
+              '& .MuiOutlinedInput-input': {
+                color: 'rgba(255, 255, 255, 255) !important',
+              },
+
+              '& .MuiInputLabel-root': {
+                color: 'rgba(255, 255, 255, 255)',
+                '&.Mui-focused': {
+                  color: 'rgba(255, 255, 255, 255)',
+                },
+              },
+
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 255)',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(0, 0, 0)',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'rgba(0, 0, 0)',
+                },
+              },
+            }}
+          />
+
           <IconButton icon={<NotificationsIcon fontSize={'small'} />} />
         </Stack>
       </Toolbar>

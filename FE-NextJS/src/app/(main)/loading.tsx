@@ -1,8 +1,8 @@
-import BackDropLoading from '@/components/loading/BackDropLoading';
 import { memo } from 'react';
+import BackdropLoading from '@/components/loading/BackdropLoading';
 
 const Loading = () => {
-  return <BackDropLoading />;
+  return <BackdropLoading />;
 };
 
 export default memo(Loading);

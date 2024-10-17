@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import BackdropLoading from '@/components/loading/BackDropLoading';
+import BackdropLoading from '@/components/loading/BackdropLoading';
 
 const Loading = () => {
   return <BackdropLoading />;
