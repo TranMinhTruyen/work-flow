@@ -1,17 +1,17 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import commonEn from '../public/locales/en/common.json';
-import loginEn from '../public/locales/en/login.json';
-import registerEn from '../public/locales/en/register.json';
+import commonEn from './locales/en/common.json';
+import loginEn from './locales/en/login.json';
+import registerEn from './locales/en/register.json';
 
-import commonVn from '../public/locales/vn/common.json';
-import loginVn from '../public/locales/vn/login.json';
-import registerVn from '../public/locales/vn/register.json';
+import commonVn from './locales/vn/common.json';
+import loginVn from './locales/vn/login.json';
+import registerVn from './locales/vn/register.json';
 
-import commonJp from '../public/locales/jp/common.json';
-import loginJp from '../public/locales/jp/login.json';
-import registerJp from '../public/locales/jp/register.json';
+import commonJp from './locales/jp/common.json';
+import loginJp from './locales/jp/login.json';
+import registerJp from './locales/jp/register.json';
 
 i18n.use(initReactI18next).init({
   lng: 'en',

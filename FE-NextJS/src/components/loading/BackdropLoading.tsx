@@ -1,15 +1,13 @@
 'use client';
+import { memo } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
-import { useAppSelector } from '@/common/store';
-import { selectIsLoading } from '@/common/commonSlice';
 
-const PopupLoadingDialog = () => {
-  const isLoading = useAppSelector(selectIsLoading);
+const BackdropLoading = () => {
   return (
-    <Dialog keepMounted open={isLoading} maxWidth={'xs'}>
+    <Dialog keepMounted open={true} maxWidth={'xs'}>
       <DialogContent sx={{ padding: 3.5 }}>
         <Stack alignItems={'center'} justifyContent={'center'}>
           <CircularProgress color={'primary'} />
@@ -18,4 +16,5 @@ const PopupLoadingDialog = () => {
     </Dialog>
   );
 };
-export default PopupLoadingDialog;
+
+export default memo(BackdropLoading);

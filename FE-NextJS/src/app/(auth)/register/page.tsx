@@ -102,6 +102,9 @@ const Register = () => {
             required
             sx={registerStyles.textInput}
             slotProps={{
+              htmlInput: {
+                maxLength: 10,
+              },
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>

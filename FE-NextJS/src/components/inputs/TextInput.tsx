@@ -52,9 +52,7 @@ const TextInput = (props: TextInputProps) => {
     <StyledTextInput
       id={`textInput${capitalizeFirst(id)}`}
       value={value}
-      sx={{
-        width: width,
-      }}
+      sx={{ width: width }}
       onChange={handleOnChange}
       onBlur={handleOnBlur}
       label={label}
@@ -68,13 +66,6 @@ const TextInput = (props: TextInputProps) => {
               <TextFieldsIcon />
             </InputAdornment>
           ),
-          sx: {
-            '&:-webkit-autofill': {
-              color: 'black !important', // Đặt màu chữ thành đen
-              borderRadius: 50,
-              WebkitBoxShadow: '0 0 0 1000px rgba(255, 255, 255) inset',
-            },
-          },
         },
       }}
       {...restProps}

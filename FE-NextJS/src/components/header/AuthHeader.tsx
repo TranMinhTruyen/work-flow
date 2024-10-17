@@ -56,18 +56,6 @@ const AuthHeader = () => {
           defaultValue={language}
           label={t('label.language')}
           onChange={handleChangeLanguage}
-          sx={{
-            '& .MuiInputBase-formControl': {
-              height: '40px !important',
-            },
-            '& .MuiChip-root': {
-              height: '20px',
-              marginTop: '1px',
-            },
-            '& .MuiSelect-select': {
-              marginTop: '-3px',
-            },
-          }}
         />
       </Stack>
     </Stack>

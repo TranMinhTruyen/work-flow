@@ -1,13 +1,8 @@
 import { memo } from 'react';
-import { Backdrop as MuiBackdrop } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import BackdropLoading from '@/components/loading/BackDropLoading';
 
 const Loading = () => {
-  return (
-    <MuiBackdrop open={true}>
-      <CircularProgress color={'inherit'} />
-    </MuiBackdrop>
-  );
+  return <BackdropLoading />;
 };
 
 export default memo(Loading);

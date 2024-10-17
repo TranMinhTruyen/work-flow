@@ -18,10 +18,8 @@ const TextInput = (props: TextInputProps) => {
   const {
     name,
     control,
-    label,
     type,
     value: valueProps,
-    messageErr,
     required,
     onChange: onChangeProps,
     onBlur: onBlurProps,
