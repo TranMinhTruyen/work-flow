@@ -4,18 +4,17 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import SelectInput from '../inputs/SelectInput';
-import { useAuthHeader } from 'common/contexts/AuthHeaderContext';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import { useAppDispatch, useAppSelector } from 'common/store';
-import { selectLanguage, setLanguage } from 'common/commonSlice';
-import { languageConst } from 'common/constants/commonConst';
-import { toSelectData } from 'common/utils/convertUtil';
+import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { useAppDispatch, useAppSelector } from '@/common/store';
+import { selectLanguage, setLanguage } from '@/common/commonSlice';
+import { toSelectData } from '@/common/utils/convertUtil';
+import { languageConst } from '@/common/constants/commonConst';
 
 const AuthHeader = () => {
   const { headerContent, headerTitle } = useAuthHeader();
-
-  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
   const dispatch = useAppDispatch();
+  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
   const language: string = useAppSelector(selectLanguage);
 
   useEffect(() => {
@@ -63,6 +62,7 @@ const AuthHeader = () => {
             },
             '& .MuiChip-root': {
               height: '20px',
+              marginTop: '1px',
             },
             '& .MuiSelect-select': {
               marginTop: '-3px',

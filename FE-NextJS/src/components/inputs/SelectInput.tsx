@@ -8,10 +8,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { SelectDataType } from 'common/constants/type';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import { capitalizeFirst } from 'common/utils/stringUtil';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { SelectDataType } from '@/common/constants/type';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { capitalizeFirst } from '@/common/utils/stringUtil';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type SelectInputProps = Omit<
   SelectProps,
@@ -50,7 +50,7 @@ const SelectInput = (props: SelectInputProps) => {
 
   const [selectValue, setSelectValue] = useState<string>(defaultValue ?? '');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (valueProps !== undefined && selectValue.includes(valueProps)) {
       return;
     }
@@ -141,7 +141,7 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
   },
 
   '& .MuiInputBase-formControl': {
-    height: '40px',
+    height: '50px',
   },
 
   '& .MuiOutlinedInput-input': {

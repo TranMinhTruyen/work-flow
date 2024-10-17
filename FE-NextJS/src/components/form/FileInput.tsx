@@ -1,11 +1,11 @@
 'use client';
-import { FileInputData } from 'common/constants/type';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import useInput from 'common/hooks/useInput';
-import { isNullOrEmpty } from 'common/utils/stringUtil';
+import { FileInputData } from '@/common/constants/type';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import useInput from '@/common/hooks/useInput';
+import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
-} from 'components/inputs/FileInput';
+} from '@/components/inputs/FileInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

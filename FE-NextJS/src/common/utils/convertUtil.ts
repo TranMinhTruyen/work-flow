@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { SelectDataFunc } from 'common/constants/type';
+import { SelectDataFunc } from '../constants/type';
 
 /**
  *

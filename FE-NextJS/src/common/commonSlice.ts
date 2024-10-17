@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { ILoginResponse } from 'model/login/LoginModel';
+import { ILoginResponse } from '@/model/login/loginModel';
 
 interface CommonState {
   theme: string;

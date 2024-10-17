@@ -19,7 +19,7 @@ const DrawerItemList: Array<DrawerItem> = [
     componentKey: '0',
     componentIcon: <HomeOutlinedIcon />,
     componentLabel: 'Home page',
-    componentPath: '/home',
+    componentPath: '/',
     componentRole: null,
     componentChild: null,
   },

@@ -2,7 +2,7 @@
 'use client';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,9 +11,9 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import { SelectDataType } from 'common/constants/type';
-import { capitalizeFirst } from 'common/utils/stringUtil';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { SelectDataType } from '@/common/constants/type';
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 
 export type MultiSelectInputProps = Omit<
   SelectProps,
@@ -48,7 +48,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 
   const [selectValues, setSelectValues] = useState<string[]>(defaultValue ?? []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (valueProps?.every(element => selectValues.includes(element))) {
       return;
     }

@@ -1,4 +1,4 @@
-import { IContent } from './Content';
+import { IContent } from './content';
 
 export interface ICategory {
   id: number;

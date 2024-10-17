@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { checkLogin } from 'common/utils/authUtil';
-import { CURRENT_PATH } from 'common/constants/commonConst';
+import { checkLogin } from '../utils/authUtil';
+import { CURRENT_PATH } from '../constants/commonConst';
 
 const MainProvider = ({ children }: { children: React.ReactElement }) => {
   const [isSet, setIsSet] = useState<boolean>(false);

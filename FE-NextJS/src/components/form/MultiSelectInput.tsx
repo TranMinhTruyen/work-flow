@@ -1,8 +1,8 @@
 'use client';
-import useInput from 'common/hooks/useInput';
-import { isNullOrEmpty } from 'common/utils/stringUtil';
-import UncontrolledMultiSelectInput from 'components/inputs/MultiSelectInput';
-import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from 'components/inputs/MultiSelectInput';
+import useInput from '@/common/hooks/useInput';
+import { isNullOrEmpty } from '@/common/utils/stringUtil';
+import UncontrolledMultiSelectInput from '@/components/inputs/MultiSelectInput';
+import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from '@/components/inputs/MultiSelectInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 

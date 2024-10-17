@@ -1,9 +1,9 @@
 'use client';
-import useInput from 'common/hooks/useInput';
-import { isNullOrEmpty } from 'common/utils/stringUtil';
+import useInput from '@/common/hooks/useInput';
+import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledTextInput, {
   TextInputProps as UncontrolledTextInputProps,
-} from 'components/inputs/TextInput';
+} from '@/components/inputs/TextInput';
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
@@ -61,6 +61,7 @@ const TextInput = (props: TextInputProps) => {
         <UncontrolledTextInput
           id={name}
           label={translateLabel()}
+          autoComplete={name}
           type={type}
           value={value ?? ''}
           onChange={handleOnChange(onChange)}

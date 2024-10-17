@@ -4,13 +4,13 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateView } from '@mui/x-date-pickers/models/views';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
 import { capitalizeFirst, isNullOrEmpty } from '../../common/utils/stringUtil';
 import InputAdornment from '@mui/material/InputAdornment';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import { DateType } from 'common/utils/dateUtil';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { DateType } from '@/common/utils/dateUtil';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
@@ -51,7 +51,7 @@ const DatePickerInput = (props: DatePickerProps) => {
   } = props;
   const [selectedDate, setSelectedDate] = useState<DateType>(defaultValue ?? '');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (value === selectedDate) {
       return;
     }

@@ -7,9 +7,9 @@ import { memo, useCallback } from 'react';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 import DrawerMenu from './DrawerMenu';
 import { ChevronLeft } from '@mui/icons-material';
-import '../../assets/css/Drawer.css';
-import { useAppDispatch, useAppSelector } from 'common/store';
-import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
+import { useAppDispatch, useAppSelector } from '@/common/store';
+import { selectOpenDrawer, toggleDrawer } from '@/common/commonSlice';
+import './drawer.css';
 
 type IDrawerProps = {
   drawerWidth: number;

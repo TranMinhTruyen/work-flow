@@ -1,4 +1,5 @@
 import { Accept } from 'react-dropzone';
+import { SelectDataType } from './type';
 
 //#region Axios config
 export const TIME_OUT: number = 60000;
@@ -52,3 +53,33 @@ export const languageConst = [
 //#region
 export const CURRENT_PATH: string = 'currentPath';
 //#endregion
+
+export const authorities: SelectDataType[] = [
+  {
+    key: 'CREATE',
+    value: 'Allow CREATE',
+  },
+  {
+    key: 'GET',
+    value: 'Allow GET',
+  },
+  {
+    key: 'UPDATE',
+    value: 'Allow UPDATE',
+  },
+  {
+    key: 'DELETE',
+    value: 'Allow DELETE',
+  },
+];
+
+export const role: SelectDataType[] = [
+  {
+    key: 'ADMIN',
+    value: 'Role Administrator',
+  },
+  {
+    key: 'USER',
+    value: 'Role User',
+  },
+];

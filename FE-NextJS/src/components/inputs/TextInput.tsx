@@ -1,10 +1,10 @@
 'use client';
 import { InputAdornment, styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { ChangeEvent, FocusEvent, useLayoutEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import { capitalizeFirst } from 'common/utils/stringUtil';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
   i18n?: I18nEnum;
@@ -29,7 +29,7 @@ const TextInput = (props: TextInputProps) => {
   } = props;
   const [value, setValue] = useState<string>(defaultValue ?? '');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (value === valueProps) {
       return;
     }
@@ -52,7 +52,9 @@ const TextInput = (props: TextInputProps) => {
     <StyledTextInput
       id={`textInput${capitalizeFirst(id)}`}
       value={value}
-      sx={{ width: width }}
+      sx={{
+        width: width,
+      }}
       onChange={handleOnChange}
       onBlur={handleOnBlur}
       label={label}
@@ -66,6 +68,13 @@ const TextInput = (props: TextInputProps) => {
               <TextFieldsIcon />
             </InputAdornment>
           ),
+          sx: {
+            '&:-webkit-autofill': {
+              color: 'black !important', // Đặt màu chữ thành đen
+              borderRadius: 50,
+              WebkitBoxShadow: '0 0 0 1000px rgba(255, 255, 255) inset',
+            },
+          },
         },
       }}
       {...restProps}
@@ -84,8 +93,8 @@ const StyledTextInput = styled(TextField)({
   },
 
   '& .MuiOutlinedInput-root': {
-    height: '40px !important',
-    minHeight: '40px !important',
+    height: '50px !important',
+    minHeight: '50px !important',
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
       borderRadius: 50,
@@ -95,13 +104,6 @@ const StyledTextInput = styled(TextField)({
     },
     '& .Mui-focused fieldset': {
       borderColor: '#007fb6',
-    },
-  },
-
-  input: {
-    '&:-webkit-autofill': {
-      WebkitBoxShadow: '0 0 0 1000px rgba(255, 255, 255) inset',
-      borderRadius: 50,
     },
   },
 });

@@ -1,12 +1,12 @@
+'use client';
 import Grid2 from '@mui/material/Grid2';
 import { memo, ReactNode } from 'react';
 import { styled } from '@mui/material';
-import { useAppSelector } from 'common/store';
-import { selectOpenDrawer } from 'common/commonSlice';
-import MainProvider from 'common/provider/MainProvider';
-import MainHeader from 'components/header/MainHeader';
-import Drawer from 'components/drawer/Drawer';
-import Backdrop from 'components/backdrop/Backdrop';
+import { useAppSelector } from '@/common/store';
+import { selectOpenDrawer } from '@/common/commonSlice';
+import MainProvider from '@/common/provider/MainProvider';
+import MainHeader from '@/components/header/MainHeader';
+import Drawer from '@/components/drawer/Drawer';
 
 const DRAWER_WIDTH: number = 200;
 
@@ -18,9 +18,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
       <Grid2>
         <MainHeader drawerWidth={DRAWER_WIDTH} />
         <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
-        <ScreenLayout open={openDrawer}>
-          <Backdrop>{children}</Backdrop>
-        </ScreenLayout>
+        <ScreenLayout open={openDrawer}>{children}</ScreenLayout>
       </Grid2>
     </MainProvider>
   );

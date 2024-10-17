@@ -28,7 +28,7 @@ const rootReducer = (state: any, action: any) => {
   return combineReducer(state, action);
 };
 
-export const makeStore = () => {
+export const store = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: gDM => gDM().concat([baseApi.middleware]), // GetDefaultMiddleware and add Middleware from apiBaseQuery
@@ -36,9 +36,9 @@ export const makeStore = () => {
   });
 };
 
-setupListeners(makeStore().dispatch);
+setupListeners(store().dispatch);
 
-export type AppStore = ReturnType<typeof makeStore>;
+export type AppStore = ReturnType<typeof store>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
 
@@ -46,4 +46,4 @@ export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 export const useAppStore = useStore.withTypes<AppStore>();
 
-export default makeStore;
+export default store;

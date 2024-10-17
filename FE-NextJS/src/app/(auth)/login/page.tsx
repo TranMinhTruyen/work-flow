@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
@@ -14,24 +14,59 @@ import Divider from '@mui/material/Divider';
 import CardActions from '@mui/material/CardActions';
 import { useTranslation } from 'react-i18next';
 import Link from '@mui/material/Link';
-import { ILoginForm } from 'model/login/LoginForm';
-import { I18nEnum } from 'common/enums/i18nEnum';
-import TextInput from 'components/form/TextInput';
-import CheckBox from 'components/form/CheckboxInput';
-import FloatButton from 'components/button/FloatButton';
+import { ILoginForm } from '@/model/login/loginForm';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import TextInput from '@/components/form/TextInput';
+import CheckBox from '@/components/form/CheckboxInput';
+import FloatButton from '@/components/button/FloatButton';
+import { useRouter } from 'next/navigation';
+import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { CURRENT_PATH } from '@/common/constants/commonConst';
+import { handleSubmitLogin } from './action/loginAction';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const { t } = useTranslation(I18nEnum.LOGIN_I18N);
+  const { setHeaderTitle } = useAuthHeader();
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    // Set title for header
+
+    setHeaderTitle(t('title'));
+
+    // Remove when unmount
+    return () => {
+      setHeaderTitle(null);
+    };
+  }, [setHeaderTitle, t]);
 
   const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
     defaultValues: { isRemember: false },
   });
 
+  useEffect(() => {
+    reset();
+    sessionStorage.setItem(CURRENT_PATH, '/login');
+  }, [reset]);
+
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
+  // Handle submit login
+  const handleLogin = useCallback(
+    async (data: ILoginForm) => {
+      await trigger();
+      const result = await handleSubmitLogin(data);
+      if (result) {
+        router.replace('/');
+        sessionStorage.setItem(CURRENT_PATH, '/');
+      }
+    },
+    [router, trigger]
+  );
+
   return (
-    <form id={'login-form'} onSubmit={() => {}}>
+    <form id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
       <CardContent>
         <Stack alignItems={'center'} spacing={3}>
           <Avatar sx={loginStyles.avatar} />
@@ -90,7 +125,7 @@ const Login = () => {
         <Stack alignItems={'center'}>
           <Typography sx={{ fontSize: 18 }}>
             {t('label.noAcccount')}
-            {<Link onClick={() => {}}>{t('label.register')}</Link>}
+            {<Link onClick={() => router.push('/register')}>{t('label.register')}</Link>}
           </Typography>
         </Stack>
       </CardContent>

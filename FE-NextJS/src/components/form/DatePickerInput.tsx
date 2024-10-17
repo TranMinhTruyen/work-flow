@@ -2,10 +2,10 @@
 import { Control, Controller } from 'react-hook-form';
 import UncontrolledDatePickerInput, {
   DatePickerProps as UncontrolledDatePickerProps,
-} from 'components/inputs/DatePickerInput';
+} from '@/components/inputs/DatePickerInput';
 import { useCallback } from 'react';
-import useInput from 'common/hooks/useInput';
-import { isNullOrEmpty } from 'common/utils/stringUtil';
+import useInput from '@/common/hooks/useInput';
+import { isNullOrEmpty } from '@/common/utils/stringUtil';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
