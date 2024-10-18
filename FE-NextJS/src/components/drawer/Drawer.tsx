@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { memo, useCallback } from 'react';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 import DrawerMenu from './DrawerMenu';
-import { ChevronLeft } from '@mui/icons-material';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { useAppDispatch, useAppSelector } from '@/common/store';
 import { selectOpenDrawer, toggleDrawer } from '@/common/commonSlice';
 import './drawer.css';
@@ -29,13 +29,13 @@ const Drawer = (props: IDrawerProps) => {
   }, [dispatch]);
 
   return (
-    <CustomDrawer drawerWidth={drawerWidth} variant="permanent" open={openDrawer}>
+    <CustomDrawer drawerWidth={drawerWidth} variant={'permanent'} open={openDrawer}>
       <DrawerHeader id={'drawerHeader'}>
         <IconButton
           onClick={handleOpenDrawer}
           sx={{ width: '40px', height: '40px', justifyContent: 'center' }}
         >
-          <ChevronLeft fontSize="large" />
+          <KeyboardArrowLeftIcon fontSize={'large'} />
         </IconButton>
       </DrawerHeader>
       <Divider />

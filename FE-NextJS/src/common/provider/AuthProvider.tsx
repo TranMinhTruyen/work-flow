@@ -1,31 +1,31 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { checkLogin } from '../utils/authUtil';
 import { CURRENT_PATH } from '../constants/commonConst';
+import { isNullOrEmpty } from '../utils/stringUtil';
+import useNavigate from '../hooks/useNavigate';
 
 const AuthProvider = ({ children }: { children: React.ReactElement }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
-  const router = useRouter();
+  const { navigate } = useNavigate();
 
   useEffect(() => {
-    if (isSet) return;
-
     const isLogin = checkLogin();
-    const savedPath = sessionStorage.getItem(CURRENT_PATH);
 
-    if (isLogin) {
-      router.replace('/');
-      return;
+    if (!isLogin) {
+      navigate('/login', true);
     } else {
-      if (savedPath) {
-        router.push(savedPath);
-      } else {
-        router.replace('/login');
-      }
+      navigate('/home', true);
     }
+
+    const currentPath = sessionStorage.getItem(CURRENT_PATH);
+    if (isSet && !isNullOrEmpty(currentPath)) {
+      navigate(currentPath);
+      return;
+    }
+
     setIsSet(true);
-  }, [isSet, router]);
+  }, [isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

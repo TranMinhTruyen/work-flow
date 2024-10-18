@@ -2,10 +2,11 @@
 import { AxiosRequestConfig, ResponseType } from 'axios';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import IBaseResponse from './baseResponse';
+
 import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
 import { axiosInstance } from '../provider/ApiProvider';
 import { toggleLoading } from '../commonSlice';
+import { IBaseResponse } from './baseResponse';
 
 const apiBaseQuery =
   (
@@ -44,7 +45,7 @@ const apiBaseQuery =
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (axiosError) {
       dispatch(toggleLoading(false));
-      return { error: undefined };
+      return { error: '', meta: '' };
     } finally {
       dispatch(toggleLoading(false));
     }

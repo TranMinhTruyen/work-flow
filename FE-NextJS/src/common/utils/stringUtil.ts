@@ -1,5 +1,12 @@
 import _ from 'lodash';
 
+/**
+ * Check string is null or empty.
+ * If string is null or empty return true.
+ *
+ * @param value
+ * @returns
+ */
 export const isNullOrEmpty = (value?: string | null) => {
   return _.isNil(value) || _.isEmpty(value);
 };

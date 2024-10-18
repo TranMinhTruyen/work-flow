@@ -1,15 +1,16 @@
 'use client';
 import axios from 'axios';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
-import { TIME_OUT } from '../constants/commonConst';
+import { CURRENT_PATH, TIME_OUT } from '../constants/commonConst';
 import { useAppDispatch, useAppSelector } from '../store';
-import IBaseResponse from '../api/baseResponse';
+import { IBaseResponse } from '../api/baseResponse';
 import { MessageType } from '../enums/messageEnums';
-import { useRouter } from 'next/navigation';
 import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
 import { selectIsLoading, toggleLoading } from '../commonSlice';
 import { ILoginResponse } from '@/model/login/loginModel';
 import { getLoginData } from '../utils/authUtil';
+import useNavigate from '../hooks/useNavigate';
+import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -22,7 +23,7 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const isLoading: boolean = useAppSelector(selectIsLoading);
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const { navigate } = useNavigate();
 
   useEffect(() => {
     if (isSet) return;
@@ -33,7 +34,8 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
 
         // If login data is undefined, back to login screen
         if (loginData === undefined) {
-          router.replace('/login');
+          navigate('/login', true);
+          sessionStorage.setItem(CURRENT_PATH, '/login');
         } else {
           // Set token to header
           config.headers['Authorization'] = `Bearer ${loginData.token}`;
@@ -63,14 +65,16 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
       },
       error => {
         let dialogMessage = '';
+        const responseStatus = error.response.status;
+        const responseData: IBaseResponse = error.response.data;
+
         if (error.code === 'ECONNABORTED') {
           dialogMessage = 'The connection was interrupted.';
         } else if (!error.response) {
           dialogMessage =
             'A communication error occurred. You may not be connected to the Internet or the server may be down.';
         } else {
-          const status = error.response.status;
-          switch (status) {
+          switch (responseStatus) {
             case 403:
               dialogMessage = 'Forbidden';
               break;
@@ -102,7 +106,7 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
               dialogMessage = 'Gateway Timeout';
               break;
             default:
-              dialogMessage = `An error occurred. \nHTTP status ${status}`;
+              dialogMessage = `An error occurred. \nHTTP status ${responseStatus}`;
               break;
           }
         }
@@ -111,16 +115,22 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
           type: 'message',
           title: 'Error',
           messageType: MessageType.ERROR,
-          message: dialogMessage,
+          message: (
+            <ApiErrorDetail
+              status={responseStatus}
+              message={dialogMessage}
+              errorList={responseData.errorList}
+            />
+          ),
           onConfirm: () => {},
         });
 
-        return Promise.reject(error);
+        return error;
       }
     );
 
     setIsSet(true);
-  }, [dispatch, isLoading, isSet, router]);
+  }, [dispatch, isLoading, isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

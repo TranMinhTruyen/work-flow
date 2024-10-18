@@ -19,20 +19,18 @@ import { I18nEnum } from '@/common/enums/i18nEnum';
 import TextInput from '@/components/form/TextInput';
 import CheckBox from '@/components/form/CheckboxInput';
 import FloatButton from '@/components/button/FloatButton';
-import { useRouter } from 'next/navigation';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
-import { CURRENT_PATH } from '@/common/constants/commonConst';
 import { handleSubmitLogin } from './action/loginAction';
+import useNavigate from '@/common/hooks/useNavigate';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const { t } = useTranslation(I18nEnum.LOGIN_I18N);
   const { setHeaderTitle } = useAuthHeader();
-  const router = useRouter();
+  const { navigate } = useNavigate();
 
   useLayoutEffect(() => {
     // Set title for header
-
     setHeaderTitle(t('title'));
 
     // Remove when unmount
@@ -47,8 +45,8 @@ const Login = () => {
 
   useEffect(() => {
     reset();
-    sessionStorage.setItem(CURRENT_PATH, '/login');
-  }, [reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
@@ -58,11 +56,10 @@ const Login = () => {
       await trigger();
       const result = await handleSubmitLogin(data);
       if (result) {
-        router.replace('/');
-        sessionStorage.setItem(CURRENT_PATH, '/');
+        navigate('/home', true);
       }
     },
-    [router, trigger]
+    [navigate, trigger]
   );
 
   return (
@@ -125,7 +122,11 @@ const Login = () => {
         <Stack alignItems={'center'}>
           <Typography sx={{ fontSize: 18 }}>
             {t('label.noAcccount')}
-            {<Link onClick={() => router.push('/register')}>{t('label.register')}</Link>}
+            {
+              <Link onClick={() => navigate('/register')} sx={{ cursor: 'pointer' }}>
+                {t('label.register')}
+              </Link>
+            }
           </Typography>
         </Stack>
       </CardContent>

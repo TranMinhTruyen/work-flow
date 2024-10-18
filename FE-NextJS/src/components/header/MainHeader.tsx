@@ -6,10 +6,9 @@ import { IconButton as MuiIconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Stack from '@mui/material/Stack';
-import { useRouter } from 'next/navigation';
 import IconButton from '../button/IconButton';
 import { useAppDispatch, useAppSelector } from '@/common/store';
 import { selectLanguage, selectOpenDrawer, setLanguage, toggleDrawer } from '@/common/commonSlice';
@@ -19,6 +18,8 @@ import { toSelectData } from '@/common/utils/convertUtil';
 import { useTranslation } from 'react-i18next';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import { languageConst } from '@/common/constants/commonConst';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import useNavigate from '@/common/hooks/useNavigate';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -33,9 +34,10 @@ const MainHeader = (props: IHeaderProps) => {
   const { drawerWidth } = props;
   const dispatch = useAppDispatch();
   const opendrawer = useAppSelector(selectOpenDrawer);
-  const router = useRouter();
   const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
   const language: string = useAppSelector(selectLanguage);
+  const [hoverOpenDrawer, setHoverOpenDrawer] = useState<boolean>(false);
+  const { navigate } = useNavigate();
 
   // const [notifications, setNotifications] = useState<Map<string, any>>(new Map());
   // const [notificationsSize, setNotificationsSize] = useState<number>();
@@ -94,37 +96,38 @@ const MainHeader = (props: IHeaderProps) => {
     [t]
   );
 
+  const openDrawerButton = useMemo(
+    () => (hoverOpenDrawer ? <KeyboardArrowRightIcon fontSize={'large'} /> : <MenuIcon />),
+    [hoverOpenDrawer]
+  );
+
   return (
     <AppBar drawerWidth={drawerWidth} open={opendrawer}>
       <Toolbar id={'toolBar'}>
         <MuiIconButton
-          color="inherit"
+          color={'inherit'}
           onClick={handleDrawerOpen}
-          edge="start"
+          edge={'start'}
           sx={{
-            width: '40px',
-            height: '40px',
-            marginRight: 4,
-            marginLeft: '-17px',
+            ...styles.openDrawer,
             ...(opendrawer && { display: 'none' }),
           }}
+          onMouseEnter={() => setHoverOpenDrawer(true)}
+          onMouseLeave={() => setHoverOpenDrawer(false)}
         >
-          <MenuIcon />
+          {openDrawerButton}
         </MuiIconButton>
 
-        <Typography
-          variant="h5"
-          component="span"
-          sx={{
-            flexGrow: 1,
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-          }}
-          onClick={() => router.push('/')}
-        >
-          WORK FLOW
-        </Typography>
+        <Stack direction={'row'} sx={{ flexGrow: 1 }}>
+          <Typography
+            variant={'h5'}
+            component={'span'}
+            sx={styles.title}
+            onClick={() => navigate('/home')}
+          >
+            WORK FLOW
+          </Typography>
+        </Stack>
 
         <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
           <SelectInput
@@ -134,42 +137,7 @@ const MainHeader = (props: IHeaderProps) => {
             defaultValue={language}
             label={t('label.language')}
             onChange={handleChangeLanguage}
-            sx={{
-              '& .MuiInputBase-formControl': {
-                height: '40px !important',
-              },
-
-              '& .MuiChip-root': {
-                height: '20px',
-              },
-
-              '& .MuiSelect-select': {
-                marginTop: '-3px',
-              },
-
-              '& .MuiOutlinedInput-input': {
-                color: 'rgba(255, 255, 255, 255) !important',
-              },
-
-              '& .MuiInputLabel-root': {
-                color: 'rgba(255, 255, 255, 255)',
-                '&.Mui-focused': {
-                  color: 'rgba(255, 255, 255, 255)',
-                },
-              },
-
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 255)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'rgba(0, 0, 0)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'rgba(0, 0, 0)',
-                },
-              },
-            }}
+            sx={styles.selectInput}
           />
 
           <IconButton icon={<NotificationsIcon fontSize={'small'} />} />
@@ -180,6 +148,58 @@ const MainHeader = (props: IHeaderProps) => {
 };
 
 export default memo(MainHeader);
+
+const styles = {
+  openDrawer: {
+    width: '40px',
+    height: '40px',
+    marginRight: 4,
+    marginLeft: '-17px',
+  },
+
+  title: {
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+
+  selectInput: {
+    '& .MuiInputBase-formControl': {
+      height: '40px !important',
+    },
+
+    '& .MuiChip-root': {
+      height: '20px',
+    },
+
+    '& .MuiSelect-select': {
+      marginTop: '-3px',
+    },
+
+    '& .MuiOutlinedInput-input': {
+      color: 'rgba(255, 255, 255, 255) !important',
+    },
+
+    '& .MuiInputLabel-root': {
+      color: 'rgba(255, 255, 255, 255)',
+      '&.Mui-focused': {
+        color: 'rgba(255, 255, 255, 255)',
+      },
+    },
+
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'rgba(255, 255, 255, 255)',
+      },
+      '&:hover fieldset': {
+        borderColor: 'rgba(0, 0, 0)',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'rgba(0, 0, 0)',
+      },
+    },
+  },
+};
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',

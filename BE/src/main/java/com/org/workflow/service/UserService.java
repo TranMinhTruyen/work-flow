@@ -1,6 +1,7 @@
 package com.org.workflow.service;
 
 import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_INACTIVE;
+import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
 import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
 import static com.org.workflow.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
 import static com.org.workflow.common.enums.MessageEnum.NOT_FOUND;
@@ -154,11 +155,14 @@ public class UserService extends AbstractService {
         loginRequest.getUserName());
 
       userAccount = result.orElseThrow(
-        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, "", loginRequest.getUserName())));
-    } catch (Exception e) {
-      redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
-      throw new WorkFlowException(new ErrorDetail(NOT_FOUND, loginRequest.getUserName()));
+        () -> new WorkFlowException(
+          new ErrorDetail(ACCOUNT_NOT_FOUND, "", loginRequest.getUserName())));
+    } catch (Exception exception) {
+      redisTemplate.opsForValue().set(loginRequest.getUserName(), "Not found");
+      throw exception;
     }
+
+    redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
 
     if (!userAccount.isActive()) {
       throw new WorkFlowException(new ErrorDetail(ACCOUNT_INACTIVE));

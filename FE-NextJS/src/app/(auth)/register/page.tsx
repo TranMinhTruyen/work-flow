@@ -26,7 +26,7 @@ import { IRegisterForm } from '@/model/register/registerForm';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import ImageInput from '@/components/form/ImageInput';
 import { MessageType } from '@/common/enums/messageEnums';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { authorities, CURRENT_PATH, role } from '@/common/constants/commonConst';
 
 const Register = () => {
@@ -35,6 +35,7 @@ const Register = () => {
   const { t } = useTranslation(I18nEnum.REGISTER_I18N);
   const { setHeaderTitle, setHeaderContent } = useAuthHeader();
   const router = useRouter();
+  const path = usePathname();
 
   const backButton = useMemo(
     () => (
@@ -67,8 +68,8 @@ const Register = () => {
 
   useEffect(() => {
     reset();
-    sessionStorage.setItem(CURRENT_PATH, '/register');
-  }, [reset]);
+    sessionStorage.setItem(CURRENT_PATH, path);
+  }, [path, reset]);
 
   const handleRegister = useCallback(
     async (formData: IRegisterForm) => {

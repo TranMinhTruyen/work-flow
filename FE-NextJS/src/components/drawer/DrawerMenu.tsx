@@ -1,5 +1,5 @@
 'use client';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
 import { ExpandMore } from '@mui/icons-material';
@@ -16,9 +16,9 @@ import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
 import Grid2 from '@mui/material/Grid2';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { usePathname, useRouter } from 'next/navigation';
 import { useAppSelector } from '@/common/store';
 import { selectOpenDrawer } from '@/common/commonSlice';
+import useNavigate from '@/common/hooks/useNavigate';
 
 const itemList = DrawerItemList;
 
@@ -67,19 +67,13 @@ const DrawerMenu = () => {
 
 const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemProps) => {
   const openDrawer = useAppSelector(selectOpenDrawer);
-  const router = useRouter();
-  const pathname = usePathname();
-  const [currentPath, setCurrentPath] = useState<string>(pathname);
-
-  useEffect(() => {
-    setCurrentPath(pathname);
-  }, [pathname]);
+  const { navigate, currentPath } = useNavigate();
 
   const handleOnClickItem = useCallback(
     (path: string) => () => {
-      router.push(path);
+      navigate(path);
     },
-    [router]
+    [navigate]
   );
 
   const customListItemSx = {
