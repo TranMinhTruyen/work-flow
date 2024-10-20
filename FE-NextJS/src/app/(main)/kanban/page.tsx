@@ -1,5 +1,5 @@
 'use client';
-import { ICategory } from '@/model/kanban/category';
+import { ICategory } from '@/model/kanban/Category';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/boardData';

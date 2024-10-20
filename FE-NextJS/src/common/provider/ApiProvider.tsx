@@ -7,17 +7,21 @@ import { IBaseResponse } from '../api/baseResponse';
 import { MessageType } from '../enums/messageEnums';
 import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
 import { selectIsLoading, toggleLoading } from '../commonSlice';
-import { ILoginResponse } from '@/model/login/loginModel';
 import { getLoginData } from '../utils/authUtil';
 import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
+import { ILoginResponse } from '@/model/login/LoginModel';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   timeout: TIME_OUT,
 });
 
-const whiteList: string[] = ['/api/user-account/login', '/api/user-account/create'];
+const whiteList: string[] = [
+  '/api/user-account/login',
+  '/api/user-account/create',
+  '/api/master-item/get',
+];
 
 const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
@@ -57,75 +61,98 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
 
         const transformResponse: IBaseResponse = response.data;
 
+        // TODO Check warning
         if (transformResponse.messageType !== MessageType.SUCCESS) {
-          throw Error(JSON.stringify(transformResponse));
+          openPopupDialogContainer({
+            title: transformResponse.messageType,
+            type: 'message',
+            maxWidth: 'sm',
+            messageType: transformResponse.messageType,
+            message: (
+              <ApiErrorDetail
+                status={response.status}
+                message={transformResponse.message}
+                responseData={transformResponse}
+              />
+            ),
+          });
         }
 
         return response;
       },
       error => {
-        let dialogMessage = '';
-        const responseStatus = error.response.status;
-        const responseData: IBaseResponse = error.response.data;
+        let responseStatus = 500;
+        let responseMessage = '';
+
+        let responseData: IBaseResponse = {
+          timestamp: '',
+          messageType: MessageType.ERROR,
+          messageCode: '',
+          message: '',
+          errorList: new Map<string, string>(),
+          body: undefined,
+        };
 
         if (error.code === 'ECONNABORTED') {
-          dialogMessage = 'The connection was interrupted.';
+          responseMessage = 'The connection was interrupted.';
         } else if (!error.response) {
-          dialogMessage =
-            'A communication error occurred. You may not be connected to the Internet or the server may be down.';
+          responseMessage = 'Connected to the Internet or the server may be down.';
         } else {
+          responseStatus = error.response.status;
+          responseData = error.response.data;
+
           switch (responseStatus) {
             case 403:
-              dialogMessage = 'Forbidden';
+              responseMessage = 'Forbidden';
               break;
             case 404:
-              dialogMessage = 'Not Found';
+              responseMessage = 'Not Found';
               break;
             case 408:
-              dialogMessage = 'Request Timeout';
+              responseMessage = 'Request Timeout';
               break;
             case 409:
-              dialogMessage = 'Conflict';
+              responseMessage = 'Conflict';
               break;
             case 413:
-              dialogMessage = 'Payload Too Large';
+              responseMessage = 'Payload Too Large';
               break;
             case 429:
-              dialogMessage = 'Too Many Requests';
+              responseMessage = 'Too Many Requests';
               break;
             case 500:
-              dialogMessage = 'Internal Server Error';
+              responseMessage = 'Internal Server Error';
               break;
             case 502:
-              dialogMessage = 'Bad Gateway';
+              responseMessage = 'Bad Gateway';
               break;
             case 503:
-              dialogMessage = 'Service Unavailable';
+              responseMessage = 'Service Unavailable';
               break;
             case 504:
-              dialogMessage = 'Gateway Timeout';
+              responseMessage = 'Gateway Timeout';
               break;
             default:
-              dialogMessage = `An error occurred. \nHTTP status ${responseStatus}`;
+              responseMessage = `An error occurred. HTTP status ${responseStatus}`;
               break;
           }
         }
 
         openPopupDialogContainer({
+          title: responseData.messageType,
           type: 'message',
-          title: 'Error',
-          messageType: MessageType.ERROR,
+          maxWidth: 'sm',
+          messageType: responseData.messageType,
           message: (
             <ApiErrorDetail
               status={responseStatus}
-              message={dialogMessage}
-              errorList={responseData.errorList}
+              message={responseMessage}
+              responseData={responseData}
             />
           ),
-          onConfirm: () => {},
         });
 
-        return error;
+        return Promise.reject(error);
       }
     );
 

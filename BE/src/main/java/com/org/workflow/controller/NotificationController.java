@@ -1,6 +1,7 @@
 package com.org.workflow.controller;
 
 import static com.org.workflow.common.cnst.CommonConst.API_PREFIX;
+import static com.org.workflow.common.enums.MessageTypeEnum.SUCCESS;
 
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.controller.request.NotificationCreateRequest;
@@ -44,7 +45,7 @@ public class NotificationController extends AbstractController {
     messagingTemplate.convertAndSendToUser(
       notificationCreateRequest.getUserId(), "/check-notification",
       notificationCreateRequest);
-    return this.returnBaseResponse(notificationCreateRequest, "Create success", "SUCCESS",
+    return this.returnBaseResponse(notificationCreateRequest, "Create success", SUCCESS,
       HttpStatus.OK);
   }
 

@@ -14,7 +14,7 @@ import { memo, useCallback, MouseEvent } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import Grid2 from '@mui/material/Grid2';
 import IconButton from '@/components/button/IconButton';
-import { IContent } from '@/model/kanban/content';
+import { IContent } from '@/model/kanban/Content';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;

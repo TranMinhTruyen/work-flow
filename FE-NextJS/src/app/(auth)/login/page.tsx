@@ -14,7 +14,7 @@ import Divider from '@mui/material/Divider';
 import CardActions from '@mui/material/CardActions';
 import { useTranslation } from 'react-i18next';
 import Link from '@mui/material/Link';
-import { ILoginForm } from '@/model/login/loginForm';
+import { ILoginForm } from '@/model/login/LoginForm';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import TextInput from '@/components/form/TextInput';
 import CheckBox from '@/components/form/CheckboxInput';

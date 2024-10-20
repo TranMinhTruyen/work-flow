@@ -1,7 +1,7 @@
 import { isNullOrEmpty } from './stringUtil';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import forge from 'node-forge';
-import { ILoginResponse } from '@/model/login/loginModel';
+import { ILoginResponse } from '@/model/login/LoginModel';
 import store from '../store';
 import { setLoginData, toggleLogin } from '../commonSlice';
 

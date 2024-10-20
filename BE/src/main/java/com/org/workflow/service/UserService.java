@@ -191,7 +191,7 @@ public class UserService extends AbstractService {
         }
       }
       userRepository.save(userAccount);
-      throw new WorkFlowException(new ErrorDetail(ACCOUNT_PASSWORD_INVALID));
+      throw new WorkFlowException(new ErrorDetail(ACCOUNT_PASSWORD_INVALID, "", loginRequest.getUserName()));
     }
   }
 

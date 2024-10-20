@@ -1,8 +1,6 @@
-'use client';
 import { AxiosRequestConfig, ResponseType } from 'axios';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
-
 import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
 import { axiosInstance } from '../provider/ApiProvider';
 import { toggleLoading } from '../commonSlice';
@@ -34,18 +32,16 @@ const apiBaseQuery =
 
       openPopupDialogContainer({
         type: 'loading',
-        onConfirm: () => {},
       });
 
       const response = await axiosInstance(configAxios);
 
       const responseData: IBaseResponse = response.data;
 
-      return { data: responseData.body };
+      return { data: responseData.body, error: '', meta: undefined };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (axiosError) {
-      dispatch(toggleLoading(false));
-      return { error: '', meta: '' };
+    } catch (error) {
+      return { data: undefined, error: '', meta: undefined };
     } finally {
       dispatch(toggleLoading(false));
     }

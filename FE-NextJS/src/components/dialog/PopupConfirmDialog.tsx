@@ -20,7 +20,7 @@ export type PopupConfirmDialogProps = DialogProps & {
   cancelText?: string;
   confirmText?: string;
   showCancelButton?: boolean;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   onCancel?: () => void;
 };
 

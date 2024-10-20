@@ -1,6 +1,7 @@
 package com.org.workflow.controller;
 
 import static com.org.workflow.common.cnst.CommonConst.API_PREFIX;
+import static com.org.workflow.common.enums.MessageTypeEnum.SUCCESS;
 
 import com.org.workflow.common.cnst.AuthConst;
 import com.org.workflow.common.enums.MessageEnum;
@@ -51,13 +52,12 @@ public class MasterItemController extends AbstractController {
     @RequestBody MasterItemRequest masterItemRequest) throws WorkFlowException {
     AuthUtil.checkAuthentication("CREATE", ROLE_ADMIN, 3);
     MasterItem result = itemMasterService.createItemMaster(masterItemRequest);
-    return this.returnBaseResponse(result, "Create success", "SUCCESS", HttpStatus.OK);
+    return this.returnBaseResponse(result, "Create success", SUCCESS, HttpStatus.OK);
   }
 
   @PostMapping("/get")
   public ResponseEntity<BaseResponse> getItemMaster(
-    @RequestParam(required = false) String keyword) throws WorkFlowException {
-    AuthUtil.checkAuthentication("GET", ROLE_ADMIN, 0);
+    @RequestParam(required = false) String keyword) {
     List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(keyword);
     return this.returnBaseResponse(masterItemResponseList, MessageEnum.GET_SUCCESS, "item master");
   }
@@ -73,7 +73,7 @@ public class MasterItemController extends AbstractController {
     @RequestBody MasterItemRequest masterItemRequest) throws WorkFlowException {
     AuthUtil.checkAuthentication("UPDATE", ROLE_ADMIN, 3);
     MasterItem result = itemMasterService.updateItemMaster(masterItemRequest);
-    return this.returnBaseResponse(result, "Update success", "SUCCESS", HttpStatus.OK);
+    return this.returnBaseResponse(result, "Update success", SUCCESS, HttpStatus.OK);
   }
 
 }

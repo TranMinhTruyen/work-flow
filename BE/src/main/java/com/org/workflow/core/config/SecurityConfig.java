@@ -42,17 +42,16 @@ public class SecurityConfig {
     private String clientUrl;
 
     private static final String[] WHITE_LIST = {
-        "/v3/api-docs/**",
         "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/work-flow/swagger-ui/**",
+        "/work-flow/v3/api-docs/**",
         "/swagger-ui.html",
         "/api-docs",
-        "/swagger-ui/index.html",
+        "/ws/**",
         "/api/user-account/login",
         "/api/user-account/create",
         "/api/master-item/get",
-        "/ws/**",
-        "/work-flow/v3/api-docs/**",
-        "/work-flow/swagger-ui/**"
     };
 
     @Bean

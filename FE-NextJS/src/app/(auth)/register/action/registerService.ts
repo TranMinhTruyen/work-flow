@@ -1,5 +1,5 @@
 import baseApi from '@/common/api/apiBaseQuery';
-import { IRegisterRequest, IRegisterResponse } from '@/model/register/registerModel';
+import { IRegisterRequest, IRegisterResponse } from '@/model/register/RegisterModel';
 
 const PREFIX = '/user-account';
 

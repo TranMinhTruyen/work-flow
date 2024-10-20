@@ -1,4 +1,5 @@
-import { Divider } from '@mui/material';
+'use client';
+import { IBaseResponse } from '@/common/api/baseResponse';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -7,24 +8,33 @@ import { memo, useMemo } from 'react';
 type ApiErrorDetailProps = {
   status?: any;
   message?: string;
-  errorList?: Map<string, string>;
+  responseData?: IBaseResponse;
 };
 
 const ApiErrorDetail = (props: ApiErrorDetailProps) => {
-  const { status, message, errorList } = props;
+  const { status, message, responseData } = props;
 
   const error = useMemo(() => {
-    if (errorList) {
-      return Object.entries(errorList).map(([key, value], index) => (
+    if (responseData?.errorList) {
+      return Object.entries(responseData.errorList).map(([key, value], index) => (
         <Stack key={`error${index}`} direction={'row'} spacing={1}>
           <Typography>{key}:</Typography>
           <Typography>{value}</Typography>
         </Stack>
       ));
     }
-  }, [errorList]);
+  }, [responseData?.errorList]);
 
-  return <Container>{error}</Container>;
+  return (
+    <Container>
+      <Stack spacing={1}>
+        <Typography>Status: {status}</Typography>
+        <Typography>Message: {message}</Typography>
+        <Typography>Error detail</Typography>
+        {error}
+      </Stack>
+    </Container>
+  );
 };
 
 export default memo(ApiErrorDetail);

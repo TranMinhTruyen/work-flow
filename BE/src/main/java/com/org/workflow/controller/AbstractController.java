@@ -4,6 +4,7 @@ import static com.org.workflow.common.enums.MessageEnum.SERVER_ERROR;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import com.org.workflow.common.enums.MessageEnum;
+import com.org.workflow.common.enums.MessageTypeEnum;
 import com.org.workflow.controller.reponse.BaseResponse;
 import com.org.workflow.core.exception.WorkFlowException;
 import jakarta.annotation.Nullable;
@@ -24,7 +25,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-    @Nullable String message, @Nullable String messageType, HttpStatus httpStatus) {
+    @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageType);
     baseResponse.setMessage(message);

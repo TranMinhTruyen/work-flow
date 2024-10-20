@@ -4,6 +4,7 @@ import static com.org.workflow.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
 import static com.org.workflow.common.cnst.CommonConst.ZONE_ID;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.org.workflow.common.enums.MessageTypeEnum;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,7 +26,7 @@ public class BaseResponse implements Serializable {
   private final String timestamp = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
     .format(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of(ZONE_ID)));
 
-  private String messageType;
+  private MessageTypeEnum messageType;
 
   private String messageCode;
 

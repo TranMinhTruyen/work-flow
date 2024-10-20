@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface BoardSlice {}
+type BoardSlice = object;
 
 const initialState: BoardSlice = {};
 
