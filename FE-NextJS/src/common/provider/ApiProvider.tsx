@@ -10,7 +10,7 @@ import { selectIsLoading, toggleLoading } from '../commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import { ILoginResponse } from '@/model/login/LoginApiModel';
+import { ILoginResponse } from '@/model/login/LoginModel';
 import { IBaseRequest } from '@/model/common/BaseRequest';
 
 export const axiosInstance = axios.create({
