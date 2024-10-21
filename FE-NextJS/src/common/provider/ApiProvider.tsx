@@ -1,6 +1,6 @@
 'use client';
 import axios from 'axios';
-import { ReactElement, ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { TIME_OUT } from '../constants/commonConst';
 import store, { useAppDispatch, useAppSelector } from '../store';
 import { IBaseResponse } from '../../model/common/BaseResponse';
@@ -12,6 +12,7 @@ import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import { ILoginResponse } from '@/model/login/LoginModel';
 import { IBaseRequest } from '@/model/common/BaseRequest';
+import { LOGIN_URL } from '../constants/urlConst';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -24,7 +25,7 @@ const whiteList: string[] = [
   '/api/master-item/get',
 ];
 
-const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
+const ApiProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const isLoading: boolean = useAppSelector(selectIsLoading);
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
 
         // If login data is undefined, back to login screen
         if (loginData === undefined) {
-          navigate('/login', true);
+          navigate(LOGIN_URL, true);
         } else {
           // Set token to header
           config.headers['Authorization'] = `Bearer ${loginData.token}`;

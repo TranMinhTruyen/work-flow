@@ -20,6 +20,7 @@ import { languageConst } from '@/common/constants/commonConst';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import useNavigate from '@/common/hooks/useNavigate';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import { HOME_URL } from '@/common/constants/urlConst';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -123,7 +124,7 @@ const MainHeader = (props: IHeaderProps) => {
             variant={'h5'}
             component={'span'}
             sx={styles.title}
-            onClick={() => navigate('/home')}
+            onClick={() => navigate(HOME_URL)}
           >
             WORK FLOW
           </Typography>

@@ -22,6 +22,7 @@ import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import { handleSubmitLogin } from './action/loginAction';
 import useNavigate from '@/common/hooks/useNavigate';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import { HOME_URL } from '@/common/constants/urlConst';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const Login = () => {
       await trigger();
       const result = await handleSubmitLogin(data);
       if (result) {
-        navigate('/home', true);
+        navigate(HOME_URL, true);
       }
     },
     [navigate, trigger]

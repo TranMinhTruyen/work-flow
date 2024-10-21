@@ -1,13 +1,14 @@
 'use client';
-import { ReactElement } from 'react';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ViewKanbanOutlinedIcon from '@mui/icons-material/ViewKanbanOutlined';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { ReactNode } from 'react';
+import { HOME_URL, KANBAN_URL } from '@/common/constants/urlConst';
 
 export interface DrawerItem {
   componentKey: string;
-  componentIcon: ReactElement;
+  componentIcon: ReactNode;
   componentLabel: string;
   componentPath: string;
   componentRole: Array<string> | null;
@@ -19,7 +20,7 @@ const DrawerItemList: Array<DrawerItem> = [
     componentKey: '0',
     componentIcon: <HomeOutlinedIcon />,
     componentLabel: 'Home page',
-    componentPath: '/home',
+    componentPath: HOME_URL,
     componentRole: null,
     componentChild: null,
   },
@@ -27,7 +28,7 @@ const DrawerItemList: Array<DrawerItem> = [
     componentKey: '1',
     componentIcon: <ViewKanbanOutlinedIcon />,
     componentLabel: 'Kanban page',
-    componentPath: '/kanban',
+    componentPath: KANBAN_URL,
     componentRole: null,
     componentChild: null,
   },

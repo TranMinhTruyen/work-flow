@@ -10,7 +10,11 @@ import Drawer from '@/components/drawer/Drawer';
 
 const DRAWER_WIDTH: number = 200;
 
-const MainLayout = ({ children }: { children: ReactNode }) => {
+const MainLayout = ({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) => {
   const openDrawer = useAppSelector(selectOpenDrawer);
 
   return (

@@ -25,29 +25,29 @@ import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { IRegisterForm } from '@/model/register/RegisterForm';
 import ImageInput from '@/components/form/ImageInput';
 import { MessageType } from '@/common/enums/MessageEnum';
-import { usePathname, useRouter } from 'next/navigation';
-import { authorities, CURRENT_PATH, role } from '@/common/constants/commonConst';
+import { authorities, role } from '@/common/constants/commonConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import { LOGIN_URL } from '@/common/constants/urlConst';
+import useNavigate from '@/common/hooks/useNavigate';
 
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
   const { t } = useTranslation(I18nEnum.REGISTER_I18N);
   const { setHeaderTitle, setHeaderContent } = useAuthHeader();
-  const router = useRouter();
-  const path = usePathname();
+  const { navigate } = useNavigate();
 
   const backButton = useMemo(
     () => (
       <IconButton
-        onClick={() => router.push('/login')}
+        onClick={() => navigate(LOGIN_URL)}
         sx={{ width: '50px', height: '50px' }}
         color={'primary'}
       >
         <ChevronLeftIcon fontSize={'large'} />
       </IconButton>
     ),
-    [router]
+    [navigate]
   );
 
   useLayoutEffect(() => {
@@ -68,8 +68,7 @@ const Register = () => {
 
   useEffect(() => {
     reset();
-    sessionStorage.setItem(CURRENT_PATH, path);
-  }, [path, reset]);
+  }, [reset]);
 
   const handleRegister = useCallback(
     async (formData: IRegisterForm) => {
@@ -82,12 +81,12 @@ const Register = () => {
           messageType: MessageType.SUCCESS,
           message: `Create username: ${response.userName} success`,
           onConfirm: () => {
-            router.push('/login');
+            navigate(LOGIN_URL);
           },
         });
       }
     },
-    [router, trigger]
+    [navigate, trigger]
   );
 
   return (

@@ -1,3 +1,4 @@
+'use client';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
@@ -6,7 +7,11 @@ import AuthHeader from '@/components/header/AuthHeader';
 import { memo, ReactNode } from 'react';
 import AuthProvider from '@/common/provider/AuthProvider';
 
-const AuthLayout = ({ children }: { children: ReactNode }) => {
+const AuthLayout = ({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) => {
   return (
     <AuthProvider>
       <AuthHeaderProvider>

@@ -1,6 +1,6 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import { memo, ReactNode, ReactElement } from 'react';
+import { memo, ReactNode } from 'react';
 import Fab, { FabProps } from '@mui/material/Fab';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid2 from '@mui/material/Grid2';
@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
 
 export type ButtonProps = FabProps & {
-  label?: string | ReactElement;
+  label?: string | ReactNode;
   isLoading?: boolean;
   height?: number;
   width?: number;

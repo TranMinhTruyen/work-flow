@@ -1,11 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { checkLogin } from '../utils/authUtil';
 import { CURRENT_PATH } from '../constants/commonConst';
 import { isNullOrEmpty } from '../utils/stringUtil';
 import useNavigate from '../hooks/useNavigate';
+import { LOGIN_URL } from '../constants/urlConst';
 
-const MainProvider = ({ children }: { children: React.ReactElement }) => {
+const MainProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const { navigate } = useNavigate();
 
@@ -13,7 +14,7 @@ const MainProvider = ({ children }: { children: React.ReactElement }) => {
     const isLogin = checkLogin();
 
     if (!isLogin) {
-      navigate('/login', true);
+      navigate(LOGIN_URL, true);
       return;
     }
 
