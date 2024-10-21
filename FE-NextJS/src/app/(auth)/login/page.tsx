@@ -15,13 +15,13 @@ import CardActions from '@mui/material/CardActions';
 import { useTranslation } from 'react-i18next';
 import Link from '@mui/material/Link';
 import { ILoginForm } from '@/model/login/LoginForm';
-import { I18nEnum } from '@/common/enums/I18nEnums';
 import TextInput from '@/components/form/TextInput';
 import CheckBox from '@/components/form/CheckboxInput';
 import FloatButton from '@/components/button/FloatButton';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import { handleSubmitLogin } from './action/loginAction';
 import useNavigate from '@/common/hooks/useNavigate';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

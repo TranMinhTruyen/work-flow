@@ -1,6 +1,6 @@
 'use client';
 import { FileInputData } from '@/common/constants/type';
-import { I18nEnum } from '@/common/enums/I18nEnums';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledFileInput, {

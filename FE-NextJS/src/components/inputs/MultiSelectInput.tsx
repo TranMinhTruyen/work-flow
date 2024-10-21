@@ -11,9 +11,9 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import { I18nEnum } from '@/common/enums/I18nEnums';
 import { SelectDataType } from '@/common/constants/type';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 
 export type MultiSelectInputProps = Omit<
   SelectProps,

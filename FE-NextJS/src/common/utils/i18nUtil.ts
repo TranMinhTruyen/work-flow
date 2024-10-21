@@ -1,4 +1,4 @@
-import { I18nEnum } from '../enums/I18nEnums';
+import { I18nEnum } from '../enums/I18nEnum';
 
 export const translate = (key: string, type?: I18nEnum): string => {
   switch (type) {

@@ -9,9 +9,9 @@ import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { SelectDataType } from '@/common/constants/type';
-import { I18nEnum } from '@/common/enums/I18nEnums';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 
 export type SelectInputProps = Omit<
   SelectProps,
