@@ -4,7 +4,7 @@ import { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { TIME_OUT } from '../constants/commonConst';
 import store, { useAppDispatch, useAppSelector } from '../store';
 import { IBaseResponse } from '../../model/common/BaseResponse';
-import { MessageType } from '../enums/MessageEnums';
+import { MessageType } from '../enums/MessageEnum';
 import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { selectIsLoading, toggleLoading } from '../commonSlice';
 import { getLoginData } from '../utils/authUtil';

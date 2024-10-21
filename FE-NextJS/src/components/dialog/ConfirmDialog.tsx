@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { MessageType } from '@/common/enums/MessageEnums';
+import { MessageType } from '@/common/enums/MessageEnum';
 import FloatButton from '../button/FloatButton';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';

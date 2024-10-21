@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { I18nEnum } from '../enums/I18nEnum';
+import { I18nEnum } from '../enums/I18nEnums';
 import { isNullOrEmpty } from '../utils/stringUtil';
 import { EMAIL_PATTERN } from '../constants/commonConst';
 

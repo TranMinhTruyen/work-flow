@@ -16,7 +16,7 @@ import './main-header.css';
 import SelectInput from '../inputs/SelectInput';
 import { toSelectData } from '@/common/utils/convertUtil';
 import { useTranslation } from 'react-i18next';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { I18nEnum } from '@/common/enums/I18nEnums';
 import { languageConst } from '@/common/constants/commonConst';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import useNavigate from '@/common/hooks/useNavigate';

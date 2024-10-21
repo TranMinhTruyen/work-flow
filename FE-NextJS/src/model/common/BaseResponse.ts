@@ -1,4 +1,4 @@
-import { MessageType } from '@/common/enums/MessageEnums';
+import { MessageType } from '@/common/enums/MessageEnum';
 
 export interface IBaseResponse {
   timestamp: string;

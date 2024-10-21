@@ -23,9 +23,9 @@ import SelectInput from '@/components/form/SelectInput';
 import { handleSubmitRegister } from './action/registerAction';
 import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { IRegisterForm } from '@/model/register/RegisterForm';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { I18nEnum } from '@/common/enums/I18nEnums';
 import ImageInput from '@/components/form/ImageInput';
-import { MessageType } from '@/common/enums/MessageEnums';
+import { MessageType } from '@/common/enums/MessageEnum';
 import { usePathname, useRouter } from 'next/navigation';
 import { authorities, CURRENT_PATH, role } from '@/common/constants/commonConst';
 
