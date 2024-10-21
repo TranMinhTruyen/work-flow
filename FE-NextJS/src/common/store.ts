@@ -27,25 +27,16 @@ const rootReducer = (state: any, action: any) => {
   return combineReducer(state, action);
 };
 
-export type AppStore = ReturnType<typeof configureStore> | any;
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: gDM => gDM({ serializableCheck: false }).concat([baseApi.middleware]),
+  devTools: true,
+});
 
-let storeInstance: AppStore | null = null;
+setupListeners(store.dispatch);
 
-export const store = () => {
-  if (!storeInstance) {
-    storeInstance = configureStore({
-      reducer: rootReducer,
-      middleware: gDM => gDM({ serializableCheck: false }).concat([baseApi.middleware]),
-      devTools: true,
-    });
-  }
-  return storeInstance;
-};
-
-setupListeners(store().dispatch);
-
-export type RootState = ReturnType<AppStore['getState']>;
-export type AppDispatch = AppStore['dispatch'];
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();

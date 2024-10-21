@@ -12,10 +12,12 @@ import java.text.MessageFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  *
  */
+@CrossOrigin
 public abstract class AbstractController {
 
   /**
@@ -77,6 +79,9 @@ public abstract class AbstractController {
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
     baseResponse.setMessage(SERVER_ERROR.getMessage());
+//    for (int i =0; i <= 100; i++) {
+//      workFlowException.getErrorDetail().getMessage().put(String.valueOf(i), "Test exception message: " + i);
+//    }
     baseResponse.setErrorList(workFlowException.getErrorDetail().getMessage());
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);

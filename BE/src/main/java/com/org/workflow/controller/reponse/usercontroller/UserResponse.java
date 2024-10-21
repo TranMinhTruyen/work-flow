@@ -1,4 +1,4 @@
-package com.org.workflow.controller.reponse;
+package com.org.workflow.controller.reponse.usercontroller;
 
 import com.org.workflow.controller.request.FileData;
 import java.io.Serializable;

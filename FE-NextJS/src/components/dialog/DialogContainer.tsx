@@ -1,7 +1,7 @@
 'use client';
 import { memo, useEffect } from 'react';
-import ConfirmDialog, { PopupConfirmDialogProps } from './PopupConfirmDialog';
-import LoadingDialog from './PopupLoadingDialog';
+import ConfirmDialog, { PopupConfirmDialogProps } from './ConfirmDialog';
+import LoadingDialog from './LoadingDialog';
 import usePopupDialog from '@/common/hooks/usePopupDialog';
 
 export type DialogContainerProps = Omit<PopupConfirmDialogProps, 'open' | 'showCancelButton'> & {

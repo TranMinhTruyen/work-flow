@@ -1,4 +1,4 @@
-package com.org.workflow.controller.request;
+package com.org.workflow.controller.request.usercontroller;
 
 import lombok.Data;
 

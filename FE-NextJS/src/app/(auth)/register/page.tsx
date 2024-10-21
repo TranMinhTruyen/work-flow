@@ -21,11 +21,11 @@ import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import SelectInput from '@/components/form/SelectInput';
 import { handleSubmitRegister } from './action/registerAction';
-import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
-import { IRegisterForm } from '@/model/register/RegisterForm';
-import { I18nEnum } from '@/common/enums/i18nEnum';
+import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
+import { IRegisterForm } from '@/model/register/RegisterFormModel';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import ImageInput from '@/components/form/ImageInput';
-import { MessageType } from '@/common/enums/messageEnums';
+import { MessageType } from '@/common/enums/MessageEnums';
 import { usePathname, useRouter } from 'next/navigation';
 import { authorities, CURRENT_PATH, role } from '@/common/constants/commonConst';
 

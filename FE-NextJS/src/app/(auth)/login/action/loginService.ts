@@ -1,5 +1,5 @@
 import baseApi from '@/common/api/apiBaseQuery';
-import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
+import { ILoginRequest, ILoginResponse } from '@/model/login/LoginApiModel';
 
 const PREFIX = '/user-account';
 

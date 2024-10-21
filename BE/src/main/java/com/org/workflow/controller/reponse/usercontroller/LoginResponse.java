@@ -1,4 +1,4 @@
-package com.org.workflow.controller.reponse;
+package com.org.workflow.controller.reponse.usercontroller;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

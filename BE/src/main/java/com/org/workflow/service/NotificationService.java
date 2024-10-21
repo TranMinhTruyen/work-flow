@@ -1,8 +1,8 @@
 package com.org.workflow.service;
 
 import com.org.workflow.common.utils.SeqUtil;
-import com.org.workflow.controller.reponse.NotificationResponse;
-import com.org.workflow.controller.request.NotificationCreateRequest;
+import com.org.workflow.controller.reponse.notificationcontroller.NotificationResponse;
+import com.org.workflow.controller.request.notificationcontroller.NotificationCreateRequest;
 import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.repository.NotificationRepository;
 import java.util.ArrayList;

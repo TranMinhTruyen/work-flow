@@ -5,7 +5,7 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import SelectInput from '../inputs/SelectInput';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
-import { I18nEnum } from '@/common/enums/i18nEnum';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import { useAppDispatch, useAppSelector } from '@/common/store';
 import { selectLanguage, setLanguage } from '@/common/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';

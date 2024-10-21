@@ -1,5 +1,6 @@
-package com.org.workflow.controller.request;
+package com.org.workflow.controller.request.usercontroller;
 
+import com.org.workflow.controller.request.FileData;
 import java.util.List;
 import lombok.Data;
 

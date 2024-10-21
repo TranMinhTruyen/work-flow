@@ -1,4 +1,4 @@
-import { IUserResponse } from '../user/UserModel';
+import { IUserResponse } from '../user/UserApiModel';
 
 export interface ILoginResponse {
   tokenType?: string;

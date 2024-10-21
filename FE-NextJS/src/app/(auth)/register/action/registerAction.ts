@@ -1,8 +1,8 @@
 import store from '@/common/store';
 import { registerService } from './registerService';
 import { encryptWithRSA } from '@/common/utils/authUtil';
-import { IRegisterForm } from '@/model/register/RegisterForm';
-import { IRegisterRequest } from '@/model/register/RegisterModel';
+import { IRegisterForm } from '@/model/register/RegisterFormModel';
+import { IRegisterRequest } from '@/model/register/RegisterApiModel';
 
 export const handleSubmitRegister = async (formData: IRegisterForm) => {
   const registerRequest: IRegisterRequest = {
@@ -14,7 +14,7 @@ export const handleSubmitRegister = async (formData: IRegisterForm) => {
     },
   };
 
-  const response = await store()
+  const response = await store
     .dispatch(registerService.endpoints.register.initiate(registerRequest))
     .unwrap();
 

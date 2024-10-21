@@ -5,7 +5,7 @@ import { Droppable } from '@hello-pangea/dnd';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Grid2';
-import { ICategory } from '@/model/kanban/Category';
+import { ICategory } from '@/model/kanban/CategoryModel';
 import Button from '@/components/button/Button';
 
 type CategoryProps = {

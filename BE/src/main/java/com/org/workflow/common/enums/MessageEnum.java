@@ -47,7 +47,7 @@ public enum MessageEnum {
   ROLE_ERROR(ERROR, "EA002", "Role not accept!", HttpStatus.UNAUTHORIZED),
   AUTHORITY_ERROR(ERROR, "EA003", "Authority not accept!", HttpStatus.UNAUTHORIZED),
   LEVEL_ERROR(ERROR, "EA004", "Level not accept!", HttpStatus.UNAUTHORIZED),
-  ACCOUNT_NOT_FOUND(ERROR, "EA005", "Username or email [{0}] not found.", HttpStatus.UNAUTHORIZED),
+  ACCOUNT_NOT_FOUND(ERROR, "EA005", "Username or email [{0}] not found.", HttpStatus.NOT_FOUND),
   ACCOUNT_PASSWORD_INVALID(ERROR, "EA006", "Wrong password with username or email [{0}].", HttpStatus.UNAUTHORIZED),
   ACCOUNT_INACTIVE(ERROR, "EA007", "Account is inactive!", HttpStatus.UNAUTHORIZED),
   //endregion

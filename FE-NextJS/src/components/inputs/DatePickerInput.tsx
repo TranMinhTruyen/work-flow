@@ -9,7 +9,7 @@ import moment, { Moment } from 'moment';
 import { capitalizeFirst, isNullOrEmpty } from '../../common/utils/stringUtil';
 import InputAdornment from '@mui/material/InputAdornment';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { I18nEnum } from '@/common/enums/i18nEnum';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import { DateType } from '@/common/utils/dateUtil';
 
 export type DatePickerProps = Omit<

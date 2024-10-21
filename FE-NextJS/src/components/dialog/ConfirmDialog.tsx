@@ -10,8 +10,10 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { MessageType } from '@/common/enums/messageEnums';
+import { MessageType } from '@/common/enums/MessageEnums';
 import FloatButton from '../button/FloatButton';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 export type PopupConfirmDialogProps = DialogProps & {
   title?: ReactNode;
@@ -19,12 +21,13 @@ export type PopupConfirmDialogProps = DialogProps & {
   messageType?: MessageType;
   cancelText?: string;
   confirmText?: string;
+  isPopup?: boolean;
   showCancelButton?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
 };
 
-const PopupConfirmDialog = (props: PopupConfirmDialogProps) => {
+const ConfirmDialog = (props: PopupConfirmDialogProps) => {
   const {
     open,
     title,
@@ -33,8 +36,10 @@ const PopupConfirmDialog = (props: PopupConfirmDialogProps) => {
     cancelText,
     confirmText,
     showCancelButton,
+    isPopup = true,
     onConfirm,
     onCancel,
+    maxWidth = 'xs',
     ...restProps
   } = props;
 
@@ -91,50 +96,75 @@ const PopupConfirmDialog = (props: PopupConfirmDialogProps) => {
     }
   }, [cancelText, handleCancelClick, showCancelButton]);
 
-  return (
+  const dialogBody = useMemo(
+    () => (
+      <>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            padding: '10px',
+          }}
+        >
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography sx={{ fontSize: 25 }}>{title ?? null}</Typography>
+            {icon}
+          </Stack>
+
+          <IconButton onClick={handleCancelClick} sx={{ position: 'absolute', right: 8 }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Divider />
+
+        <DialogContent sx={{ padding: 3.5 }}>
+          <Stack alignItems={'center'}>{messageElement}</Stack>
+        </DialogContent>
+
+        <Divider />
+
+        <DialogActions sx={{ justifyContent: 'center', alignItems: 'center', padding: '10px' }}>
+          <Stack direction={'row'} alignItems={'center'} spacing={10}>
+            <FloatButton
+              label={
+                <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                  {confirmText ?? 'Ok'}
+                </Typography>
+              }
+              sx={{
+                width: 120,
+                height: 40,
+                backgroundColor: 'rgba(0, 170, 255, 0.8)',
+              }}
+              onClick={handleConfirmClick}
+            />
+            {cancelButton}
+          </Stack>
+        </DialogActions>
+      </>
+    ),
+    [cancelButton, confirmText, handleCancelClick, handleConfirmClick, icon, messageElement, title]
+  );
+
+  return isPopup ? (
     <Dialog
       keepMounted
       open={open}
       fullWidth={true}
-      maxWidth={'xs'}
+      maxWidth={maxWidth}
       onClose={handleCancelClick}
       {...restProps}
     >
-      <Box sx={{ padding: '10px' }}>
-        <Stack alignItems={'center'} justifyContent={'center'} direction={'row'} spacing={1}>
-          <Typography sx={{ fontSize: 25 }}>{title ?? null}</Typography>
-          {icon}
-        </Stack>
-      </Box>
-
-      <Divider />
-
-      <DialogContent sx={{ padding: 3.5 }}>
-        <Stack alignItems={'center'}>{messageElement}</Stack>
-      </DialogContent>
-
-      <Divider />
-
-      <DialogActions sx={{ justifyContent: 'center', alignItems: 'center', padding: '10px' }}>
-        <Stack direction={'row'} alignItems={'center'} spacing={10}>
-          <FloatButton
-            label={
-              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {confirmText ?? 'Ok'}
-              </Typography>
-            }
-            sx={{
-              width: 120,
-              height: 40,
-              backgroundColor: 'rgba(0, 170, 255, 0.8)',
-            }}
-            onClick={handleConfirmClick}
-          />
-          {cancelButton}
-        </Stack>
-      </DialogActions>
+      {dialogBody}
+    </Dialog>
+  ) : (
+    <Dialog keepMounted open={open} fullWidth={true} maxWidth={maxWidth} {...restProps}>
+      {dialogBody}
     </Dialog>
   );
 };
 
-export default PopupConfirmDialog;
+export default ConfirmDialog;

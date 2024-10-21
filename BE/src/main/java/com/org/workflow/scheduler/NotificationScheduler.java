@@ -1,6 +1,6 @@
 package com.org.workflow.scheduler;
 
-import com.org.workflow.controller.reponse.NotificationResponse;
+import com.org.workflow.controller.reponse.notificationcontroller.NotificationResponse;
 import com.org.workflow.service.NotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

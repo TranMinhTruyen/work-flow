@@ -1,10 +1,10 @@
 import { AxiosRequestConfig, ResponseType } from 'axios';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
+import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { axiosInstance } from '../provider/ApiProvider';
+import { IBaseResponse } from '@/model/common/BaseResponse';
 import { toggleLoading } from '../commonSlice';
-import { IBaseResponse } from './baseResponse';
 
 const apiBaseQuery =
   (

@@ -1,9 +1,9 @@
 import { setLoginData, toggleLogin } from '@/common/commonSlice';
 import store from '@/common/store';
-import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
+import { ILoginRequest, ILoginResponse } from '@/model/login/LoginApiModel';
 import { loginService } from './loginService';
 import { encryptWithRSA } from '@/common/utils/authUtil';
-import { ILoginForm } from '@/model/login/LoginForm';
+import { ILoginForm } from '@/model/login/LoginFormModel';
 
 /**
  * Handle click submit button.
@@ -15,7 +15,7 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
     password: encryptWithRSA(data.password),
   };
 
-  const response = await store()
+  const response = await store
     .dispatch(loginService.endpoints.login.initiate(loginRequest))
     .unwrap();
 
@@ -39,6 +39,6 @@ const setToken = (loginResponse: ILoginResponse, isRemember: boolean = false) =>
   } else {
     localStorage.setItem('login', JSON.stringify(loginResponse) ?? '');
   }
-  store().dispatch(setLoginData(loginResponse));
-  store().dispatch(toggleLogin(true));
+  store.dispatch(setLoginData(loginResponse));
+  store.dispatch(toggleLogin(true));
 };

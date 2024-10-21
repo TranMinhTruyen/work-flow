@@ -1,7 +1,7 @@
 import { isNullOrEmpty } from './stringUtil';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import forge from 'node-forge';
-import { ILoginResponse } from '@/model/login/LoginModel';
+import { ILoginResponse } from '@/model/login/LoginApiModel';
 import store from '../store';
 import { setLoginData, toggleLogin } from '../commonSlice';
 
@@ -11,7 +11,7 @@ import { setLoginData, toggleLogin } from '../commonSlice';
  * @returns
  */
 export const checkLogin = () => {
-  if (store().getState().commonState.loginData !== undefined) {
+  if (store.getState().commonState.loginData !== undefined) {
     return true;
   }
 
@@ -23,8 +23,8 @@ export const checkLogin = () => {
 
   if (!isNullOrEmpty(login)) {
     const data: ILoginResponse = JSON.parse(login);
-    store().dispatch(setLoginData(data));
-    store().dispatch(toggleLogin(true));
+    store.dispatch(setLoginData(data));
+    store.dispatch(toggleLogin(true));
     return true;
   }
 
@@ -32,7 +32,7 @@ export const checkLogin = () => {
 };
 
 export const getLoginData = (): ILoginResponse | undefined => {
-  return store().getState().commonState.loginData;
+  return store.getState().commonState.loginData;
 };
 
 export const encryptWithRSA = (data?: string) => {

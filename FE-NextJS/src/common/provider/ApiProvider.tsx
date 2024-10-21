@@ -1,16 +1,17 @@
 'use client';
 import axios from 'axios';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
-import { CURRENT_PATH, TIME_OUT } from '../constants/commonConst';
-import { useAppDispatch, useAppSelector } from '../store';
-import { IBaseResponse } from '../api/baseResponse';
-import { MessageType } from '../enums/messageEnums';
-import { openPopupDialogContainer } from '@/components/dialog/PopupDialogContainer';
+import { TIME_OUT } from '../constants/commonConst';
+import store, { useAppDispatch, useAppSelector } from '../store';
+import { IBaseResponse } from '../../model/common/BaseResponse';
+import { MessageType } from '../enums/MessageEnums';
+import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { selectIsLoading, toggleLoading } from '../commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import { ILoginResponse } from '@/model/login/LoginModel';
+import { ILoginResponse } from '@/model/login/LoginApiModel';
+import { IBaseRequest } from '@/model/common/BaseRequest';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -39,11 +40,19 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
         // If login data is undefined, back to login screen
         if (loginData === undefined) {
           navigate('/login', true);
-          sessionStorage.setItem(CURRENT_PATH, '/login');
         } else {
           // Set token to header
           config.headers['Authorization'] = `Bearer ${loginData.token}`;
         }
+      }
+
+      // Transform request
+      if (config.data) {
+        const transformRequest: IBaseRequest = {
+          language: store.getState().commonState.language,
+          payload: config.data,
+        };
+        config.data = transformRequest;
       }
 
       // Set loading
@@ -143,6 +152,7 @@ const ApiProvider = ({ children }: { children: ReactElement | ReactNode }) => {
           type: 'message',
           maxWidth: 'sm',
           messageType: responseData.messageType,
+          isPopup: false,
           message: (
             <ApiErrorDetail
               status={responseStatus}

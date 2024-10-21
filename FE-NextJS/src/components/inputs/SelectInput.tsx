@@ -9,7 +9,7 @@ import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { SelectDataType } from '@/common/constants/type';
-import { I18nEnum } from '@/common/enums/i18nEnum';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

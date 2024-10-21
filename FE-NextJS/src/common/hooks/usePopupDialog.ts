@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { DialogContainerProps } from '@/components/dialog/PopupDialogContainer';
+import { DialogContainerProps } from '@/components/dialog/DialogContainer';
 
 type UsePopupDialogProps = { open: boolean; dialogState?: DialogContainerProps };
 

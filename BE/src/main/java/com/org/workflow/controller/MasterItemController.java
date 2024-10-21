@@ -3,12 +3,12 @@ package com.org.workflow.controller;
 import static com.org.workflow.common.cnst.CommonConst.API_PREFIX;
 import static com.org.workflow.common.enums.MessageTypeEnum.SUCCESS;
 
-import com.org.workflow.common.cnst.AuthConst;
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.utils.AuthUtil;
 import com.org.workflow.controller.reponse.BaseResponse;
-import com.org.workflow.controller.reponse.MasterItemResponse;
-import com.org.workflow.controller.request.MasterItemRequest;
+import com.org.workflow.controller.reponse.mastercontroller.MasterItemResponse;
+import com.org.workflow.controller.request.BaseRequest;
+import com.org.workflow.controller.request.mastercontroller.MasterItemRequest;
 import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.dao.document.MasterItem;
 import com.org.workflow.service.ItemMasterService;
@@ -22,15 +22,12 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "ItemMasterController")
@@ -49,16 +46,16 @@ public class MasterItemController extends AbstractController {
     @SecurityRequirement(name = "Authorization")})
   @PostMapping("/create")
   public ResponseEntity<BaseResponse> createItemMaster(
-    @RequestBody MasterItemRequest masterItemRequest) throws WorkFlowException {
+    @RequestBody BaseRequest<MasterItemRequest> masterItemRequest) throws WorkFlowException {
     AuthUtil.checkAuthentication("CREATE", ROLE_ADMIN, 3);
-    MasterItem result = itemMasterService.createItemMaster(masterItemRequest);
+    MasterItem result = itemMasterService.createItemMaster(masterItemRequest.getPayload());
     return this.returnBaseResponse(result, "Create success", SUCCESS, HttpStatus.OK);
   }
 
   @PostMapping("/get")
   public ResponseEntity<BaseResponse> getItemMaster(
-    @RequestParam(required = false) String keyword) {
-    List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(keyword);
+    @RequestParam(required = false) BaseRequest<String> keyword) {
+    List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(keyword.getPayload());
     return this.returnBaseResponse(masterItemResponseList, MessageEnum.GET_SUCCESS, "item master");
   }
 
@@ -70,9 +67,9 @@ public class MasterItemController extends AbstractController {
     @SecurityRequirement(name = "Authorization")})
   @PostMapping("/update")
   public ResponseEntity<BaseResponse> updateItemMaster(
-    @RequestBody MasterItemRequest masterItemRequest) throws WorkFlowException {
+    @RequestBody BaseRequest<MasterItemRequest> masterItemRequest) throws WorkFlowException {
     AuthUtil.checkAuthentication("UPDATE", ROLE_ADMIN, 3);
-    MasterItem result = itemMasterService.updateItemMaster(masterItemRequest);
+    MasterItem result = itemMasterService.updateItemMaster(masterItemRequest.getPayload());
     return this.returnBaseResponse(result, "Update success", SUCCESS, HttpStatus.OK);
   }
 
