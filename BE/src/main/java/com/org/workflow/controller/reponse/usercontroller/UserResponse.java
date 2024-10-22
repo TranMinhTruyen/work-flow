@@ -1,6 +1,6 @@
 package com.org.workflow.controller.reponse.usercontroller;
 
-import com.org.workflow.controller.request.FileData;
+import com.org.workflow.controller.common.FileData;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-import { SelectDataType } from '@/common/constants/type';
+import { SelectDataType } from '@/common/constants/typeConst';
 import { ICategory } from '@/model/kanban/Category';
 import { IContent } from '@/model/kanban/Content';
 

@@ -4,11 +4,12 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { axiosInstance } from '../provider/ApiProvider';
 import { IBaseResponse } from '@/model/common/BaseResponse';
-import { toggleLoading } from '../commonSlice';
+import { toggleLoading } from '../../lib/slices/commonSlice';
+import { API_PREFIX } from '../constants/apiPrefixConst';
 
 const apiBaseQuery =
   (
-    { baseUrl }: { baseUrl: string } = { baseUrl: '' }
+    baseUrl: string = ''
   ): BaseQueryFn<
     {
       url: string;
@@ -48,10 +49,11 @@ const apiBaseQuery =
   };
 
 const baseApi = createApi({
+  refetchOnReconnect: true,
   refetchOnMountOrArgChange: true,
   keepUnusedDataFor: 0.0001,
   reducerPath: 'baseApi',
-  baseQuery: apiBaseQuery({ baseUrl: '/api' }),
+  baseQuery: apiBaseQuery(API_PREFIX),
   endpoints: () => ({}),
 });
 

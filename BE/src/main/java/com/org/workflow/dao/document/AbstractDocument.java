@@ -14,7 +14,7 @@ public abstract class AbstractDocument {
   private String id;
 
   @Field(name = "is_deleted", write = Write.ALWAYS, targetType = FieldType.BOOLEAN)
-  private Boolean isDeleted;
+  private boolean isDeleted;
 
   @Field(name = "created_date_time", write = Write.ALWAYS, targetType = FieldType.DATE_TIME)
   private LocalDateTime createDatetime;

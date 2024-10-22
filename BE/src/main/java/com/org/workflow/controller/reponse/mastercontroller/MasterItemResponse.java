@@ -1,8 +1,14 @@
 package com.org.workflow.controller.reponse.mastercontroller;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MasterItemResponse {
 
   private String id;

@@ -2,12 +2,18 @@ package com.org.workflow.controller.request.usercontroller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author minh-truyen
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateUserRequest {
 
   private String email;

@@ -1,4 +1,4 @@
-import { SelectDataFunc } from '../constants/type';
+import { SelectDataFunc } from '../constants/typeConst';
 
 /**
  *

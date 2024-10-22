@@ -10,8 +10,13 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Stack from '@mui/material/Stack';
 import IconButton from '../button/IconButton';
-import { useAppDispatch, useAppSelector } from '@/common/store';
-import { selectLanguage, selectOpenDrawer, setLanguage, toggleDrawer } from '@/common/commonSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import {
+  selectLanguage,
+  selectOpenDrawer,
+  setLanguage,
+  toggleDrawer,
+} from '@/lib/slices/commonSlice';
 import './main-header.css';
 import SelectInput from '../inputs/SelectInput';
 import { toSelectData } from '@/common/utils/convertUtil';

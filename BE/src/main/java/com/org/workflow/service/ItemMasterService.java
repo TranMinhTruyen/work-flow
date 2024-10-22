@@ -52,7 +52,7 @@ public class ItemMasterService extends AbstractService {
     create.setValue9(masterItemRequest.getValue9());
     create.setValue10(masterItemRequest.getValue10());
     create.setDisplayOrder(masterItemRequest.getDisplayOrder());
-    create.setIsDeleted(false);
+    create.setDeleted(false);
 
     String username = AuthUtil.getAuthentication().getUsername();
     LocalDateTime now = LocalDateTime.now();
@@ -69,7 +69,7 @@ public class ItemMasterService extends AbstractService {
   }
 
   public List<MasterItemResponse> getItemMaster(String keyword) {
-    Optional<List<MasterItem>> result = itemMasterRepository.getItemMasterByMasterCodeAndIsDeletedIsFalse(
+    Optional<List<MasterItem>> result = itemMasterRepository.getItemMasterByMasterCodeAndDeletedIsFalse(
       keyword);
     List<MasterItemResponse> returnValue = new ArrayList<>();
     if (result.isPresent() && !result.get().isEmpty()) {
@@ -90,7 +90,6 @@ public class ItemMasterService extends AbstractService {
         masterItemResponse.setValue9(item.getValue9());
         masterItemResponse.setValue10(item.getValue10());
         masterItemResponse.setDisplayOrder(item.getDisplayOrder());
-        masterItemResponse.setIsDeleted(item.getIsDeleted());
         returnValue.add(masterItemResponse);
       }
     }
@@ -99,7 +98,7 @@ public class ItemMasterService extends AbstractService {
 
   public MasterItem updateItemMaster(MasterItemRequest masterItemRequest) throws WorkFlowException {
     Optional<MasterItem> result = itemMasterRepository.getItemMasterByIdAndMasterCode(
-      Long.valueOf(masterItemRequest.getId()), masterItemRequest.getMasterCode());
+      masterItemRequest.getId(), masterItemRequest.getMasterCode());
     MasterItem resultValue = result.orElseThrow(
       () -> new WorkFlowException(new ErrorDetail(NOT_FOUND)));
 
@@ -118,7 +117,6 @@ public class ItemMasterService extends AbstractService {
     update.setValue9(masterItemRequest.getValue9());
     update.setValue10(masterItemRequest.getValue10());
     update.setDisplayOrder(masterItemRequest.getDisplayOrder());
-    update.setIsDeleted(masterItemRequest.getIsDeleted());
 
     String username = AuthUtil.getAuthentication().getUsername();
     LocalDateTime now = LocalDateTime.now();

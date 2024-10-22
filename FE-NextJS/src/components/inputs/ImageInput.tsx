@@ -6,7 +6,7 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Avatar from '@mui/material/Avatar';
 import ClearIcon from '@mui/icons-material/Clear';
-import { FileInputData } from '@/common/constants/type';
+import { FileInputData } from '@/common/constants/typeConst';
 import { IMAGE_FILE_TYPE } from '@/common/constants/commonConst';
 import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
 

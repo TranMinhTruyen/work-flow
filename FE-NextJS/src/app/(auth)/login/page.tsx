@@ -19,7 +19,7 @@ import TextInput from '@/components/form/TextInput';
 import CheckBox from '@/components/form/CheckboxInput';
 import FloatButton from '@/components/button/FloatButton';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
-import { handleSubmitLogin } from './action/loginAction';
+import { handleSubmitLogin } from './action';
 import useNavigate from '@/common/hooks/useNavigate';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { HOME_URL } from '@/common/constants/urlConst';

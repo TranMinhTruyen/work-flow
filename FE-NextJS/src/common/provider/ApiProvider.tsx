@@ -1,18 +1,19 @@
 'use client';
 import axios from 'axios';
 import { ReactNode, useEffect, useState } from 'react';
-import { TIME_OUT } from '../constants/commonConst';
-import store, { useAppDispatch, useAppSelector } from '../store';
+import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
+import store, { useAppDispatch, useAppSelector } from '../../lib/store';
 import { IBaseResponse } from '../../model/common/BaseResponse';
 import { MessageType } from '../enums/MessageEnum';
 import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
-import { selectIsLoading, toggleLoading } from '../commonSlice';
+import { selectIsLoading, toggleLoading } from '../../lib/slices/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import { ILoginResponse } from '@/model/login/LoginModel';
 import { IBaseRequest } from '@/model/common/BaseRequest';
 import { LOGIN_URL } from '../constants/urlConst';
+import moment from 'moment';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -47,9 +48,9 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
         }
       }
 
-      // Transform request
       if (config.data) {
         const transformRequest: IBaseRequest = {
+          timestamp: moment(new Date()).format(DATE_TIME_FORMAT),
           language: store.getState().commonState.language,
           payload: config.data,
         };

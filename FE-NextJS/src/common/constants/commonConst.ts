@@ -1,5 +1,5 @@
 import { Accept } from 'react-dropzone';
-import { SelectDataType } from './type';
+import { SelectDataType } from './typeConst';
 
 //#region Axios config
 export const TIME_OUT: number = 60000;
@@ -83,3 +83,9 @@ export const role: SelectDataType[] = [
     value: 'Role User',
   },
 ];
+
+export const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm:ss';
+
+export const FULL_DATE_FORMAT = 'DD/MM/YYYY';
+
+export const FULL_TIME_FORMAT = 'HH:mm:ss';

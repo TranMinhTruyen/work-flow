@@ -1,4 +1,4 @@
-import { FileInputData } from '@/common/constants/type';
+import { FileInputData } from '@/common/constants/typeConst';
 
 export interface IRegisterForm {
   userName?: string;

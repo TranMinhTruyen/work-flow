@@ -29,7 +29,7 @@ public enum MessageEnum {
   NOT_FOUND(ERROR, "E0001", "Not found {0}", HttpStatus.NOT_FOUND),
   UPDATE_FAILED(ERROR, "E0002", "Can't update data because it has been update by another. Please reload page again!", HttpStatus.CONFLICT),
   NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL(ERROR, "E0003", "New password and current password not equal", HttpStatus.BAD_REQUEST),
-  USER_NAME_EXISTS(ERROR, "E0004", "Username already exists", HttpStatus.CONFLICT),
+  USER_NAME_EXISTS(ERROR, "E0004", "Username [{0}] already exists", HttpStatus.CONFLICT),
   ITEM_MASTER_EXISTS(ERROR, "E0005", "Item master already exists", HttpStatus.CONFLICT),
   REQUEST_FAILED(ERROR, "E0006", "{0} failed", HttpStatus.INTERNAL_SERVER_ERROR),
   AUTHENTICATION_FAILED(ERROR, "E0007", "Authentication failed", HttpStatus.UNAUTHORIZED),
@@ -49,7 +49,7 @@ public enum MessageEnum {
   LEVEL_ERROR(ERROR, "EA004", "Level not accept!", HttpStatus.UNAUTHORIZED),
   ACCOUNT_NOT_FOUND(ERROR, "EA005", "Username or email [{0}] not found.", HttpStatus.NOT_FOUND),
   ACCOUNT_PASSWORD_INVALID(ERROR, "EA006", "Wrong password with username or email [{0}].", HttpStatus.UNAUTHORIZED),
-  ACCOUNT_INACTIVE(ERROR, "EA007", "Account is inactive!", HttpStatus.UNAUTHORIZED),
+  ACCOUNT_INACTIVE(ERROR, "EA007", "Username or email [{0}] is inactive!", HttpStatus.UNAUTHORIZED),
   //endregion
 
   //@formatter:on

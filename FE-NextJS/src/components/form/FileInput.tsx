@@ -1,5 +1,5 @@
 'use client';
-import { FileInputData } from '@/common/constants/type';
+import { FileInputData } from '@/common/constants/typeConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';

@@ -2,7 +2,7 @@
 import { ICategory } from '@/model/kanban/Category';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/boardData';
+import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/kanbanData';
 import { usePathname } from 'next/navigation';
 import { CURRENT_PATH } from '@/common/constants/commonConst';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
+import { RootState } from '../store';
 import { ILoginResponse } from '@/model/login/LoginModel';
 
 interface CommonState {
@@ -10,6 +10,7 @@ interface CommonState {
   isLoading: boolean;
   openConfirmDialog: boolean;
   loginData?: ILoginResponse;
+  ipAddress: string;
 }
 
 const initialState: CommonState = {
@@ -19,6 +20,7 @@ const initialState: CommonState = {
   isLogin: false,
   isLoading: false,
   openConfirmDialog: false,
+  ipAddress: '',
 };
 
 export const commonSlice = createSlice({
@@ -69,6 +71,13 @@ export const commonSlice = createSlice({
     resetCommon: () => {
       return initialState;
     },
+    setIpAddress: (state, action: PayloadAction<string>) => {
+      const { payload } = action;
+      return {
+        ...state,
+        ipAddress: payload,
+      };
+    },
   },
 });
 
@@ -80,6 +89,7 @@ export const {
   toggleConfirmDialog,
   setLanguage,
   resetCommon,
+  setIpAddress,
 } = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;
@@ -88,5 +98,6 @@ export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
 export const selectOpenConfirmDialog = (state: RootState) => state.commonState.openConfirmDialog;
 export const selectLanguage = (state: RootState) => state.commonState.language;
+export const selectIpAddress = (state: RootState) => state.commonState.ipAddress;
 
 export default commonSlice.reducer;

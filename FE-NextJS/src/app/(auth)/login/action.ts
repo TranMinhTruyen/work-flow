@@ -1,9 +1,9 @@
-import { setLoginData, toggleLogin } from '@/common/commonSlice';
-import store from '@/common/store';
+import { setLoginData, toggleLogin } from '@/lib/slices/commonSlice';
+import store from '@/lib/store';
 import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
-import { loginService } from './loginService';
 import { encryptWithRSA } from '@/common/utils/authUtil';
 import { ILoginForm } from '@/model/login/LoginForm';
+import { loginService } from '@/services/loginService';
 
 /**
  * Handle click submit button.

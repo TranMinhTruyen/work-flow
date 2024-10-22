@@ -1,13 +1,12 @@
 import baseApi from '@/common/api/apiBaseQuery';
+import { USER_PREFIX } from '@/common/constants/apiPrefixConst';
 import { IRegisterRequest, IRegisterResponse } from '@/model/register/RegisterModel';
-
-const PREFIX = '/user-account';
 
 export const registerService = baseApi.injectEndpoints({
   endpoints: builder => ({
     register: builder.mutation<IRegisterResponse, IRegisterRequest>({
       query: request => ({
-        url: `${PREFIX}/create`,
+        url: `${USER_PREFIX}/create`,
         data: request,
       }),
     }),

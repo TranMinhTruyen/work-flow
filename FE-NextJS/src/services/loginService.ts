@@ -1,13 +1,12 @@
 import baseApi from '@/common/api/apiBaseQuery';
+import { USER_PREFIX } from '@/common/constants/apiPrefixConst';
 import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
-
-const PREFIX = '/user-account';
 
 export const loginService = baseApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation<ILoginResponse, ILoginRequest>({
       query: request => ({
-        url: `${PREFIX}/login`,
+        url: `${USER_PREFIX}/login`,
         data: request,
       }),
     }),

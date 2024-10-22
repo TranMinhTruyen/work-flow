@@ -14,11 +14,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder(value = {"language", "payload"})
+@JsonPropertyOrder(value = {"timestamp", "language", "ipAddress", "macAddress", "payload"})
 public class BaseRequest<T> implements Serializable {
-   
-   private String language;
-   
-   private transient T payload;
-   
+
+  private String timestamp;
+
+  private String language;
+
+  private String ipAddress;
+
+  private String macAddress;
+
+  private transient T payload;
+
 }

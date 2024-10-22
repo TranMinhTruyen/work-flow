@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NotificationRepository extends MongoRepository<Notification, Long> {
+public interface NotificationRepository extends MongoRepository<Notification, String> {
 
-  Optional<List<Notification>> findAllByIsReadIsFalseAndIsDeletedIsFalse();
+  Optional<List<Notification>> findAllByIsReadIsFalseAndDeletedIsFalse();
 
 }

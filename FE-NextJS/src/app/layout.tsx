@@ -7,7 +7,7 @@ import ApiProvider from '@/common/provider/ApiProvider';
 import { I18nextProvider } from 'react-i18next';
 import i18next from '@/i18n';
 import PopupDialogContainer from '@/components/dialog/DialogContainer';
-import store from '@/common/store';
+import store from '@/lib/store';
 import { Provider } from 'react-redux';
 
 const geistSans = localFont({

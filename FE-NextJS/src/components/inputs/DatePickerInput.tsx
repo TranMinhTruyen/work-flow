@@ -11,6 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { DateType } from '@/common/utils/dateUtil';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import { FULL_DATE_FORMAT } from '@/common/constants/commonConst';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
@@ -39,7 +40,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     label,
     value,
     defaultValue,
-    inputFormat = 'DD/MM/YYYY',
+    inputFormat = FULL_DATE_FORMAT,
     views,
     openTo,
     onChange,

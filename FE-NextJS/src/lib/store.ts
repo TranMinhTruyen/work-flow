@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import { RESET_ALL } from './constants/commonConst';
-import baseApi from './api/apiBaseQuery';
-import commonSlice from './commonSlice';
+import { RESET_ALL } from '../common/constants/commonConst';
+import baseApi from '../common/api/apiBaseQuery';
+import commonSlice from './slices/commonSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 const combineReducer = combineReducers({

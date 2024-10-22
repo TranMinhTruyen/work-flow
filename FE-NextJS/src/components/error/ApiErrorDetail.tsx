@@ -23,6 +23,9 @@ const useStyles = makeStyles({
   tableHeader: {
     fontWeight: 'bold',
   },
+  tableCell: {
+    borderLeft: '1px solid rgba(224, 224, 224, 1)',
+  },
 });
 
 const ApiErrorDetail = (props: ApiErrorDetailProps) => {
@@ -34,13 +37,13 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
       return Object.entries(responseData.errorList).map(([key, value], index) => (
         <TableRow key={index}>
           <TableCell>{key}</TableCell>
-          <TableCell>{value}</TableCell>
+          <TableCell className={classes.tableCell}>{value}</TableCell>
         </TableRow>
       ));
     } else {
       return [];
     }
-  }, [responseData?.errorList]);
+  }, [classes.tableCell, responseData?.errorList]);
 
   return (
     <Container>
@@ -57,7 +60,7 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
                   <TableCell>
                     <Typography className={classes.tableHeader}>Error code</Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={classes.tableCell}>
                     <Typography className={classes.tableHeader}>Error message</Typography>
                   </TableCell>
                 </TableRow>

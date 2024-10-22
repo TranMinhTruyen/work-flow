@@ -25,7 +25,7 @@ public class NotificationService extends AbstractService {
   public List<NotificationResponse> findResponseIsNotRead() {
 
     Optional<List<Notification>> result = notificationRepository
-        .findAllByIsReadIsFalseAndIsDeletedIsFalse();
+      .findAllByIsReadIsFalseAndDeletedIsFalse();
 
     List<NotificationResponse> notificationResponseList = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class NotificationService extends AbstractService {
     notification.setTitle(notificationCreateRequest.getTitle());
     notification.setMessage(notificationCreateRequest.getMessage());
     notification.setUserId(notificationCreateRequest.getUserId());
-    notification.setIsDeleted(false);
+    notification.setDeleted(false);
     notification.setIsRead(false);
 
     notificationRepository.save(notification);

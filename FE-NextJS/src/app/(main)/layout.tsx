@@ -2,8 +2,8 @@
 import Grid2 from '@mui/material/Grid2';
 import { memo, ReactNode } from 'react';
 import { styled } from '@mui/material';
-import { useAppSelector } from '@/common/store';
-import { selectOpenDrawer } from '@/common/commonSlice';
+import { useAppSelector } from '@/lib/store';
+import { selectOpenDrawer } from '@/lib/slices/commonSlice';
 import MainProvider from '@/common/provider/MainProvider';
 import MainHeader from '@/components/header/MainHeader';
 import Drawer from '@/components/drawer/Drawer';

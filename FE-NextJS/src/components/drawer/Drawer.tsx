@@ -7,8 +7,8 @@ import { memo, useCallback } from 'react';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 import DrawerMenu from './DrawerMenu';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import { useAppDispatch, useAppSelector } from '@/common/store';
-import { selectOpenDrawer, toggleDrawer } from '@/common/commonSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import { selectOpenDrawer, toggleDrawer } from '@/lib/slices/commonSlice';
 import './drawer.css';
 
 type IDrawerProps = {

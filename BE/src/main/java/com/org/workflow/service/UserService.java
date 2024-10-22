@@ -50,6 +50,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService extends AbstractService {
 
+  public static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
+
+  private static final String BEARER = "Bearer";
+
+  private static final String USER_ID_PREFIX = "WF";
+
   private final UserRepository userRepository;
 
   private final UserHistoryRepository userHistoryRepository;
@@ -58,17 +64,50 @@ public class UserService extends AbstractService {
 
   private final RedisTemplate<Object, Object> redisTemplate;
 
-  private static final String BEARER = "Bearer";
-
-  private static final String USER_ID_PREFIX = "WF";
-
-  public static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
+  @Value("${file-utils.image-path}")
+  public String imagePath;
 
   @Value("${rsa.private-key}")
   private String privateKey;
 
-  @Value("${file-utils.image-path}")
-  public String imagePath;
+  /**
+   * Create CreateUserResponse
+   *
+   * @param saveUserAccount UserAccount
+   * @return CreateUserResponse
+   */
+  private static CreateUserResponse setCreateUserResponse(UserAccount saveUserAccount) {
+    CreateUserResponse createUserResponse = new CreateUserResponse();
+    createUserResponse.setUserName(saveUserAccount.getUserName());
+    createUserResponse.setFullName(saveUserAccount.getFullName());
+    createUserResponse.setBirthDay(saveUserAccount.getBirthDay());
+    createUserResponse.setRole(saveUserAccount.getRole());
+    createUserResponse.setAuthorities(saveUserAccount.getAuthorities());
+    createUserResponse.setLevel(saveUserAccount.getLevel());
+    createUserResponse.setImagePath(saveUserAccount.getImagePath());
+    createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
+    createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
+    createUserResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
+    createUserResponse.setUpdateBy(saveUserAccount.getUpdateBy());
+    return createUserResponse;
+  }
+
+  private static UserResponse setUserResponse(UserAccount userAccount) throws WorkFlowException {
+    UserResponse userResponse = new UserResponse();
+    userResponse.setUserId(userAccount.getUserId());
+    userResponse.setEmail(userAccount.getEmail());
+    userResponse.setUsername(userAccount.getUserName());
+    userResponse.setFullName(userAccount.getFullName());
+    userResponse.setBirthDay(userAccount.getBirthDay());
+    userResponse.setRole(userAccount.getRole());
+    userResponse.setAuthorities(userAccount.getAuthorities());
+    userResponse.setImage(FileUtil.readFile(userAccount.getImagePath()));
+    userResponse.setLoginFailCount(userAccount.getLoginFailCount());
+    userResponse.setIsActive(userAccount.isActive());
+    userResponse.setCreateDatetime(userAccount.getCreateDatetime());
+    userResponse.setUpdateDatetime(userAccount.getUpdateDatetime());
+    return userResponse;
+  }
 
   /**
    * Create new user.
@@ -82,7 +121,8 @@ public class UserService extends AbstractService {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
       createUserRequest.getUserName());
     if (result.isPresent()) {
-      throw new WorkFlowException(new ErrorDetail(USER_NAME_EXISTS));
+      throw new WorkFlowException(
+        new ErrorDetail(USER_NAME_EXISTS, "", createUserRequest.getUserName()));
     }
     LocalDateTime now = LocalDateTime.now();
     UserAccount userAccount = new UserAccount();
@@ -112,33 +152,12 @@ public class UserService extends AbstractService {
     userAccount.setCreateDatetime(now);
     userAccount.setUpdateBy(createUserRequest.getFullName());
     userAccount.setUpdateDatetime(now);
+    userAccount.setDeleted(false);
     UserAccount saveUserAccount = userRepository.save(userAccount);
 
     this.saveHistory(new UserAccount(), saveUserAccount, ChangeTypeEnum.CREATE);
 
     return setCreateUserResponse(saveUserAccount);
-  }
-
-  /**
-   * Create CreateUserResponse
-   *
-   * @param saveUserAccount UserAccount
-   * @return CreateUserResponse
-   */
-  private static CreateUserResponse setCreateUserResponse(UserAccount saveUserAccount) {
-    CreateUserResponse createUserResponse = new CreateUserResponse();
-    createUserResponse.setUserName(saveUserAccount.getUserName());
-    createUserResponse.setFullName(saveUserAccount.getFullName());
-    createUserResponse.setBirthDay(saveUserAccount.getBirthDay());
-    createUserResponse.setRole(saveUserAccount.getRole());
-    createUserResponse.setAuthorities(saveUserAccount.getAuthorities());
-    createUserResponse.setLevel(saveUserAccount.getLevel());
-    createUserResponse.setImagePath(saveUserAccount.getImagePath());
-    createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
-    createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
-    createUserResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
-    createUserResponse.setUpdateBy(saveUserAccount.getUpdateBy());
-    return createUserResponse;
   }
 
   /**
@@ -165,7 +184,7 @@ public class UserService extends AbstractService {
     redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
 
     if (!userAccount.isActive()) {
-      throw new WorkFlowException(new ErrorDetail(ACCOUNT_INACTIVE));
+      throw new WorkFlowException(new ErrorDetail(ACCOUNT_INACTIVE, "", userAccount.getUserName()));
     }
 
     String passwordDecrypted = RSAUtil.decryptRSA(loginRequest.getPassword(), privateKey);
@@ -191,25 +210,9 @@ public class UserService extends AbstractService {
         }
       }
       userRepository.save(userAccount);
-      throw new WorkFlowException(new ErrorDetail(ACCOUNT_PASSWORD_INVALID, "", loginRequest.getUserName()));
+      throw new WorkFlowException(
+        new ErrorDetail(ACCOUNT_PASSWORD_INVALID, "", loginRequest.getUserName()));
     }
-  }
-
-  private static UserResponse setUserResponse(UserAccount userAccount) throws WorkFlowException {
-    UserResponse userResponse = new UserResponse();
-    userResponse.setUserId(userAccount.getUserId());
-    userResponse.setEmail(userAccount.getEmail());
-    userResponse.setUsername(userAccount.getUserName());
-    userResponse.setFullName(userAccount.getFullName());
-    userResponse.setBirthDay(userAccount.getBirthDay());
-    userResponse.setRole(userAccount.getRole());
-    userResponse.setAuthorities(userAccount.getAuthorities());
-    userResponse.setImage(FileUtil.readFile(userAccount.getImagePath()));
-    userResponse.setLoginFailCount(userAccount.getLoginFailCount());
-    userResponse.setIsActive(userAccount.isActive());
-    userResponse.setCreateDatetime(userAccount.getCreateDatetime());
-    userResponse.setUpdateDatetime(userAccount.getUpdateDatetime());
-    return userResponse;
   }
 
   /**

@@ -22,7 +22,7 @@ import { Accept, useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { styled } from '@mui/material/styles';
-import { FileInputData } from '@/common/constants/type';
+import { FileInputData } from '@/common/constants/typeConst';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 

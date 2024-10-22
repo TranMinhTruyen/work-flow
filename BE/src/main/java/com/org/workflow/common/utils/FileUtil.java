@@ -2,7 +2,7 @@ package com.org.workflow.common.utils;
 
 import static com.org.workflow.common.enums.MessageEnum.READ_FILE_ERROR;
 
-import com.org.workflow.controller.request.FileData;
+import com.org.workflow.controller.common.FileData;
 import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
 import java.io.File;

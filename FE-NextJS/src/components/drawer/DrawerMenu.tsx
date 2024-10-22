@@ -16,8 +16,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
 import Grid2 from '@mui/material/Grid2';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { useAppSelector } from '@/common/store';
-import { selectOpenDrawer } from '@/common/commonSlice';
+import { useAppSelector } from '@/lib/store';
+import { selectOpenDrawer } from '@/lib/slices/commonSlice';
 import useNavigate from '@/common/hooks/useNavigate';
 
 const itemList = DrawerItemList;

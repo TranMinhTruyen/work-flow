@@ -8,17 +8,17 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItemMasterRepository extends MongoRepository<MasterItem, Long> {
+public interface ItemMasterRepository extends MongoRepository<MasterItem, String> {
 
-  Optional<MasterItem> getItemMasterByIdAndMasterCodeAndIsDeleted(Long id, String masterCode,
-      Boolean isDeleted);
+  Optional<MasterItem> getItemMasterByIdAndMasterCodeAndDeleted(String id, String masterCode,
+    boolean isDeleted);
 
-  Optional<MasterItem> getItemMasterByIdAndMasterCode(Long id, String masterCode);
+  Optional<MasterItem> getItemMasterByIdAndMasterCode(String id, String masterCode);
 
-  Optional<List<MasterItem>> getItemMasterByMasterCodeAndIsDeletedIsFalse(String masterCode);
+  Optional<List<MasterItem>> getItemMasterByMasterCodeAndDeletedIsFalse(String masterCode);
 
-  @Query(value = "{ $and: [{master_code: ?0}, {master_value: ?1}, {is_deleted: false}] }")
+  @Query(value = "{ $and: [{master_code: ?0}, {master_value: ?1}, {is_deleted: false}, {delete_by: null}, {delete_date_time: null}] }")
   Optional<MasterItem> getItemMasterByMasterCodeAndMasterValueAndIsDeletedIsFalse(String masterCode,
-      String masterValue);
+    String masterValue);
 
 }

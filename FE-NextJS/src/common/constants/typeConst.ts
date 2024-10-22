@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-
 export type SelectDataType = {
   key: string;
   value?: string;
