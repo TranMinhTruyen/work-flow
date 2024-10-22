@@ -53,7 +53,7 @@ const TextInput = (props: TextInputProps) => {
       name={name}
       control={control}
       rules={{
-        required: required,
+        required: required ? 'isRequired' : '',
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledTextInput

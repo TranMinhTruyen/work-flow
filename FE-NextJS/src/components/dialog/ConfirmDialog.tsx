@@ -151,7 +151,6 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
 
   return isPopup ? (
     <Dialog
-      keepMounted
       open={open}
       fullWidth={true}
       maxWidth={maxWidth}
@@ -161,7 +160,7 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
       {dialogBody}
     </Dialog>
   ) : (
-    <Dialog keepMounted open={open} fullWidth={true} maxWidth={maxWidth} {...restProps}>
+    <Dialog open={open} fullWidth={true} maxWidth={maxWidth} {...restProps}>
       {dialogBody}
     </Dialog>
   );

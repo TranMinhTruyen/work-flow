@@ -1,7 +1,6 @@
 import { AxiosRequestConfig, ResponseType } from 'axios';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { axiosInstance } from '../provider/ApiProvider';
 import { IBaseResponse } from '@/model/common/BaseResponse';
 import { toggleLoading } from '../../lib/slices/commonSlice';
@@ -25,15 +24,11 @@ const apiBaseQuery =
       const configAxios: AxiosRequestConfig = {
         url: baseUrl + url,
         method: 'POST',
-        data: data,
+        data,
         params,
         responseType,
         timeout: 180000,
       };
-
-      openPopupDialogContainer({
-        type: 'loading',
-      });
 
       const response = await axiosInstance(configAxios);
 

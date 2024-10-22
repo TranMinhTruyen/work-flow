@@ -2,18 +2,18 @@
 import axios from 'axios';
 import { ReactNode, useEffect, useState } from 'react';
 import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
-import store, { useAppDispatch, useAppSelector } from '../../lib/store';
-import { IBaseResponse } from '../../model/common/BaseResponse';
 import { MessageType } from '../enums/MessageEnum';
 import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
-import { selectIsLoading, toggleLoading } from '../../lib/slices/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import { ILoginResponse } from '@/model/login/LoginModel';
 import { IBaseRequest } from '@/model/common/BaseRequest';
 import { LOGIN_URL } from '../constants/urlConst';
+import { IBaseResponse } from '@/model/common/BaseResponse';
 import moment from 'moment';
+import { toggleLoading } from '@/lib/slices/commonSlice';
+import store, { useAppDispatch } from '@/lib/store';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -28,7 +28,6 @@ const whiteList: string[] = [
 
 const ApiProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
-  const isLoading: boolean = useAppSelector(selectIsLoading);
   const dispatch = useAppDispatch();
   const { navigate } = useNavigate();
 
@@ -58,18 +57,18 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Set loading
-      if (!isLoading) {
+      if (!store.getState().commonState.isLoading) {
         dispatch(toggleLoading(true));
+        openPopupDialogContainer({
+          type: 'loading',
+        });
       }
+
       return config;
     });
 
     axiosInstance.interceptors.response.use(
       response => {
-        if (isLoading) {
-          dispatch(toggleLoading(false));
-        }
-
         const transformResponse: IBaseResponse = response.data;
 
         // TODO Check warning
@@ -169,7 +168,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setIsSet(true);
-  }, [dispatch, isLoading, isSet, navigate]);
+  }, [dispatch, isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

@@ -6,8 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from '@/lib/store';
 import { selectIsLoading } from '@/lib/slices/commonSlice';
 
-const PopupLoadingDialog = () => {
-  const isLoading = useAppSelector(selectIsLoading);
+const LoadingDialog = () => {
+  const isLoading: boolean = useAppSelector(selectIsLoading);
   return (
     <Dialog keepMounted open={isLoading} maxWidth={'xs'}>
       <DialogContent sx={{ padding: 3.5 }}>
@@ -18,4 +18,4 @@ const PopupLoadingDialog = () => {
     </Dialog>
   );
 };
-export default PopupLoadingDialog;
+export default LoadingDialog;
