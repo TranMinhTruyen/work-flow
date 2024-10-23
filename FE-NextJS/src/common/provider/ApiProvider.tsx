@@ -47,9 +47,16 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
         }
       }
 
+      // Transform request
+      const clientIp = document.cookie
+        .split(';')
+        .find(row => row.startsWith('client-ip='))
+        ?.split('=')[1];
+
       if (config.data) {
         const transformRequest: IBaseRequest = {
           timestamp: moment(new Date()).format(DATE_TIME_FORMAT),
+          ipAddress: decodeURIComponent(clientIp ?? ''),
           language: store.getState().commonState.language,
           payload: config.data,
         };
