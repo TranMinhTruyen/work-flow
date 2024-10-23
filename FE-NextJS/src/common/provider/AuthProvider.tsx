@@ -1,32 +1,55 @@
 'use client';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { checkLogin } from '../utils/authUtil';
 import { CURRENT_PATH } from '../constants/commonConst';
 import { isNullOrEmpty } from '../utils/stringUtil';
 import useNavigate from '../hooks/useNavigate';
-import { HOME_URL, LOGIN_URL } from '../constants/urlConst';
+import { ADMIN_REGISTER_URL, HOME_URL, LOGIN_URL } from '../constants/urlConst';
+import { usePathname } from 'next/navigation';
+import { useCheckProxyMutation } from '@/services/proxyService';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const { navigate } = useNavigate();
+  const path = usePathname();
+  const [checkProxy] = useCheckProxyMutation();
+
+  const handleCheckProxy = useCallback(async () => {
+    const clientIp = document.cookie
+      .split(';')
+      .find(row => row.startsWith('client-ip='))
+      ?.split('=')[1];
+
+    return await checkProxy({
+      ipAddress:
+        process.env.NODE_ENV !== 'production' ? '127.0.0.1' : decodeURIComponent(clientIp ?? ''),
+    }).unwrap();
+  }, [checkProxy]);
 
   useEffect(() => {
     const isLogin = checkLogin();
 
-    if (!isLogin) {
-      navigate(LOGIN_URL, true);
-    } else {
+    if (isSet && isLogin) {
       navigate(HOME_URL, true);
     }
 
     const currentPath = sessionStorage.getItem(CURRENT_PATH);
-    if (isSet && !isNullOrEmpty(currentPath)) {
+    if (!isSet && !isNullOrEmpty(currentPath)) {
       navigate(currentPath);
-      return;
+    }
+
+    if (isSet && path === ADMIN_REGISTER_URL) {
+      handleCheckProxy().then(resolve => {
+        if (resolve.role === 'ADMIN') {
+          navigate(path);
+        } else {
+          navigate(LOGIN_URL);
+        }
+      });
     }
 
     setIsSet(true);
-  }, [isSet, navigate]);
+  }, [handleCheckProxy, isSet, navigate, path]);
 
   return <>{isSet && children}</>;
 };

@@ -13,15 +13,13 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const isLogin = checkLogin();
 
-    if (!isLogin) {
+    if (isSet && !isLogin) {
       navigate(LOGIN_URL, true);
-      return;
     }
 
     const currentPath = sessionStorage.getItem(CURRENT_PATH);
-    if (isSet && !isNullOrEmpty(currentPath)) {
+    if (!isSet && !isNullOrEmpty(currentPath)) {
       navigate(currentPath);
-      return;
     }
 
     setIsSet(true);

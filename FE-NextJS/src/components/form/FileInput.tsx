@@ -20,7 +20,6 @@ const FileInput = (props: FileInputProps) => {
   const {
     name,
     control,
-    label,
     required,
     value: valueProps,
     onChange: onChangeProps,
@@ -55,7 +54,7 @@ const FileInput = (props: FileInputProps) => {
       name={name}
       control={control}
       rules={{
-        required: required ? `${label} is required!` : '',
+        required: required ? 'isRequired' : '',
       }}
       render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledFileInput

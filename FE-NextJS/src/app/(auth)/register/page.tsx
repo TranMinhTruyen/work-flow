@@ -11,7 +11,6 @@ import KeyIcon from '@mui/icons-material/Key';
 import FloatButton from '@/components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/form/TextInput';
-import MultiSelectInput from '@/components/form/MultiSelectInput';
 import CardActions from '@mui/material/CardActions';
 import { useTranslation } from 'react-i18next';
 import DatePickerInput from '@/components/form/DatePickerInput';
@@ -19,13 +18,11 @@ import EmailIcon from '@mui/icons-material/Email';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import SelectInput from '@/components/form/SelectInput';
 import { handleSubmitRegister } from './action';
 import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
 import { IRegisterForm } from '@/model/register/RegisterForm';
 import ImageInput from '@/components/form/ImageInput';
 import { MessageType } from '@/common/enums/MessageEnum';
-import { authorities, role } from '@/common/constants/commonConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
@@ -169,25 +166,6 @@ const Register = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             required
-            width={400}
-          />
-
-          <SelectInput
-            name={'role'}
-            control={control}
-            required
-            displayNone
-            i18n={I18nEnum.REGISTER_I18N}
-            data={role}
-            width={400}
-          />
-
-          <MultiSelectInput
-            name={'authorities'}
-            control={control}
-            required
-            i18n={I18nEnum.REGISTER_I18N}
-            data={authorities}
             width={400}
           />
         </Stack>

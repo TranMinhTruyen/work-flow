@@ -5,13 +5,15 @@ import { axiosInstance } from '../provider/ApiProvider';
 import { IBaseResponse } from '@/model/common/BaseResponse';
 import { toggleLoading } from '../../lib/slices/commonSlice';
 import { API_PREFIX } from '../constants/apiPrefixConst';
+import { controller } from './apiUrl';
+import { Api } from '../enums/ApiEnum';
 
 const apiBaseQuery =
   (
     baseUrl: string = ''
   ): BaseQueryFn<
     {
-      url: string;
+      api: Api;
       data?: AxiosRequestConfig['data'];
       params?: AxiosRequestConfig['params'];
       responseType?: ResponseType;
@@ -19,11 +21,11 @@ const apiBaseQuery =
     undefined | null | unknown,
     undefined | null | unknown
   > =>
-  async ({ url, data, params, responseType }, { dispatch }) => {
+  async ({ api, data, params, responseType }, { dispatch }) => {
     try {
       const configAxios: AxiosRequestConfig = {
-        url: baseUrl + url,
-        method: 'POST',
+        url: baseUrl + controller[api].url,
+        method: controller[api].method,
         data,
         params,
         responseType,

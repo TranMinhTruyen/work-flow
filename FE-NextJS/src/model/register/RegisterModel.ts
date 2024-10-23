@@ -8,6 +8,7 @@ export interface IRegisterRequest {
   birthDay?: string;
   role?: string;
   authorities?: string[];
+  level?: number;
   image?: FileData;
 }
 
@@ -17,6 +18,7 @@ export interface IRegisterResponse {
   birthDay?: string;
   role?: string;
   authorities?: string[];
+  level?: number;
   imagePath?: string;
   createDatetime?: string;
   createdBy?: string;

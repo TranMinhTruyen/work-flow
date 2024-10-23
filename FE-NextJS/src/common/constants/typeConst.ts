@@ -20,3 +20,8 @@ export type SelectDataFunc = (
   items: Obj[],
   keys: { key?: string; value?: string }
 ) => SelectDataType[];
+
+export type ApiType = {
+  url: string;
+  method: 'POST' | 'GET' | 'UPDATE' | 'DELETE';
+};

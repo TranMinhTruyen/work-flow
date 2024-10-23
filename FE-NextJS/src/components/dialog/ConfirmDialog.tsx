@@ -51,18 +51,46 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
     onCancel?.();
   }, [onCancel]);
 
-  const icon = useMemo(() => {
+  const dialogHeader = useMemo(() => {
     switch (messageType) {
       case MessageType.WARN:
-        return <ErrorIcon color="warning" />;
+        return (
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography sx={{ fontSize: 25, color: 'rgba(255, 200, 0, 1)' }}>
+              {title ?? null}
+            </Typography>{' '}
+            <ErrorIcon color={'warning'} />
+          </Stack>
+        );
       case MessageType.ERROR:
-        return <ErrorIcon color="error" />;
+        return (
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography sx={{ fontSize: 25, color: 'rgba(225, 0, 0, 1)' }}>
+              {title ?? null}
+            </Typography>
+            <ErrorIcon color={'error'} />
+          </Stack>
+        );
       case MessageType.INFO:
-        return <InfoIcon color="primary" />;
+        return (
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography sx={{ fontSize: 25, color: 'rgba(0, 80, 255, 1)' }}>
+              {title ?? null}
+            </Typography>
+            <InfoIcon color={'primary'} />
+          </Stack>
+        );
       case MessageType.SUCCESS:
-        return <CheckCircleIcon color="primary" />;
+        return (
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography sx={{ fontSize: 25, color: 'rgba(0, 225, 0, 1)' }}>
+              {title ?? null}
+            </Typography>
+            <CheckCircleIcon color={'primary'} />
+          </Stack>
+        );
     }
-  }, [messageType]);
+  }, [messageType, title]);
 
   const messageElement = useMemo(() => {
     if (message) {
@@ -108,10 +136,7 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
             padding: '10px',
           }}
         >
-          <Stack direction={'row'} alignItems={'center'} spacing={1}>
-            <Typography sx={{ fontSize: 25 }}>{title ?? null}</Typography>
-            {icon}
-          </Stack>
+          {dialogHeader}
 
           <IconButton onClick={handleCancelClick} sx={{ position: 'absolute', right: 8 }}>
             <CloseIcon />
@@ -120,7 +145,7 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
 
         <Divider />
 
-        <DialogContent sx={{ padding: 3.5 }}>
+        <DialogContent sx={{ padding: 2.5 }}>
           <Stack alignItems={'center'}>{messageElement}</Stack>
         </DialogContent>
 
@@ -146,7 +171,7 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
         </DialogActions>
       </>
     ),
-    [cancelButton, confirmText, handleCancelClick, handleConfirmClick, icon, messageElement, title]
+    [cancelButton, confirmText, handleCancelClick, handleConfirmClick, dialogHeader, messageElement]
   );
 
   return isPopup ? (

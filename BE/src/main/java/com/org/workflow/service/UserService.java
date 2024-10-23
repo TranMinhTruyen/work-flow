@@ -50,7 +50,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService extends AbstractService {
 
-  public static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
+  private static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
 
   private static final String BEARER = "Bearer";
 
@@ -128,7 +128,7 @@ public class UserService extends AbstractService {
     UserAccount userAccount = new UserAccount();
 
     String userId = USER_ID_PREFIX.concat(
-      LocalDateTime.now().format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
+      now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
     userAccount.setUserId(userId);
     userAccount.setUserName(createUserRequest.getUserName());
 

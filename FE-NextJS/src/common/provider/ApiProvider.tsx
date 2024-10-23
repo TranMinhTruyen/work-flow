@@ -11,9 +11,9 @@ import { ILoginResponse } from '@/model/login/LoginModel';
 import { IBaseRequest } from '@/model/common/BaseRequest';
 import { LOGIN_URL } from '../constants/urlConst';
 import { IBaseResponse } from '@/model/common/BaseResponse';
-import moment from 'moment';
 import { toggleLoading } from '@/lib/slices/commonSlice';
 import store, { useAppDispatch } from '@/lib/store';
+import moment from 'moment';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -24,6 +24,7 @@ const whiteList: string[] = [
   '/api/user-account/login',
   '/api/user-account/create',
   '/api/master-item/get',
+  '/api/proxy/check-proxy',
 ];
 
 const ApiProvider = ({ children }: { children: ReactNode }) => {
@@ -56,7 +57,10 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
       if (config.data) {
         const transformRequest: IBaseRequest = {
           timestamp: moment(new Date()).format(DATE_TIME_FORMAT),
-          ipAddress: decodeURIComponent(clientIp ?? ''),
+          ipAddress:
+            process.env.NODE_ENV !== 'production'
+              ? '127.0.0.1'
+              : decodeURIComponent(clientIp ?? ''),
           language: store.getState().commonState.language,
           payload: config.data,
         };

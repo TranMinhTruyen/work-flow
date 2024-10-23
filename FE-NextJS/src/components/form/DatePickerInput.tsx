@@ -16,7 +16,6 @@ const DatePickerInput = (props: DatePickerInputProps) => {
   const {
     name,
     control,
-    label,
     required,
     inputFormat = 'DD/MM/YYYY',
     value: valueProps,
@@ -50,7 +49,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
       name={name}
       control={control}
       rules={{
-        required: required ? `${label} is required!` : '',
+        required: required ? 'isRequired' : '',
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledDatePickerInput

@@ -15,7 +15,6 @@ export type MultiSelectInputProps = UncontrolledMultiSelectInputProps & {
 const MultiSelectInput = (props: MultiSelectInputProps) => {
   const {
     name,
-    label,
     control,
     required,
     value: valueProps,
@@ -49,7 +48,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       name={name}
       control={control}
       rules={{
-        required: required ? `${label} is required!` : '',
+        required: required ? 'isRequired' : '',
       }}
       render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledMultiSelectInput

@@ -9,6 +9,7 @@ import i18next from '@/i18n';
 import DialogContainer from '@/components/dialog/DialogContainer';
 import store from '@/lib/store';
 import { Provider } from 'react-redux';
+import BackButtonListener from '@/components/loading/BackButtonListener ';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -40,6 +41,7 @@ const RootLayout = ({
             <main>
               <div id="root">
                 <ApiProvider>{children}</ApiProvider>
+                <BackButtonListener />
                 <DialogContainer />
                 <CssBaseline />
               </div>

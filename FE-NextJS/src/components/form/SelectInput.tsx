@@ -16,7 +16,6 @@ export type SelectInputProps = UncontrolledSelectInputProps & {
 
 const SelectInput = (props: SelectInputProps) => {
   const {
-    label,
     name,
     control,
     required,
@@ -51,7 +50,7 @@ const SelectInput = (props: SelectInputProps) => {
       name={name}
       control={control}
       rules={{
-        required: required ? `${label} is required!` : '',
+        required: required ? 'isRequired' : '',
       }}
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledSelectInput

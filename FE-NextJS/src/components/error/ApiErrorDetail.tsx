@@ -48,8 +48,8 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
   return (
     <Container>
       <Stack spacing={1}>
-        <Typography>
-          Status: {status} {message}
+        <Typography variant={'h5'} component={'span'} sx={{ color: 'rgba(225, 0, 0, 1)' }}>
+          {status} {message}
         </Typography>
 
         <Paper variant={'outlined'}>

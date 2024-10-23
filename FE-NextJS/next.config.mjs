@@ -9,16 +9,6 @@ const nextConfig = {
     config.plugins.push(new webpack.ProgressPlugin());
     return config;
   },
-
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/',
-  //       destination: '/home',
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
 };
 
 export default nextConfig;
