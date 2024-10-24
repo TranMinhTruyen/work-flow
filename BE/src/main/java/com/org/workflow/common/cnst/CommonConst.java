@@ -1,7 +1,7 @@
 package com.org.workflow.common.cnst;
 
 public class CommonConst {
-  
+
   public static final String API_PREFIX = "/api";
 
   public static final String CLASS_NAME = "com.org.workflow.service";
@@ -30,4 +30,5 @@ public class CommonConst {
     M6qDwlUtAPS2ZRWrKk9l
     """;
 
+  
 }

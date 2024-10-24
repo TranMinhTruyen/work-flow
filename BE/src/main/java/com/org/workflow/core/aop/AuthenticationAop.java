@@ -3,6 +3,9 @@ package com.org.workflow.core.aop;
 import static com.org.workflow.common.enums.MessageEnum.AUTHENTICATION_FAILED;
 
 import com.org.workflow.common.annotation.Authentication;
+import com.org.workflow.common.enums.AuthorityEnums;
+import com.org.workflow.common.enums.LevelEnums;
+import com.org.workflow.common.enums.RoleEnums;
 import com.org.workflow.common.utils.AuthUtil;
 import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
@@ -25,14 +28,15 @@ public class AuthenticationAop {
   @Around("@annotation(authentication)")
   public Object checkAuthentication(ProceedingJoinPoint joinPoint, Authentication authentication)
     throws WorkFlowException {
+
     Object value;
 
     try {
-      String role = authentication.role();
-      String authority = authentication.authority();
-      int level = authentication.level();
+      RoleEnums role = authentication.role();
+      AuthorityEnums authority = authentication.authority();
+      LevelEnums level = authentication.level();
 
-      AuthUtil.checkAuthentication(role, authority, level);
+      AuthUtil.checkAuthentication(role.getRole(), authority.getAuthority(), level.getLevel());
 
       value = joinPoint.proceed();
       return value;

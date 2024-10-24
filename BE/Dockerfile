@@ -30,15 +30,17 @@ RUN apt-get update && apt-get install -y curl && \
   mv apache-tomcat-11.0.0-M26/webapps/host-manager /usr/local/tomcat/webapps/host-manager 
 
 # Thêm người dùng quản lý vào Tomcat
-RUN echo '<tomcat-users>\n' \
-  '<role rolename="manager-gui"/>\n' \
-  '<role rolename="admin-gui"/>\n' \
-  '<user username="admin" password="password" roles="manager-gui,admin-gui"/>\n' \
+RUN echo  \
+  '<tomcat-users>\n' \
+    '<role rolename="manager-gui"/>\n' \
+    '<role rolename="admin-gui"/>\n' \
+    '<user username="admin" password="password" roles="manager-gui,admin-gui"/>\n' \
   '</tomcat-users>' > /usr/local/tomcat/conf/tomcat-users.xml 
 
 # Cấu hình cho context.xml để cho phép truy cập
-RUN echo '<Context antiResourceLocking="false" privileged="true">\n' \
-  '<Valve className="org.apache.catalina.valves.RemoteIpValve" remoteIpHeader="X-Forwarded-For" proxiesHeader="X-Forwarded-By"/>\n' \
+RUN echo  \
+  '<Context antiResourceLocking="false" privileged="true">\n' \
+    '<Valve className="org.apache.catalina.valves.RemoteIpValve" remoteIpHeader="X-Forwarded-For" proxiesHeader="X-Forwarded-By"/>\n' \
   '</Context>' > /usr/local/tomcat/webapps/manager/META-INF/context.xml
 
 # Copy file WAR đã build vào thư mục webapps của Tomcat

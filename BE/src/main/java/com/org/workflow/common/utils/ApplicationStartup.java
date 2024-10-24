@@ -27,6 +27,8 @@ public class ApplicationStartup {
 
   private static final String USER_ID_PREFIX = "WF";
 
+  private static final String SYSTEM = "System";
+
   private final UserRepository userRepository;
 
   private final ProxyRepository proxyRepository;
@@ -50,9 +52,9 @@ public class ApplicationStartup {
     userAccount.setLevel(3);
     userAccount.setActive(true);
     userAccount.setLoginFailCount(0);
-    userAccount.setCreatedBy("System");
+    userAccount.setCreatedBy(SYSTEM);
     userAccount.setCreateDatetime(now);
-    userAccount.setUpdateBy("System");
+    userAccount.setUpdateBy(SYSTEM);
     userAccount.setUpdateDatetime(now);
     userAccount.setDeleted(false);
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
@@ -68,9 +70,9 @@ public class ApplicationStartup {
     Proxy proxy = new Proxy();
     proxy.setIpAddress("127.0.0.1");
     proxy.setRole("ADMIN");
-    proxy.setCreatedBy("System");
+    proxy.setCreatedBy(SYSTEM);
     proxy.setCreateDatetime(now);
-    proxy.setUpdateBy("System");
+    proxy.setUpdateBy(SYSTEM);
     proxy.setUpdateDatetime(now);
     proxy.setDeleted(false);
     Optional<Proxy> result = proxyRepository.getRole(

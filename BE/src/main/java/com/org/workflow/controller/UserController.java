@@ -16,9 +16,6 @@ import com.org.workflow.controller.request.usercontroller.UpdateUserRequest;
 import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.lang.reflect.InvocationTargetException;
@@ -44,11 +41,6 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WorkFlowException AppException
    */
-  @Operation(responses = {
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-    @ApiResponse(responseCode = "400", description = "Bad request"),
-    @ApiResponse(responseCode = "500", description = "Server error"),
-    @ApiResponse(responseCode = "403", description = "Forbidden")})
   @PostMapping(value = "/create")
   public ResponseEntity<BaseResponse> createUserAccount(
     @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WorkFlowException {
@@ -64,13 +56,9 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WorkFlowException AppException
    */
-  @Operation(responses = {
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-    @ApiResponse(responseCode = "400", description = "Bad request"),
-    @ApiResponse(responseCode = "500", description = "Server error"),
-    @ApiResponse(responseCode = "403", description = "Forbidden")})
   @PostMapping("/login")
-  public ResponseEntity<BaseResponse> loginUserAccount(@RequestBody BaseRequest<LoginRequest> loginRequest)
+  public ResponseEntity<BaseResponse> loginUserAccount(
+    @RequestBody BaseRequest<LoginRequest> loginRequest)
     throws WorkFlowException {
     LoginResponse result = userService.login(loginRequest.getPayload());
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
@@ -82,12 +70,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WorkFlowException AppException
    */
-  @Operation(responses = {
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-    @ApiResponse(responseCode = "400", description = "Bad request"),
-    @ApiResponse(responseCode = "500", description = "Server error"),
-    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-    @SecurityRequirement(name = "Authorization")})
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile() throws WorkFlowException {
     UserResponse result = userService.getProfile();
@@ -101,12 +84,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WorkFlowException AppException
    */
-  @Operation(responses = {
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-    @ApiResponse(responseCode = "400", description = "Bad request"),
-    @ApiResponse(responseCode = "500", description = "Server error"),
-    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-    @SecurityRequirement(name = "Authorization")})
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/update-user-account")
   public ResponseEntity<BaseResponse> updateUserAccount(
     @RequestBody BaseRequest<UpdateUserRequest> updateUserRequest)
@@ -122,12 +100,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WorkFlowException AppException
    */
-  @Operation(responses = {
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(hidden = true))),
-    @ApiResponse(responseCode = "400", description = "Bad request"),
-    @ApiResponse(responseCode = "500", description = "Server error"),
-    @ApiResponse(responseCode = "403", description = "Forbidden")}, security = {
-    @SecurityRequirement(name = "Authorization")})
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/change-login-password")
   public ResponseEntity<BaseResponse> changeLoginPassword(
     @RequestBody BaseRequest<ChangePasswordRequest> changePasswordRequest)

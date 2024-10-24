@@ -5,8 +5,8 @@ import { styled } from '@mui/material';
 import { useAppSelector } from '@/lib/store';
 import { selectOpenDrawer } from '@/lib/slices/commonSlice';
 import MainProvider from '@/common/provider/MainProvider';
-import MainHeader from '@/components/header/MainHeader';
 import Drawer from '@/components/drawer/Drawer';
+import MainHeader from '@/components/header/main-header/MainHeader';
 
 const DRAWER_WIDTH: number = 200;
 

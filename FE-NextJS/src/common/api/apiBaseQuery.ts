@@ -3,10 +3,10 @@ import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosInstance } from '../provider/ApiProvider';
 import { IBaseResponse } from '@/model/common/BaseResponse';
-import { toggleLoading } from '../../lib/slices/commonSlice';
 import { API_PREFIX } from '../constants/apiPrefixConst';
 import { controller } from './apiUrl';
 import { Api } from '../enums/ApiEnum';
+import { toggleLoading } from '@/lib/slices/commonSlice';
 
 const apiBaseQuery =
   (
@@ -24,7 +24,7 @@ const apiBaseQuery =
   async ({ api, data, params, responseType }, { dispatch }) => {
     try {
       const configAxios: AxiosRequestConfig = {
-        url: baseUrl + controller[api].url,
+        url: baseUrl.concat(controller[api].url),
         method: controller[api].method,
         data,
         params,

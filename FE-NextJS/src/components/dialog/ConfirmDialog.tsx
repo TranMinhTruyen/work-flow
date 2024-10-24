@@ -58,7 +58,7 @@ const ConfirmDialog = (props: PopupConfirmDialogProps) => {
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography sx={{ fontSize: 25, color: 'rgba(255, 200, 0, 1)' }}>
               {title ?? null}
-            </Typography>{' '}
+            </Typography>
             <ErrorIcon color={'warning'} />
           </Stack>
         );
