@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { AuthHeaderProvider } from '@/common/contexts/AuthHeaderContext';
-import AuthHeader from '@/components/header/AuthHeader';
+import AuthHeader from '@/components/header/auth-header/AuthHeader';
 import { memo, ReactNode } from 'react';
 import AuthProvider from '@/common/provider/AuthProvider';
 

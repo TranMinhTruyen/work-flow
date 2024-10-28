@@ -1,26 +1,26 @@
 'use client';
 import { memo, useEffect } from 'react';
-import ConfirmDialog, { PopupConfirmDialogProps } from './ConfirmDialog';
+import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
 import usePopupDialog from '@/common/hooks/useDialog';
 import { useAppSelector } from '@/lib/store';
 import { selectIsLoading } from '@/lib/slices/commonSlice';
 
-export type DialogContainerProps = Omit<PopupConfirmDialogProps, 'open' | 'showCancelButton'> & {
+export type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancelButton'> & {
   type: DialogType;
 };
 
 type DialogType = 'confirm' | 'loading' | 'message';
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-export let openPopupDialogContainer = (_props: DialogContainerProps) => {};
+export let openDialogContainer = (_props: DialogContainerProps) => {};
 
 const DialogContainer = () => {
   const { openDialog, dialogProps, isPropsNull, dialogType } = usePopupDialog();
   const isLoading: boolean = useAppSelector(selectIsLoading);
 
   useEffect(() => {
-    openPopupDialogContainer = (props: DialogContainerProps) => openDialog(props);
+    openDialogContainer = (props: DialogContainerProps) => openDialog(props);
   }, [openDialog]);
 
   if (isPropsNull) return null;

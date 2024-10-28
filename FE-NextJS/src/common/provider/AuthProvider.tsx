@@ -7,6 +7,8 @@ import useNavigate from '../hooks/useNavigate';
 import { ADMIN_REGISTER_URL, HOME_URL, LOGIN_URL } from '../constants/urlConst';
 import { usePathname } from 'next/navigation';
 import { useCheckProxyMutation } from '@/services/proxyService';
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import { MessageType } from '../enums/MessageEnum';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
@@ -14,6 +16,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const path = usePathname();
   const [checkProxy] = useCheckProxyMutation();
 
+  // Check proxy before going to admin register page
   const handleCheckProxy = useCallback(async () => {
     const clientIp = document.cookie
       .split(';')
@@ -43,7 +46,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (resolve.role === 'ADMIN') {
           navigate(path);
         } else {
-          navigate(LOGIN_URL);
+          openDialogContainer({
+            title: 'Alert',
+            type: 'message',
+            messageType: MessageType.WARN,
+            message: "You don't have any permission!",
+            onConfirm: () => {
+              navigate(LOGIN_URL);
+            },
+          });
         }
       });
     }

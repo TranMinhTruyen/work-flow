@@ -15,19 +15,21 @@ import FloatButton from '../button/FloatButton';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 
-export type PopupConfirmDialogProps = DialogProps & {
+export type ConfirmDialogProps = DialogProps & {
   title?: ReactNode;
   message?: ReactNode;
   messageType?: MessageType;
   cancelText?: string;
   confirmText?: string;
   isPopup?: boolean;
+  autoClose?: boolean;
+  timeout?: number;
   showCancelButton?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
 };
 
-const ConfirmDialog = (props: PopupConfirmDialogProps) => {
+const ConfirmDialog = (props: ConfirmDialogProps) => {
   const {
     open,
     title,

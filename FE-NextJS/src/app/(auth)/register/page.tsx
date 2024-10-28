@@ -19,7 +19,7 @@ import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { handleSubmitRegister } from './action';
-import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import { IRegisterForm } from '@/model/register/RegisterForm';
 import ImageInput from '@/components/form/ImageInput';
 import { MessageType } from '@/common/enums/MessageEnum';
@@ -72,7 +72,7 @@ const Register = () => {
       await trigger();
       const response = await handleSubmitRegister(formData);
       if (response !== undefined) {
-        openPopupDialogContainer({
+        openDialogContainer({
           type: 'message',
           title: 'SUCCESS',
           messageType: MessageType.SUCCESS,

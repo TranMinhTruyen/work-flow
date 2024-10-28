@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import SelectInput from '../inputs/SelectInput';
+import SelectInput from '../../inputs/SelectInput';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { selectLanguage, setLanguage } from '@/lib/slices/commonSlice';

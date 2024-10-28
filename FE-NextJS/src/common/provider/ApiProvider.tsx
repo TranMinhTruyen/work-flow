@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ReactNode, useEffect, useState } from 'react';
 import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
 import { MessageType } from '../enums/MessageEnum';
-import { openPopupDialogContainer } from '@/components/dialog/DialogContainer';
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import { getLoginData } from '../utils/authUtil';
 import useNavigate from '../hooks/useNavigate';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
@@ -70,7 +70,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
       // Set loading
       if (!store.getState().commonState.isLoading) {
         dispatch(toggleLoading(true));
-        openPopupDialogContainer({
+        openDialogContainer({
           type: 'loading',
         });
       }
@@ -84,7 +84,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
 
         // TODO Check warning
         if (transformResponse.messageType !== MessageType.SUCCESS) {
-          openPopupDialogContainer({
+          openDialogContainer({
             title: transformResponse.messageType,
             type: 'message',
             maxWidth: 'sm',
@@ -159,7 +159,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        openPopupDialogContainer({
+        openDialogContainer({
           title: responseData.messageType,
           type: 'message',
           maxWidth: 'sm',
