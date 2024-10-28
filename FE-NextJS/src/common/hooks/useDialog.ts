@@ -3,32 +3,10 @@ import { DialogContainerProps } from '@/components/dialog/DialogContainer';
 
 type UseDialogProps = { open: boolean; dialogState?: DialogContainerProps };
 
-const usePopupDialog = () => {
+const useDialog = () => {
   const [state, setState] = useState<UseDialogProps>({
     open: false,
   });
-
-  useEffect(() => {
-    if (
-      state.open &&
-      state.dialogState?.autoClose !== undefined &&
-      state.dialogState?.autoClose === true
-    ) {
-      const timeout =
-        state.dialogState.timeout !== undefined && state.dialogState.timeout > 0
-          ? state.dialogState.timeout
-          : 10000;
-
-      const timer = setTimeout(() => {
-        setState(prev => ({
-          ...prev,
-          open: false,
-        }));
-      }, timeout);
-
-      return () => clearTimeout(timer);
-    }
-  }, [state.dialogState?.autoClose, state.dialogState?.timeout, state.open]);
 
   const openDialog = useCallback((newState: DialogContainerProps) => {
     setState(prev => ({
@@ -56,6 +34,29 @@ const usePopupDialog = () => {
     }));
   }, [state.dialogState]);
 
+  useEffect(() => {
+    if (
+      state.open &&
+      state.dialogState?.autoClose !== undefined &&
+      state.dialogState?.autoClose === true
+    ) {
+      const timeout =
+        state.dialogState.timeout !== undefined && state.dialogState.timeout > 0
+          ? state.dialogState.timeout
+          : 10000;
+
+      const timer = setTimeout(() => {
+        handleConfirm();
+        setState(prev => ({
+          ...prev,
+          open: false,
+        }));
+      }, timeout);
+
+      return () => clearTimeout(timer);
+    }
+  }, [handleConfirm, state.dialogState?.autoClose, state.dialogState?.timeout, state.open]);
+
   // return all props of dialog
   const dialogProps = useMemo(
     () => ({
@@ -75,4 +76,4 @@ const usePopupDialog = () => {
   };
 };
 
-export default usePopupDialog;
+export default useDialog;

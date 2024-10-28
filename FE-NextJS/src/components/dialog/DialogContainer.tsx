@@ -2,7 +2,7 @@
 import { memo, useEffect } from 'react';
 import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
-import usePopupDialog from '@/common/hooks/useDialog';
+import useDialog from '@/common/hooks/useDialog';
 import { useAppSelector } from '@/lib/store';
 import { selectIsLoading } from '@/lib/slices/commonSlice';
 
@@ -16,7 +16,7 @@ type DialogType = 'confirm' | 'loading' | 'message';
 export let openDialogContainer = (_props: DialogContainerProps) => {};
 
 const DialogContainer = () => {
-  const { openDialog, dialogProps, isPropsNull, dialogType } = usePopupDialog();
+  const { openDialog, dialogProps, isPropsNull, dialogType } = useDialog();
   const isLoading: boolean = useAppSelector(selectIsLoading);
 
   useEffect(() => {

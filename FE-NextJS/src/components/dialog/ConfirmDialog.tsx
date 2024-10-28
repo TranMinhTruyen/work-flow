@@ -25,6 +25,7 @@ export type ConfirmDialogProps = DialogProps & {
   autoClose?: boolean;
   timeout?: number;
   showCancelButton?: boolean;
+  showCloseButton?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
 };
@@ -37,8 +38,9 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     messageType,
     cancelText,
     confirmText,
-    showCancelButton,
     isPopup = true,
+    showCancelButton,
+    showCloseButton = true,
     onConfirm,
     onCancel,
     maxWidth = 'xs',
@@ -139,10 +141,11 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
           }}
         >
           {dialogHeader}
-
-          <IconButton onClick={handleCancelClick} sx={{ position: 'absolute', right: 8 }}>
-            <CloseIcon />
-          </IconButton>
+          {showCloseButton ? (
+            <IconButton onClick={handleCancelClick} sx={{ position: 'absolute', right: 8 }}>
+              <CloseIcon />
+            </IconButton>
+          ) : null}
         </Box>
 
         <Divider />

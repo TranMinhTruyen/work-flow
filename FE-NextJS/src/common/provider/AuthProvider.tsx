@@ -50,6 +50,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             title: 'Alert',
             type: 'message',
             messageType: MessageType.WARN,
+            autoClose: true,
             message: "You don't have any permission!",
             onConfirm: () => {
               navigate(LOGIN_URL);
