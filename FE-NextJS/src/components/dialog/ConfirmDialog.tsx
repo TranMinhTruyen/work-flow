@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useCallback, useMemo } from 'react';
+import { memo, ReactNode, useCallback, useMemo } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -22,10 +22,12 @@ export type ConfirmDialogProps = DialogProps & {
   cancelText?: string;
   confirmText?: string;
   isPopup?: boolean;
-  autoClose?: boolean;
-  timeout?: number;
   showCancelButton?: boolean;
   showCloseButton?: boolean;
+  autoClose?: boolean;
+  showCountdown?: boolean;
+  countdown?: number;
+  timeout?: number;
   onConfirm?: () => void;
   onCancel?: () => void;
 };
@@ -41,6 +43,9 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     isPopup = true,
     showCancelButton,
     showCloseButton = true,
+    autoClose = false,
+    showCountdown = true,
+    countdown,
     onConfirm,
     onCancel,
     maxWidth = 'xs',
@@ -151,7 +156,10 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         <Divider />
 
         <DialogContent sx={{ padding: 2.5 }}>
-          <Stack alignItems={'center'}>{messageElement}</Stack>
+          <Stack alignItems={'center'}>
+            {messageElement}
+            {showCountdown && autoClose ? countdown : null}
+          </Stack>
         </DialogContent>
 
         <Divider />
@@ -161,7 +169,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
             <FloatButton
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  {confirmText ?? 'Ok'}
+                  {confirmText ?? 'OK'}
                 </Typography>
               }
               sx={{
@@ -176,7 +184,18 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         </DialogActions>
       </>
     ),
-    [cancelButton, confirmText, handleCancelClick, handleConfirmClick, dialogHeader, messageElement]
+    [
+      dialogHeader,
+      showCloseButton,
+      handleCancelClick,
+      messageElement,
+      showCountdown,
+      autoClose,
+      countdown,
+      confirmText,
+      handleConfirmClick,
+      cancelButton,
+    ]
   );
 
   return isPopup ? (
@@ -196,4 +215,4 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
   );
 };
 
-export default ConfirmDialog;
+export default memo(ConfirmDialog);
