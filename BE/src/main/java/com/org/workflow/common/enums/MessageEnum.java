@@ -15,8 +15,8 @@ public enum MessageEnum {
   //@formatter:off
 
   //region COMMON_MESSAGE
-  ANY_MESSAGE(INFO, "", "{0}", null),
-  UTILITY_CLASS(ERROR, "", "Utility class", HttpStatus.INTERNAL_SERVER_ERROR),
+  ANY_MESSAGE(INFO, "ANY", "{0}", null),
+  UTILITY_CLASS(ERROR, "UTILITY", "Utility class", HttpStatus.INTERNAL_SERVER_ERROR),
   //endregion
   
   //region COMMON_SUCCESS
