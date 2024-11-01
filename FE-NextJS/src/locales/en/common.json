@@ -1,7 +1,7 @@
 {
   "en": "English",
-  "vn": "Vietnamese",
-  "jp": "Japanese",
+  "vi": "Vietnamese",
+  "ja": "Japanese",
   "isRequired": "is required",
   "label": {
     "language": "Language",

@@ -9,7 +9,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  * @author minh-truyen
  */
 @Configuration
-public class InternationalizationConfig {
+public class I18nConfig {
 
   @Bean
   public MessageSource messageSource() {

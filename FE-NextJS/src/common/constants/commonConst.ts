@@ -42,10 +42,10 @@ export const languageConst = [
     id: 'en',
   },
   {
-    id: 'vn',
+    id: 'vi',
   },
   {
-    id: 'jp',
+    id: 'ja',
   },
 ];
 //#endregion
