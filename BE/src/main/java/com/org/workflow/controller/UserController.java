@@ -43,10 +43,10 @@ public class UserController extends AbstractController {
    */
   @PostMapping(value = "/create")
   public ResponseEntity<BaseResponse> createUserAccount(
-    @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WorkFlowException {
+      @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WorkFlowException {
     CreateUserResponse result = userService.createUserAccount(createUserRequest.getPayload());
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
-      result.getUserName());
+        result.getUserName());
   }
 
   /**
@@ -58,9 +58,9 @@ public class UserController extends AbstractController {
    */
   @PostMapping("/login")
   public ResponseEntity<BaseResponse> loginUserAccount(
-    @RequestBody BaseRequest<LoginRequest> loginRequest)
-    throws WorkFlowException {
-    LoginResponse result = userService.login(loginRequest.getPayload());
+      @RequestBody BaseRequest<LoginRequest> loginRequest)
+      throws WorkFlowException {
+    LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -87,8 +87,8 @@ public class UserController extends AbstractController {
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/update-user-account")
   public ResponseEntity<BaseResponse> updateUserAccount(
-    @RequestBody BaseRequest<UpdateUserRequest> updateUserRequest)
-    throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+      @RequestBody BaseRequest<UpdateUserRequest> updateUserRequest)
+      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
     UpdateUserResponse result = userService.updateUserAccount(updateUserRequest.getPayload());
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
@@ -103,8 +103,8 @@ public class UserController extends AbstractController {
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/change-login-password")
   public ResponseEntity<BaseResponse> changeLoginPassword(
-    @RequestBody BaseRequest<ChangePasswordRequest> changePasswordRequest)
-    throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+      @RequestBody BaseRequest<ChangePasswordRequest> changePasswordRequest)
+      throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
     userService.changeLoginPassword(changePasswordRequest.getPayload());
     return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
   }

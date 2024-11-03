@@ -1,8 +1,17 @@
 package com.org.workflow.service;
 
+import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_INACTIVE;
+import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
+import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
+import static com.org.workflow.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
+import static com.org.workflow.common.enums.MessageEnum.NOT_FOUND;
+import static com.org.workflow.common.enums.MessageEnum.UPDATE_FAILED;
+import static com.org.workflow.common.enums.MessageEnum.USER_NAME_EXISTS;
+
 import com.google.common.hash.Hashing;
 import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.utils.AuthUtil;
+import com.org.workflow.common.utils.ErrorDetailUtil;
 import com.org.workflow.common.utils.FileUtil;
 import com.org.workflow.common.utils.HistoryUtil;
 import com.org.workflow.common.utils.RSAUtil;
@@ -10,6 +19,7 @@ import com.org.workflow.controller.reponse.usercontroller.CreateUserResponse;
 import com.org.workflow.controller.reponse.usercontroller.LoginResponse;
 import com.org.workflow.controller.reponse.usercontroller.UpdateUserResponse;
 import com.org.workflow.controller.reponse.usercontroller.UserResponse;
+import com.org.workflow.controller.request.BaseRequest;
 import com.org.workflow.controller.request.usercontroller.ChangePasswordRequest;
 import com.org.workflow.controller.request.usercontroller.CreateUserRequest;
 import com.org.workflow.controller.request.usercontroller.LoginRequest;
@@ -23,27 +33,17 @@ import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.document.UserHistory;
 import com.org.workflow.dao.repository.UserHistoryRepository;
 import com.org.workflow.dao.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.beanutils.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-
-import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_INACTIVE;
-import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
-import static com.org.workflow.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
-import static com.org.workflow.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
-import static com.org.workflow.common.enums.MessageEnum.NOT_FOUND;
-import static com.org.workflow.common.enums.MessageEnum.UPDATE_FAILED;
-import static com.org.workflow.common.enums.MessageEnum.USER_NAME_EXISTS;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
 
 /**
  * @author minh-truyen
@@ -64,7 +64,7 @@ public class UserService extends AbstractService {
 
   private final JwtProvider jwtProvider;
 
-  private final MessageSource messageSource;
+  private final ErrorDetailUtil errorDetailUtil;
 
   private final RedisTemplate<Object, Object> redisTemplate;
 
@@ -167,19 +167,21 @@ public class UserService extends AbstractService {
   /**
    * Login.
    *
-   * @param loginRequest LoginRequest
+   * @param baseRequest LoginRequest
    * @return LoginResponse
    * @throws WorkFlowException AppException
    */
-  public LoginResponse login(LoginRequest loginRequest) throws WorkFlowException {
+  public LoginResponse login(BaseRequest<LoginRequest> baseRequest) throws WorkFlowException {
     UserAccount userAccount;
+    LoginRequest loginRequest = baseRequest.getPayload();
     try {
       Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
           loginRequest.getUserName());
 
       userAccount = result.orElseThrow(
           () -> new WorkFlowException(
-              new ErrorDetail(ACCOUNT_NOT_FOUND, "", loginRequest.getUserName())));
+              errorDetailUtil.setErrorDetail(ACCOUNT_NOT_FOUND, baseRequest.getLanguage(),
+                  loginRequest.getUserName())));
     } catch (Exception exception) {
       redisTemplate.opsForValue().set(loginRequest.getUserName(), "Not found");
       throw exception;

@@ -1,0 +1,15 @@
+{
+  "en": "英語",
+  "vn": "ベトナム語",
+  "jp": "日本語",
+  "isRequired": "が必要です",
+  "label": {
+    "language": "言語",
+    "totalFile": "ファイル合計: "
+  },
+  "button": {
+    "save": "保存",
+    "back": "戻る",
+    "cancel": "取消"
+  }
+}
