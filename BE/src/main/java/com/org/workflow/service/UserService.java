@@ -11,7 +11,6 @@ import static com.org.workflow.common.enums.MessageEnum.USER_NAME_EXISTS;
 import com.google.common.hash.Hashing;
 import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.utils.AuthUtil;
-import com.org.workflow.common.utils.ErrorDetailUtil;
 import com.org.workflow.common.utils.FileUtil;
 import com.org.workflow.common.utils.HistoryUtil;
 import com.org.workflow.common.utils.RSAUtil;
@@ -64,9 +63,8 @@ public class UserService extends AbstractService {
 
   private final JwtProvider jwtProvider;
 
-  private final ErrorDetailUtil errorDetailUtil;
-
   private final RedisTemplate<Object, Object> redisTemplate;
+  private final ExceptionService exceptionService;
 
   @Value("${file-utils.image-path}")
   public String imagePath;
@@ -131,8 +129,7 @@ public class UserService extends AbstractService {
     LocalDateTime now = LocalDateTime.now();
     UserAccount userAccount = new UserAccount();
 
-    String userId = USER_ID_PREFIX.concat(
-        now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
+    String userId = USER_ID_PREFIX.concat(now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
     userAccount.setUserId(userId);
     userAccount.setUserName(createUserRequest.getUserName());
 
@@ -179,9 +176,8 @@ public class UserService extends AbstractService {
           loginRequest.getUserName());
 
       userAccount = result.orElseThrow(
-          () -> new WorkFlowException(
-              errorDetailUtil.setErrorDetail(ACCOUNT_NOT_FOUND, baseRequest.getLanguage(),
-                  loginRequest.getUserName())));
+          () -> exceptionService.getWorkFlowException(ACCOUNT_NOT_FOUND, baseRequest.getLanguage(),
+              loginRequest.getUserName()));
     } catch (Exception exception) {
       redisTemplate.opsForValue().set(loginRequest.getUserName(), "Not found");
       throw exception;

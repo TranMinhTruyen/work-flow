@@ -18,23 +18,10 @@ public class ErrorDetail implements Serializable {
 
   public ErrorDetail() {
   }
-
-  public ErrorDetail(Map<String, String> message, HttpStatus httpStatus) {
-    this.message = message;
-    this.httpStatus = httpStatus;
-  }
-
+  
   public ErrorDetail(MessageEnum messageEnum) {
     Map<String, String> messageMap = new HashMap<>();
     messageMap.put(messageEnum.getMessageCode(), messageEnum.getMessage());
-    this.message = messageMap;
-    this.httpStatus = messageEnum.getHttpStatus();
-  }
-
-  public ErrorDetail(MessageEnum messageEnum, Object... args) {
-    Map<String, String> messageMap = new HashMap<>();
-    messageMap.put(messageEnum.getMessageCode(),
-        MessageFormat.format(messageEnum.getMessage(), args));
     this.message = messageMap;
     this.httpStatus = messageEnum.getHttpStatus();
   }

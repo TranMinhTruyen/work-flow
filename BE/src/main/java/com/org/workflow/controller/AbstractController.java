@@ -27,7 +27,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-    @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
+      @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageType);
     baseResponse.setMessage(message);
@@ -44,7 +44,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(HttpStatus httpStatus,
-    @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
+      @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
@@ -62,7 +62,7 @@ public abstract class AbstractController {
    * @return ResponseEntity<BaseResponse>
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-    MessageEnum messageEnum, Object... messageArgs) {
+      MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
@@ -74,28 +74,25 @@ public abstract class AbstractController {
   }
 
   protected ResponseEntity<BaseResponse> returnErrorBaseResponse(
-    WorkFlowException workFlowException) {
+      WorkFlowException workFlowException) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
     baseResponse.setMessage(SERVER_ERROR.getMessage());
-//    for (int i =0; i <= 100; i++) {
-//      workFlowException.getErrorDetail().getMessage().put(String.valueOf(i), "Test exception message: " + i);
-//    }
     baseResponse.setErrorList(workFlowException.getErrorDetail().getMessage());
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
     return new ResponseEntity<>(baseResponse, header,
-      workFlowException.getErrorDetail().getHttpStatus());
+        workFlowException.getErrorDetail().getHttpStatus());
   }
 
   protected ResponseEntity<BaseResponse> returnErrorBaseResponse(Throwable exception,
-    HttpStatus httpStatus) {
+      HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
     baseResponse.setMessage(SERVER_ERROR.getMessage());
-    baseResponse.setErrorList(exception);
+    baseResponse.setErrorList(null);
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
     return new ResponseEntity<>(baseResponse, header, httpStatus);
