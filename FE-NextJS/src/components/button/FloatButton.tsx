@@ -1,6 +1,6 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import { memo, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Fab, { FabProps } from '@mui/material/Fab';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid2 from '@mui/material/Grid2';
@@ -52,7 +52,7 @@ const FloatButton = (props: ButtonProps) => {
   );
 };
 
-export default memo(FloatButton);
+export default FloatButton;
 
 const StyleButton = styled(Fab)({
   boxShadow: '#a8a8a8',

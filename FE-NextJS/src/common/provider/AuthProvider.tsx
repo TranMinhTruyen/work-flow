@@ -47,7 +47,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           navigate(path);
         } else {
           openDialogContainer({
-            title: 'Alert',
             type: 'message',
             messageType: MessageType.WARN,
             isPopup: false,

@@ -6,7 +6,7 @@ import { IconButton as MuiIconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Stack from '@mui/material/Stack';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
@@ -26,6 +26,7 @@ import { I18nEnum } from '@/common/enums/I18nEnum';
 import { HOME_URL } from '@/common/constants/urlConst';
 import SelectInput from '@/components/inputs/SelectInput';
 import IconButton from '@/components/button/IconButton';
+import UserPopover from './UserPopover';
 
 type IHeaderProps = {
   drawerWidth: number;
@@ -147,13 +148,15 @@ const MainHeader = (props: IHeaderProps) => {
           />
 
           <IconButton icon={<NotificationsIcon fontSize={'small'} />} />
+
+          <UserPopover />
         </Stack>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default memo(MainHeader);
+export default MainHeader;
 
 const styles = {
   openDrawer: {

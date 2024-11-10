@@ -1,5 +1,5 @@
 'use client';
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
 import useDialog from '@/common/hooks/useDialog';
@@ -40,4 +40,4 @@ const DialogContainer = () => {
   }
 };
 
-export default memo(DialogContainer);
+export default DialogContainer;

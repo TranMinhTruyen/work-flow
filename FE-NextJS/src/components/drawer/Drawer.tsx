@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';
 import IconButton from '@mui/material/IconButton';
-import { memo, useCallback } from 'react';
+import { useCallback } from 'react';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 import DrawerMenu from './DrawerMenu';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -90,4 +90,4 @@ const CustomDrawer = styled(MuiDrawer, {
   }),
 }));
 
-export default memo(Drawer);
+export default Drawer;

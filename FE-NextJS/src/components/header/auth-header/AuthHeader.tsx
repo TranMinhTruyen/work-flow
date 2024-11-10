@@ -1,7 +1,7 @@
 'use client';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import SelectInput from '../../inputs/SelectInput';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
@@ -94,4 +94,4 @@ const authHeaderStyles = {
   },
 };
 
-export default memo(AuthHeader);
+export default AuthHeader;

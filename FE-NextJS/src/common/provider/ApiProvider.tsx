@@ -85,7 +85,6 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
         // TODO Check warning
         if (transformResponse.messageType !== MessageType.SUCCESS) {
           openDialogContainer({
-            title: transformResponse.messageType,
             type: 'message',
             maxWidth: 'sm',
             messageType: transformResponse.messageType,
@@ -160,7 +159,6 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
         }
 
         openDialogContainer({
-          title: responseData.messageType,
           type: 'message',
           maxWidth: 'sm',
           messageType: responseData.messageType,

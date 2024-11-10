@@ -11,5 +11,11 @@
     "save": "Save",
     "back": "Back",
     "cancel": "Cancel"
-  }
+  },
+  "ERROR": "Error",
+  "SUCCESS": "Success",
+  "WARNING": "Warning",
+  "INFO": "Info",
+  "errorcode": "Error code",
+  "errormessage": "Error message"
 }

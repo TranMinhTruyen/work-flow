@@ -1,7 +1,7 @@
 {
   "en": "Tiếng Anh",
-  "vn": "Tiếng Việt",
-  "jp": "Tiếng Nhật",
+  "vi": "Tiếng Việt",
+  "ja": "Tiếng Nhật",
   "isRequired": "là bắt buộc",
   "label": {
     "language": "Ngôn ngữ",
@@ -11,5 +11,11 @@
     "save": "Lưu",
     "back": "Quay lại",
     "cancel": "Hủy"
-  }
+  },
+  "ERROR": "Lỗi",
+  "SUCCESS": "Thành công",
+  "WARN": "Cảnh báo",
+  "INFO": "Thông báo",
+  "errorcode": "Mã lỗi",
+  "errormessage": "Thông báo lỗi"
 }

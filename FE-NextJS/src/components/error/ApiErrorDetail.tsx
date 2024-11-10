@@ -9,9 +9,11 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import { Paper } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 
 type ApiErrorDetailProps = {
   status?: any;
@@ -20,9 +22,6 @@ type ApiErrorDetailProps = {
 };
 
 const useStyles = makeStyles({
-  tableHeader: {
-    fontWeight: 'bold',
-  },
   tableCell: {
     borderLeft: '1px solid rgba(224, 224, 224, 1)',
   },
@@ -30,6 +29,7 @@ const useStyles = makeStyles({
 
 const ApiErrorDetail = (props: ApiErrorDetailProps) => {
   const { status, message, responseData } = props;
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const classes = useStyles();
 
   const error = useMemo(() => {
@@ -57,11 +57,11 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
             <Table stickyHeader size={'small'}>
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <Typography className={classes.tableHeader}>Error code</Typography>
+                  <TableCell sx={{ width: 140 }}>
+                    <Typography>{t('errorcode')}</Typography>
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    <Typography className={classes.tableHeader}>Error message</Typography>
+                    <Typography>{t('errormessage')}</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -74,4 +74,4 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
   );
 };
 
-export default memo(ApiErrorDetail);
+export default ApiErrorDetail;

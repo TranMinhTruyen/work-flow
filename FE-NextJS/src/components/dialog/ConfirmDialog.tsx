@@ -1,5 +1,5 @@
 'use client';
-import { memo, ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -14,9 +14,10 @@ import { MessageType } from '@/common/enums/MessageEnum';
 import FloatButton from '../button/FloatButton';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import { useTranslation } from 'react-i18next';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 
-export type ConfirmDialogProps = DialogProps & {
-  title?: ReactNode;
+export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
   message?: ReactNode;
   messageType?: MessageType;
   cancelText?: string;
@@ -35,7 +36,6 @@ export type ConfirmDialogProps = DialogProps & {
 const ConfirmDialog = (props: ConfirmDialogProps) => {
   const {
     open,
-    title,
     message,
     messageType,
     cancelText,
@@ -52,6 +52,8 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     ...restProps
   } = props;
 
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
+
   const handleConfirmClick = useCallback(() => {
     onConfirm?.();
   }, [onConfirm]);
@@ -66,7 +68,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography sx={{ fontSize: 25, color: 'rgba(255, 200, 0, 1)' }}>
-              {title ?? null}
+              {t(MessageType.WARN)}
             </Typography>
             <ErrorIcon color={'warning'} />
           </Stack>
@@ -75,7 +77,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography sx={{ fontSize: 25, color: 'rgba(225, 0, 0, 1)' }}>
-              {title ?? null}
+              {t(MessageType.ERROR)}
             </Typography>
             <ErrorIcon color={'error'} />
           </Stack>
@@ -84,7 +86,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography sx={{ fontSize: 25, color: 'rgba(0, 80, 255, 1)' }}>
-              {title ?? null}
+              {t(MessageType.INFO)}
             </Typography>
             <InfoIcon color={'primary'} />
           </Stack>
@@ -93,13 +95,13 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography sx={{ fontSize: 25, color: 'rgba(0, 225, 0, 1)' }}>
-              {title ?? null}
+              {t(MessageType.SUCCESS)}
             </Typography>
             <CheckCircleIcon color={'primary'} />
           </Stack>
         );
     }
-  }, [messageType, title]);
+  }, [messageType, t]);
 
   const messageElement = useMemo(() => {
     if (message) {
@@ -215,4 +217,4 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
   );
 };
 
-export default memo(ConfirmDialog);
+export default ConfirmDialog;

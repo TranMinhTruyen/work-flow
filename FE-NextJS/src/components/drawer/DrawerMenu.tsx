@@ -1,5 +1,5 @@
 'use client';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
 import { ExpandMore } from '@mui/icons-material';
@@ -257,4 +257,4 @@ export const CustomListItemIcon = styled(ListItemIcon)({
   color: 'rgba(98, 98, 98)',
 });
 
-export default memo(DrawerMenu);
+export default DrawerMenu;
