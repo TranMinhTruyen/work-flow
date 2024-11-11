@@ -17,5 +17,8 @@
   "WARN": "Cảnh báo",
   "INFO": "Thông báo",
   "errorcode": "Mã lỗi",
-  "errormessage": "Thông báo lỗi"
+  "errormessage": "Thông báo lỗi",
+  "message": {
+    "noPermission": "Bạn không có quyền!"
+  }
 }

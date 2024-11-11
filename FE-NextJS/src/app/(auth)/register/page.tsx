@@ -74,7 +74,6 @@ const Register = () => {
       if (response !== undefined) {
         openDialogContainer({
           type: 'message',
-          title: 'SUCCESS',
           messageType: MessageType.SUCCESS,
           message: `Create username: ${response.userName} success`,
           onConfirm: () => {

@@ -9,12 +9,15 @@ import { usePathname } from 'next/navigation';
 import { useCheckProxyMutation } from '@/services/proxyService';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import { MessageType } from '../enums/MessageEnum';
+import { I18nEnum } from '../enums/I18nEnum';
+import { useTranslation } from 'react-i18next';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const { navigate } = useNavigate();
   const path = usePathname();
   const [checkProxy] = useCheckProxyMutation();
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   // Check proxy before going to admin register page
   const handleCheckProxy = useCallback(async () => {
@@ -53,9 +56,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             showCloseButton: false,
             autoClose: true,
             timeout: 15,
-            message: "You don't have any permission!",
+            message: t('message.noPermission'),
             onConfirm: () => {
-              navigate(LOGIN_URL);
+              navigate(LOGIN_URL, true);
             },
           });
         }
@@ -63,7 +66,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsSet(true);
-  }, [handleCheckProxy, isSet, navigate, path]);
+  }, [handleCheckProxy, isSet, navigate, path, t]);
 
   return <>{isSet && children}</>;
 };

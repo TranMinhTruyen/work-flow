@@ -17,5 +17,8 @@
   "WARNING": "Warning",
   "INFO": "Info",
   "errorcode": "Error code",
-  "errormessage": "Error message"
+  "errormessage": "Error message",
+  "message": {
+    "noPermission": "You don't have any permission!"
+  }
 }

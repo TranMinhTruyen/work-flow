@@ -7,9 +7,10 @@ import ApiProvider from '@/common/provider/ApiProvider';
 import { I18nextProvider } from 'react-i18next';
 import i18next from '@/i18n';
 import DialogContainer from '@/components/dialog/DialogContainer';
-import store from '@/lib/store';
+import store, { persistor } from '@/lib/store';
 import { Provider } from 'react-redux';
 import BackButtonListener from '@/components/loading/BackButtonListener ';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -27,6 +28,8 @@ const RootLayout = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
+  const isClient = typeof window !== 'undefined';
+
   return (
     <Provider store={store}>
       <I18nextProvider i18n={i18next}>
@@ -40,7 +43,12 @@ const RootLayout = ({
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
             <main>
               <div id="root">
-                <ApiProvider>{children}</ApiProvider>
+                {isClient ? (
+                  <PersistGate loading={null} persistor={persistor}>
+                    <ApiProvider>{children}</ApiProvider>
+                  </PersistGate>
+                ) : null}
+
                 <BackButtonListener />
                 <DialogContainer />
                 <CssBaseline />
