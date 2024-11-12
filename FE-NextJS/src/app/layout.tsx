@@ -28,8 +28,6 @@ const RootLayout = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  const isClient = typeof window !== 'undefined';
-
   return (
     <Provider store={store}>
       <I18nextProvider i18n={i18next}>
@@ -43,12 +41,9 @@ const RootLayout = ({
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
             <main>
               <div id="root">
-                {isClient ? (
-                  <PersistGate loading={null} persistor={persistor}>
-                    <ApiProvider>{children}</ApiProvider>
-                  </PersistGate>
-                ) : null}
-
+                <PersistGate loading={null} persistor={persistor}>
+                  <ApiProvider>{children}</ApiProvider>
+                </PersistGate>
                 <BackButtonListener />
                 <DialogContainer />
                 <CssBaseline />

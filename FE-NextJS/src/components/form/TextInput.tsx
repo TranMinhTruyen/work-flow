@@ -26,7 +26,7 @@ const TextInput = (props: TextInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput, translateLabel, translateError } = useInput<string>({
+  const { setIsCheck, checkDataInput, translateLabel, translateError } = useInput<string>({
     ...props,
   });
 
@@ -34,10 +34,11 @@ const TextInput = (props: TextInputProps) => {
     // eslint-disable-next-line no-unused-vars
     (onChange: (...event: unknown[]) => void) => (value: string) => {
       control.setError(name, { type: 'valid' });
+      setIsCheck(true);
       onChange(value);
       onChangeProps?.(value);
     },
-    [control, name, onChangeProps]
+    [control, name, onChangeProps, setIsCheck]
   );
 
   const handleOnBlur = useCallback(

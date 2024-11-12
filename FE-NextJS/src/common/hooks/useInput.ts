@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { isNullOrEmpty } from '../utils/stringUtil';
@@ -17,9 +17,14 @@ const useInput = <T>(props: UseCheckRequiredProps) => {
   const { name, control, required, type, i18n } = props;
   const { t } = useTranslation(i18n);
   const { t: commonTranslate } = useTranslation(I18nEnum.COMMON_I18N);
+  const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const checkDataInput = useCallback(
     (value: T) => {
+      if (!isCheck) {
+        return;
+      }
+
       if (required) {
         if (Array.isArray(value) && value.length === 0) {
           control?.setError(name, { type: 'required', message: 'isRequired' });
@@ -43,7 +48,7 @@ const useInput = <T>(props: UseCheckRequiredProps) => {
 
       control?.setError(name, { type: 'valid' });
     },
-    [control, name, required, type]
+    [control, isCheck, name, required, type]
   );
 
   const translateLabel = useCallback(() => {
@@ -58,6 +63,7 @@ const useInput = <T>(props: UseCheckRequiredProps) => {
   );
 
   return {
+    setIsCheck,
     checkDataInput,
     translateLabel,
     translateError,

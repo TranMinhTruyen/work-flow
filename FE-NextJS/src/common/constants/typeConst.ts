@@ -25,3 +25,5 @@ export type ApiType = {
   url: string;
   method: 'POST' | 'GET' | 'UPDATE' | 'DELETE';
 };
+
+export type DateType = Date | string | null;

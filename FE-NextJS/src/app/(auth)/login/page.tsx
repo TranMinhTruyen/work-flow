@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
@@ -30,7 +30,7 @@ const Login = () => {
   const { setHeaderTitle } = useAuthHeader();
   const { navigate } = useNavigate();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // Set title for header
     setHeaderTitle(t('title'));
 

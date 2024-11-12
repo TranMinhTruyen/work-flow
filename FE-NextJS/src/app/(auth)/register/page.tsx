@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
@@ -47,7 +47,7 @@ const Register = () => {
     [navigate]
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // Set title for header
     setHeaderTitle(t('title'));
 

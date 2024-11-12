@@ -9,9 +9,9 @@ import moment, { Moment } from 'moment';
 import { capitalizeFirst, isNullOrEmpty } from '../../common/utils/stringUtil';
 import InputAdornment from '@mui/material/InputAdornment';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { DateType } from '@/common/utils/dateUtil';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { FULL_DATE_FORMAT } from '@/common/constants/commonConst';
+import { DateType } from '@/common/constants/typeConst';
 
 export type DatePickerProps = Omit<
   TextFieldProps,

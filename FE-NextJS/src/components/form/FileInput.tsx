@@ -27,7 +27,7 @@ const FileInput = (props: FileInputProps) => {
     ...restProps
   } = props;
 
-  const { checkDataInput, translateLabel, translateError } = useInput<FileInputData[]>({
+  const { setIsCheck, checkDataInput, translateLabel, translateError } = useInput<FileInputData[]>({
     ...props,
   });
 
@@ -35,10 +35,11 @@ const FileInput = (props: FileInputProps) => {
     // eslint-disable-next-line no-unused-vars
     (onChange: (...event: unknown[]) => void) => (value: FileInputData[]) => {
       control?.setError(name, { type: 'valid' });
+      setIsCheck(true);
       onChange(value);
       onChangeProps?.(value);
     },
-    [control, name, onChangeProps]
+    [control, name, onChangeProps, setIsCheck]
   );
 
   const handleOnBlur = useCallback(
