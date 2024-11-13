@@ -26,25 +26,32 @@ import useNavigate from '@/common/hooks/useNavigate';
 import SelectInput from '@/components/form/SelectInput';
 import MultiSelectInput from '@/components/form/MultiSelectInput';
 import { authorities, role } from '@/common/constants/commonConst';
+import { makeStyles } from '@mui/styles';
+import { selectProxyRole } from '@/lib/slices/commonSlice';
+import { useAppSelector } from '@/lib/store';
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import { MessageType } from '@/common/enums/MessageEnum';
 
 const AdminRegister = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
-  const { t } = useTranslation(I18nEnum.REGISTER_I18N);
+  const { t } = useTranslation([I18nEnum.REGISTER_I18N, I18nEnum.COMMON_I18N]);
   const { setHeaderTitle, setHeaderContent } = useAuthHeader();
   const { navigate } = useNavigate();
+  const proxyRole = useAppSelector(selectProxyRole);
+  const classes = registerStyles();
 
   const backButton = useMemo(
     () => (
       <IconButton
         onClick={() => navigate(LOGIN_URL)}
-        sx={{ width: '50px', height: '50px' }}
+        className={classes.backButton}
         color={'primary'}
       >
         <ChevronLeftIcon fontSize={'large'} />
       </IconButton>
     ),
-    [navigate]
+    [classes.backButton, navigate]
   );
 
   useEffect(() => {
@@ -64,8 +71,23 @@ const AdminRegister = () => {
   const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>();
 
   useEffect(() => {
+    if (proxyRole !== 'ADMIN') {
+      openDialogContainer({
+        type: 'message',
+        messageType: MessageType.WARN,
+        isPopup: false,
+        showCloseButton: false,
+        autoClose: true,
+        timeout: 15,
+        message: t(`${I18nEnum.COMMON_I18N}:message.noPermission`),
+        onConfirm: () => {
+          navigate(LOGIN_URL, true);
+        },
+      });
+    }
     reset();
-  }, [reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleRegister = useCallback(
     async (formData: IRegisterForm) => {
@@ -85,7 +107,7 @@ const AdminRegister = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             required
-            sx={registerStyles.textInput}
+            className={classes.textInput}
             slotProps={{
               htmlInput: {
                 maxLength: 10,
@@ -106,7 +128,7 @@ const AdminRegister = () => {
             i18n={I18nEnum.REGISTER_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
-            sx={registerStyles.textInput}
+            className={classes.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -130,7 +152,7 @@ const AdminRegister = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             type={'email'}
-            sx={registerStyles.textInput}
+            className={classes.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -146,7 +168,7 @@ const AdminRegister = () => {
             name={'fullName'}
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
-            sx={registerStyles.textInput}
+            className={classes.textInput}
           />
 
           <DatePickerInput
@@ -180,15 +202,11 @@ const AdminRegister = () => {
 
       <Divider />
 
-      <CardActions sx={registerStyles.footer}>
+      <CardActions className={classes.footer}>
         <Stack direction={'row'} spacing={5}>
           <FloatButton
-            label={
-              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {t('button.register')}
-              </Typography>
-            }
-            sx={registerStyles.button}
+            label={<Typography className={classes.buttonLabel}>{t('button.register')}</Typography>}
+            className={classes.button}
             form={'register-form'}
             type={'submit'}
           />
@@ -198,7 +216,12 @@ const AdminRegister = () => {
   );
 };
 
-const registerStyles = {
+const registerStyles = makeStyles({
+  backButton: {
+    width: 50,
+    height: 50,
+  },
+
   textInput: {
     width: 400,
     maxWidth: 400,
@@ -209,7 +232,12 @@ const registerStyles = {
     maxWidth: 200,
     height: 40,
     maxHeight: 40,
-    backgroundColor: 'rgba(0, 170, 255, 0.8)',
+    backgroundColor: 'rgba(0, 170, 255, 0.8) !important',
+  },
+
+  buttonLabel: {
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 
   footer: {
@@ -217,6 +245,6 @@ const registerStyles = {
     justifyContent: 'center',
     height: 70,
   },
-};
+});
 
 export default memo(AdminRegister);

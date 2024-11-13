@@ -1,4 +1,4 @@
-import { persistReducer, Transform } from 'redux-persist';
+import { Transform } from 'redux-persist';
 import noopStorage from './noopStorage';
 import { RESET_ALL } from '@/common/constants/commonConst';
 import baseApi from '@/common/api/apiBaseQuery';
@@ -15,10 +15,10 @@ const combineReducer = combineReducers({
 });
 
 // Check is client or server
-const isClient = typeof window !== 'undefined';
+export const isClient = typeof window !== 'undefined';
 
 // Check and create sessionStorage
-const createSessionStorage = () => {
+export const createSessionStorage = () => {
   if (isClient) {
     return createWebStorage('session');
   }
@@ -26,10 +26,10 @@ const createSessionStorage = () => {
 };
 
 // Create sessionStorage
-const sessionStorage = createSessionStorage();
+export const sessionStorage = createSessionStorage();
 
 // Create combineReducer
-const rootReducer = (state: any, action: any) => {
+export const rootReducer = (state: any, action: any) => {
   if (RESET_ALL === action.type) {
     const { commonState } = state;
 
@@ -47,7 +47,7 @@ const rootReducer = (state: any, action: any) => {
 };
 
 // Store needed value from commonState
-const commonTransform: Transform<any, any> = {
+export const commonTransform: Transform<any, any> = {
   in: (inboundState: any) => {
     return {
       theme: inboundState.theme,
@@ -60,16 +60,3 @@ const commonTransform: Transform<any, any> = {
     return outboundState;
   },
 };
-
-/**
- * Export reducer
- */
-export const persistedReducer = persistReducer(
-  {
-    key: 'root',
-    storage: isClient ? sessionStorage : noopStorage,
-    whitelist: ['commonState'],
-    transforms: [commonTransform],
-  },
-  rootReducer
-);

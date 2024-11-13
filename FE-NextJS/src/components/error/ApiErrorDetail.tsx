@@ -2,7 +2,6 @@
 import { IBaseResponse } from '@/model/common/BaseResponse';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
-import { makeStyles } from '@mui/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -21,29 +20,30 @@ type ApiErrorDetailProps = {
   responseData?: IBaseResponse;
 };
 
-const useStyles = makeStyles({
-  tableCell: {
-    borderLeft: '1px solid rgba(224, 224, 224, 1)',
-  },
-});
-
 const ApiErrorDetail = (props: ApiErrorDetailProps) => {
   const { status, message, responseData } = props;
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
-  const classes = useStyles();
 
-  const error = useMemo(() => {
-    if (responseData?.errorList) {
+  const tableBody = useMemo(() => {
+    if (responseData?.errorList && Object.entries(responseData.errorList).length > 0) {
       return Object.entries(responseData.errorList).map(([key, value], index) => (
         <TableRow key={index}>
-          <TableCell>{key}</TableCell>
-          <TableCell className={classes.tableCell}>{value}</TableCell>
+          <TableCell sx={{ textAlign: 'center' }}>{key}</TableCell>
+          <TableCell sx={{ borderLeft: '1px solid rgba(224, 224, 224, 1)', textAlign: 'left' }}>
+            {value}
+          </TableCell>
         </TableRow>
       ));
     } else {
-      return [];
+      return (
+        <TableRow>
+          <TableCell colSpan={2} sx={{ textAlign: 'center' }}>
+            {t('table.noData')}
+          </TableCell>
+        </TableRow>
+      );
     }
-  }, [classes.tableCell, responseData?.errorList]);
+  }, [responseData?.errorList, t]);
 
   return (
     <Container>
@@ -57,15 +57,17 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
             <Table stickyHeader size={'small'}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ width: 140 }}>
+                  <TableCell sx={{ width: 140, textAlign: 'center' }}>
                     <Typography>{t('errorcode')}</Typography>
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  <TableCell
+                    sx={{ borderLeft: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}
+                  >
                     <Typography>{t('errormessage')}</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{error}</TableBody>
+              <TableBody>{tableBody}</TableBody>
             </Table>
           </TableContainer>
         </Paper>

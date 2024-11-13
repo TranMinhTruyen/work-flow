@@ -15,8 +15,7 @@ type UseCheckRequiredProps = {
 
 const useInput = <T>(props: UseCheckRequiredProps) => {
   const { name, control, required, type, i18n } = props;
-  const { t } = useTranslation(i18n);
-  const { t: commonTranslate } = useTranslation(I18nEnum.COMMON_I18N);
+  const { t } = useTranslation([i18n, I18nEnum.COMMON_I18N]);
   const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const checkDataInput = useCallback(
@@ -57,9 +56,9 @@ const useInput = <T>(props: UseCheckRequiredProps) => {
 
   const translateError = useCallback(
     (message: string) => {
-      return `${t(`label.${name}`)} ${commonTranslate(message)}`;
+      return `${t(`label.${name}`)} ${t(`${I18nEnum.COMMON_I18N}:${message}`)}`;
     },
-    [commonTranslate, name, t]
+    [name, t]
   );
 
   return {

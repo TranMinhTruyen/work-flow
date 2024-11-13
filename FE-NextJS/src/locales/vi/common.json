@@ -20,5 +20,23 @@
   "errormessage": "Thông báo lỗi",
   "message": {
     "noPermission": "Bạn không có quyền!"
+  },
+  "table": {
+    "noData": "Không có dữ liệu"
+  },
+  "network": {
+    "interrupted": "Kết nối đã bị gián đoạn.",
+    "serverDown": "Đã kết nối Internet hoặc máy chủ có thể bị ngắt.",
+    "403": "Không có quyền truy cập",
+    "404": "Không tìm thấy",
+    "408": "Hết thời gian yêu cầu",
+    "409": "Xung đột",
+    "413": "Payload quá lớn",
+    "429": "Yêu cầu quá nhiều",
+    "500": "Lỗi máy chủ nội bộ",
+    "502": "Bad Gateway",
+    "503": "Dịch vụ không khả dụng",
+    "504": "Gateway hết thời gian",
+    "default": "Đã xảy ra lỗi. Trạng thái HTTP {0}"
   }
 }

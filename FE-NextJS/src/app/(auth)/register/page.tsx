@@ -26,6 +26,7 @@ import { MessageType } from '@/common/enums/MessageEnum';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
+import { makeStyles } from '@mui/styles';
 
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -33,6 +34,7 @@ const Register = () => {
   const { t } = useTranslation(I18nEnum.REGISTER_I18N);
   const { setHeaderTitle, setHeaderContent } = useAuthHeader();
   const { navigate } = useNavigate();
+  const classes = registerStyles();
 
   const backButton = useMemo(
     () => (
@@ -96,7 +98,7 @@ const Register = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             required
-            sx={registerStyles.textInput}
+            className={classes.textInput}
             slotProps={{
               htmlInput: {
                 maxLength: 10,
@@ -117,7 +119,7 @@ const Register = () => {
             i18n={I18nEnum.REGISTER_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
-            sx={registerStyles.textInput}
+            className={classes.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -141,7 +143,7 @@ const Register = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             type={'email'}
-            sx={registerStyles.textInput}
+            className={classes.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -157,7 +159,7 @@ const Register = () => {
             name={'fullName'}
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
-            sx={registerStyles.textInput}
+            className={classes.textInput}
           />
 
           <DatePickerInput
@@ -172,15 +174,11 @@ const Register = () => {
 
       <Divider />
 
-      <CardActions sx={registerStyles.footer}>
+      <CardActions className={classes.footer}>
         <Stack direction={'row'} spacing={5}>
           <FloatButton
-            label={
-              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {t('button.register')}
-              </Typography>
-            }
-            sx={registerStyles.button}
+            label={<Typography className={classes.buttonLabel}>{t('button.register')}</Typography>}
+            className={classes.button}
             form={'register-form'}
             type={'submit'}
           />
@@ -190,7 +188,7 @@ const Register = () => {
   );
 };
 
-const registerStyles = {
+const registerStyles = makeStyles({
   textInput: {
     width: 400,
     maxWidth: 400,
@@ -201,7 +199,12 @@ const registerStyles = {
     maxWidth: 200,
     height: 40,
     maxHeight: 40,
-    backgroundColor: 'rgba(0, 170, 255, 0.8)',
+    backgroundColor: 'rgba(0, 170, 255, 0.8) !important',
+  },
+
+  buttonLabel: {
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 
   footer: {
@@ -209,6 +212,6 @@ const registerStyles = {
     justifyContent: 'center',
     height: 70,
   },
-};
+});
 
 export default memo(Register);

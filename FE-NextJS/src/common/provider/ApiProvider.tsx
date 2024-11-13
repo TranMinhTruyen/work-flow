@@ -14,6 +14,9 @@ import { IBaseResponse } from '@/model/common/BaseResponse';
 import { toggleLoading } from '@/lib/slices/commonSlice';
 import store, { useAppDispatch } from '@/lib/store';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+import { I18nEnum } from '../enums/I18nEnum';
+import { formatString } from '../utils/stringUtil';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -31,6 +34,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { navigate } = useNavigate();
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   useEffect(() => {
     if (isSet) return;
@@ -49,18 +53,9 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Transform request
-      const clientIp = document.cookie
-        .split(';')
-        .find(row => row.startsWith('client-ip='))
-        ?.split('=')[1];
-
       if (config.data) {
         const transformRequest: IBaseRequest = {
           timestamp: moment(new Date()).format(DATE_TIME_FORMAT),
-          ipAddress:
-            process.env.NODE_ENV !== 'production'
-              ? '127.0.0.1'
-              : decodeURIComponent(clientIp ?? ''),
           language: store.getState().commonState.language,
           payload: config.data,
         };
@@ -114,46 +109,46 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
         };
 
         if (error.code === 'ECONNABORTED') {
-          responseMessage = 'The connection was interrupted.';
+          responseMessage = t('network.interrupted');
         } else if (!error.response) {
-          responseMessage = 'Connected to the Internet or the server may be down.';
+          responseMessage = t('network.serverDown');
         } else {
           responseStatus = error.response.status;
           responseData = error.response.data;
 
           switch (responseStatus) {
             case 403:
-              responseMessage = 'Forbidden';
+              responseMessage = t('network.403');
               break;
             case 404:
-              responseMessage = 'Not Found';
+              responseMessage = t('network.404');
               break;
             case 408:
-              responseMessage = 'Request Timeout';
+              responseMessage = t('network.408');
               break;
             case 409:
-              responseMessage = 'Conflict';
+              responseMessage = t('network.409');
               break;
             case 413:
-              responseMessage = 'Payload Too Large';
+              responseMessage = t('network.413');
               break;
             case 429:
-              responseMessage = 'Too Many Requests';
+              responseMessage = t('network.429');
               break;
             case 500:
-              responseMessage = 'Internal Server Error';
+              responseMessage = t('network.500');
               break;
             case 502:
-              responseMessage = 'Bad Gateway';
+              responseMessage = t('network.502');
               break;
             case 503:
-              responseMessage = 'Service Unavailable';
+              responseMessage = t('network.503');
               break;
             case 504:
-              responseMessage = 'Gateway Timeout';
+              responseMessage = t('network.504');
               break;
             default:
-              responseMessage = `An error occurred. HTTP status ${responseStatus}`;
+              responseMessage = formatString(t('network.default'), responseStatus);
               break;
           }
         }

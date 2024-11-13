@@ -3,7 +3,7 @@ import { HOME_URL } from './common/constants/urlConst';
 
 export const middleware = (request: NextRequest) => {
   const forwarded = request.headers.get('x-forwarded-for');
-  const clientIp = forwarded ? forwarded.split(',')[0] : request.ip;
+  const clientIp = forwarded ? forwarded.split(',')[0] : undefined;
 
   const currentUrl = new URL(request.url);
 

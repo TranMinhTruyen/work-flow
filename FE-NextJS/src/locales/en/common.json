@@ -20,5 +20,23 @@
   "errormessage": "Error message",
   "message": {
     "noPermission": "You don't have any permission!"
+  },
+  "table": {
+    "noData": "No data"
+  },
+  "network": {
+    "interrupted": "The connection was interrupted.",
+    "serverDown": "Connected to the Internet or the server may be down.",
+    "403": "Forbidden",
+    "404": "Not Found",
+    "408": "Request Timeout",
+    "409": "Conflict",
+    "413": "Payload Too Large",
+    "429": "Too Many Requests",
+    "500": "Internal Server Error",
+    "502": "Bad Gateway",
+    "503": "Service Unavailable",
+    "504": "Gateway Timeout",
+    "default": "An error occurred. HTTP status {0}"
   }
 }
