@@ -172,7 +172,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setIsSet(true);
-  }, [dispatch, isSet, navigate]);
+  }, [dispatch, isSet, navigate, t]);
 
   return <>{isSet && children}</>;
 };

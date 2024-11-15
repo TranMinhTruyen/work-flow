@@ -24,14 +24,15 @@ export const capitalizeFirst = (value?: string): string => {
 };
 
 /**
+ * Format string with params.
  *
  * @param template
  * @param params
  * @returns
  */
-export const formatString = (template: string, ...params: (string | number)[]): string => {
+export const formatString = (template: string, ...args: (string | number)[]): string => {
   return template.replace(/{(\d+)}/g, (match, index) => {
     const paramIndex = parseInt(index, 10);
-    return params[paramIndex] !== undefined ? params[paramIndex].toString() : match;
+    return args[paramIndex] !== undefined ? args[paramIndex].toString() : match;
   });
 };

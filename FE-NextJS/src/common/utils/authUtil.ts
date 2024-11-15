@@ -1,11 +1,11 @@
 import { isNullOrEmpty } from './stringUtil';
-import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import forge from 'node-forge';
 import { ILoginResponse } from '@/model/login/LoginModel';
-import store from '../../lib/store';
-import { setLoginData, setProxyRole, toggleLogin } from '../../lib/slices/commonSlice';
 import { ICheckProxyRequest, ICheckProxyResponse } from '@/model/proxy/ProxyModel';
 import { proxyService } from '@/services/proxyService';
+import store from '@/lib/store';
+import { setLoginData, setProxyRole, toggleLogin } from '@/lib/slices/commonSlice';
+import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 
 /**
  * Check token and set token to slice.
