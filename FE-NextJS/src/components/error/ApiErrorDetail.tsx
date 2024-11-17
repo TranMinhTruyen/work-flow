@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { Paper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import GridTable, { Column } from '../table/Table';
 
 type ApiErrorDetailProps = {
   status?: any;
@@ -45,23 +46,46 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
     }
   }, [responseData?.errorList, t]);
 
+  const testColumn = useMemo<Column>(
+    () => ({
+      columns: [
+        {
+          name: 'test1',
+          data: 'test1',
+        },
+        {
+          name: 'test2',
+          data: 'test2',
+        },
+        {
+          name: 'test3',
+          data: 'test3',
+        },
+      ],
+    }),
+    []
+  );
+
   return (
     <Container>
       <Stack spacing={1}>
         <Typography variant={'h5'} component={'span'} sx={{ color: 'rgba(225, 0, 0, 1)' }}>
           {status} {message}
         </Typography>
-
         <Paper variant={'outlined'}>
           <TableContainer sx={{ maxHeight: 300 }}>
             <Table stickyHeader size={'small'}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ width: 140, textAlign: 'center' }}>
+                  <TableCell sx={{ width: 140, padding: 1, textAlign: 'center' }}>
                     <Typography>{t('errorcode')}</Typography>
                   </TableCell>
                   <TableCell
-                    sx={{ borderLeft: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}
+                    sx={{
+                      borderLeft: '1px solid rgba(224, 224, 224, 1)',
+                      padding: 1,
+                      textAlign: 'center',
+                    }}
                   >
                     <Typography>{t('errormessage')}</Typography>
                   </TableCell>
@@ -71,6 +95,9 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
             </Table>
           </TableContainer>
         </Paper>
+
+        {/* TODO Test custom table component */}
+        <GridTable height={60} column={testColumn} />
       </Stack>
     </Container>
   );
