@@ -1,6 +1,9 @@
 {
-  "extends": ["development"],
+  "extends": [
+    "development"
+  ],
   "hints": {
-    "typescript-config/strict": "off"
+    "typescript-config/strict": "off",
+    "no-inline-styles": "off"
   }
 }

@@ -1,0 +1,20 @@
+.ag-header-cell {
+  border-right: 1px solid #ccc;
+}
+
+.ag-header-cell:last-child {
+  border-right: none;
+}
+
+.ag-cell {
+  align-content: center !important;
+  border-right: 1px solid #ccc !important;
+}
+
+.ag-cell:last-child {
+  border-right: none !important;
+}
+
+.ag-cell-wrap-text {
+  line-height: 1.8 !important;
+}

@@ -1,70 +1,49 @@
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { ReactNode } from 'react';
+import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+import '../table/Table.css';
+import { useMemo } from 'react';
 
-export type Cell = {
-  name: string;
-  data?: ReactNode;
-  width?: number;
-  hideData?: boolean;
-};
-
-export type Column = {
-  height?: number;
-  columns: Cell[];
-};
-
-export type Row = {
-  height: number;
-  cells: Cell[];
-};
-
-export type TableProps = {
-  width?: number | string;
+export type TableProps = AgGridReactProps & {
   height?: number | string;
-  column: Column;
-  rows?: Row[];
+  minHeight?: number | string;
+  maxHeight?: number | string;
+  width?: number | string;
+  minWidth?: number | string;
+  maxWidth?: number | string;
 };
 
-// TODO Custom table component
 const GridTable = (props: TableProps) => {
-  const { width = '100%', height, column, rows = [] } = props;
-  const columnSize = column.columns.length;
+  const {
+    maxHeight = 300,
+    width = '100%',
+    minWidth = '100%',
+    maxWidth = '100%',
+    rowHeight = 55,
+    rowData = [],
+    ...restProps
+  } = props;
+
+  const calculateGridHeight = useMemo(() => {
+    const rowCount = rowData ? rowData.length : 1;
+    const totalHeight = rowCount * rowHeight + 53;
+    return Math.min(Math.max(totalHeight, Number(50)), Number(maxHeight));
+  }, [maxHeight, rowData, rowHeight]);
+
   return (
-    <Paper variant={'outlined'}>
-      <TableContainer>
-        <Table stickyHeader size={'small'} sx={{ tableLayout: 'fixed', width: width }}>
-          <TableHead>
-            <TableRow>
-              {column.columns.map((item, index) => {
-                const isLast = index === columnSize - 1;
-                let cellWidth = 100;
-                if (!isLast && item.width !== undefined) {
-                  cellWidth = item.width;
-                }
-                return (
-                  <TableCell
-                    key={item.name}
-                    sx={{
-                      width: isLast ? 'auto' : cellWidth,
-                      height: column.height ?? 40,
-                      padding: 1,
-                      borderLeft: index !== 0 ? '1px solid rgba(224, 224, 224, 1)' : '',
-                    }}
-                  >
-                    {item.hideData !== undefined && item.hideData === true ? null : item.data}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-        </Table>
-      </TableContainer>
-    </Paper>
+    <div
+      className={'ag-theme-quartz'}
+      style={{
+        height: calculateGridHeight,
+        maxHeight: maxHeight,
+        width: width,
+        minWidth: minWidth,
+        maxWidth: maxWidth,
+        overflow: 'auto',
+      }}
+    >
+      <AgGridReact headerHeight={50} rowHeight={rowHeight} rowData={rowData} {...restProps} />
+    </div>
   );
 };
 
