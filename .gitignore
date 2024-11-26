@@ -4,6 +4,9 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+/FastAPI/.venv
+/FastAPI/__pycache__
+/FastAPI/**/__pycache__
 
 ### STS ###
 .apt_generated
@@ -63,3 +66,4 @@ yarn-error.log*
 
 .idea/
 .vscode/
+
