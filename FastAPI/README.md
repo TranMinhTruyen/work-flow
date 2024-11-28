@@ -18,7 +18,7 @@ Update pip if warning
 
 ## Run server
 
-### `fastapi dev main.py`
+### `fastapi dev app\main.py`
 
 Once you are done working on your project you can deactivate the virtual environment:
 
