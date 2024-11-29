@@ -23,4 +23,4 @@ def get_collection(collection_name: str):
 
 
 def str_object_id(obj):
-    return str(obj['_id'])
+    return str(obj["_id"])

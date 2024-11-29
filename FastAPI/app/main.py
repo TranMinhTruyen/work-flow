@@ -1,9 +1,9 @@
+import uvicorn
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.controllers import auth_controller
-from app.core.exception.exceptions_handle import work_flow_exception_handler
-from app.core.exception.work_flow_exception import WorkFlowException
+from app.core.exception.exceptions_handle import exceptions_handle
 
 app = FastAPI()
 
@@ -15,6 +15,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_exception_handler(WorkFlowException, work_flow_exception_handler)
+exceptions_handle(app)
 
 app.include_router(auth_controller.router)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000)
