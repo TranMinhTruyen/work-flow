@@ -44,7 +44,7 @@ public class UserController extends AbstractController {
   @PostMapping(value = "/create")
   public ResponseEntity<BaseResponse> createUserAccount(
       @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WorkFlowException {
-    CreateUserResponse result = userService.createUserAccount(createUserRequest.getPayload());
+    CreateUserResponse result = userService.createUserAccount(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
         result.getUserName());
   }
@@ -58,8 +58,7 @@ public class UserController extends AbstractController {
    */
   @PostMapping("/login")
   public ResponseEntity<BaseResponse> loginUserAccount(
-      @RequestBody BaseRequest<LoginRequest> loginRequest)
-      throws WorkFlowException {
+      @RequestBody BaseRequest<LoginRequest> loginRequest) throws WorkFlowException {
     LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
@@ -72,8 +71,9 @@ public class UserController extends AbstractController {
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/get-profile")
-  public ResponseEntity<BaseResponse> getProfile() throws WorkFlowException {
-    UserResponse result = userService.getProfile();
+  public ResponseEntity<BaseResponse> getProfile(@RequestBody BaseRequest<Object> request)
+      throws WorkFlowException {
+    UserResponse result = userService.getProfile(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -89,7 +89,7 @@ public class UserController extends AbstractController {
   public ResponseEntity<BaseResponse> updateUserAccount(
       @RequestBody BaseRequest<UpdateUserRequest> updateUserRequest)
       throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-    UpdateUserResponse result = userService.updateUserAccount(updateUserRequest.getPayload());
+    UpdateUserResponse result = userService.updateUserAccount(updateUserRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -105,7 +105,7 @@ public class UserController extends AbstractController {
   public ResponseEntity<BaseResponse> changeLoginPassword(
       @RequestBody BaseRequest<ChangePasswordRequest> changePasswordRequest)
       throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
-    userService.changeLoginPassword(changePasswordRequest.getPayload());
+    userService.changeLoginPassword(changePasswordRequest);
     return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
   }
 

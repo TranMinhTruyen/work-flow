@@ -12,7 +12,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProxyRepository extends MongoRepository<Proxy, String> {
 
-  @Query(value = "{ $and: [ { $or: [{ip_address: ?0}, {mac_address: ?0}] }, {is_deleted: false}, {delete_by: null}, {delete_date_time: null}] }")
+  @Query(value = """
+        {
+          $and: [
+            {
+              $or: [
+                { ip_address: ?0 },
+                { mac_address: ?0 }
+              ]
+            },
+            { is_deleted: false },
+            { delete_by: null },
+            { delete_date_time: null }
+          ]
+        }
+      """)
   Optional<Proxy> getRole(String param);
 
 }

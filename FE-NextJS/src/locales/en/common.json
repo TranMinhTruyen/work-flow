@@ -27,6 +27,7 @@
   "network": {
     "interrupted": "The connection was interrupted.",
     "serverDown": "Connected to the Internet or the server may be down.",
+    "401": "Unauthorized",
     "403": "Forbidden",
     "404": "Not Found",
     "408": "Request Timeout",

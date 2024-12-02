@@ -23,7 +23,6 @@ import com.org.workflow.controller.request.usercontroller.ChangePasswordRequest;
 import com.org.workflow.controller.request.usercontroller.CreateUserRequest;
 import com.org.workflow.controller.request.usercontroller.LoginRequest;
 import com.org.workflow.controller.request.usercontroller.UpdateUserRequest;
-import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.core.security.CustomUserDetail;
 import com.org.workflow.core.security.JwtProvider;
@@ -64,6 +63,7 @@ public class UserService extends AbstractService {
   private final JwtProvider jwtProvider;
 
   private final RedisTemplate<Object, Object> redisTemplate;
+
   private final ExceptionService exceptionService;
 
   @Value("${file-utils.image-path}")
@@ -114,17 +114,19 @@ public class UserService extends AbstractService {
   /**
    * Create new user.
    *
-   * @param createUserRequest CreateUserRequest
+   * @param baseRequest BaseRequest<CreateUserRequest>
    * @return CreateUserResponse
    * @throws WorkFlowException AppException
    */
-  public CreateUserResponse createUserAccount(CreateUserRequest createUserRequest)
+  public CreateUserResponse createUserAccount(BaseRequest<CreateUserRequest> baseRequest)
       throws WorkFlowException {
+    CreateUserRequest createUserRequest = baseRequest.getPayload();
+
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
         createUserRequest.getUserName());
     if (result.isPresent()) {
-      throw new WorkFlowException(
-          new ErrorDetail(USER_NAME_EXISTS, "", createUserRequest.getUserName()));
+      throw exceptionService.getWorkFlowException(USER_NAME_EXISTS, baseRequest.getLanguage(),
+          createUserRequest.getUserName());
     }
     LocalDateTime now = LocalDateTime.now();
     UserAccount userAccount = new UserAccount();
@@ -186,7 +188,8 @@ public class UserService extends AbstractService {
     redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
 
     if (!userAccount.isActive()) {
-      throw new WorkFlowException(new ErrorDetail(ACCOUNT_INACTIVE, "", userAccount.getUserName()));
+      throw exceptionService.getWorkFlowException(ACCOUNT_INACTIVE, baseRequest.getLanguage(),
+          userAccount.getUserName());
     }
 
     String passwordDecrypted = RSAUtil.decryptRSA(loginRequest.getPassword(), privateKey);
@@ -212,8 +215,8 @@ public class UserService extends AbstractService {
         }
       }
       userRepository.save(userAccount);
-      throw new WorkFlowException(
-          new ErrorDetail(ACCOUNT_PASSWORD_INVALID, "", loginRequest.getUserName()));
+      throw exceptionService.getWorkFlowException(ACCOUNT_PASSWORD_INVALID,
+          baseRequest.getLanguage(), loginRequest.getUserName());
     }
   }
 
@@ -224,10 +227,11 @@ public class UserService extends AbstractService {
    * @return CustomUserDetail
    * @throws WorkFlowException AppException
    */
-  public CustomUserDetail loadByUserName(String username) throws WorkFlowException {
+  public CustomUserDetail loadByUserName(String username, String language)
+      throws WorkFlowException {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
-        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
+        () -> exceptionService.getWorkFlowException(NOT_FOUND, language, username));
     return new CustomUserDetail(userAccount);
   }
 
@@ -237,18 +241,19 @@ public class UserService extends AbstractService {
    * @return UserAccountResponse
    * @throws WorkFlowException AppException
    */
-  public UserResponse getProfile() throws WorkFlowException {
+  public UserResponse getProfile(BaseRequest<Object> baseRequest) throws WorkFlowException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
-        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
+        () -> exceptionService.getWorkFlowException(NOT_FOUND, baseRequest.getLanguage(),
+            username));
     return setUserResponse(userAccount);
   }
 
   /**
    * Update user.
    *
-   * @param updateUserRequest UpdateUserRequest
+   * @param baseRequest BaseRequest<UpdateUserRequest>
    * @return UpdateUserResponse
    * @throws WorkFlowException         AppException
    * @throws InvocationTargetException InvocationTargetException
@@ -256,16 +261,19 @@ public class UserService extends AbstractService {
    * @throws InstantiationException    InstantiationException
    * @throws NoSuchMethodException     NoSuchMethodException
    */
-  public UpdateUserResponse updateUserAccount(UpdateUserRequest updateUserRequest)
+  public UpdateUserResponse updateUserAccount(BaseRequest<UpdateUserRequest> baseRequest)
       throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    UpdateUserRequest updateUserRequest = baseRequest.getPayload();
+
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount oldUserAccount = result.orElseThrow(
-        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, username)));
+        () -> exceptionService.getWorkFlowException(NOT_FOUND, baseRequest.getLanguage(),
+            username));
 
     if (updateUserRequest.getUpdateDatetime() != null && !updateUserRequest.getUpdateDatetime()
         .equals(oldUserAccount.getUpdateDatetime())) {
-      throw new WorkFlowException(new ErrorDetail(UPDATE_FAILED));
+      throw exceptionService.getWorkFlowException(UPDATE_FAILED, baseRequest.getLanguage());
     }
 
     LocalDateTime now = LocalDateTime.now();
@@ -294,22 +302,25 @@ public class UserService extends AbstractService {
   /**
    * Change password.
    *
-   * @param changePasswordRequest ChangePasswordRequest
+   * @param baseRequest BaseRequest<ChangePasswordRequest>
    * @throws WorkFlowException AppException
    */
-  public void changeLoginPassword(ChangePasswordRequest changePasswordRequest)
+  public void changeLoginPassword(BaseRequest<ChangePasswordRequest> baseRequest)
       throws WorkFlowException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    ChangePasswordRequest changePasswordRequest = baseRequest.getPayload();
+
     UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
         userAccount.getUserName());
     UserAccount update = result.orElseThrow(
-        () -> new WorkFlowException(new ErrorDetail(NOT_FOUND, userAccount.getUserName())));
+        () -> exceptionService.getWorkFlowException(NOT_FOUND, userAccount.getUserName()));
 
     UserAccount before = (UserAccount) BeanUtils.cloneBean(update);
 
     if (!changePasswordRequest.getNewLoginPassword()
         .equals(changePasswordRequest.getConfirmNewLoginPassword())) {
-      throw new WorkFlowException(new ErrorDetail(NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL));
+      throw exceptionService.getWorkFlowException(NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL,
+          baseRequest.getLanguage());
     }
 
     update.setPassword(

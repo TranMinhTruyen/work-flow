@@ -117,6 +117,9 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
           responseData = error.response.data;
 
           switch (responseStatus) {
+            case 401:
+              responseMessage = t('network.401');
+              break;
             case 403:
               responseMessage = t('network.403');
               break;

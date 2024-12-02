@@ -11,14 +11,24 @@ import org.springframework.stereotype.Repository;
 public interface ItemMasterRepository extends MongoRepository<MasterItem, String> {
 
   Optional<MasterItem> getItemMasterByIdAndMasterCodeAndDeleted(String id, String masterCode,
-    boolean isDeleted);
+      boolean isDeleted);
 
   Optional<MasterItem> getItemMasterByIdAndMasterCode(String id, String masterCode);
 
   Optional<List<MasterItem>> getItemMasterByMasterCodeAndDeletedIsFalse(String masterCode);
 
-  @Query(value = "{ $and: [{master_code: ?0}, {master_value: ?1}, {is_deleted: false}, {delete_by: null}, {delete_date_time: null}] }")
+  @Query(value = """
+      {
+        $and: [
+          { master_code: ?0 },
+          { master_value: ?1 },
+          { is_deleted: false },
+          { delete_by: null },
+          { delete_date_time: null }
+        ]
+      }
+      """)
   Optional<MasterItem> getItemMasterByMasterCodeAndMasterValueAndIsDeletedIsFalse(String masterCode,
-    String masterValue);
+      String masterValue);
 
 }

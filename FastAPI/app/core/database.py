@@ -1,7 +1,8 @@
 import os
+from typing import Mapping, Any
 
 from dotenv import load_dotenv
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ def get_database():
     return client[MONGODB_DATABASE]
 
 
-def get_collection(collection_name: str):
+def get_collection(collection_name: str) -> AsyncIOMotorCollection[Mapping[str, Any]]:
     db = get_database()
     return db[collection_name]
 

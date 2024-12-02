@@ -1,5 +1,6 @@
 package com.org.workflow.core.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.core.exception.CustomAuthenticationEntryPoint;
 import com.org.workflow.core.security.JwtFilter;
 import com.org.workflow.core.security.JwtProvider;
@@ -35,22 +36,24 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
   private static final String[] WHITE_LIST = {
-    "/swagger-ui/**",
-    "/v3/api-docs/**",
-    "/work-flow/swagger-ui/**",
-    "/work-flow/v3/api-docs/**",
-    "/swagger-ui.html",
-    "/api-docs",
-    "/ws/**",
-    "/api/user-account/login",
-    "/api/user-account/create",
-    "/api/master-item/get",
-    "/api/proxy/check-proxy",
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
+      "/work-flow/swagger-ui/**",
+      "/work-flow/v3/api-docs/**",
+      "/swagger-ui.html",
+      "/api-docs",
+      "/ws/**",
+      "/api/user-account/login",
+      "/api/user-account/create",
+      "/api/master-item/get",
+      "/api/proxy/check-proxy",
   };
 
   private final JwtProvider jwtProvider;
 
   private final UserService userService;
+
+  private final ObjectMapper objectMapper;
 
   @Value(value = "${client.url}")
   private String clientUrl;
@@ -62,7 +65,7 @@ public class SecurityConfig {
 
   @Bean
   public JwtFilter jwtAuthenticationFilter() {
-    return new JwtFilter(jwtProvider, userService);
+    return new JwtFilter(jwtProvider, userService, objectMapper);
   }
 
   @Bean
@@ -81,18 +84,18 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-      .csrf(AbstractHttpConfigurer::disable)
-      .exceptionHandling(
-        exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-      .sessionManagement(session -> session
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      )
-      .authorizeHttpRequests(auth -> auth
-        .requestMatchers(HttpMethod.GET).permitAll()
-        .requestMatchers(WHITE_LIST).permitAll()
-        .anyRequest().authenticated()
-      )
-      .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        .csrf(AbstractHttpConfigurer::disable)
+        .exceptionHandling(
+            exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
+        .sessionManagement(session -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        )
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.GET).permitAll()
+            .requestMatchers(WHITE_LIST).permitAll()
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 

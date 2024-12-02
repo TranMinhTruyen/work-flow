@@ -38,7 +38,7 @@ public class ExceptionService {
    */
   public WorkFlowException getWorkFlowException(MessageEnum messageEnum, String language,
       Object... args) {
-    String value = MessageFormat.format(this.getMessage(messageEnum, language), args);
+    String value = MessageFormat.format(getMessage(messageEnum, language), args);
     Map<String, String> messageMap = new HashMap<>();
     messageMap.put(messageEnum.getMessageCode(), value);
 
