@@ -51,9 +51,9 @@ public class JwtFilter extends OncePerRequestFilter {
   public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     String token = getJwtFromRequest(request);
-    String language = getLanguageFromRequest(request);
 
     if (!StringUtils.isBlank(token) && jwtProvider.validateToken(token)) {
+      String language = getLanguageFromRequest(request);
       String username = jwtProvider.getUserNameFromToken(token);
       try {
         CustomUserDetail customUserDetail = userService.loadByUserName(username, language);
