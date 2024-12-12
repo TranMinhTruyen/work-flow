@@ -1,5 +1,4 @@
 'use client';
-import localFont from 'next/font/local';
 import './globals.css';
 import { memo, ReactNode } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,17 +10,6 @@ import store, { persistor } from '@/lib/store';
 import { Provider } from 'react-redux';
 import BackButtonListener from '@/components/loading/BackButtonListener ';
 import { PersistGate } from 'redux-persist/integration/react';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
 
 const RootLayout = ({
   children,
@@ -38,7 +26,7 @@ const RootLayout = ({
             <meta name="viewport" content="initial-scale=1, width=device-width" />
             <title>Work flow</title>
           </head>
-          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <body>
             <main>
               <div id="root">
                 <PersistGate loading={null} persistor={persistor}>
