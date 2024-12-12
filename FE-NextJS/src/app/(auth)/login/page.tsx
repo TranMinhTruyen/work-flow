@@ -23,7 +23,6 @@ import { handleSubmitLogin } from './action';
 import useNavigate from '@/common/hooks/useNavigate';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { HOME_URL } from '@/common/constants/urlConst';
-import GridTable from '@/components/table/Table';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

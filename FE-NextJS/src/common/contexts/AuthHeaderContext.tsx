@@ -21,7 +21,7 @@ export const AuthHeaderProvider = ({ children }: { children: ReactNode }) => {
     setHeaderTitle,
   };
 
-  return <AuthHeaderContext.Provider value={value}>{children}</AuthHeaderContext.Provider>;
+  return <AuthHeaderContext value={value}>{children}</AuthHeaderContext>;
 };
 
 export const useAuthHeader = () => useContext(AuthHeaderContext);
