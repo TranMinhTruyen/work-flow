@@ -1,5 +1,6 @@
 package com.org.workflow.controller.request.mastercontroller;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MasterItemRequest {
+public class MasterItemRequest implements Serializable {
 
   private String id;
 

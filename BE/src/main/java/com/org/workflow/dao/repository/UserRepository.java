@@ -31,7 +31,12 @@ public interface UserRepository extends MongoRepository<UserAccount, String> {
               { email: ?0 }
             ]
           },
-          { is_deleted: false },
+          {
+            $or: [
+              { is_active: null },
+              { is_active: false },
+            ]
+          },
           { delete_by: null },
           { delete_date_time: null }
         ]

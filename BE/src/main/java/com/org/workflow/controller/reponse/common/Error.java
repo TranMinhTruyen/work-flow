@@ -1,4 +1,4 @@
-package com.org.workflow.controller.request.proxycontroller;
+package com.org.workflow.controller.reponse.common;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckProxyRequest implements Serializable {
+public class Error implements Serializable {
 
-  private String ipAddress;
+  private String errorCode;
 
-  private String macAddress;
+  private transient Object errorMessage;
 
 }

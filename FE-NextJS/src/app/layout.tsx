@@ -10,12 +10,11 @@ import store, { persistor } from '@/lib/store';
 import { Provider } from 'react-redux';
 import BackButtonListener from '@/components/loading/BackButtonListener ';
 import { PersistGate } from 'redux-persist/integration/react';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) => {
+ModuleRegistry.registerModules([AllCommunityModule]);
+
+const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
   return (
     <Provider store={store}>
       <I18nextProvider i18n={i18next}>

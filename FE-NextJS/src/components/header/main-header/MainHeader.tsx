@@ -174,15 +174,12 @@ const styles = {
 
   selectInput: {
     '& .MuiInputBase-formControl': {
-      height: '40px !important',
+      height: '35px !important',
     },
 
     '& .MuiChip-root': {
       height: '20px',
-    },
-
-    '& .MuiSelect-select': {
-      marginTop: '-3px',
+      marginTop: '-2px',
     },
 
     '& .MuiOutlinedInput-input': {

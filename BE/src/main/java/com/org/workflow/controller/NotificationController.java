@@ -3,7 +3,7 @@ package com.org.workflow.controller;
 import static com.org.workflow.common.cnst.CommonConst.API_PREFIX;
 import static com.org.workflow.common.enums.MessageTypeEnum.SUCCESS;
 
-import com.org.workflow.controller.reponse.BaseResponse;
+import com.org.workflow.controller.reponse.common.BaseResponse;
 import com.org.workflow.controller.request.BaseRequest;
 import com.org.workflow.controller.request.notificationcontroller.NotificationCreateRequest;
 import com.org.workflow.service.NotificationService;
@@ -31,12 +31,12 @@ public class NotificationController extends AbstractController {
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/create")
   public ResponseEntity<BaseResponse> createNotification(
-    BaseRequest<NotificationCreateRequest> notificationCreateRequest) {
+      BaseRequest<NotificationCreateRequest> notificationCreateRequest) {
     notificationService.createNotification(notificationCreateRequest.getPayload());
     messagingTemplate.convertAndSendToUser(notificationCreateRequest.getPayload().getUserId(),
-      "/check-notification", notificationCreateRequest);
+        "/check-notification", notificationCreateRequest);
     return this.returnBaseResponse(notificationCreateRequest, "Create success", SUCCESS,
-      HttpStatus.OK);
+        HttpStatus.OK);
   }
 
 }

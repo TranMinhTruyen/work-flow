@@ -241,7 +241,7 @@ public class UserService extends AbstractService {
    * @return UserAccountResponse
    * @throws WorkFlowException AppException
    */
-  public UserResponse getProfile(BaseRequest<Object> baseRequest) throws WorkFlowException {
+  public UserResponse getProfile(BaseRequest<?> baseRequest) throws WorkFlowException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(

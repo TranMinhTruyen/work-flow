@@ -7,8 +7,8 @@ import com.org.workflow.common.enums.ChangeTypeEnum;
 import com.org.workflow.common.utils.AuthUtil;
 import com.org.workflow.common.utils.HistoryUtil;
 import com.org.workflow.controller.reponse.mastercontroller.MasterItemResponse;
+import com.org.workflow.controller.request.BaseRequest;
 import com.org.workflow.controller.request.mastercontroller.MasterItemRequest;
-import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.dao.document.ChangeValue;
 import com.org.workflow.dao.document.MasterItem;
@@ -30,28 +30,33 @@ public class ItemMasterService extends AbstractService {
 
   private final ItemMasterHistoryRepository itemMasterHistoryRepository;
 
-  public MasterItem createItemMaster(MasterItemRequest masterItemRequest) throws WorkFlowException {
+  private final ExceptionService exceptionService;
+
+  public MasterItem createItemMaster(BaseRequest<MasterItemRequest> request)
+      throws WorkFlowException {
+    MasterItemRequest payload = request.getPayload();
+
     Optional<MasterItem> findResult = itemMasterRepository.getItemMasterByMasterCodeAndMasterValueAndIsDeletedIsFalse(
-      masterItemRequest.getMasterCode(), masterItemRequest.getMasterValue());
+        payload.getMasterCode(), payload.getMasterValue());
 
     if (findResult.isPresent()) {
-      throw new WorkFlowException(new ErrorDetail(ITEM_MASTER_EXISTS));
+      throw exceptionService.getWorkFlowException(ITEM_MASTER_EXISTS, request.getLanguage());
     }
 
     MasterItem create = new MasterItem();
-    create.setMasterCode(masterItemRequest.getMasterCode());
-    create.setKey(masterItemRequest.getMasterValue());
-    create.setValue1(masterItemRequest.getValue1());
-    create.setValue2(masterItemRequest.getValue2());
-    create.setValue3(masterItemRequest.getValue3());
-    create.setValue4(masterItemRequest.getValue4());
-    create.setValue5(masterItemRequest.getValue5());
-    create.setValue6(masterItemRequest.getValue6());
-    create.setValue7(masterItemRequest.getValue7());
-    create.setValue8(masterItemRequest.getValue8());
-    create.setValue9(masterItemRequest.getValue9());
-    create.setValue10(masterItemRequest.getValue10());
-    create.setDisplayOrder(masterItemRequest.getDisplayOrder());
+    create.setMasterCode(payload.getMasterCode());
+    create.setKey(payload.getMasterValue());
+    create.setValue1(payload.getValue1());
+    create.setValue2(payload.getValue2());
+    create.setValue3(payload.getValue3());
+    create.setValue4(payload.getValue4());
+    create.setValue5(payload.getValue5());
+    create.setValue6(payload.getValue6());
+    create.setValue7(payload.getValue7());
+    create.setValue8(payload.getValue8());
+    create.setValue9(payload.getValue9());
+    create.setValue10(payload.getValue10());
+    create.setDisplayOrder(payload.getDisplayOrder());
     create.setDeleted(false);
 
     String username = AuthUtil.getAuthentication().getUsername();
@@ -68,9 +73,10 @@ public class ItemMasterService extends AbstractService {
     return result;
   }
 
-  public List<MasterItemResponse> getItemMaster(String keyword) {
+  public List<MasterItemResponse> getItemMaster(BaseRequest<String> request) {
+    String payload = request.getPayload();
     Optional<List<MasterItem>> result = itemMasterRepository.getItemMasterByMasterCodeAndDeletedIsFalse(
-      keyword);
+        payload);
     List<MasterItemResponse> returnValue = new ArrayList<>();
     if (result.isPresent() && !result.get().isEmpty()) {
       MasterItemResponse masterItemResponse;
@@ -96,27 +102,30 @@ public class ItemMasterService extends AbstractService {
     return returnValue;
   }
 
-  public MasterItem updateItemMaster(MasterItemRequest masterItemRequest) throws WorkFlowException {
+  public MasterItem updateItemMaster(BaseRequest<MasterItemRequest> request)
+      throws WorkFlowException {
+    MasterItemRequest payload = request.getPayload();
+
     Optional<MasterItem> result = itemMasterRepository.getItemMasterByIdAndMasterCode(
-      masterItemRequest.getId(), masterItemRequest.getMasterCode());
+        payload.getId(), payload.getMasterCode());
     MasterItem resultValue = result.orElseThrow(
-      () -> new WorkFlowException(new ErrorDetail(NOT_FOUND)));
+        () -> exceptionService.getWorkFlowException(NOT_FOUND, request.getLanguage()));
 
     MasterItem update = new MasterItem();
     update.setId(resultValue.getId());
     update.setMasterCode(resultValue.getMasterCode());
     update.setKey(resultValue.getKey());
-    update.setValue1(masterItemRequest.getValue1());
-    update.setValue2(masterItemRequest.getValue2());
-    update.setValue3(masterItemRequest.getValue3());
-    update.setValue4(masterItemRequest.getValue4());
-    update.setValue5(masterItemRequest.getValue5());
-    update.setValue6(masterItemRequest.getValue6());
-    update.setValue7(masterItemRequest.getValue7());
-    update.setValue8(masterItemRequest.getValue8());
-    update.setValue9(masterItemRequest.getValue9());
-    update.setValue10(masterItemRequest.getValue10());
-    update.setDisplayOrder(masterItemRequest.getDisplayOrder());
+    update.setValue1(payload.getValue1());
+    update.setValue2(payload.getValue2());
+    update.setValue3(payload.getValue3());
+    update.setValue4(payload.getValue4());
+    update.setValue5(payload.getValue5());
+    update.setValue6(payload.getValue6());
+    update.setValue7(payload.getValue7());
+    update.setValue8(payload.getValue8());
+    update.setValue9(payload.getValue9());
+    update.setValue10(payload.getValue10());
+    update.setDisplayOrder(payload.getDisplayOrder());
 
     String username = AuthUtil.getAuthentication().getUsername();
     LocalDateTime now = LocalDateTime.now();
@@ -142,14 +151,14 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getKey());
     changeValue.setFieldValueAfter(after.getKey());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue1(changeValue);
 
     // Set change value for value 1
     changeValue.setFieldValueBefore(before.getValue1());
     changeValue.setFieldValueAfter(after.getValue1());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue1(changeValue);
 
     // Set change value for value 2
@@ -157,7 +166,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue2());
     changeValue.setFieldValueAfter(after.getValue2());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue2(changeValue);
 
     // Set change value for value 3
@@ -165,7 +174,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue3());
     changeValue.setFieldValueAfter(after.getValue3());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue3(changeValue);
 
     // Set change value for value 4
@@ -173,7 +182,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue4());
     changeValue.setFieldValueAfter(after.getValue4());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue4(changeValue);
 
     // Set change value for value 5
@@ -181,7 +190,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue5());
     changeValue.setFieldValueAfter(after.getValue5());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue5(changeValue);
 
     // Set change value for value 6
@@ -189,7 +198,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue6());
     changeValue.setFieldValueAfter(after.getValue6());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue6(changeValue);
 
     // Set change value for value 7
@@ -197,7 +206,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue7());
     changeValue.setFieldValueAfter(after.getValue7());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue7(changeValue);
 
     // Set change value for value 8
@@ -205,7 +214,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue8());
     changeValue.setFieldValueAfter(after.getValue8());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue8(changeValue);
 
     // Set change value for value 9
@@ -213,7 +222,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue9());
     changeValue.setFieldValueAfter(after.getValue9());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue9(changeValue);
 
     // Set change value for value 10
@@ -221,7 +230,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getValue10());
     changeValue.setFieldValueAfter(after.getValue10());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setValue10(changeValue);
 
     // Set change value for display order
@@ -229,7 +238,7 @@ public class ItemMasterService extends AbstractService {
     changeValue.setFieldValueBefore(before.getDisplayOrder());
     changeValue.setFieldValueAfter(after.getDisplayOrder());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
-      changeValue.getFieldValueAfter(), changeType));
+        changeValue.getFieldValueAfter(), changeType));
     masterItemHistory.setDisplayOrder(changeValue);
 
     String username = AuthUtil.getAuthentication().getUsername();

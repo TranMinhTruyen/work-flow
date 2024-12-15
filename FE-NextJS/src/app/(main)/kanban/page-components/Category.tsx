@@ -28,6 +28,7 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
             <Grid2 size={{ xs: 6 }} sx={{ paddingLeft: 0 }}>
               <Stack direction={'row'} spacing={1}>
                 <Typography variant={'h5'}>{categoryItem.name}</Typography>
+
                 <Typography
                   variant={'h6'}
                   align={'center'}

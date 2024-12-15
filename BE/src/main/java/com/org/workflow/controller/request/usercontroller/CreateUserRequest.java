@@ -1,6 +1,7 @@
 package com.org.workflow.controller.request.usercontroller;
 
 import com.org.workflow.controller.common.FileData;
+import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserRequest {
+public class CreateUserRequest implements Serializable {
 
   private String email;
 

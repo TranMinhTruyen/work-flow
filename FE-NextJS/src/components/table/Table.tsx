@@ -1,7 +1,5 @@
 'use client';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
 import '../table/Table.css';
 import { useMemo } from 'react';
 
@@ -33,10 +31,10 @@ const GridTable = (props: TableProps) => {
 
   return (
     <div
-      className={'ag-theme-quartz'}
       style={{
         height: calculateGridHeight,
         maxHeight: maxHeight,
+        minHeight: 100,
         width: width,
         minWidth: minWidth,
         maxWidth: maxWidth,

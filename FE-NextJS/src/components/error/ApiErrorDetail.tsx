@@ -25,10 +25,10 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const tableData = useMemo<ErrorData[]>(() => {
-    if (responseData?.errorList && Object.entries(responseData.errorList).length > 0) {
-      return Object.entries(responseData.errorList).map(([key, value]) => ({
-        errorCode: key,
-        errorMessage: value,
+    if (responseData?.errorList && responseData.errorList.length > 0) {
+      return responseData.errorList.map(item => ({
+        errorCode: item.errorCode,
+        errorMessage: item.errorMessage,
       }));
     }
     return [];

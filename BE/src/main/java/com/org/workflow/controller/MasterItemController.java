@@ -8,7 +8,7 @@ import static com.org.workflow.common.enums.RoleEnums.ROLE_ADMIN;
 
 import com.org.workflow.common.annotation.Authentication;
 import com.org.workflow.common.enums.MessageEnum;
-import com.org.workflow.controller.reponse.BaseResponse;
+import com.org.workflow.controller.reponse.common.BaseResponse;
 import com.org.workflow.controller.reponse.mastercontroller.MasterItemResponse;
 import com.org.workflow.controller.request.BaseRequest;
 import com.org.workflow.controller.request.mastercontroller.MasterItemRequest;
@@ -40,16 +40,15 @@ public class MasterItemController extends AbstractController {
   @Authentication(authority = CREATE, role = ROLE_ADMIN, level = HIGH_LEVEL)
   @PostMapping("/create")
   public ResponseEntity<BaseResponse> createItemMaster(
-    @RequestBody BaseRequest<MasterItemRequest> masterItemRequest) throws WorkFlowException {
-    MasterItem result = itemMasterService.createItemMaster(masterItemRequest.getPayload());
+      @RequestBody BaseRequest<MasterItemRequest> masterItemRequest) throws WorkFlowException {
+    MasterItem result = itemMasterService.createItemMaster(masterItemRequest);
     return this.returnBaseResponse(result, "Create success", SUCCESS, HttpStatus.OK);
   }
 
   @PostMapping("/get")
   public ResponseEntity<BaseResponse> getItemMaster(
-    @RequestParam(required = false) BaseRequest<String> keyword) {
-    List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(
-      keyword.getPayload());
+      @RequestParam(required = false) BaseRequest<String> keyword) {
+    List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(keyword);
     return this.returnBaseResponse(masterItemResponseList, MessageEnum.GET_SUCCESS, "item master");
   }
 
@@ -57,8 +56,8 @@ public class MasterItemController extends AbstractController {
   @Authentication(authority = CREATE, role = ROLE_ADMIN, level = HIGH_LEVEL)
   @PostMapping("/update")
   public ResponseEntity<BaseResponse> updateItemMaster(
-    @RequestBody BaseRequest<MasterItemRequest> masterItemRequest) throws WorkFlowException {
-    MasterItem result = itemMasterService.updateItemMaster(masterItemRequest.getPayload());
+      @RequestBody BaseRequest<MasterItemRequest> masterItemRequest) throws WorkFlowException {
+    MasterItem result = itemMasterService.updateItemMaster(masterItemRequest);
     return this.returnBaseResponse(result, "Update success", SUCCESS, HttpStatus.OK);
   }
 

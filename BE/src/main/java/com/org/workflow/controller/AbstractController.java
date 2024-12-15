@@ -5,7 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import com.org.workflow.common.enums.MessageEnum;
 import com.org.workflow.common.enums.MessageTypeEnum;
-import com.org.workflow.controller.reponse.BaseResponse;
+import com.org.workflow.controller.reponse.common.BaseResponse;
 import com.org.workflow.core.exception.WorkFlowException;
 import jakarta.annotation.Nullable;
 import java.text.MessageFormat;

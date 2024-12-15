@@ -1,10 +1,10 @@
 package com.org.workflow.core.exception;
 
 import com.org.workflow.common.enums.MessageEnum;
+import com.org.workflow.controller.reponse.common.Error;
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -12,17 +12,18 @@ import org.springframework.http.HttpStatus;
 @Data
 public class ErrorDetail implements Serializable {
 
-  private Map<String, String> message;
+  private List<Error> message;
 
   private HttpStatus httpStatus;
 
   public ErrorDetail() {
   }
-  
+
   public ErrorDetail(MessageEnum messageEnum) {
-    Map<String, String> messageMap = new HashMap<>();
-    messageMap.put(messageEnum.getMessageCode(), messageEnum.getMessage());
-    this.message = messageMap;
+    Error error = new Error();
+    error.setErrorCode(messageEnum.getMessageCode());
+    error.setErrorMessage(messageEnum.getMessage());
+    this.message.add(error);
     this.httpStatus = messageEnum.getHttpStatus();
   }
 
@@ -33,9 +34,10 @@ public class ErrorDetail implements Serializable {
     } else {
       value = prefix.concat(MessageFormat.format(messageEnum.getMessage(), args));
     }
-    Map<String, String> messageMap = new HashMap<>();
-    messageMap.put(messageEnum.getMessageCode(), value);
-    this.message = messageMap;
+    Error error = new Error();
+    error.setErrorCode(messageEnum.getMessageCode());
+    error.setErrorMessage(value);
+    this.message.add(error);
     this.httpStatus = messageEnum.getHttpStatus();
   }
 
