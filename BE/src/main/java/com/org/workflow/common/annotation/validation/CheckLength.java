@@ -1,6 +1,6 @@
 package com.org.workflow.common.annotation.validation;
 
-import com.org.workflow.common.annotation.validation.impl.MaxLengthCheck;
+import com.org.workflow.common.annotation.validation.impl.CheckLengthImpl;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
@@ -15,10 +15,14 @@ import java.lang.annotation.Target;
 @Documented
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = MaxLengthCheck.class)
-public @interface MaxLength {
+@Constraint(validatedBy = CheckLengthImpl.class)
+public @interface CheckLength {
 
   String message() default "V0001";
+
+  int order() default 0;
+
+  int minLength() default 0;
 
   int maxLength();
 

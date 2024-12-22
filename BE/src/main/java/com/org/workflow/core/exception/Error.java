@@ -1,4 +1,4 @@
-package com.org.workflow.controller.reponse.common;
+package com.org.workflow.core.exception;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Error implements Serializable {
+
+  private String errorOrder;
 
   private String errorCode;
 

@@ -1,22 +1,22 @@
 package com.org.workflow.core.exception;
 
 import static com.org.workflow.common.cnst.CommonConst.CLASS_NAME;
+import static com.org.workflow.common.utils.CommonUtil.getAttributes;
+import static com.org.workflow.common.utils.CommonUtil.getLanguageFromRequest;
+import static com.org.workflow.common.utils.ValidateUtil.formatValidateMessage;
 
+import com.org.workflow.common.enums.MessageTypeEnum;
 import com.org.workflow.controller.AbstractController;
 import com.org.workflow.controller.reponse.common.BaseResponse;
-import com.org.workflow.controller.reponse.common.Error;
-import com.org.workflow.controller.request.BaseRequest;
-import jakarta.validation.ConstraintViolation;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +35,8 @@ public class ExceptionInterceptor extends AbstractController {
   private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionInterceptor.class);
 
   private final MessageSource messageSource;
+
+  private final DefaultErrorAttributes errorAttributes;
 
   @ExceptionHandler(value = WorkFlowException.class)
   public ResponseEntity<BaseResponse> handleAppException(WorkFlowException workFlowException) {
@@ -77,59 +79,31 @@ public class ExceptionInterceptor extends AbstractController {
     BaseResponse baseResponse = new BaseResponse();
     List<Error> errorList = bindingResult.getAllErrors().stream()
         .map(error -> {
+          FieldError fieldError = (FieldError) error;
           Error errorItem = new Error();
 
-          String fieldName = ((FieldError) error).getField();
-          String errorMessage = messageSource.getMessage(
-              Objects.requireNonNull(error.getDefaultMessage()),
-              new Object[]{fieldName},
-              locale);
+          // Get field name
+          String fieldName = fieldError.getField();
 
+          // Get messageId from annotation
+          String messageId = fieldError.getDefaultMessage();
+
+          // Get all attribute from annotation
+          Map<String, Object> attr = getAttributes(fieldError);
+
+          // format message
+          String errorMessage = formatValidateMessage(fieldName, messageId, attr, messageSource, locale);
+
+          errorItem.setErrorOrder(attr.get("order").toString());
           errorItem.setErrorCode(error.getDefaultMessage());
           errorItem.setErrorMessage(errorMessage);
           return errorItem;
-        }).toList();
+        }).sorted(Comparator.comparing((Error x) -> Integer.parseInt(x.getErrorOrder()))).toList();
 
+    baseResponse.setMessageType(MessageTypeEnum.ERROR);
     baseResponse.setMessage("Validation failed");
     baseResponse.setErrorList(errorList);
     return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
-  }
-
-  /**
-   * Get language from payload.
-   *
-   * @param target Object
-   * @return String
-   */
-  private String getLanguageFromRequest(Object target) {
-    try {
-      if (target instanceof BaseRequest<?> baseRequest) {
-        return baseRequest.getLanguage();
-      }
-      return "en";
-    } catch (Exception e) {
-      return "en";
-    }
-  }
-
-  private List<Object> getAttributes(FieldError error) {
-    List<Object> returnAttributes = new ArrayList<>();
-    Map<String, Object> attributes = null;
-    if (error.unwrap(ConstraintViolation.class) != null) {
-      ConstraintViolation<?> violation = error.unwrap(ConstraintViolation.class);
-      attributes = violation.getConstraintDescriptor().getAttributes();
-    }
-
-    for (Entry<String, Object> item : attributes.entrySet()) {
-      if (item.getKey().equals("message") || item.getKey().equals("groups") || item.getKey()
-          .equals("payload")) {
-        continue;
-      }
-
-      returnAttributes.add(item.getValue());
-    }
-
-    return returnAttributes;
   }
 
 }

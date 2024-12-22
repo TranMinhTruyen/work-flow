@@ -1,6 +1,7 @@
 package com.org.workflow.core.security;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static com.org.workflow.common.utils.CommonUtil.getLanguageFromRequest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.core.exception.WorkFlowException;
 import com.org.workflow.service.UserService;
@@ -8,10 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
     String token = getJwtFromRequest(request);
 
     if (!StringUtils.isBlank(token) && jwtProvider.validateToken(token)) {
-      String language = getLanguageFromRequest(request);
+      String language = getLanguageFromRequest(request, objectMapper);
       String username = jwtProvider.getUserNameFromToken(token);
       try {
         CustomUserDetail customUserDetail = userService.loadByUserName(username, language);
@@ -83,28 +81,6 @@ public class JwtFilter extends OncePerRequestFilter {
       return bearerToken.substring(7);
     }
     return null;
-  }
-
-  /**
-   * Get language from payload.
-   *
-   * @param request HttpServletRequest
-   * @return String
-   */
-  private String getLanguageFromRequest(HttpServletRequest request) {
-    StringBuilder stringBuilder = new StringBuilder();
-    try (BufferedReader bufferedReader = new BufferedReader(
-        new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8))) {
-      String line;
-      while ((line = bufferedReader.readLine()) != null) {
-        stringBuilder.append(line);
-      }
-      JsonNode jsonNode = objectMapper.readTree(stringBuilder.toString());
-
-      return jsonNode.has("language") ? jsonNode.get("language").asText() : "en";
-    } catch (Exception e) {
-      return "en";
-    }
   }
 
 }

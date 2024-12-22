@@ -1,7 +1,7 @@
 package com.org.workflow.service;
 
 import com.org.workflow.common.enums.MessageEnum;
-import com.org.workflow.controller.reponse.common.Error;
+import com.org.workflow.core.exception.Error;
 import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
 import java.util.ArrayList;
@@ -59,8 +59,7 @@ public class ExceptionService {
   /**
    * throw WorkFlowException
    *
-   * @param messageList Map<MessageEnum, List<String>> key: MessageEnum, value: List<String> args of
-   *                    MessageEnum
+   * @param messageList Map<MessageEnum, List<String>> key: MessageEnum, value: List<String> args of MessageEnum
    * @param language    String
    * @param httpStatus  HttpStatus
    * @return WorkFlowException

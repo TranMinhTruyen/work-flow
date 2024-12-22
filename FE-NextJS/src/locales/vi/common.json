@@ -27,6 +27,7 @@
   "network": {
     "interrupted": "Kết nối đã bị gián đoạn.",
     "serverDown": "Đã kết nối Internet hoặc máy chủ có thể bị ngắt.",
+    "400": "Request lỗi",
     "401": "Không được phép",
     "403": "Không có quyền truy cập",
     "404": "Không tìm thấy",

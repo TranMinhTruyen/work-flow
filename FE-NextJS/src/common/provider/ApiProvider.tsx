@@ -104,7 +104,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
           messageType: MessageType.ERROR,
           messageCode: '',
           message: '',
-          errorList: new Map<string, string>(),
+          errorList: [],
           body: undefined,
         };
 
@@ -117,6 +117,9 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
           responseData = error.response.data;
 
           switch (responseStatus) {
+            case 400:
+              responseMessage = t('network.400');
+              break;
             case 401:
               responseMessage = t('network.401');
               break;

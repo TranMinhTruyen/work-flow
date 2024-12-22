@@ -1,7 +1,6 @@
 package com.org.workflow.core.exception;
 
 import com.org.workflow.common.enums.MessageEnum;
-import com.org.workflow.controller.reponse.common.Error;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.List;

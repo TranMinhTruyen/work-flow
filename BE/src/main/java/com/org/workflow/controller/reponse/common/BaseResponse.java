@@ -5,6 +5,7 @@ import static com.org.workflow.common.cnst.CommonConst.ZONE_ID;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.org.workflow.common.enums.MessageTypeEnum;
+import com.org.workflow.core.exception.Error;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;

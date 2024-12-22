@@ -5,9 +5,12 @@ import static com.org.workflow.common.enums.MessageEnum.READ_FILE_ERROR;
 import com.org.workflow.controller.common.FileData;
 import com.org.workflow.core.exception.ErrorDetail;
 import com.org.workflow.core.exception.WorkFlowException;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,8 @@ import org.slf4j.LoggerFactory;
 public class FileUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+
+  private static final int BUFFER_SIZE = 1024 * 512;
 
   private FileUtil() {
   }
@@ -61,6 +66,19 @@ public class FileUtil {
       }
     } else {
       return null;
+    }
+  }
+
+  // TODO demo
+  public static byte[] readFileToBytes(InputStream inputStream) throws IOException {
+    try (BufferedInputStream bis = new BufferedInputStream(inputStream);
+        ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+      byte[] buffer = new byte[BUFFER_SIZE];
+      int bytesRead;
+      while ((bytesRead = bis.read(buffer)) != -1) {
+        out.write(buffer, 0, bytesRead);
+      }
+      return out.toByteArray();
     }
   }
 
