@@ -36,9 +36,14 @@ public class ApplicationStartup {
   @EventListener(ContextRefreshedEvent.class)
   public void importAdminUser() {
     LocalDateTime now = LocalDateTime.now();
+    Optional<UserAccount> checkUser = userRepository.findUserAccountByUserNameOrEmail(
+        "admin");
+    if (checkUser.isPresent()) {
+      return;
+    }
     UserAccount userAccount = new UserAccount();
     String userId = USER_ID_PREFIX.concat(
-      now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
+        now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
     userAccount.setUserId(userId);
     userAccount.setUserName("admin");
     userAccount.setPassword(Hashing.sha512().hashString("123", StandardCharsets.UTF_16).toString());
@@ -58,7 +63,7 @@ public class ApplicationStartup {
     userAccount.setUpdateDatetime(now);
     userAccount.setDeleted(false);
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-      userAccount.getUserName());
+        userAccount.getUserName());
     if (result.isEmpty()) {
       userRepository.save(userAccount);
     }
@@ -76,7 +81,7 @@ public class ApplicationStartup {
     proxy.setUpdateDatetime(now);
     proxy.setDeleted(false);
     Optional<Proxy> result = proxyRepository.getRole(
-      proxy.getIpAddress());
+        proxy.getIpAddress());
     if (result.isEmpty()) {
       proxyRepository.save(proxy);
     }

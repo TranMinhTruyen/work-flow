@@ -34,7 +34,7 @@ public interface UserRepository extends MongoRepository<UserAccount, String> {
           {
             $or: [
               { is_active: null },
-              { is_active: false },
+              { is_active: true },
             ]
           },
           { delete_by: null },
