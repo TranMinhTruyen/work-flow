@@ -36,11 +36,6 @@ public class ApplicationStartup {
   @EventListener(ContextRefreshedEvent.class)
   public void importAdminUser() {
     LocalDateTime now = LocalDateTime.now();
-    Optional<UserAccount> checkUser = userRepository.findUserAccountByUserNameOrEmail(
-        "admin");
-    if (checkUser.isPresent()) {
-      return;
-    }
     UserAccount userAccount = new UserAccount();
     String userId = USER_ID_PREFIX.concat(
         now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
