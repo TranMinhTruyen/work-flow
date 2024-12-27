@@ -47,6 +47,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.3.4'
     implementation 'org.springframework.data:spring-data-redis:3.3.4'
     implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+    implementation 'org.hibernate.orm:hibernate-core:6.6.4.Final'
 
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:3.3.4'
@@ -72,7 +73,6 @@ bootJar {
     enabled = false
 }
 
-// Build war command: ./gradlew build -x test
 bootWar {
     enabled = true
 }
@@ -80,3 +80,5 @@ bootWar {
 war {
     archiveFileName = 'work-flow.war'
 }
+// Build war command: ./gradlew build -x test
+// Clean build war command: ./gradlew clean build -x test --refresh-dependencies
