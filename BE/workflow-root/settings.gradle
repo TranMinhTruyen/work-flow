@@ -1,0 +1,6 @@
+rootProject.name = 'workflow'
+
+includeFlat 'workflow-main'
+includeFlat 'workflow-core'
+includeFlat 'workflow-dao'
+includeFlat 'workflow-domain'
