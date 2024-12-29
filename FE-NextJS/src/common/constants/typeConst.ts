@@ -14,7 +14,7 @@ export type FileData = {
   data?: number[];
 };
 
-export type Obj<V = any> = { [attr: string]: V };
+export type Obj<V = any> = { [key: string]: V };
 
 export type SelectDataFunc = (
   items: Obj[],

@@ -1,12 +1,9 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
 /FastAPI/.venv
 /FastAPI/__pycache__
 /FastAPI/**/__pycache__
+
+**/build/
+**/.gradle/
 
 ### STS ###
 .apt_generated
@@ -25,9 +22,6 @@ bin/
 *.iws
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
 ### NetBeans ###
 /nbproject/private/
