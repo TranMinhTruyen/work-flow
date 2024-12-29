@@ -1,14 +1,14 @@
 client:
-  url: "http://172.24.25.251:3000"
+  url: "http://192.168.1.7:3000"
 
 redis:
-  host: 172.24.25.251
+  host: 192.168.1.7
   port: 6379
 
 spring:
   data:
     mongodb:
-      host: 172.24.25.251
+      host: 192.168.1.7
       port: 27017
       database: work-flow
 
