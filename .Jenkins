@@ -106,7 +106,7 @@ pipeline {
 
         stage('Install & build BE') {
             steps {
-                dir('BE') {
+                dir('BE/workflow-root') {
                     script {
                         echo "Start build BE..."
                         sh """
@@ -158,7 +158,7 @@ pipeline {
 
                         echo "Start deploy BE..."
 
-                        warFile = "${WORKSPACE}/BE/build/libs/work-flow.war"
+                        warFile = "${WORKSPACE}/BE/workflow-main/build/libs/work-flow.war"
 
                         echo "Checking for file: ${warFile}"
 
