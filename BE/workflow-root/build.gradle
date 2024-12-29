@@ -1,7 +1,21 @@
 plugins {
-    id 'io.spring.dependency-management' version "${SPRING_DEPENDENCY_MANAGEMENT_VERSION}" apply false
+    id 'java'
 }
 
 allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
     group = "${GROUP}"
+
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = 'UTF-8'
+        }
+    }
 }

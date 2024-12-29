@@ -60,4 +60,5 @@ bootWar {
     mainClass = 'com.org.workflow.WorkflowApplication'
     archiveFileName = 'work-flow.war'
     enabled = true
+    launchScript()
 }
