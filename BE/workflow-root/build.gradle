@@ -1,8 +1,38 @@
+buildscript {
+    ext {
+        springBootVersion = "${SPRING_BOOT_VERSION}"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        gradlePluginPortal()
+    }
+}
+
 plugins {
     id 'io.spring.dependency-management' version "${SPRING_DEPENDENCY_MANAGEMENT_VERSION}" apply false
 }
 
 allprojects {
+    apply plugin: 'java'
     group = "${GROUP}"
-    version = "${VERSION}"
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        gradlePluginPortal()
+    }
+}
+
+subprojects {
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${SPRING_BOOT_VERSION}"
+        }
+    }
 }
