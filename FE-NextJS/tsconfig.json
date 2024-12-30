@@ -25,7 +25,7 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "allowImportingTsExtensions": true,
-    "target": "ES2023"
+    "target": "ESNext"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useMemo, useState } from 'react';
+import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
 import { ExpandMore } from '@mui/icons-material';
@@ -32,7 +32,7 @@ const DrawerMenu = () => {
   // const loginData = useAppSelector(selectLoginData);
 
   const drawerItemList = useMemo(() => {
-    const returnItem: JSX.Element[] = [];
+    const returnItem: ReactElement[] = [];
 
     if (itemList.length === 0) {
       return returnItem;
@@ -154,7 +154,7 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
   );
 
   const childItem = useMemo(() => {
-    const returnItem: JSX.Element[] = [];
+    const returnItem: ReactElement[] = [];
 
     if (item.componentChild === undefined || item.componentChild === null) {
       return returnItem;

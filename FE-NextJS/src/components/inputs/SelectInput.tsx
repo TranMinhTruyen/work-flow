@@ -22,6 +22,7 @@ export type SelectInputProps = Omit<
   width?: number;
   sx?: SxProps<Theme>;
   value?: string;
+  placeholder?: string;
   data: SelectDataType[];
   defaultValue?: string;
   displayNone?: boolean;
