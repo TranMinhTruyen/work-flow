@@ -9,7 +9,6 @@ import DrawerMenu from './DrawerMenu';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { selectOpenDrawer, toggleDrawer } from '@/lib/slices/commonSlice';
-import './drawer.css';
 
 type IDrawerProps = {
   drawerWidth: number;
@@ -66,6 +65,8 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
+  height: '50px',
+  minHeight: '50px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',

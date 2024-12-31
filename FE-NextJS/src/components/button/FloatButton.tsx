@@ -55,12 +55,12 @@ const FloatButton = (props: ButtonProps) => {
 export default FloatButton;
 
 const StyleButton = styled(Fab)({
-  boxShadow: '#a8a8a8',
+  boxShadow: 'rgba(168, 168, 168, 1)',
   textTransform: 'none',
   fontSize: 16,
   borderRadius: 25,
   lineHeight: 1.5,
-  backgroundColor: '#ffffff',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
   '&:hover': {
     boxShadow: '#a8a8a8',
     backgroundColor: 'rgba(210, 210, 210, 0.8)',

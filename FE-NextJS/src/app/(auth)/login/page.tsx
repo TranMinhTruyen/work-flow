@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
@@ -23,12 +23,16 @@ import { handleSubmitLogin } from './action';
 import useNavigate from '@/common/hooks/useNavigate';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { HOME_URL } from '@/common/constants/urlConst';
+import { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
+import DemoModal, { Item } from '@/components/modal/DemoModal';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const { t } = useTranslation(I18nEnum.LOGIN_I18N);
   const { setHeaderTitle } = useAuthHeader();
   const { navigate } = useNavigate();
+
+  const modalRef = useRef<IPromiseModalHandle<Item>>(null);
 
   useEffect(() => {
     // Set title for header
@@ -62,6 +66,13 @@ const Login = () => {
     },
     [navigate, trigger]
   );
+
+  const handleOpenModal = useCallback(async () => {
+    if (modalRef.current) {
+      const result = await modalRef.current.open();
+      console.log(result?.name);
+    }
+  }, []);
 
   return (
     <form id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
@@ -145,7 +156,19 @@ const Login = () => {
           form={'login-form'}
           type={'submit'}
         />
+
+        <FloatButton
+          label={
+            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+              {'Test open modal'}
+            </Typography>
+          }
+          onClick={handleOpenModal}
+          sx={loginStyles.button}
+        />
       </CardActions>
+
+      <DemoModal ref={modalRef} />
     </form>
   );
 };

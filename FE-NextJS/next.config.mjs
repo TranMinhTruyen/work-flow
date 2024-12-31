@@ -7,6 +7,7 @@ const nextConfig = {
   },
   webpack: (config, { webpack }) => {
     config.plugins.push(new webpack.ProgressPlugin());
+
     config.optimization.minimizer = [
       new TerserPlugin({
         terserOptions: {
@@ -20,6 +21,7 @@ const nextConfig = {
         parallel: true,
       }),
     ];
+
     return config;
   },
 };

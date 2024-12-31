@@ -16,7 +16,6 @@ import {
   setLanguage,
   toggleDrawer,
 } from '@/lib/slices/commonSlice';
-import './main-header.css';
 import { toSelectData } from '@/common/utils/convertUtil';
 import { useTranslation } from 'react-i18next';
 import { languageConst } from '@/common/constants/commonConst';
@@ -110,7 +109,7 @@ const MainHeader = (props: IHeaderProps) => {
 
   return (
     <AppBar drawerWidth={drawerWidth} open={opendrawer}>
-      <Toolbar id={'toolBar'}>
+      <Toolbar sx={{ minHeight: '50px' }}>
         <MuiIconButton
           color={'inherit'}
           onClick={handleDrawerOpen}

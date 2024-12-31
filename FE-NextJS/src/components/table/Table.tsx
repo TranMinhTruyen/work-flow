@@ -1,7 +1,7 @@
 'use client';
-import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
-import '../table/Table.css';
 import { useMemo } from 'react';
+import { styled } from '@mui/material/styles';
+import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 
 export type TableProps = AgGridReactProps & {
   height?: number | string;
@@ -30,20 +30,46 @@ const GridTable = (props: TableProps) => {
   }, [maxHeight, rowData, rowHeight]);
 
   return (
-    <div
-      style={{
-        height: calculateGridHeight,
-        maxHeight: maxHeight,
-        minHeight: 100,
-        width: width,
-        minWidth: minWidth,
-        maxWidth: maxWidth,
-        overflow: 'auto',
-      }}
+    <AgGridContainer
+      height={calculateGridHeight}
+      maxHeight={maxHeight}
+      width={width}
+      minWidth={minWidth}
+      maxWidth={maxWidth}
     >
       <AgGridReact headerHeight={50} rowHeight={rowHeight} rowData={rowData} {...restProps} />
-    </div>
+    </AgGridContainer>
   );
 };
+
+const AgGridContainer = styled('div')<TableProps>(
+  ({ height, maxHeight, width, minWidth, maxWidth }) => ({
+    height: height,
+    maxHeight: maxHeight,
+    minHeight: 100,
+    width: width,
+    minWidth: minWidth,
+    maxWidth: maxWidth,
+    overflow: 'auto',
+
+    '& .ag-header-cell': {
+      borderRight: '1px solid #ccc',
+    },
+
+    '& .ag-header-cell:last-child': {
+      borderRight: 'none',
+    },
+
+    '& .ag-cell': {
+      alignContent: 'center !important',
+      borderRight: '1px solid #ccc !important',
+      lineHeight: '1.8 !important',
+    },
+
+    '& .ag-cell:last-child': {
+      borderRight: 'none !important',
+    },
+  })
+);
 
 export default GridTable;
