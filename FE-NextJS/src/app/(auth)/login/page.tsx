@@ -17,7 +17,6 @@ import Link from '@mui/material/Link';
 import { ILoginForm } from '@/model/login/LoginForm';
 import TextInput from '@/components/form/TextInput';
 import CheckBox from '@/components/form/CheckboxInput';
-import FloatButton from '@/components/button/FloatButton';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import { handleSubmitLogin } from './action';
 import useNavigate from '@/common/hooks/useNavigate';
@@ -25,6 +24,7 @@ import { I18nEnum } from '@/common/enums/I18nEnum';
 import { HOME_URL } from '@/common/constants/urlConst';
 import { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
 import DemoModal, { Item } from '@/components/modal/DemoModal';
+import Button from '@/components/button/Button';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -70,7 +70,6 @@ const Login = () => {
   const handleOpenModal = useCallback(async () => {
     if (modalRef.current) {
       const result = await modalRef.current.open();
-      console.log(result?.name);
     }
   }, []);
 
@@ -146,7 +145,7 @@ const Login = () => {
       <Divider />
 
       <CardActions sx={loginStyles.footer}>
-        <FloatButton
+        <Button
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
               {t('button.login')}
@@ -157,7 +156,7 @@ const Login = () => {
           type={'submit'}
         />
 
-        <FloatButton
+        <Button
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
               {'Test open modal'}

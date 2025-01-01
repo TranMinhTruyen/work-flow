@@ -8,7 +8,6 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
-import FloatButton from '@/components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/form/TextInput';
 import CardActions from '@mui/material/CardActions';
@@ -27,6 +26,7 @@ import { I18nEnum } from '@/common/enums/I18nEnum';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
 import { makeStyles } from '@mui/styles';
+import Button from '@/components/button/Button';
 
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -176,7 +176,7 @@ const Register = () => {
 
       <CardActions className={classes.footer}>
         <Stack direction={'row'} spacing={5}>
-          <FloatButton
+          <Button
             label={<Typography className={classes.buttonLabel}>{t('button.register')}</Typography>}
             className={classes.button}
             form={'register-form'}

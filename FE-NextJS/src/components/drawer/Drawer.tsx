@@ -29,7 +29,7 @@ const Drawer = (props: IDrawerProps) => {
 
   return (
     <CustomDrawer drawerWidth={drawerWidth} variant={'permanent'} open={openDrawer}>
-      <DrawerHeader id={'drawerHeader'}>
+      <DrawerHeader sx={{ minHeight: '50px !important' }}>
         <IconButton
           onClick={handleOpenDrawer}
           sx={{ width: '40px', height: '40px', justifyContent: 'center' }}
@@ -65,8 +65,6 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
-  height: '50px',
-  minHeight: '50px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',

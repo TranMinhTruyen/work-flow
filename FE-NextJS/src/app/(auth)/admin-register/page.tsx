@@ -8,7 +8,6 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
-import FloatButton from '@/components/button/FloatButton';
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/form/TextInput';
 import CardActions from '@mui/material/CardActions';
@@ -31,6 +30,7 @@ import { selectProxyRole } from '@/lib/slices/commonSlice';
 import { useAppSelector } from '@/lib/store';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import { MessageType } from '@/common/enums/MessageEnum';
+import Button from '@/components/button/Button';
 
 const AdminRegister = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -204,7 +204,7 @@ const AdminRegister = () => {
 
       <CardActions className={classes.footer}>
         <Stack direction={'row'} spacing={5}>
-          <FloatButton
+          <Button
             label={<Typography className={classes.buttonLabel}>{t('button.register')}</Typography>}
             className={classes.button}
             form={'register-form'}

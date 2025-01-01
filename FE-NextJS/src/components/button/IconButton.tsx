@@ -1,9 +1,10 @@
 'use client';
-import { CircularProgress, Badge, Fab, FabProps } from '@mui/material';
+import { CircularProgress, Badge } from '@mui/material';
+import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { memo, ReactNode } from 'react';
 
-type IconButtonProps = FabProps & {
+type IconButtonProps = MuiButtonProps & {
   width?: number;
   height?: number;
   icon?: ReactNode;
@@ -15,7 +16,12 @@ const IconButton = (props: IconButtonProps) => {
   const { width = 40, height = 40, icon, isLoading = false, badgeContent, ...restProps } = props;
 
   const loadingComponent = isLoading ? (
-    <CircularProgress variant={'indeterminate'} disableShrink size={20} sx={{ color: '#ffffff' }} />
+    <CircularProgress
+      variant={'indeterminate'}
+      disableShrink
+      size={20}
+      sx={{ color: 'rgba(255, 255, 255, 1)' }}
+    />
   ) : (
     icon
   );
@@ -40,16 +46,18 @@ const IconButton = (props: IconButtonProps) => {
 };
 export default memo(IconButton);
 
-const StyleIconButton = styled(Fab)({
-  boxShadow: '#a8a8a8',
+const StyleIconButton = styled(MuiButton)({
+  minHeight: '40px',
+  minWidth: '40px',
+  boxShadow: 'rgba(168, 168, 168, 1)',
   textTransform: 'none',
   fontSize: 16,
   borderRadius: 25,
   lineHeight: 1.5,
-  backgroundColor: '#ffffff',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
   '&:hover': {
-    boxShadow: '#a8a8a8',
+    boxShadow: 'rgba(168, 168, 168, 1)',
     backgroundColor: 'rgba(210, 210, 210, 0.8)',
-    color: '#000000',
+    color: 'rgba(0, 0, 0, 1)',
   },
 });

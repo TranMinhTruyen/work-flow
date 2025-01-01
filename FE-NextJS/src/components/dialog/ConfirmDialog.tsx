@@ -11,11 +11,11 @@ import Divider from '@mui/material/Divider';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { MessageType } from '@/common/enums/MessageEnum';
-import FloatButton from '../button/FloatButton';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import Button from '../button/Button';
 
 export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
   message?: ReactNode;
@@ -118,7 +118,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
   const cancelButton = useMemo(() => {
     if (showCancelButton !== undefined && showCancelButton) {
       return (
-        <FloatButton
+        <Button
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
               {cancelText ?? 'Cancel'}
@@ -168,7 +168,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 
         <DialogActions sx={{ justifyContent: 'center', alignItems: 'center', padding: '10px' }}>
           <Stack direction={'row'} alignItems={'center'} spacing={10}>
-            <FloatButton
+            <Button
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
                   {confirmText ?? 'OK'}

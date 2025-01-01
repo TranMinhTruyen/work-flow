@@ -4,13 +4,14 @@ import Typography from '@mui/material/Typography';
 import {
   ColDef,
   RowDoubleClickedEvent,
-  RowSelectedEvent,
+  RowSelectionOptions,
   SelectionChangedEvent,
 } from 'ag-grid-community';
 import { memo, Ref, useCallback, useEffect, useMemo } from 'react';
-import GridTable from '../table/Table';
+import GridTable from '@/components/table/Table';
 import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
+import Button from '../button/Button';
 
 export interface Item {
   id: number;
@@ -18,9 +19,9 @@ export interface Item {
 }
 
 const data: Item[] = [
-  { id: 1, name: 'Item 1' },
-  { id: 2, name: 'Item 2' },
-  { id: 3, name: 'Item 3' },
+  { id: 1, name: 'admin' },
+  { id: 2, name: 'admin2' },
+  { id: 3, name: 'admin3' },
 ];
 
 export type IDemoModalProps = {
@@ -30,16 +31,8 @@ export type IDemoModalProps = {
 const DemoModal = (props: IDemoModalProps) => {
   const { ref } = props;
 
-  const {
-    handleClose,
-    handleDoubleClick,
-    handleOk,
-    openModal,
-    items,
-    setItems,
-    selectedItem,
-    setSelectedItem,
-  } = usePromiseModal(ref);
+  const { handleClose, handleDoubleClick, handleOk, openModal, items, setItems, setSelectedItem } =
+    usePromiseModal<Item>(ref);
 
   useEffect(() => {
     setItems(data);
@@ -51,7 +44,7 @@ const DemoModal = (props: IDemoModalProps) => {
       {
         headerName: 'id',
         field: 'id',
-        width: 125,
+        width: 120,
         cellRenderer: (params: { value: string }) => {
           return <Typography sx={{ color: 'rgba(255, 0, 0, 1)' }}>{params.value}</Typography>;
         },
@@ -66,6 +59,10 @@ const DemoModal = (props: IDemoModalProps) => {
     []
   );
 
+  const rowSelection = useMemo<RowSelectionOptions>(() => {
+    return { mode: 'singleRow', enableClickSelection: true };
+  }, []);
+
   const defaultColDef = useMemo<ColDef>(
     () => ({
       resizable: false,
@@ -78,9 +75,11 @@ const DemoModal = (props: IDemoModalProps) => {
     []
   );
 
-  const onRowSelected = useCallback(
-    (event: RowSelectedEvent) => {
-      setSelectedItem(event.node.data);
+  const onSelectionChanged = useCallback(
+    (event: SelectionChangedEvent) => {
+      const selectedNodes = event.api.getSelectedNodes();
+      const selectedData = selectedNodes.length > 0 ? selectedNodes[0].data : null;
+      setSelectedItem(selectedData);
     },
     [setSelectedItem]
   );
@@ -97,14 +96,24 @@ const DemoModal = (props: IDemoModalProps) => {
       <Container>
         <Stack spacing={1}>
           <GridTable
+            rowData={items}
             columnDefs={colDefs}
             defaultColDef={defaultColDef}
-            rowData={items}
-            onRowSelected={onRowSelected}
+            rowSelection={rowSelection}
+            onSelectionChanged={onSelectionChanged}
             onRowDoubleClicked={onRowDoubleClicked}
             suppressMovableColumns
           />
         </Stack>
+        <Button
+          sx={{
+            backgroundColor: 'rgba(0, 170, 255, 0.8)',
+          }}
+          label={
+            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{'Ok'}</Typography>
+          }
+          onClick={handleOk}
+        />
       </Container>
     </Dialog>
   );

@@ -47,8 +47,6 @@ const UserPopover = () => {
             : '',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          width: 40,
-          height: 40,
           '&:hover': {
             backgroundColor: 'transparent',
           },
