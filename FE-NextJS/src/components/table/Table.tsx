@@ -14,6 +14,7 @@ export type TableProps = AgGridReactProps & {
 
 const GridTable = (props: TableProps) => {
   const {
+    className,
     maxHeight = 300,
     width = '100%',
     minWidth = '100%',
@@ -31,6 +32,7 @@ const GridTable = (props: TableProps) => {
 
   return (
     <AgGridContainer
+      className={className}
       height={calculateGridHeight}
       maxHeight={maxHeight}
       width={width}

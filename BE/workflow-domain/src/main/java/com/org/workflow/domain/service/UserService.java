@@ -3,7 +3,7 @@ package com.org.workflow.domain.service;
 import com.google.common.hash.Hashing;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.ChangeValue;
+import com.org.workflow.dao.document.sub.ChangeValue;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.document.UserHistory;
 import com.org.workflow.dao.repository.UserHistoryRepository;

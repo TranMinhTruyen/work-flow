@@ -1,4 +1,4 @@
-package com.org.workflow.dao.document;
+package com.org.workflow.dao.document.sub;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;

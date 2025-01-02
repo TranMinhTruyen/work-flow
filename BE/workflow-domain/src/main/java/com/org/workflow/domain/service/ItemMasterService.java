@@ -3,7 +3,7 @@ package com.org.workflow.domain.service;
 
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.ChangeValue;
+import com.org.workflow.dao.document.sub.ChangeValue;
 import com.org.workflow.dao.document.MasterItem;
 import com.org.workflow.dao.document.MasterItemHistory;
 import com.org.workflow.dao.repository.ItemMasterHistoryRepository;

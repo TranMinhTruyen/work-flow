@@ -1,5 +1,6 @@
 package com.org.workflow.dao.document;
 
+import com.org.workflow.dao.document.sub.ChangeValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;

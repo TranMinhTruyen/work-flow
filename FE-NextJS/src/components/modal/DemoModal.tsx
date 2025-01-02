@@ -3,15 +3,18 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import {
   ColDef,
+  GridReadyEvent,
+  ICellRendererParams,
   RowDoubleClickedEvent,
   RowSelectionOptions,
   SelectionChangedEvent,
 } from 'ag-grid-community';
 import { memo, Ref, useCallback, useEffect, useMemo } from 'react';
-import GridTable from '@/components/table/Table';
+import GridTable, { TableProps } from '@/components/table/Table';
 import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
 import Button from '../button/Button';
+import styled from '@mui/system/styled';
 
 export interface Item {
   id: number;
@@ -42,18 +45,22 @@ const DemoModal = (props: IDemoModalProps) => {
   const colDefs = useMemo<ColDef<Item>[]>(
     () => [
       {
-        headerName: 'id',
+        headerName: 'ID',
         field: 'id',
-        width: 120,
-        cellRenderer: (params: { value: string }) => {
-          return <Typography sx={{ color: 'rgba(255, 0, 0, 1)' }}>{params.value}</Typography>;
+        maxWidth: 100,
+        cellStyle: { textAlign: 'center' },
+        cellRenderer: (params: ICellRendererParams<Item>) => {
+          return <Typography>{params.data?.id}</Typography>;
         },
       },
       {
-        headerName: 'name',
+        headerName: 'Name',
         field: 'name',
         flex: 1,
         wrapText: true,
+        cellRenderer: (params: ICellRendererParams<Item>) => {
+          return <Typography>{params.data?.name}</Typography>;
+        },
       },
     ],
     []
@@ -63,14 +70,11 @@ const DemoModal = (props: IDemoModalProps) => {
     return { mode: 'singleRow', enableClickSelection: true };
   }, []);
 
-  const defaultColDef = useMemo<ColDef>(
+  const defaultColDef = useMemo<ColDef<Item>>(
     () => ({
       resizable: false,
       autoHeight: true,
       sortable: false,
-      cellRenderer: (params: { value: string }) => {
-        return <Typography>{params.value}</Typography>;
-      },
     }),
     []
   );
@@ -95,7 +99,7 @@ const DemoModal = (props: IDemoModalProps) => {
     <Dialog open={openModal} onClose={handleClose} fullWidth maxWidth={'md'}>
       <Container>
         <Stack spacing={1}>
-          <GridTable
+          <Table
             rowData={items}
             columnDefs={colDefs}
             defaultColDef={defaultColDef}
@@ -118,5 +122,13 @@ const DemoModal = (props: IDemoModalProps) => {
     </Dialog>
   );
 };
+
+const Table = styled(GridTable)({
+  '& .ag-header-cell[col-id="id"]': {
+    '& .ag-header-cell-label': {
+      justifyContent: 'center',
+    },
+  },
+});
 
 export default memo(DemoModal);
