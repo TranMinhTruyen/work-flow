@@ -1,7 +1,7 @@
 'use client';
-import { useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
+import { useMemo } from 'react';
 
 export type TableProps = AgGridReactProps & {
   height?: number | string;

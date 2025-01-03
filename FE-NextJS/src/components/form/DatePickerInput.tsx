@@ -6,6 +6,7 @@ import UncontrolledDatePickerInput, {
 import { useCallback } from 'react';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
+import { DateType } from '@/common/constants/typeConst';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
@@ -24,13 +25,13 @@ const DatePickerInput = (props: DatePickerInputProps) => {
     ...restProps
   } = props;
 
-  const { setIsCheck, checkDataInput, translateLabel, translateError } = useInput<string>({
+  const { setIsCheck, checkDataInput, translateLabel, translateError } = useInput<DateType>({
     ...props,
   });
 
   const handleOnChange = useCallback(
     // eslint-disable-next-line no-unused-vars
-    (onChange: (...event: unknown[]) => void) => (value: string) => {
+    (onChange: (...event: unknown[]) => void) => (value: DateType) => {
       control?.setError(name, { type: 'valid' });
       setIsCheck(true);
       onChange(value);

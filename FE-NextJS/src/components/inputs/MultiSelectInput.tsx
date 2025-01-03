@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
-import { styled, SxProps, Theme } from '@mui/material/styles';
-import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
-import { useCallback, useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
-import InputLabel from '@mui/material/InputLabel';
-import FormHelperText from '@mui/material/FormHelperText';
 import { SelectDataType } from '@/common/constants/typeConst';
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import { capitalizeFirst } from '@/common/utils/stringUtil';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import Chip from '@mui/material/Chip';
+import FormControl, { FormControlProps as MuiFormControlProps } from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
+import { styled, SxProps, Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { useCallback, useEffect, useState } from 'react';
 
 export type MultiSelectInputProps = Omit<
   SelectProps,
@@ -28,6 +28,11 @@ export type MultiSelectInputProps = Omit<
   helperText?: string | null;
   onChange?: (value: string[]) => void;
   onBlur?: (value: string[]) => void;
+};
+
+type FormControlProps = MuiFormControlProps & {
+  error: boolean;
+  valueLength: number;
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
@@ -89,7 +94,12 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   );
 
   return (
-    <FormControlStyled id={`form${capitalizeFirst(id)}`} sx={{ width: width, ...sx }} error={error}>
+    <FormControlStyled
+      id={`form${capitalizeFirst(id)}`}
+      sx={{ width: width, ...sx }}
+      error={error}
+      valueLength={selectValues.length}
+    >
       <InputLabel id={`label${capitalizeFirst(id)}`} sx={sx} shrink={true}>
         {label}
       </InputLabel>
@@ -145,7 +155,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 };
 export default MultiSelectInput;
 
-const FormControlStyled = styled(FormControl)(({ error }) => ({
+const FormControlStyled = styled(FormControl)<FormControlProps>(({ error, valueLength }) => ({
   '& .MuiInputLabel-root': {
     color: 'rgba(13, 13, 13)',
     marginLeft: '10px',
@@ -159,7 +169,7 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
   },
 
   '& .MuiInputBase-formControl': {
-    minHeight: '50px',
+    height: `${valueLength > 0 ? valueLength * 10 * 2.3 : 40}px`,
   },
 
   '& .MuiOutlinedInput-input': {

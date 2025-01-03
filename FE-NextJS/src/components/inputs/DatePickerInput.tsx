@@ -1,17 +1,18 @@
 'use client';
-import { TextFieldProps } from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateView } from '@mui/x-date-pickers/models/views';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { useCallback, useEffect, useState } from 'react';
-import moment, { Moment } from 'moment';
-import { capitalizeFirst, isNullOrEmpty } from '../../common/utils/stringUtil';
-import InputAdornment from '@mui/material/InputAdornment';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { I18nEnum } from '@/common/enums/I18nEnum';
 import { FULL_DATE_FORMAT } from '@/common/constants/commonConst';
 import { DateType } from '@/common/constants/typeConst';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import InputAdornment from '@mui/material/InputAdornment';
+import { styled } from '@mui/material/styles';
+import { TextFieldProps } from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateView } from '@mui/x-date-pickers/models/views';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useState } from 'react';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
@@ -25,10 +26,10 @@ export type DatePickerProps = Omit<
   inputFormat?: string;
   views?: DateView[] | undefined;
   openTo?: DateView;
-  onChange?: (value: string) => void;
-  onFocus?: (value: string) => void;
-  onBlur?: (value: string) => void;
-  onClose?: (value: string) => void;
+  onChange?: (value: DateType) => void;
+  onFocus?: (value: DateType) => void;
+  onBlur?: (value: DateType) => void;
+  onClose?: (value: DateType) => void;
   error?: boolean;
   helperText?: string | null;
 };
@@ -49,6 +50,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     onClose,
     error = false,
     helperText,
+    i18n,
   } = props;
   const [selectedDate, setSelectedDate] = useState<DateType>(defaultValue ?? '');
 
@@ -62,40 +64,42 @@ const DatePickerInput = (props: DatePickerProps) => {
   }, [selectedDate, value]);
 
   const handleOnChange = useCallback(
-    (value: Moment | null) => {
+    (value: DateType) => {
       if (value === null) {
         setSelectedDate(null);
         onChange?.('');
         return;
       }
 
-      setSelectedDate(value.format(inputFormat));
-      onChange?.(value.format(inputFormat));
-      onClose?.(value.format(inputFormat));
+      setSelectedDate(dayjs(value, inputFormat).format(inputFormat));
+      onChange?.(dayjs(value).format(inputFormat));
+      onClose?.(dayjs(value).format(inputFormat));
     },
     [inputFormat, onChange, onClose]
   );
 
   const handleOnBlur = useCallback(() => {
     onBlur?.(
-      isNullOrEmpty(selectedDate?.toString()) ? '' : moment(selectedDate).format(inputFormat)
+      isNullOrEmpty(selectedDate?.toString()) ? '' : dayjs(selectedDate).format(inputFormat)
     );
   }, [inputFormat, onBlur, selectedDate]);
 
   const handleOnFocus = useCallback(() => {
     onFocus?.(
-      isNullOrEmpty(selectedDate?.toString()) ? '' : moment(selectedDate).format(inputFormat)
+      isNullOrEmpty(selectedDate?.toString()) ? '' : dayjs(selectedDate).format(inputFormat)
     );
   }, [inputFormat, onFocus, selectedDate]);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
-      <DatePicker
-        value={isNullOrEmpty(selectedDate?.toString()) ? null : moment(selectedDate, inputFormat)}
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <CustomDatePicker
+        value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate, inputFormat)}
         views={views}
         format={inputFormat}
         openTo={openTo}
         onChange={handleOnChange}
+        width={width}
+        i18n={i18n}
         slotProps={{
           field: { clearable: true },
           textField: {
@@ -113,35 +117,9 @@ const DatePickerInput = (props: DatePickerProps) => {
             InputProps: {
               startAdornment: (
                 <InputAdornment position={'start'} sx={{ marginBottom: '2px' }}>
-                  <CalendarMonthIcon />
+                  <CalendarMonthIcon fontSize={'small'} />
                 </InputAdornment>
               ),
-            },
-            sx: {
-              '& .MuiInputLabel-root': {
-                color: 'rgba(13, 13, 13) !important',
-                marginLeft: '10px',
-              },
-
-              '& .MuiOutlinedInput-notchedOutline legend': {
-                marginLeft: '10px',
-              },
-
-              '& .MuiOutlinedInput-root': {
-                width: width,
-                height: '50px !important',
-                minHeight: '50px !important',
-                '& fieldset': {
-                  borderColor: 'rgba(13, 13, 13, 0.8)',
-                  borderRadius: 50,
-                },
-                '&:hover fieldset': {
-                  borderColor: '#00b2ff',
-                },
-                '& .Mui-focused fieldset': {
-                  borderColor: '#007fb6',
-                },
-              },
             },
           },
         }}
@@ -149,4 +127,32 @@ const DatePickerInput = (props: DatePickerProps) => {
     </LocalizationProvider>
   );
 };
+
+const CustomDatePicker = styled(DatePicker)<DatePickerProps>(({ width }) => ({
+  '& .MuiInputLabel-root': {
+    color: 'rgba(13, 13, 13) !important',
+    marginLeft: '10px',
+  },
+
+  '& .MuiOutlinedInput-notchedOutline legend': {
+    marginLeft: '10px',
+  },
+
+  '& .MuiOutlinedInput-root': {
+    width: width,
+    height: '40px !important',
+    minHeight: '40px !important',
+    '& fieldset': {
+      borderColor: 'rgba(13, 13, 13, 0.8)',
+      borderRadius: 50,
+    },
+    '&:hover fieldset': {
+      borderColor: '#00b2ff',
+    },
+    '& .Mui-focused fieldset': {
+      borderColor: '#007fb6',
+    },
+  },
+}));
+
 export default DatePickerInput;

@@ -1,32 +1,32 @@
 'use client';
+import { LOGIN_URL } from '@/common/constants/urlConst';
+import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import { MessageType } from '@/common/enums/MessageEnum';
+import useNavigate from '@/common/hooks/useNavigate';
+import Button from '@/components/button/Button';
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import DatePickerInput from '@/components/form/DatePickerInput';
+import ImageInput from '@/components/form/ImageInput';
+import TextInput from '@/components/form/TextInput';
+import { IRegisterForm } from '@/model/register/RegisterForm';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import EmailIcon from '@mui/icons-material/Email';
+import KeyIcon from '@mui/icons-material/Key';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import KeyIcon from '@mui/icons-material/Key';
-import { useForm } from 'react-hook-form';
-import TextInput from '@/components/form/TextInput';
-import CardActions from '@mui/material/CardActions';
-import { useTranslation } from 'react-i18next';
-import DatePickerInput from '@/components/form/DatePickerInput';
-import EmailIcon from '@mui/icons-material/Email';
-import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { handleSubmitRegister } from './action';
-import { openDialogContainer } from '@/components/dialog/DialogContainer';
-import { IRegisterForm } from '@/model/register/RegisterForm';
-import ImageInput from '@/components/form/ImageInput';
-import { MessageType } from '@/common/enums/MessageEnum';
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { LOGIN_URL } from '@/common/constants/urlConst';
-import useNavigate from '@/common/hooks/useNavigate';
 import { makeStyles } from '@mui/styles';
-import Button from '@/components/button/Button';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { handleSubmitRegister } from './action';
 
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -106,7 +106,7 @@ const Register = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <AccountCircleIcon />
+                    <AccountCircleIcon fontSize={'small'} />
                   </InputAdornment>
                 ),
               },
@@ -124,13 +124,17 @@ const Register = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <KeyIcon />
+                    <KeyIcon fontSize={'small'} />
                   </InputAdornment>
                 ),
                 endAdornment: (
                   <InputAdornment position={'end'}>
                     <IconButton onClick={handleClickShowPassword} edge={'end'}>
-                      {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                      {isShowPassword ? (
+                        <VisibilityOff fontSize={'small'} />
+                      ) : (
+                        <Visibility fontSize={'small'} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -148,7 +152,7 @@ const Register = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <EmailIcon />
+                    <EmailIcon fontSize={'small'} />
                   </InputAdornment>
                 ),
               },

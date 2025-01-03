@@ -1,30 +1,29 @@
 'use client';
-import MenuIcon from '@mui/icons-material/Menu';
-import MuiAppBar from '@mui/material/AppBar';
-import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { IconButton as MuiIconButton } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Stack from '@mui/material/Stack';
-import { useAppDispatch, useAppSelector } from '@/lib/store';
+import { languageConst } from '@/common/constants/commonConst';
+import { HOME_URL } from '@/common/constants/urlConst';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import useNavigate from '@/common/hooks/useNavigate';
+import { toSelectData } from '@/common/utils/convertUtil';
+import IconButton from '@/components/button/IconButton';
+import SelectInput from '@/components/inputs/SelectInput';
 import {
   selectLanguage,
   selectOpenDrawer,
   setLanguage,
   toggleDrawer,
 } from '@/lib/slices/commonSlice';
-import { toSelectData } from '@/common/utils/convertUtil';
-import { useTranslation } from 'react-i18next';
-import { languageConst } from '@/common/constants/commonConst';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import useNavigate from '@/common/hooks/useNavigate';
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { HOME_URL } from '@/common/constants/urlConst';
-import SelectInput from '@/components/inputs/SelectInput';
-import IconButton from '@/components/button/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { IconButton as MuiIconButton } from '@mui/material';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import UserPopover from './UserPopover';
 
 type IHeaderProps = {
@@ -103,14 +102,13 @@ const MainHeader = (props: IHeaderProps) => {
         </Stack>
 
         <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
-          <SelectInput
+          <LanguageSelect
             id={'language'}
             width={150}
             data={toSelectData(languageData, { key: 'id', value: 'label' })}
             defaultValue={language}
             label={t('label.language')}
             onChange={handleChangeLanguage}
-            sx={styles.selectInput}
           />
 
           <IconButton icon={<NotificationsIcon fontSize={'small'} />} />
@@ -137,40 +135,6 @@ const styles = {
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
-
-  selectInput: {
-    '& .MuiInputBase-formControl': {
-      height: '35px !important',
-    },
-
-    '& .MuiChip-root': {
-      height: '20px',
-      marginTop: '-2px',
-    },
-
-    '& .MuiOutlinedInput-input': {
-      color: 'rgba(255, 255, 255, 255) !important',
-    },
-
-    '& .MuiInputLabel-root': {
-      color: 'rgba(255, 255, 255, 255)',
-      '&.Mui-focused': {
-        color: 'rgba(255, 255, 255, 255)',
-      },
-    },
-
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'rgba(255, 255, 255, 255)',
-      },
-      '&:hover fieldset': {
-        borderColor: 'rgba(0, 0, 0)',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'rgba(0, 0, 0)',
-      },
-    },
-  },
 };
 
 const AppBar = styled(MuiAppBar, {
@@ -193,3 +157,36 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
+
+const LanguageSelect = styled(SelectInput)({
+  '& .MuiInputBase-formControl': {
+    height: '35px',
+  },
+
+  '& .MuiChip-root': {
+    height: '20px',
+  },
+
+  '& .MuiOutlinedInput-input': {
+    color: 'rgba(255, 255, 255, 255) !important',
+  },
+
+  '& .MuiInputLabel-root': {
+    color: 'rgba(255, 255, 255, 255)',
+    '&.Mui-focused': {
+      color: 'rgba(255, 255, 255, 255)',
+    },
+  },
+
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'rgba(255, 255, 255, 255)',
+    },
+    '&:hover fieldset': {
+      borderColor: 'rgba(0, 0, 0, 1)',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'rgba(0, 0, 0, 1)',
+    },
+  },
+});

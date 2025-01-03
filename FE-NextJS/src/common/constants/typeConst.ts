@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 /* eslint-disable no-unused-vars */
 export type SelectDataType = {
   key: string;
@@ -26,4 +28,4 @@ export type ApiType = {
   method: 'POST' | 'GET' | 'UPDATE' | 'DELETE';
 };
 
-export type DateType = Date | string | null;
+export type DateType = Dayjs | string | null;

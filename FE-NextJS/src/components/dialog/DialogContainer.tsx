@@ -1,10 +1,10 @@
 'use client';
+import useDialog from '@/common/hooks/useDialog';
+import { selectIsLoading } from '@/lib/slices/commonSlice';
+import { useAppSelector } from '@/lib/store';
 import { useEffect } from 'react';
 import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
-import useDialog from '@/common/hooks/useDialog';
-import { useAppSelector } from '@/lib/store';
-import { selectIsLoading } from '@/lib/slices/commonSlice';
 
 export type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancelButton'> & {
   type: DialogType;
@@ -31,10 +31,12 @@ const DialogContainer = () => {
       if (!isLoading) {
         return <ConfirmDialog showCancelButton={true} {...dialogProps} />;
       }
+      break;
     case 'message':
       if (!isLoading) {
         return <ConfirmDialog {...dialogProps} />;
       }
+      break;
     case 'loading':
       return <LoadingDialog />;
   }

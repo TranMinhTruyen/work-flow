@@ -1,12 +1,26 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:prettier/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "plugins": ["prettier", "@typescript-eslint/eslint-plugin", "eslint-plugin-prettier", "import"],
   "rules": {
     "no-console": "warn",
     "no-mixed-spaces-and-tabs": "warn",
-    "no-unused-vars": "warn",
+    "no-unused-vars": ["warn", { "args": "none", "vars": "all", "varsIgnorePattern": "^_" }],
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "prettier/prettier": "warn"
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "args": "none", "vars": "all", "varsIgnorePattern": "^_" }
+    ],
+    "prettier/prettier": "warn",
+    "import/no-unused-modules": [1, { "unusedExports": false }]
   }
 }

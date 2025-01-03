@@ -1,36 +1,34 @@
 'use client';
+import { authorities, role } from '@/common/constants/commonConst';
+import { LOGIN_URL } from '@/common/constants/urlConst';
+import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import useNavigate from '@/common/hooks/useNavigate';
+import Button from '@/components/button/Button';
+import DatePickerInput from '@/components/form/DatePickerInput';
+import ImageInput from '@/components/form/ImageInput';
+import MultiSelectInput from '@/components/form/MultiSelectInput';
+import SelectInput from '@/components/form/SelectInput';
+import TextInput from '@/components/form/TextInput';
+import { selectProxyRole } from '@/lib/slices/commonSlice';
+import { useAppSelector } from '@/lib/store';
+import { IRegisterForm } from '@/model/register/RegisterForm';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import EmailIcon from '@mui/icons-material/Email';
+import KeyIcon from '@mui/icons-material/Key';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import KeyIcon from '@mui/icons-material/Key';
-import { useForm } from 'react-hook-form';
-import TextInput from '@/components/form/TextInput';
-import CardActions from '@mui/material/CardActions';
-import { useTranslation } from 'react-i18next';
-import DatePickerInput from '@/components/form/DatePickerInput';
-import EmailIcon from '@mui/icons-material/Email';
-import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { IRegisterForm } from '@/model/register/RegisterForm';
-import ImageInput from '@/components/form/ImageInput';
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { LOGIN_URL } from '@/common/constants/urlConst';
-import useNavigate from '@/common/hooks/useNavigate';
-import SelectInput from '@/components/form/SelectInput';
-import MultiSelectInput from '@/components/form/MultiSelectInput';
-import { authorities, role } from '@/common/constants/commonConst';
 import { makeStyles } from '@mui/styles';
-import { selectProxyRole } from '@/lib/slices/commonSlice';
-import { useAppSelector } from '@/lib/store';
-import { openDialogContainer } from '@/components/dialog/DialogContainer';
-import { MessageType } from '@/common/enums/MessageEnum';
-import Button from '@/components/button/Button';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 const AdminRegister = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -71,20 +69,20 @@ const AdminRegister = () => {
   const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>();
 
   useEffect(() => {
-    if (proxyRole !== 'ADMIN') {
-      openDialogContainer({
-        type: 'message',
-        messageType: MessageType.WARN,
-        isPopup: false,
-        showCloseButton: false,
-        autoClose: true,
-        timeout: 15,
-        message: t(`${I18nEnum.COMMON_I18N}:message.noPermission`),
-        onConfirm: () => {
-          navigate(LOGIN_URL, true);
-        },
-      });
-    }
+    // if (proxyRole !== 'ADMIN') {
+    //   openDialogContainer({
+    //     type: 'message',
+    //     messageType: MessageType.WARN,
+    //     isPopup: false,
+    //     showCloseButton: false,
+    //     autoClose: true,
+    //     timeout: 15,
+    //     message: t(`${I18nEnum.COMMON_I18N}:message.noPermission`),
+    //     onConfirm: () => {
+    //       navigate(LOGIN_URL, true);
+    //     },
+    //   });
+    // }
     reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

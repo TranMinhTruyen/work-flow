@@ -1,4 +1,7 @@
 'use client';
+import { SelectDataType } from '@/common/constants/typeConst';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
@@ -8,10 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { SelectDataType } from '@/common/constants/typeConst';
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { I18nEnum } from '@/common/enums/I18nEnum';
 
 export type SelectInputProps = Omit<
   SelectProps,
@@ -46,6 +46,7 @@ const SelectInput = (props: SelectInputProps) => {
     displayNone,
     error = false,
     helperText,
+    className,
     ...restProps
   } = props;
 
@@ -85,7 +86,12 @@ const SelectInput = (props: SelectInputProps) => {
   }, [displayNone, selectValue]);
 
   return (
-    <FormControlStyled id={`form${capitalizeFirst(id)}`} sx={{ width: width, ...sx }} error={error}>
+    <FormControlStyled
+      className={className}
+      id={`form${capitalizeFirst(id)}`}
+      sx={{ width: width, ...sx }}
+      error={error}
+    >
       <InputLabel id={`label${capitalizeFirst(id)}`} sx={sx} shrink={true}>
         {label}
       </InputLabel>
@@ -105,16 +111,7 @@ const SelectInput = (props: SelectInputProps) => {
           if (renderValue === undefined) {
             return <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>;
           }
-          return (
-            <Chip
-              color={'error'}
-              label={renderValue.value}
-              sx={{
-                height: '30px',
-                ...sx,
-              }}
-            />
-          );
+          return <Chip color={'error'} label={renderValue.value} sx={sx} />;
         }}
         {...restProps}
       >
@@ -140,12 +137,17 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
     },
   },
 
+  '& .MuiChip-root': {
+    height: '20px',
+    marginTop: '-2px',
+  },
+
   '& .MuiOutlinedInput-notchedOutline legend': {
     marginLeft: '10px',
   },
 
   '& .MuiInputBase-formControl': {
-    height: '50px',
+    height: '40px',
   },
 
   '& .MuiOutlinedInput-input': {

@@ -1,20 +1,20 @@
+'use client';
 import usePromiseModal, { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
+import GridTable from '@/components/table/Table';
 import Container from '@mui/material/Container';
+import Dialog from '@mui/material/Dialog';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import styled from '@mui/system/styled';
 import {
   ColDef,
-  GridReadyEvent,
   ICellRendererParams,
   RowDoubleClickedEvent,
   RowSelectionOptions,
   SelectionChangedEvent,
 } from 'ag-grid-community';
 import { memo, Ref, useCallback, useEffect, useMemo } from 'react';
-import GridTable, { TableProps } from '@/components/table/Table';
-import Stack from '@mui/material/Stack';
-import Dialog from '@mui/material/Dialog';
 import Button from '../button/Button';
-import styled from '@mui/system/styled';
 
 export interface Item {
   id: number;
@@ -27,7 +27,7 @@ const data: Item[] = [
   { id: 3, name: 'admin3' },
 ];
 
-export type IDemoModalProps = {
+type IDemoModalProps = {
   ref: Ref<IPromiseModalHandle<Item>>;
 };
 
