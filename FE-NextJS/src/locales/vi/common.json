@@ -2,7 +2,11 @@
   "en": "Tiếng Anh",
   "vi": "Tiếng Việt",
   "ja": "Tiếng Nhật",
-  "isRequired": "là bắt buộc",
+  "validate": {
+    "isRequired": "{0} là bắt buộc",
+    "maxLengthError": "{0} chiều dài tối đa là {1}",
+    "emailError": "{0} không hợp lệ"
+  },
   "label": {
     "language": "Ngôn ngữ",
     "totalFile": "Tổng số file: "

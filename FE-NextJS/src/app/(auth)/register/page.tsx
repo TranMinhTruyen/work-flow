@@ -38,12 +38,8 @@ const Register = () => {
 
   const backButton = useMemo(
     () => (
-      <IconButton
-        onClick={() => navigate(LOGIN_URL)}
-        sx={{ width: '50px', height: '50px' }}
-        color={'primary'}
-      >
-        <ChevronLeftIcon fontSize={'large'} />
+      <IconButton onClick={() => navigate(LOGIN_URL)} color={'primary'}>
+        <ChevronLeftIcon sx={{ width: '35px !important', height: '35px !important' }} />
       </IconButton>
     ),
     [navigate]
@@ -106,7 +102,7 @@ const Register = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <AccountCircleIcon fontSize={'small'} />
+                    <AccountCircleIcon />
                   </InputAdornment>
                 ),
               },
@@ -124,22 +120,19 @@ const Register = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <KeyIcon fontSize={'small'} />
+                    <KeyIcon />
                   </InputAdornment>
                 ),
                 endAdornment: (
                   <InputAdornment position={'end'}>
                     <IconButton onClick={handleClickShowPassword} edge={'end'}>
-                      {isShowPassword ? (
-                        <VisibilityOff fontSize={'small'} />
-                      ) : (
-                        <Visibility fontSize={'small'} />
-                      )}
+                      {isShowPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               },
             }}
+            autoComplete={'new-password'}
           />
 
           <TextInput
@@ -152,7 +145,7 @@ const Register = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <EmailIcon fontSize={'small'} />
+                    <EmailIcon />
                   </InputAdornment>
                 ),
               },

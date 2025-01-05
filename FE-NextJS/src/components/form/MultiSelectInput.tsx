@@ -1,8 +1,10 @@
 'use client';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
-import UncontrolledMultiSelectInput from '@/components/inputs/MultiSelectInput';
-import { MultiSelectInputProps as UncontrolledMultiSelectInputProps } from '@/components/inputs/MultiSelectInput';
+import UncontrolledMultiSelectInput, {
+  MultiSelectInputProps as UncontrolledMultiSelectInputProps,
+} from '@/components/inputs/MultiSelectInput';
+
 import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
@@ -28,7 +30,6 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
   });
 
   const handleOnChange = useCallback(
-    // eslint-disable-next-line no-unused-vars
     (onChange: (...event: unknown[]) => void) => (value: string[]) => {
       control?.setError(name, { type: 'valid' });
       setIsCheck(true);
@@ -61,7 +62,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={
-            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+            error && error.type !== 'valid' && !isNullOrEmpty(error.message)
               ? translateError(error.message)
               : undefined
           }

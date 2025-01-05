@@ -32,7 +32,6 @@ const FileInput = (props: FileInputProps) => {
   });
 
   const handleOnChange = useCallback(
-    // eslint-disable-next-line no-unused-vars
     (onChange: (...event: unknown[]) => void) => (value: FileInputData[]) => {
       control?.setError(name, { type: 'valid' });
       setIsCheck(true);
@@ -65,7 +64,7 @@ const FileInput = (props: FileInputProps) => {
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={
-            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+            error && error.type !== 'valid' && !isNullOrEmpty(error.message)
               ? translateError(error.message)
               : undefined
           }

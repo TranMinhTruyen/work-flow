@@ -31,7 +31,6 @@ const TextInput = (props: TextInputProps) => {
   });
 
   const handleOnChange = useCallback(
-    // eslint-disable-next-line no-unused-vars
     (onChange: (...event: unknown[]) => void) => (value: string) => {
       control.setError(name, { type: 'valid' });
       setIsCheck(true);
@@ -65,10 +64,10 @@ const TextInput = (props: TextInputProps) => {
           value={value ?? ''}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
-          error={!!(error && error.type !== 'valid')}
+          error={error && error.type !== 'valid'}
           helperText={
-            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
-              ? translateError(error.message)
+            error && error.type !== 'valid' && !isNullOrEmpty(error.message)
+              ? translateError(error.message, error.type)
               : undefined
           }
           {...restProps}

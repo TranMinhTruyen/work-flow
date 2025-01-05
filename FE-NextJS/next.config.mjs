@@ -5,9 +5,11 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack: (config, { webpack }) => {
+  webpack: (config, { webpack, dev }) => {
     config.plugins.push(new webpack.ProgressPlugin());
-
+    if (dev) {
+      config.devtool = 'source-map';
+    }
     config.optimization.minimizer = [
       new TerserPlugin({
         terserOptions: {

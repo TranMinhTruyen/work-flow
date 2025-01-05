@@ -48,6 +48,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     label,
     error = false,
     helperText,
+    className,
     ...restProps
   } = props;
 
@@ -99,6 +100,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       sx={{ width: width, ...sx }}
       error={error}
       valueLength={selectValues.length}
+      className={className}
     >
       <InputLabel id={`label${capitalizeFirst(id)}`} sx={sx} shrink={true}>
         {label}
@@ -120,7 +122,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         renderValue={selected => {
           const renderValue = data.filter(item => selected.includes(item.key));
           return (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {renderValue.map((item, index) => (
                 <Chip
                   key={index}
@@ -130,10 +132,6 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
                   onMouseDown={event => {
                     event.preventDefault();
                     event.stopPropagation();
-                  }}
-                  sx={{
-                    height: '30px',
-                    ...sx,
                   }}
                 />
               ))}
@@ -168,8 +166,18 @@ const FormControlStyled = styled(FormControl)<FormControlProps>(({ error, valueL
     marginLeft: '10px',
   },
 
+  '& .MuiChip-root': {
+    height: '25px',
+    '& .MuiSvgIcon-root': {
+      width: '25px !important',
+      height: '25px !important',
+      marginRight: '0px',
+    },
+  },
+
   '& .MuiInputBase-formControl': {
-    height: `${valueLength > 0 ? valueLength * 10 * 2.3 : 40}px`,
+    height: `${valueLength > 2 ? 'auto' : 40}px`,
+    minHeight: '40px',
   },
 
   '& .MuiOutlinedInput-input': {

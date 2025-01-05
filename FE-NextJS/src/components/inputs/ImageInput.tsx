@@ -14,7 +14,7 @@ export type ImageInputProps = {
   id?: string;
   height?: number;
   value?: FileInputData;
-  onChange?: (value: FileInputData) => void;
+  onChange?: (value: FileInputData | null) => void;
 };
 
 const ImageInput = (props: ImageInputProps) => {
@@ -25,14 +25,15 @@ const ImageInput = (props: ImageInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const convertAndSetImage = async () => {
-      imageRef.current = await convertToDataURL(imageFile?.fileData);
-    };
     convertAndSetImage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const settingFileList = useCallback(
+  const convertAndSetImage = useCallback(async () => {
+    imageRef.current = await convertToDataURL(imageFile?.fileData);
+  }, [imageFile?.fileData]);
+
+  const settingImageFile = useCallback(
     async (fileInputList: FileList | any[] | null) => {
       if (fileInputList && fileInputList.length > 0) {
         const fileItem: FileInputData = {};
@@ -60,21 +61,21 @@ const ImageInput = (props: ImageInputProps) => {
     accept: IMAGE_FILE_TYPE,
     noClick: true,
     onDrop: async acceptedFiles => {
-      await settingFileList(acceptedFiles);
+      await settingImageFile(acceptedFiles);
     },
   });
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
-      await settingFileList(event.target.files);
+      await settingImageFile(event.target.files);
     },
-    [settingFileList]
+    [settingImageFile]
   );
 
   const handleDeleteImage = useCallback(() => {
     imageRef.current = null;
     setImageFile(null);
-    onChange?.({});
+    onChange?.(null);
   }, [onChange]);
 
   return (
@@ -100,8 +101,6 @@ const ImageInput = (props: ImageInputProps) => {
             sx={{
               width: height,
               height: height,
-              maxWidth: height,
-              maxHeight: height,
               bgcolor: 'rgba(0, 170, 255, 0.8)',
             }}
           />

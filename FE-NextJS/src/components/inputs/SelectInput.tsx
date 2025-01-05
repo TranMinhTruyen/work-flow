@@ -2,8 +2,8 @@
 import { SelectDataType } from '@/common/constants/typeConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
+import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
-import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
@@ -62,7 +62,6 @@ const SelectInput = (props: SelectInputProps) => {
   }, [selectValue, valueProps]);
 
   const handleOnChange = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: SelectChangeEvent<any>) => {
       setSelectValue(event.target.value);
       onChangeProps?.(event.target.value as string);
@@ -107,11 +106,19 @@ const SelectInput = (props: SelectInputProps) => {
         onBlur={handleOnBlur}
         sx={sx}
         renderValue={selected => {
-          const renderValue = data.find(x => x.key === (selected as string));
-          if (renderValue === undefined) {
-            return <Typography sx={{ color: '#A9A9A9', marginLeft: 1 }}>{placeholder}</Typography>;
+          const dataValue = data.find(x => x.key === (selected as string));
+          if (dataValue === undefined) {
+            return (
+              <Typography sx={{ color: 'rgba(169, 169, 169, 1)', marginLeft: 1 }}>
+                {placeholder}
+              </Typography>
+            );
           }
-          return <Chip color={'error'} label={renderValue.value} sx={sx} />;
+          return (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              <Typography>{dataValue.value}</Typography>
+            </Box>
+          );
         }}
         {...restProps}
       >
@@ -138,8 +145,7 @@ const FormControlStyled = styled(FormControl)(({ error }) => ({
   },
 
   '& .MuiChip-root': {
-    height: '20px',
-    marginTop: '-2px',
+    height: '25px',
   },
 
   '& .MuiOutlinedInput-notchedOutline legend': {

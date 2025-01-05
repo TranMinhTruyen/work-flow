@@ -34,6 +34,10 @@ public class UserResponse implements Serializable {
 
   private List<String> authorities;
 
+  private Integer level;
+
+  private List<String> accessScreenList;
+
   private FileData image;
 
   private LocalDateTime createDatetime;

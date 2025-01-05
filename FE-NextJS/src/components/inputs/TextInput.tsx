@@ -12,6 +12,7 @@ export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
   width?: number;
   value?: string;
   defaultValue?: string;
+  maxLength?: number;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
 };
@@ -23,8 +24,11 @@ const TextInput = (props: TextInputProps) => {
     width,
     value: valueProps,
     defaultValue,
+    maxLength,
     onChange: onChangeProps,
     onBlur: onBlurProps,
+    className,
+    slotProps,
     ...restProps
   } = props;
   const [value, setValue] = useState<string>(defaultValue ?? '');
@@ -56,9 +60,13 @@ const TextInput = (props: TextInputProps) => {
       onChange={handleOnChange}
       onBlur={handleOnBlur}
       label={label}
+      className={className}
       slotProps={{
         inputLabel: {
           shrink: true,
+        },
+        htmlInput: {
+          maxLength: maxLength,
         },
         input: {
           startAdornment: (
@@ -67,6 +75,7 @@ const TextInput = (props: TextInputProps) => {
             </InputAdornment>
           ),
         },
+        ...slotProps,
       }}
       {...restProps}
     />
@@ -81,6 +90,13 @@ const StyledTextInput = styled(TextField)({
 
   '& .MuiOutlinedInput-notchedOutline legend': {
     marginLeft: '10px',
+  },
+
+  '& .MuiInputAdornment-root': {
+    '& .MuiSvgIcon-root': {
+      width: '20px',
+      height: '20px',
+    },
   },
 
   '& .MuiOutlinedInput-root': {

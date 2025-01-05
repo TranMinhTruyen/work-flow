@@ -1,10 +1,10 @@
-import { Transform } from 'redux-persist';
-import noopStorage from './noopStorage';
-import { RESET_ALL } from '@/common/constants/commonConst';
 import baseApi from '@/common/api/apiBaseQuery';
-import commonSlice from './slices/commonSlice';
+import { RESET_ALL } from '@/common/constants/commonConst';
 import { combineReducers } from '@reduxjs/toolkit';
+import { Transform } from 'redux-persist';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
+import noopStorage from './noopStorage';
+import commonSlice from './slices/commonSlice';
 import kanbanSlice from './slices/kanbanSlice';
 
 // All state

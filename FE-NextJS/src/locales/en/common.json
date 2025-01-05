@@ -2,7 +2,11 @@
   "en": "English",
   "vi": "Vietnamese",
   "ja": "Japanese",
-  "isRequired": "is required",
+  "validate": {
+    "isRequired": "{0} is required",
+    "maxLengthError": "{0} max length is {1}",
+    "emailError": "{0} format invalid"
+  },
   "label": {
     "language": "Language",
     "totalFile": "Total file: "

@@ -4,7 +4,7 @@ type BoardSlice = object;
 
 const initialState: BoardSlice = {};
 
-export const kanbanSlice = createSlice({
+const kanbanSlice = createSlice({
   name: 'kanbanState',
   initialState,
   reducers: {},

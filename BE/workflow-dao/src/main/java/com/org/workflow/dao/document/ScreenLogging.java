@@ -15,9 +15,6 @@ import java.io.Serializable;
 @Document(value = "logging")
 public class ScreenLogging extends AbstractDocument implements Serializable {
 
-  @Field(name = "screen_id", write = Field.Write.ALWAYS)
-  private String screenId;
-
   @Field(name = "screen_name", write = Field.Write.ALWAYS)
   private String screenName;
 

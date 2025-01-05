@@ -1,32 +1,31 @@
 'use client';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import DrawerItemList, { DrawerItem } from './DrawerListItem';
+import useNavigate from '@/common/hooks/useNavigate';
+import { checkAccessScreen } from '@/common/utils/authUtil';
+import { selectOpenDrawer } from '@/lib/slices/commonSlice';
+import { useAppSelector } from '@/lib/store';
 import { ExpandMore } from '@mui/icons-material';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
+import Grid2 from '@mui/material/Grid2';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import Zoom from '@mui/material/Zoom';
-import Grid2 from '@mui/material/Grid2';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { useAppSelector } from '@/lib/store';
-import { selectOpenDrawer } from '@/lib/slices/commonSlice';
-import useNavigate from '@/common/hooks/useNavigate';
+import { ReactElement, useCallback, useMemo, useState } from 'react';
+import DrawerItemList, { DrawerItem } from './DrawerListItem';
 
 const itemList = DrawerItemList;
 
-export interface IDrawerMenuItemProps {
-  isChild?: boolean;
+export type DrawerMenuItemProps = {
   childIndex?: number;
   item: DrawerItem;
-}
+};
 
 const DrawerMenu = () => {
   // const loginData = useAppSelector(selectLoginData);
@@ -38,19 +37,19 @@ const DrawerMenu = () => {
       return returnItem;
     }
 
-    for (const componentItem of itemList) {
-      if (componentItem.componentRole !== null) {
+    for (const screen of itemList) {
+      if (!checkAccessScreen(screen)) {
         continue;
-      } else if (componentItem.componentChild == null) {
+      } else if (screen.screenChild == null) {
         returnItem.push(
-          <Grid2 key={componentItem.componentKey} size={{ xs: 12 }}>
-            <DrawerMenuItem item={componentItem} />
+          <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
+            <DrawerMenuItem item={screen} />
           </Grid2>
         );
       } else {
         returnItem.push(
-          <Grid2 key={componentItem.componentKey} size={{ xs: 12 }}>
-            <DrawerMenuItemWithChild item={componentItem} />
+          <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
+            <DrawerMenuItemWithChild item={screen} />
           </Grid2>
         );
       }
@@ -65,7 +64,8 @@ const DrawerMenu = () => {
   );
 };
 
-const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemProps) => {
+const DrawerMenuItem = (props: DrawerMenuItemProps) => {
+  const { item, childIndex } = props;
   const openDrawer = useAppSelector(selectOpenDrawer);
   const { navigate, currentPath } = useNavigate();
 
@@ -77,38 +77,32 @@ const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemPr
   );
 
   const customListItemSx = {
-    marginTop: isChild && childIndex !== 0 ? 8 : 0,
-    backgroundColor: currentPath === item.componentPath ? 'rgba(205, 205, 205, 0.8)' : '#ffffff',
-    color: currentPath === item.componentPath ? 'rgba(0, 109, 255, 0.8)' : 'rgba(98, 98, 98)',
+    marginTop: childIndex && childIndex !== 0 ? 8 : 0,
+    backgroundColor:
+      currentPath === item.screenPath ? 'rgba(205, 205, 205, 0.8)' : 'rgba(255, 255, 255, 1)',
+    color: currentPath === item.screenPath ? 'rgba(0, 109, 255, 0.8)' : 'rgba(98, 98, 98, 1)',
   };
 
   const customListItemButtonSx = { justifyContent: openDrawer ? 'initial' : 'center' };
 
   const customListItemIconAndTextSx =
-    currentPath === item.componentPath
+    currentPath === item.screenPath
       ? { color: 'rgba(0, 109, 255, 0.8)' }
-      : { color: 'rgba(98, 98, 98)' };
+      : { color: 'rgba(98, 98, 98, 1)' };
 
-  const listItemTextSx = { opacity: openDrawer ? 1 : 0, color: 'rgba(98, 98, 98)' };
+  const listItemTextSx = { opacity: openDrawer ? 1 : 0, color: 'rgba(98, 98, 98, 1)' };
 
   const itemCustomListItemIcon = useMemo(
-    () => (
-      <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>{item.componentIcon}</Stack>
-    ),
-    [item.componentIcon]
+    () => <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>{item.screenIcon}</Stack>,
+    [item.screenIcon]
   );
 
   return (
-    <Tooltip
-      TransitionComponent={Zoom}
-      title={!openDrawer ? item.componentLabel : ''}
-      placement={'right'}
-      arrow
-    >
+    <Tooltip title={!openDrawer ? item.screenLabel : ''} placement={'right'} arrow>
       <Box>
         <CustomListItem
           style={customListItemSx}
-          onClick={handleOnClickItem(item.componentPath)}
+          onClick={handleOnClickItem(item.screenPath)}
           disablePadding
         >
           <CustomListItemButton sx={customListItemButtonSx}>
@@ -116,7 +110,7 @@ const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemPr
               {itemCustomListItemIcon}
             </CustomListItemIcon>
             <ListItemText
-              primary={item.componentLabel}
+              primary={item.screenLabel}
               style={customListItemIconAndTextSx}
               sx={listItemTextSx}
             />
@@ -127,7 +121,8 @@ const DrawerMenuItem = ({ item, isChild = false, childIndex }: IDrawerMenuItemPr
   );
 };
 
-const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
+const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
+  const { item } = props;
   const [openChild, setOpenChild] = useState<boolean>(false);
   const openDrawer = useAppSelector(selectOpenDrawer);
   // const loginData = useAppSelector(selectLoginData);
@@ -136,53 +131,46 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
     () =>
       openDrawer ? (
         openChild ? (
-          <ExpandMore sx={{ color: 'rgba(98, 98, 98)' }} />
+          <ExpandMore sx={{ color: 'rgba(98, 98, 98, 1)' }} />
         ) : (
-          <KeyboardArrowRightIcon sx={{ color: 'rgba(98, 98, 98)' }} />
+          <KeyboardArrowRightIcon sx={{ color: 'rgba(98, 98, 98, 1)' }} />
         )
-      ) : (
-        <></>
-      ),
+      ) : undefined,
     [openChild, openDrawer]
   );
 
   const itemCustomListItemIcon = useMemo(
-    () => (
-      <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>{item.componentIcon}</Stack>
-    ),
-    [item.componentIcon]
+    () => <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>{item.screenIcon}</Stack>,
+    [item.screenIcon]
   );
 
   const childItem = useMemo(() => {
     const returnItem: ReactElement[] = [];
 
-    if (item.componentChild === undefined || item.componentChild === null) {
+    if (item.screenChild === undefined || item.screenChild === null) {
       return returnItem;
     }
 
-    for (const componentChildItem of item.componentChild) {
-      if (componentChildItem.componentRole !== null) {
+    for (const componentChildItem of item.screenChild) {
+      if (componentChildItem.screenRole !== null) {
         continue;
-      } else if (componentChildItem.componentChild == null) {
+      } else if (componentChildItem.screenChild == null) {
         returnItem.push(
           <DrawerMenuItem
-            key={componentChildItem.componentKey}
+            key={componentChildItem.screenKey}
             item={componentChildItem}
-            childIndex={item.componentChild?.indexOf(componentChildItem)}
+            childIndex={item.screenChild?.indexOf(componentChildItem)}
           />
         );
       } else {
         returnItem.push(
-          <DrawerMenuItemWithChild
-            key={componentChildItem.componentKey}
-            item={componentChildItem}
-          />
+          <DrawerMenuItemWithChild key={componentChildItem.screenKey} item={componentChildItem} />
         );
       }
     }
 
     return returnItem;
-  }, [item.componentChild]);
+  }, [item.screenChild]);
 
   const childItemCollapse = useMemo(() => {
     if (childItem.length > 0) {
@@ -192,20 +180,15 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
 
       const customListItemButtonSx = { justifyContent: openDrawer ? 'initial' : 'center' };
 
-      const listItemTextSx = { opacity: openDrawer ? 1 : 0, color: 'rgba(98, 98, 98)' };
+      const listItemTextSx = { opacity: openDrawer ? 1 : 0, color: 'rgba(98, 98, 98, 1)' };
 
       return (
         <>
-          <Tooltip
-            TransitionComponent={Zoom}
-            title={!openDrawer ? item.componentLabel : ''}
-            placement={'right'}
-            arrow
-          >
+          <Tooltip title={!openDrawer ? item.screenLabel : ''} placement={'right'} arrow>
             <CustomListItem onClick={handleExpand} disablePadding>
               <CustomListItemButton sx={customListItemButtonSx}>
                 <CustomListItemIcon>{itemCustomListItemIcon}</CustomListItemIcon>
-                <ListItemText primary={item.componentLabel} sx={listItemTextSx} />
+                <ListItemText primary={item.screenLabel} sx={listItemTextSx} />
                 {expandButton}
               </CustomListItemButton>
             </CustomListItem>
@@ -228,7 +211,7 @@ const DrawerMenuItemWithChild = ({ item }: IDrawerMenuItemProps) => {
         </>
       );
     }
-  }, [childItem, expandButton, item.componentLabel, itemCustomListItemIcon, openChild, openDrawer]);
+  }, [childItem, expandButton, item.screenLabel, itemCustomListItemIcon, openChild, openDrawer]);
 
   return <Box>{childItemCollapse}</Box>;
 };
@@ -239,22 +222,22 @@ export const CustomListItem = styled(ListItem)({
 });
 
 export const CustomListItemButton = styled(ListItemButton)({
-  height: '38px',
+  height: '40px',
   padding: 0,
   justifyContent: 'center',
   borderRadius: 25,
   '&:hover': {
-    backgroundColor: '#d9d8d8',
+    backgroundColor: 'rgba(217, 216, 216, 1)',
   },
   '&:active': {
-    boxShadow: '#a8a8a8',
-    color: '#000000',
+    boxShadow: 'rgba(168, 168, 168, 1)',
+    color: 'rgba(0, 0, 0, 1)',
   },
 });
 
 export const CustomListItemIcon = styled(ListItemIcon)({
   justifyContent: 'center',
-  color: 'rgba(98, 98, 98)',
+  color: 'rgba(98, 98, 98, 1)',
 });
 
 export default DrawerMenu;

@@ -44,6 +44,9 @@ public class UserAccount extends AbstractDocument implements Serializable {
   @Field(name = "level", write = Write.ALWAYS)
   private Integer level;
 
+  @Field(name = "access_screen_list", write = Write.ALWAYS)
+  private List<String> accessScreenList;
+
   @Field(name = "login_fail_count", write = Write.ALWAYS)
   private Integer loginFailCount;
 

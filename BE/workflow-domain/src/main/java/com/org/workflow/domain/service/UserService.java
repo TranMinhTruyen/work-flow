@@ -3,9 +3,9 @@ package com.org.workflow.domain.service;
 import com.google.common.hash.Hashing;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.sub.ChangeValue;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.document.UserHistory;
+import com.org.workflow.dao.document.sub.ChangeValue;
 import com.org.workflow.dao.repository.UserHistoryRepository;
 import com.org.workflow.dao.repository.UserRepository;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
@@ -104,6 +104,7 @@ public class UserService extends AbstractService {
     userResponse.setBirthDay(userAccount.getBirthDay());
     userResponse.setRole(userAccount.getRole());
     userResponse.setAuthorities(userAccount.getAuthorities());
+    userResponse.setLevel(userAccount.getLevel());
     userResponse.setImage(FileUtil.readFile(userAccount.getImagePath()));
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
     userResponse.setIsActive(userAccount.isActive());
@@ -256,7 +257,7 @@ public class UserService extends AbstractService {
    *
    * @param baseRequest BaseRequest<UpdateUserRequest>
    * @return UpdateUserResponse
-   * @throws WFException         AppException
+   * @throws WFException               AppException
    * @throws InvocationTargetException InvocationTargetException
    * @throws IllegalAccessException    IllegalAccessException
    * @throws InstantiationException    InstantiationException

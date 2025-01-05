@@ -1,19 +1,19 @@
-import { AxiosRequestConfig, ResponseType } from 'axios';
+import { toggleLoading } from '@/lib/slices/commonSlice';
+import { IBaseResponse } from '@/model/common/BaseResponse';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { axiosInstance } from '../provider/ApiProvider';
-import { IBaseResponse } from '@/model/common/BaseResponse';
+import { AxiosRequestConfig, ResponseType } from 'axios';
 import { API_PREFIX } from '../constants/apiPrefixConst';
+import { ApiEnum } from '../enums/ApiEnum';
+import { axiosInstance } from '../provider/ApiProvider';
 import { controller } from './apiUrl';
-import { Api } from '../enums/ApiEnum';
-import { toggleLoading } from '@/lib/slices/commonSlice';
 
 const apiBaseQuery =
   (
     baseUrl: string = ''
   ): BaseQueryFn<
     {
-      api: Api;
+      api: ApiEnum;
       data?: AxiosRequestConfig['data'];
       params?: AxiosRequestConfig['params'];
       responseType?: ResponseType;
@@ -37,7 +37,7 @@ const apiBaseQuery =
       const responseData: IBaseResponse = response.data;
 
       return { data: responseData.body, error: '', meta: undefined };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     } catch (error) {
       return { data: undefined, error: '', meta: undefined };
     } finally {

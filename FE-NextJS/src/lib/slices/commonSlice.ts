@@ -1,6 +1,6 @@
+import { ILoginResponse } from '@/model/login/LoginModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { ILoginResponse } from '@/model/login/LoginModel';
 
 interface CommonState {
   theme: string;
@@ -23,7 +23,7 @@ const initialState: CommonState = {
   proxyRole: '',
 };
 
-export const commonSlice = createSlice({
+const commonSlice = createSlice({
   name: 'commonState',
   initialState,
   reducers: {

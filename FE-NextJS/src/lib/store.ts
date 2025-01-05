@@ -1,19 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
-import baseApi from '../common/api/apiBaseQuery';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  persistStore,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
   persistReducer,
+  persistStore,
 } from 'redux-persist';
-import { commonTransform, isClient, rootReducer, sessionStorage } from './persist';
+import baseApi from '../common/api/apiBaseQuery';
 import noopStorage from './noopStorage';
+import { commonTransform, isClient, rootReducer, sessionStorage } from './persist';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -27,7 +27,7 @@ const persistedReducer = persistReducer<RootState>(
   rootReducer
 );
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
   middleware: gDM =>
     gDM({

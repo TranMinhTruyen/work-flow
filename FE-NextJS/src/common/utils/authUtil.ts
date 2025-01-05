@@ -1,11 +1,12 @@
-import { isNullOrEmpty } from './stringUtil';
-import forge from 'node-forge';
+import { DrawerItem } from '@/components/drawer/DrawerListItem';
+import { setLoginData, setProxyRole, toggleLogin } from '@/lib/slices/commonSlice';
+import store from '@/lib/store';
 import { ILoginResponse } from '@/model/login/LoginModel';
 import { ICheckProxyRequest, ICheckProxyResponse } from '@/model/proxy/ProxyModel';
 import { proxyService } from '@/services/proxyService';
-import store from '@/lib/store';
-import { setLoginData, setProxyRole, toggleLogin } from '@/lib/slices/commonSlice';
+import forge from 'node-forge';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
+import { isNullOrEmpty } from './stringUtil';
 
 /**
  * Check token and set token to slice.
@@ -77,4 +78,24 @@ export const handleCheckProxy = async () => {
     .unwrap();
 
   store.dispatch(setProxyRole(response?.role));
+};
+
+export const checkAccessScreen = (drawerItem: DrawerItem): boolean => {
+  const userData = store.getState().commonState.loginData?.userResponse;
+
+  let isAccess = true;
+
+  if (!userData?.role || !drawerItem.screenRole?.includes(userData?.role)) {
+    isAccess = false;
+  }
+
+  if (!userData?.level || userData?.level < drawerItem.screenLevel) {
+    isAccess = false;
+  }
+
+  // if (!userData?.accessScreenList || !userData?.accessScreenList?.includes(drawerItem.screenPath)) {
+  //   isAccess = false;
+  // }
+
+  return isAccess;
 };

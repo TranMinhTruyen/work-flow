@@ -75,7 +75,7 @@ const MainHeader = (props: IHeaderProps) => {
 
   return (
     <AppBar drawerWidth={drawerWidth} open={opendrawer}>
-      <Toolbar sx={{ minHeight: '50px !important' }}>
+      <Toolbar sx={{ minHeight: '55px !important' }}>
         <MuiIconButton
           color={'inherit'}
           onClick={handleDrawerOpen}
@@ -140,7 +140,7 @@ const styles = {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',
 })<AppBarProps>(({ theme, open, drawerWidth }) => ({
-  height: '50px',
+  height: '55px',
   position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
@@ -160,11 +160,11 @@ const AppBar = styled(MuiAppBar, {
 
 const LanguageSelect = styled(SelectInput)({
   '& .MuiInputBase-formControl': {
-    height: '35px',
+    height: '40px',
   },
 
   '& .MuiChip-root': {
-    height: '20px',
+    // marginTop: '2px',
   },
 
   '& .MuiOutlinedInput-input': {

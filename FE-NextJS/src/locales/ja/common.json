@@ -2,7 +2,11 @@
   "en": "英語",
   "vi": "ベトナム語",
   "ja": "日本語",
-  "isRequired": "が必要です",
+  "validate": {
+    "isRequired": "{0}は必須です",
+    "maxLengthError": "{0}の最大長は{1}です",
+    "emailError": "{0}の形式が無効です"
+  },
   "label": {
     "language": "言語",
     "totalFile": "ファイル合計: "

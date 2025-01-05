@@ -51,6 +51,8 @@ const DatePickerInput = (props: DatePickerProps) => {
     error = false,
     helperText,
     i18n,
+    className,
+    slotProps,
   } = props;
   const [selectedDate, setSelectedDate] = useState<DateType>(defaultValue ?? '');
 
@@ -93,6 +95,7 @@ const DatePickerInput = (props: DatePickerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <CustomDatePicker
+        className={className}
         value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate, inputFormat)}
         views={views}
         format={inputFormat}
@@ -122,6 +125,7 @@ const DatePickerInput = (props: DatePickerProps) => {
               ),
             },
           },
+          ...slotProps,
         }}
       />
     </LocalizationProvider>
@@ -136,6 +140,13 @@ const CustomDatePicker = styled(DatePicker)<DatePickerProps>(({ width }) => ({
 
   '& .MuiOutlinedInput-notchedOutline legend': {
     marginLeft: '10px',
+  },
+
+  '& .MuiInputAdornment-root': {
+    '& .MuiSvgIcon-root': {
+      width: '20px',
+      height: '20px',
+    },
   },
 
   '& .MuiOutlinedInput-root': {

@@ -1,30 +1,31 @@
 'use client';
+import { HOME_URL, REGISTER_URL } from '@/common/constants/urlConst';
+import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import useNavigate from '@/common/hooks/useNavigate';
+import { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
+import Button from '@/components/button/Button';
+import CheckBox from '@/components/form/CheckboxInput';
+import TextInput from '@/components/form/TextInput';
+import DemoModal, { Item } from '@/components/modal/DemoModal';
+import { ILoginForm } from '@/model/login/LoginForm';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import KeyIcon from '@mui/icons-material/Key';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import KeyIcon from '@mui/icons-material/Key';
-import IconButton from '@mui/material/IconButton';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Divider from '@mui/material/Divider';
-import CardActions from '@mui/material/CardActions';
 import { useTranslation } from 'react-i18next';
-import Link from '@mui/material/Link';
-import { ILoginForm } from '@/model/login/LoginForm';
-import TextInput from '@/components/form/TextInput';
-import CheckBox from '@/components/form/CheckboxInput';
-import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import { handleSubmitLogin } from './action';
-import useNavigate from '@/common/hooks/useNavigate';
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { HOME_URL } from '@/common/constants/urlConst';
-import { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
-import DemoModal, { Item } from '@/components/modal/DemoModal';
-import Button from '@/components/button/Button';
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -33,6 +34,15 @@ const Login = () => {
   const { navigate } = useNavigate();
 
   const modalRef = useRef<IPromiseModalHandle<Item>>(null);
+
+  const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
+    defaultValues: { isRemember: false },
+  });
+
+  useEffect(() => {
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // Set title for header
@@ -43,15 +53,6 @@ const Login = () => {
       setHeaderTitle(null);
     };
   }, [setHeaderTitle, t]);
-
-  const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
-    defaultValues: { isRemember: false },
-  });
-
-  useEffect(() => {
-    reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
@@ -74,11 +75,10 @@ const Login = () => {
   }, []);
 
   return (
-    <form id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
+    <Box component={'form'} id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
       <CardContent>
         <Stack alignItems={'center'} spacing={3}>
           <Avatar sx={loginStyles.avatar} />
-
           <TextInput
             name={'userName'}
             control={control}
@@ -103,6 +103,7 @@ const Login = () => {
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={loginStyles.textInput}
+            autoComplete={'new-password'}
             slotProps={{
               input: {
                 startAdornment: (
@@ -134,7 +135,7 @@ const Login = () => {
           <Typography sx={{ fontSize: 18 }}>
             {t('label.noAcccount')}
             {
-              <Link onClick={() => navigate('/register')} sx={{ cursor: 'pointer' }}>
+              <Link onClick={() => navigate(REGISTER_URL)} sx={{ cursor: 'pointer' }}>
                 {t('label.register')}
               </Link>
             }
@@ -168,7 +169,7 @@ const Login = () => {
       </CardActions>
 
       <DemoModal ref={modalRef} />
-    </form>
+    </Box>
   );
 };
 
@@ -178,7 +179,7 @@ const loginStyles = {
     maxWidth: 150,
     height: 150,
     maxHeight: 150,
-    bgcolor: 'rgba(0, 170, 255, 0.8)',
+    backgroundColor: 'rgba(0, 170, 255, 0.8)',
   },
 
   textInput: {

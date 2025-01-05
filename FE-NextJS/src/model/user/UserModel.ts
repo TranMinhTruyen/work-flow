@@ -10,6 +10,8 @@ export interface IUserResponse {
   loginFailCount?: string;
   isActive?: boolean;
   authorities?: string[];
+  level?: number;
+  accessScreenList?: string[];
   image?: FileData;
   createDatetime?: string;
   updateDatetime?: string;

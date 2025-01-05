@@ -143,6 +143,7 @@ const AdminRegister = () => {
                 ),
               },
             }}
+            autoComplete={'new-password'}
           />
 
           <TextInput

@@ -1,16 +1,16 @@
 'use client';
-import './globals.css';
-import { memo, ReactNode } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import ApiProvider from '@/common/provider/ApiProvider';
-import { I18nextProvider } from 'react-i18next';
-import i18next from '@/i18n';
 import DialogContainer from '@/components/dialog/DialogContainer';
-import store, { persistor } from '@/lib/store';
-import { Provider } from 'react-redux';
 import BackButtonListener from '@/components/loading/BackButtonListener ';
-import { PersistGate } from 'redux-persist/integration/react';
+import i18next from '@/i18n';
+import store, { persistor } from '@/lib/store';
+import CssBaseline from '@mui/material/CssBaseline';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { memo, ReactNode } from 'react';
+import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import './globals.css';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

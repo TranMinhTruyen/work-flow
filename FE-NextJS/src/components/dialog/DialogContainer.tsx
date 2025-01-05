@@ -12,7 +12,6 @@ export type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancel
 
 type DialogType = 'confirm' | 'loading' | 'message';
 
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 export let openDialogContainer = (_props: DialogContainerProps) => {};
 
 const DialogContainer = () => {

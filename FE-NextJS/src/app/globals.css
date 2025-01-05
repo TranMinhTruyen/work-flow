@@ -32,8 +32,3 @@ a {
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
-
-.MuiSvgIcon-root {
-  height: 20px !important;
-  width: 20px !important;
-}

@@ -1,12 +1,12 @@
 'use client';
-import { Control, Controller } from 'react-hook-form';
+import { DateType } from '@/common/constants/typeConst';
+import useInput from '@/common/hooks/useInput';
+import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledDatePickerInput, {
   DatePickerProps as UncontrolledDatePickerProps,
 } from '@/components/inputs/DatePickerInput';
 import { useCallback } from 'react';
-import useInput from '@/common/hooks/useInput';
-import { isNullOrEmpty } from '@/common/utils/stringUtil';
-import { DateType } from '@/common/constants/typeConst';
+import { Control, Controller } from 'react-hook-form';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
@@ -30,7 +30,6 @@ const DatePickerInput = (props: DatePickerInputProps) => {
   });
 
   const handleOnChange = useCallback(
-    // eslint-disable-next-line no-unused-vars
     (onChange: (...event: unknown[]) => void) => (value: DateType) => {
       control?.setError(name, { type: 'valid' });
       setIsCheck(true);
@@ -65,7 +64,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
           onClose={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
           helperText={
-            !!(error && error.type !== 'valid' && !isNullOrEmpty(error.message))
+            error && error.type !== 'valid' && !isNullOrEmpty(error.message)
               ? translateError(error.message)
               : undefined
           }

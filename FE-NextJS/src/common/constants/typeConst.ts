@@ -1,6 +1,5 @@
 import { Dayjs } from 'dayjs';
 
-/* eslint-disable no-unused-vars */
 export type SelectDataType = {
   key: string;
   value?: string;

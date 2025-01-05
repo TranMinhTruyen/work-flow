@@ -1,5 +1,5 @@
-import store from '@/lib/store';
 import { encryptWithRSA } from '@/common/utils/authUtil';
+import store from '@/lib/store';
 import { IRegisterForm } from '@/model/register/RegisterForm';
 import { IRegisterRequest } from '@/model/register/RegisterModel';
 import { registerService } from '@/services/registerService';

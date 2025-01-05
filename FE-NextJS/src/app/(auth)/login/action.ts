@@ -1,8 +1,8 @@
+import { encryptWithRSA } from '@/common/utils/authUtil';
 import { setLoginData, toggleLogin } from '@/lib/slices/commonSlice';
 import store from '@/lib/store';
-import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
-import { encryptWithRSA } from '@/common/utils/authUtil';
 import { ILoginForm } from '@/model/login/LoginForm';
+import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
 import { loginService } from '@/services/loginService';
 
 /**

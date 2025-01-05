@@ -4,9 +4,7 @@ import Typography from '@mui/material/Typography';
 import { memo, useEffect } from 'react';
 
 const Home = () => {
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Container>
