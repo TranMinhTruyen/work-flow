@@ -7,12 +7,18 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import { TextFieldProps } from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateView } from '@mui/x-date-pickers/models/views';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { selectLanguage } from '@/lib/slices/commonSlice';
+import { useAppSelector } from '@/lib/store';
+import 'dayjs/locale/en';
+import 'dayjs/locale/ja';
+import 'dayjs/locale/vi';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
@@ -55,6 +61,11 @@ const DatePickerInput = (props: DatePickerProps) => {
     slotProps,
   } = props;
   const [selectedDate, setSelectedDate] = useState<DateType>(defaultValue ?? '');
+  const language: string = useAppSelector(selectLanguage);
+
+  useMemo(() => {
+    dayjs.locale(language === 'vi' ? 'en' : language);
+  }, [language]);
 
   useEffect(() => {
     if (value === selectedDate) {
@@ -93,9 +104,13 @@ const DatePickerInput = (props: DatePickerProps) => {
   }, [inputFormat, onFocus, selectedDate]);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      adapterLocale={language === 'vi' ? 'en' : language}
+    >
       <CustomDatePicker
         className={className}
+        defaultValue={dayjs(defaultValue, inputFormat)}
         value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate, inputFormat)}
         views={views}
         format={inputFormat}
@@ -103,7 +118,11 @@ const DatePickerInput = (props: DatePickerProps) => {
         onChange={handleOnChange}
         width={width}
         i18n={i18n}
+        localeText={{
+          todayButtonLabel: 'Today',
+        }}
         slotProps={{
+          actionBar: { actions: ['today'] },
           field: { clearable: true },
           textField: {
             id: `datePicker${capitalizeFirst(id)}`,
