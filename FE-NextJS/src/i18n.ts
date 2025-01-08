@@ -13,7 +13,6 @@ import commonJa from './locales/ja/common.json';
 import loginJa from './locales/ja/login.json';
 import registerJa from './locales/ja/register.json';
 
-// eslint-disable-next-line import/no-named-as-default-member
 i18n.use(initReactI18next).init({
   lng: 'en',
   fallbackLng: 'en',

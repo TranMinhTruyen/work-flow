@@ -26,7 +26,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -52,7 +52,7 @@ const AdminRegister = () => {
     [classes.backButton, navigate]
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Set title for header
     setHeaderTitle(t('title'));
 

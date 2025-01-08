@@ -49,7 +49,6 @@ const DemoModal = (props: DemoModalProps) => {
   } = usePromiseModal<Item, TestInputValue>(props.ref);
 
   useEffect(() => {
-    console.log(inputValue);
     setItems(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import { SelectDataType } from '@/common/constants/typeConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
@@ -32,7 +31,7 @@ export type MultiSelectInputProps = Omit<
 
 type FormControlProps = MuiFormControlProps & {
   error: boolean;
-  valueLength: number;
+  valuelength: number;
 };
 
 const MultiSelectInput = (props: MultiSelectInputProps) => {
@@ -99,7 +98,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
       id={`form${capitalizeFirst(id)}`}
       sx={{ width: width, ...sx }}
       error={error}
-      valueLength={selectValues.length}
+      valuelength={selectValues.length}
       className={className}
     >
       <InputLabel id={`label${capitalizeFirst(id)}`} sx={sx} shrink={true}>
@@ -113,7 +112,6 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         notched={true}
         error={error}
         value={selectValues}
-        // @ts-ignore
         defaultValue={selectValues}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
@@ -153,7 +151,7 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
 };
 export default MultiSelectInput;
 
-const FormControlStyled = styled(FormControl)<FormControlProps>(({ error, valueLength }) => ({
+const FormControlStyled = styled(FormControl)<FormControlProps>(({ error, valuelength }) => ({
   '& .MuiInputLabel-root': {
     color: 'rgba(13, 13, 13)',
     marginLeft: '10px',
@@ -176,7 +174,7 @@ const FormControlStyled = styled(FormControl)<FormControlProps>(({ error, valueL
   },
 
   '& .MuiInputBase-formControl': {
-    height: `${valueLength > 2 ? 'auto' : 40}px`,
+    height: `${valuelength > 2 ? 'auto' : 40}px`,
     minHeight: '40px',
   },
 

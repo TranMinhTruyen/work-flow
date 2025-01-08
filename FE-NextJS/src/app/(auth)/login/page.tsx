@@ -22,7 +22,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitLogin } from './action';
@@ -39,12 +39,7 @@ const Login = () => {
     defaultValues: { isRemember: false },
   });
 
-  useEffect(() => {
-    reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Set title for header
     setHeaderTitle(t('title'));
 
@@ -53,6 +48,11 @@ const Login = () => {
       setHeaderTitle(null);
     };
   }, [setHeaderTitle, t]);
+
+  useEffect(() => {
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
