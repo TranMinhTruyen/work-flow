@@ -1,25 +1,22 @@
 'use client';
+import { languageConst } from '@/common/constants/commonConst';
+import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import { toSelectData } from '@/common/utils/convertUtil';
+import SelectInput from '@/components/inputs/SelectInput';
+import { selectLanguage, setLanguage } from '@/lib/slices/commonSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import SelectInput from '../../inputs/SelectInput';
-import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
-import { useAppDispatch, useAppSelector } from '@/lib/store';
-import { selectLanguage, setLanguage } from '@/lib/slices/commonSlice';
-import { toSelectData } from '@/common/utils/convertUtil';
-import { languageConst } from '@/common/constants/commonConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
 
 const AuthHeader = () => {
   const { headerContent, headerTitle } = useAuthHeader();
-  const dispatch = useAppDispatch();
-  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
-  const language: string = useAppSelector(selectLanguage);
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [i18n, language]);
+  const dispatch = useAppDispatch();
+  const language: string = useAppSelector(selectLanguage);
 
   const handleChangeLanguage = useCallback(
     (value: string) => {
@@ -88,6 +85,7 @@ const authHeaderStyles = {
   },
 
   textTitle: {
+    fontSize: '30px',
     fontWeight: 'bold',
     textTransform: 'uppercase',
     textAlign: 'center',

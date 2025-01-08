@@ -1,22 +1,22 @@
 'use client';
-import { ICategory } from '@/model/kanban/Category';
-import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/kanbanData';
-import { usePathname } from 'next/navigation';
 import { CURRENT_PATH } from '@/common/constants/commonConst';
-import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import Stack from '@mui/material/Stack';
+import Button from '@/components/button/Button';
+import IconButton from '@/components/button/IconButton';
 import SelectInput from '@/components/inputs/SelectInput';
 import TextInput from '@/components/inputs/TextInput';
-import IconButton from '@/components/button/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import Grid2 from '@mui/material/Grid2';
-import Divider from '@mui/material/Divider';
+import { ICategory } from '@/model/kanban/Category';
+import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+import SearchIcon from '@mui/icons-material/Search';
+import Divider from '@mui/material/Divider';
+import Grid2 from '@mui/material/Grid2';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { usePathname } from 'next/navigation';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/kanbanData';
 import Category from './page-components/Category';
-import Button from '@/components/button/Button';
 
 const Kanban = () => {
   const [state, setState] = useState<ICategory[]>([]);
@@ -145,7 +145,13 @@ const Kanban = () => {
         <Button
           onClick={onClickFilter}
           startIcon={isShowFilter ? <FilterAltOffIcon /> : <FilterAltIcon />}
-          label={isShowFilter ? 'Hide filter' : 'Show filter'}
+          label={
+            isShowFilter ? (
+              <Typography sx={{ fontWeight: 'bold' }}>Hide filter</Typography>
+            ) : (
+              <Typography sx={{ fontWeight: 'bold' }}>Show filter</Typography>
+            )
+          }
           sx={styles.showFilterButton}
         />
       </Stack>

@@ -1,12 +1,12 @@
-import { memo } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import Task from './Task';
+import Button from '@/components/button/Button';
+import { ICategory } from '@/model/kanban/Category';
 import { Droppable } from '@hello-pangea/dnd';
+import AddIcon from '@mui/icons-material/Add';
+import Grid2 from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Grid2 from '@mui/material/Grid2';
-import { ICategory } from '@/model/kanban/Category';
-import Button from '@/components/button/Button';
+import { memo } from 'react';
+import Task from './Task';
 
 type CategoryProps = {
   categoryItem: ICategory;
@@ -52,7 +52,7 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
                 >
                   <Button
                     startIcon={<AddIcon />}
-                    label={'Add issue'}
+                    label={<Typography sx={{ fontWeight: 'bold' }}>Add issue</Typography>}
                     sx={{
                       width: 120,
                       height: 30,

@@ -1,12 +1,12 @@
 'use client';
 import { ReactNode, useEffect, useState } from 'react';
-import { checkLogin, handleCheckProxy } from '../utils/authUtil';
+import { useTranslation } from 'react-i18next';
 import { CURRENT_PATH } from '../constants/commonConst';
-import { isNullOrEmpty } from '../utils/stringUtil';
 import { HOME_URL } from '../constants/urlConst';
 import { I18nEnum } from '../enums/I18nEnum';
-import { useTranslation } from 'react-i18next';
 import useNavigate from '../hooks/useNavigate';
+import { checkLogin, handleCheckProxy } from '../utils/authUtil';
+import { isNullOrEmpty } from '../utils/stringUtil';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);

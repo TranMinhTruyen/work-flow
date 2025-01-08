@@ -153,6 +153,7 @@ const Login = () => {
 
       <CardActions sx={loginStyles.footer}>
         <Button
+          width={120}
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
               {t('button.login')}
@@ -164,6 +165,7 @@ const Login = () => {
         />
 
         <Button
+          width={200}
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
               {'Test open modal'}
@@ -198,10 +200,6 @@ const loginStyles = {
   },
 
   button: {
-    width: 200,
-    maxWidth: 200,
-    height: 40,
-    maxHeight: 40,
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
   },
 

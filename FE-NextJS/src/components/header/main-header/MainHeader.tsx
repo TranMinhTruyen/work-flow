@@ -22,7 +22,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import UserPopover from './UserPopover';
 
@@ -37,16 +37,13 @@ type AppBarProps = MuiAppBarProps & {
 
 const MainHeader = (props: IHeaderProps) => {
   const { drawerWidth } = props;
-  const dispatch = useAppDispatch();
-  const opendrawer = useAppSelector(selectOpenDrawer);
-  const { t, i18n } = useTranslation(I18nEnum.COMMON_I18N);
-  const language: string = useAppSelector(selectLanguage);
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const [hoverOpenDrawer, setHoverOpenDrawer] = useState<boolean>(false);
   const { navigate } = useNavigate();
 
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [i18n, language]);
+  const dispatch = useAppDispatch();
+  const opendrawer = useAppSelector(selectOpenDrawer);
+  const language: string = useAppSelector(selectLanguage);
 
   const handleDrawerOpen = useCallback(() => {
     dispatch(toggleDrawer());

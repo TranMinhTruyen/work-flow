@@ -5,7 +5,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosRequestConfig, ResponseType } from 'axios';
 import { API_PREFIX } from '../constants/apiPrefixConst';
 import { ApiEnum } from '../enums/ApiEnum';
-import { axiosInstance } from '../provider/ApiProvider';
+import { axiosInstance } from '../provider/RootProvider';
 import { controller } from './apiUrl';
 
 const apiBaseQuery =

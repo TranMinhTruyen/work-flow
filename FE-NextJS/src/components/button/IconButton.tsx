@@ -1,5 +1,5 @@
 'use client';
-import { CircularProgress, Badge } from '@mui/material';
+import { Badge, CircularProgress } from '@mui/material';
 import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { memo, ReactNode } from 'react';
@@ -13,7 +13,15 @@ type IconButtonProps = MuiButtonProps & {
 };
 
 const IconButton = (props: IconButtonProps) => {
-  const { width = 40, height = 40, icon, isLoading = false, badgeContent, ...restProps } = props;
+  const {
+    width = 40,
+    height = 40,
+    icon,
+    isLoading = false,
+    badgeContent,
+    className,
+    ...restProps
+  } = props;
 
   const loadingComponent = isLoading ? (
     <CircularProgress
@@ -27,13 +35,7 @@ const IconButton = (props: IconButtonProps) => {
   );
 
   return (
-    <StyleIconButton
-      sx={{
-        width: width,
-        height: height,
-      }}
-      {...restProps}
-    >
+    <StyleIconButton className={className} width={width} height={height} {...restProps}>
       <Badge
         badgeContent={badgeContent}
         max={99}
@@ -46,7 +48,9 @@ const IconButton = (props: IconButtonProps) => {
 };
 export default memo(IconButton);
 
-const StyleIconButton = styled(MuiButton)({
+const StyleIconButton = styled(MuiButton)<IconButtonProps>(({ width, height }) => ({
+  width: `${width}px !important`,
+  height: `${height}px !important`,
   minHeight: '40px',
   minWidth: '40px',
   boxShadow: 'rgba(168, 168, 168, 1)',
@@ -60,4 +64,4 @@ const StyleIconButton = styled(MuiButton)({
     backgroundColor: 'rgba(210, 210, 210, 0.8)',
     color: 'rgba(0, 0, 0, 1)',
   },
-});
+}));

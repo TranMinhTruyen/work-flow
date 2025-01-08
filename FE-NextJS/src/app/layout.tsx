@@ -1,5 +1,5 @@
 'use client';
-import ApiProvider from '@/common/provider/ApiProvider';
+import ApiProvider from '@/common/provider/RootProvider';
 import DialogContainer from '@/components/dialog/DialogContainer';
 import BackButtonListener from '@/components/loading/BackButtonListener ';
 import i18next from '@/i18n';

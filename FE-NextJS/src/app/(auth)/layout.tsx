@@ -16,7 +16,7 @@ const AuthLayout = ({
     <AuthProvider>
       <AuthHeaderProvider>
         <Grid2 container direction={'column'} sx={authStyles.rootContainer}>
-          <Card elevation={5} sx={{ width: 700, maxWidth: 700 }}>
+          <Card elevation={5} sx={{ width: 650, maxWidth: 650 }}>
             <AuthHeader />
             <Divider />
             {children}

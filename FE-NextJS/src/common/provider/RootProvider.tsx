@@ -1,8 +1,9 @@
 'use client';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import { toggleLoading } from '@/lib/slices/commonSlice';
-import store, { useAppDispatch } from '@/lib/store';
+import i18n from '@/i18n';
+import { selectLanguage, toggleLoading } from '@/lib/slices/commonSlice';
+import store, { useAppDispatch, useAppSelector } from '@/lib/store';
 import { IBaseRequest } from '@/model/common/BaseRequest';
 import { IBaseResponse } from '@/model/common/BaseResponse';
 import { ILoginResponse } from '@/model/login/LoginModel';
@@ -35,6 +36,11 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch();
   const { navigate } = useNavigate();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
+  const language: string = useAppSelector(selectLanguage);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
 
   useEffect(() => {
     if (isSet) return;
