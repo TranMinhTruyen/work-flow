@@ -1,6 +1,6 @@
 'use client';
-import usePromiseModal, { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
-import GridTable from '@/components/table/Table';
+import usePromiseModal, { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import GridTable from '@/components/table/GridTable';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/material/Stack';
@@ -27,17 +27,29 @@ const data: Item[] = [
   { id: 3, name: 'admin3' },
 ];
 
-type IDemoModalProps = {
-  ref: Ref<IPromiseModalHandle<Item>>;
+export type TestInputValue = {
+  value1?: string;
+  value2?: string;
 };
 
-const DemoModal = (props: IDemoModalProps) => {
-  const { ref } = props;
+type DemoModalProps = {
+  ref: Ref<PromiseModalRef<Item, TestInputValue>>;
+};
 
-  const { handleClose, handleDoubleClick, handleOk, openModal, items, setItems, setSelectedItem } =
-    usePromiseModal<Item>(ref);
+const DemoModal = (props: DemoModalProps) => {
+  const {
+    inputValue,
+    handleClose,
+    handleDoubleClick,
+    handleOk,
+    openModal,
+    items,
+    setItems,
+    setSelectedItem,
+  } = usePromiseModal<Item, TestInputValue>(props.ref);
 
   useEffect(() => {
+    console.log(inputValue);
     setItems(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -99,6 +111,8 @@ const DemoModal = (props: IDemoModalProps) => {
     <Dialog open={openModal} onClose={handleClose} fullWidth maxWidth={'md'}>
       <Container>
         <Stack spacing={1}>
+          <Typography>{inputValue?.value1}</Typography>
+          <Typography>{inputValue?.value2}</Typography>
           <Table
             rowData={items}
             columnDefs={colDefs}

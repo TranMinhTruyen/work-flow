@@ -1,13 +1,13 @@
 'use client';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import { IBaseResponse } from '@/model/common/BaseResponse';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { ColDef } from 'ag-grid-community';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { ColDef } from 'ag-grid-community';
-import GridTable from '../table/Table';
+import GridTable from '../table/GridTable';
 
 type ApiErrorDetailProps = {
   status?: any;

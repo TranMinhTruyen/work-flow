@@ -1,17 +1,32 @@
 import { Ref, useCallback, useImperativeHandle, useRef, useState } from 'react';
 
-export type IPromiseModalHandle<T> = {
-  open: () => Promise<T | undefined>;
+type OpenModalProps<P> = {
+  inputValue?: P;
+  isAction?: boolean;
 };
 
-const usePromiseModal = <T>(ref: Ref<IPromiseModalHandle<T>>) => {
+export type PromiseModalRef<T, P = unknown> = {
+  open: (props?: OpenModalProps<P>) => Promise<T | undefined>;
+};
+
+const usePromiseModal = <T, P = unknown>(ref: Ref<PromiseModalRef<T, P>>) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [isAction, setIsAction] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<P | undefined>(undefined);
   const [items, setItems] = useState<T[]>([]);
   const [selectedItem, setSelectedItem] = useState<T | undefined>(undefined);
   const resolveRef = useRef<(value: T | undefined) => void>(undefined);
 
   useImperativeHandle(ref, () => ({
-    open: (): Promise<T | undefined> => {
+    open: (props): Promise<T | undefined> => {
+      if (props && props.inputValue) {
+        setInputValue(props.inputValue);
+      }
+
+      if (props && props.isAction) {
+        setIsAction(props.isAction);
+      }
+
       setOpen(true);
       return new Promise(resolve => {
         resolveRef.current = resolve;
@@ -41,6 +56,8 @@ const usePromiseModal = <T>(ref: Ref<IPromiseModalHandle<T>>) => {
   }, [selectedItem]);
 
   return {
+    inputValue,
+    isAction,
     openModal: open,
     items,
     setItems,

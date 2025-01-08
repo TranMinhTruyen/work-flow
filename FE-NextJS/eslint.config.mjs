@@ -4,13 +4,9 @@ import js from '@eslint/js';
 import typescriptEslintEslintPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-plugin-prettier';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 });
@@ -23,17 +19,17 @@ export default [
     compat.extends(
       'next/core-web-vitals',
       'next/typescript',
-      'plugin:prettier/recommended',
       'eslint:recommended',
+      'plugin:prettier/recommended',
       'plugin:@typescript-eslint/recommended',
       'plugin:import/errors',
       'plugin:import/warnings',
-      'plugin:import/typescript'
+      'plugin:import/typescript',
+      'plugin:@next/eslint-plugin-next'
     )
   ),
   {
     plugins: {
-      prettier: fixupPluginRules(prettier),
       '@typescript-eslint': fixupPluginRules(typescriptEslintEslintPlugin),
       prettier: fixupPluginRules(prettier),
     },

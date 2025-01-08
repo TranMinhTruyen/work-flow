@@ -3,11 +3,11 @@ import { HOME_URL, REGISTER_URL } from '@/common/constants/urlConst';
 import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
-import { IPromiseModalHandle } from '@/common/hooks/usePromiseModal';
+import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 import Button from '@/components/button/Button';
 import CheckBox from '@/components/form/CheckboxInput';
 import TextInput from '@/components/form/TextInput';
-import DemoModal, { Item } from '@/components/modal/DemoModal';
+import DemoModal, { Item, TestInputValue } from '@/components/modal/DemoModal';
 import { ILoginForm } from '@/model/login/LoginForm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -33,9 +33,9 @@ const Login = () => {
   const { setHeaderTitle } = useAuthHeader();
   const { navigate } = useNavigate();
 
-  const modalRef = useRef<IPromiseModalHandle<Item>>(null);
+  const modalRef = useRef<PromiseModalRef<Item, TestInputValue>>(null);
 
-  const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
+  const { control, setValue, reset, trigger, handleSubmit } = useForm<ILoginForm>({
     defaultValues: { isRemember: false },
   });
 
@@ -70,9 +70,15 @@ const Login = () => {
 
   const handleOpenModal = useCallback(async () => {
     if (modalRef.current) {
-      const result = await modalRef.current.open();
+      const result = await modalRef.current.open({
+        inputValue: {
+          value1: 'Input value 1',
+          value2: 'Input value 2',
+        },
+      });
+      setValue('userName', result?.name);
     }
-  }, []);
+  }, [setValue]);
 
   return (
     <Box component={'form'} id={'login-form'} onSubmit={handleSubmit(handleLogin)}>

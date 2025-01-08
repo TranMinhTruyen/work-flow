@@ -110,7 +110,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     >
       <CustomDatePicker
         className={className}
-        defaultValue={dayjs(defaultValue, inputFormat)}
+        defaultValue={defaultValue ? dayjs(defaultValue, inputFormat) : null}
         value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate, inputFormat)}
         views={views}
         format={inputFormat}
@@ -119,13 +119,14 @@ const DatePickerInput = (props: DatePickerProps) => {
         width={width}
         i18n={i18n}
         localeText={{
-          todayButtonLabel: 'Today',
+          todayButtonLabel: language === 'ja' ? '今日' : 'Today',
         }}
         slotProps={{
           actionBar: { actions: ['today'] },
           field: { clearable: true },
           textField: {
             id: `datePicker${capitalizeFirst(id)}`,
+            placeholder: '',
             onBlur: handleOnBlur,
             onFocus: handleOnFocus,
             label: label,
@@ -138,8 +139,8 @@ const DatePickerInput = (props: DatePickerProps) => {
             },
             InputProps: {
               startAdornment: (
-                <InputAdornment position={'start'} sx={{ marginBottom: '2px' }}>
-                  <CalendarMonthIcon fontSize={'small'} />
+                <InputAdornment position={'start'}>
+                  <CalendarMonthIcon />
                 </InputAdornment>
               ),
             },
@@ -153,7 +154,7 @@ const DatePickerInput = (props: DatePickerProps) => {
 
 const CustomDatePicker = styled(DatePicker)<DatePickerProps>(({ width }) => ({
   '& .MuiInputLabel-root': {
-    color: 'rgba(13, 13, 13) !important',
+    color: 'rgba(0, 0, 0, 1) !important',
     marginLeft: '10px',
   },
 

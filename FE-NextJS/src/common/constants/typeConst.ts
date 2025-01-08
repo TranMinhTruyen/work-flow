@@ -17,11 +17,6 @@ export type FileData = {
 
 export type Obj<V = any> = { [key: string]: V };
 
-export type SelectDataFunc = (
-  items: Obj[],
-  keys: { key?: string; value?: string }
-) => SelectDataType[];
-
 export type ApiType = {
   url: string;
   method: 'POST' | 'GET' | 'UPDATE' | 'DELETE';

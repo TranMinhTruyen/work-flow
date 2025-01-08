@@ -1,4 +1,4 @@
-import { SelectDataFunc } from '../constants/typeConst';
+import { Obj, SelectDataType } from '../constants/typeConst';
 
 /**
  *
@@ -80,7 +80,10 @@ export const convertToDataURL = (data?: Uint8Array | number[]): Promise<string> 
  * @param keys
  * @returns
  */
-export const toSelectData: SelectDataFunc = (items, keys) =>
+export const toSelectData = (
+  items: Obj[],
+  keys: { key?: string; value?: string }
+): SelectDataType[] =>
   items.map(item => ({
     key: item[keys?.key || 'key'],
     value: item[keys?.value || 'value'],
