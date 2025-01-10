@@ -1,12 +1,10 @@
-// pm2 start ecosystem.config.js
 module.exports = {
   apps: [
     {
       name: 'workflow',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start',
-      cwd: './',
-      watch: true,
+      cwd: './deploy',
+      script: 'server.js',
+      watch: false,
       interpreter: 'node',
       instances: 'max',
       exec_mode: 'cluster',

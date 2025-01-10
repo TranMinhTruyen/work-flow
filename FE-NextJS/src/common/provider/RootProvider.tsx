@@ -8,7 +8,7 @@ import { IBaseRequest } from '@/model/common/BaseRequest';
 import { IBaseResponse } from '@/model/common/BaseResponse';
 import { ILoginResponse } from '@/model/login/LoginModel';
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
@@ -61,7 +61,7 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
       // Transform request
       if (config.data) {
         const transformRequest: IBaseRequest = {
-          timestamp: moment(new Date()).format(DATE_TIME_FORMAT),
+          timestamp: dayjs(new Date()).format(DATE_TIME_FORMAT),
           language: store.getState().commonState.language,
           payload: config.data,
         };

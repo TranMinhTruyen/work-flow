@@ -7,7 +7,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  { ignores: ['**/*.config.mjs'], files: ['**/*.ts', '**/*.tsx'] },
+  { ignores: ['**/*.config.mjs', '**/*.config.cjs'], files: ['**/*.ts', '**/*.tsx'] },
   ...compat.config({
     extends: [
       'next',

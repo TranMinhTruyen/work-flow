@@ -27,6 +27,12 @@
     "allowImportingTsExtensions": true,
     "target": "ESNext"
   },
-  "include": ["src", ".next/types/**/*.ts", "eslint.config.mjs"],
+  "include": [
+    "src",
+    ".next/types/**/*.ts",
+    "eslint.config.mjs",
+    "ecosystem.config.cjs",
+    "next.config.mjs"
+  ],
   "exclude": ["node_modules"]
 }

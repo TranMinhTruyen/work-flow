@@ -1,9 +1,12 @@
+import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { HOME_URL } from './common/constants/urlConst';
 
-export const middleware = (request: NextRequest) => {
-  const forwarded = request.headers.get('x-forwarded-for');
-  const clientIp = forwarded ? forwarded.split(',')[0] : undefined;
+export const middleware = async (request: NextRequest) => {
+  const headersList = await headers();
+  const cookieStore = await cookies();
+
+  cookieStore.set('client-ip', headersList.get('x-forwarded-for') ?? '');
 
   const currentUrl = new URL(request.url);
 
@@ -14,8 +17,6 @@ export const middleware = (request: NextRequest) => {
   } else {
     response = NextResponse.next();
   }
-
-  response.cookies.set('client-ip', clientIp ?? '');
 
   return response;
 };

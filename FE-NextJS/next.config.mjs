@@ -1,6 +1,7 @@
 import TerserPlugin from 'terser-webpack-plugin';
 
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,
