@@ -1,7 +1,7 @@
 'use client';
+import i18n from '@/app/i18n';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import i18n from '@/i18n';
 import { selectLanguage, toggleLoading } from '@/lib/slices/commonSlice';
 import store, { useAppDispatch, useAppSelector } from '@/lib/store';
 import { IBaseRequest } from '@/model/common/BaseRequest';
@@ -9,7 +9,7 @@ import { IBaseResponse } from '@/model/common/BaseResponse';
 import { ILoginResponse } from '@/model/login/LoginModel';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
 import { LOGIN_URL } from '../constants/urlConst';
@@ -31,18 +31,26 @@ const whiteList: string[] = [
   '/api/proxy/check-proxy',
 ];
 
-const ApiProvider = ({ children }: { children: ReactNode }) => {
+const RootProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
+  const firstRef = useRef(true);
   const dispatch = useAppDispatch();
   const { navigate } = useNavigate();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
-  const language: string = useAppSelector(selectLanguage);
+  const language = useAppSelector(selectLanguage);
 
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
 
   useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      if (firstRef.current) {
+        firstRef.current = false;
+        return;
+      }
+    }
+
     if (isSet) return;
 
     axiosInstance.interceptors.request.use(config => {
@@ -189,4 +197,4 @@ const ApiProvider = ({ children }: { children: ReactNode }) => {
   return <>{isSet && children}</>;
 };
 
-export default ApiProvider;
+export default RootProvider;

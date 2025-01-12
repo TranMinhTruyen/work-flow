@@ -1,22 +1,26 @@
 'use client';
-import { languageConst } from '@/common/constants/commonConst';
-import { useAuthHeader } from '@/common/contexts/AuthHeaderContext';
+import { CURRENT_PATH, languageConst } from '@/common/constants/commonConst';
+import { ADMIN_REGISTER_URL, LOGIN_URL, REGISTER_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import useNavigate from '@/common/hooks/useNavigate';
 import { toSelectData } from '@/common/utils/convertUtil';
 import SelectInput from '@/components/inputs/SelectInput';
 import { selectLanguage, setLanguage } from '@/lib/slices/commonSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const AuthHeader = () => {
-  const { headerContent, headerTitle } = useAuthHeader();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
+  const { navigate } = useNavigate();
 
+  const currentPath = sessionStorage.getItem(CURRENT_PATH);
   const dispatch = useAppDispatch();
-  const language: string = useAppSelector(selectLanguage);
+  const language = useAppSelector(selectLanguage);
 
   const handleChangeLanguage = useCallback(
     (value: string) => {
@@ -33,6 +37,38 @@ const AuthHeader = () => {
       })),
     [t]
   );
+
+  const headerContent = useMemo<ReactNode>(() => {
+    if (!currentPath) {
+      return;
+    }
+    switch (currentPath) {
+      case REGISTER_URL:
+      case ADMIN_REGISTER_URL:
+        return (
+          <IconButton onClick={() => navigate(LOGIN_URL)} color={'primary'}>
+            <ChevronLeftIcon fontSize={'large'} />
+          </IconButton>
+        );
+      default:
+        break;
+    }
+  }, [currentPath, navigate]);
+
+  const headerTitle = useMemo<ReactNode>(() => {
+    if (!currentPath) {
+      return;
+    }
+    switch (currentPath) {
+      case LOGIN_URL:
+        return t('screenTitle.login');
+      case REGISTER_URL:
+      case ADMIN_REGISTER_URL:
+        return t('screenTitle.register');
+      default:
+        break;
+    }
+  }, [currentPath, t]);
 
   return (
     <Stack direction={'row'} sx={authHeaderStyles.header}>

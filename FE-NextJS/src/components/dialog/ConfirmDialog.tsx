@@ -1,20 +1,20 @@
 'use client';
-import { ReactNode, useCallback, useMemo } from 'react';
+import { I18nEnum } from '@/common/enums/I18nEnum';
+import { MessageType } from '@/common/enums/MessageEnum';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CloseIcon from '@mui/icons-material/Close';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import DialogContent from '@mui/material/DialogContent';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import { MessageType } from '@/common/enums/MessageEnum';
-import CloseIcon from '@mui/icons-material/Close';
+import DialogContent from '@mui/material/DialogContent';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { I18nEnum } from '@/common/enums/I18nEnum';
 import Button from '../button/Button';
 
 export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
@@ -67,7 +67,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       case MessageType.WARN:
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
-            <Typography sx={{ fontSize: 25, color: 'rgba(255, 200, 0, 1)' }}>
+            <Typography variant={'h5'} sx={{ color: 'rgba(255, 200, 0, 1)' }}>
               {t(MessageType.WARN)}
             </Typography>
             <ErrorIcon color={'warning'} />
@@ -76,7 +76,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       case MessageType.ERROR:
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
-            <Typography sx={{ fontSize: 25, color: 'rgba(225, 0, 0, 1)' }}>
+            <Typography variant={'h5'} sx={{ color: 'rgba(225, 0, 0, 1)' }}>
               {t(MessageType.ERROR)}
             </Typography>
             <ErrorIcon color={'error'} />
@@ -85,7 +85,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       case MessageType.INFO:
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
-            <Typography sx={{ fontSize: 25, color: 'rgba(0, 80, 255, 1)' }}>
+            <Typography variant={'h5'} sx={{ color: 'rgba(0, 80, 255, 1)' }}>
               {t(MessageType.INFO)}
             </Typography>
             <InfoIcon color={'primary'} />
@@ -94,7 +94,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       case MessageType.SUCCESS:
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
-            <Typography sx={{ fontSize: 25, color: 'rgba(0, 225, 0, 1)' }}>
+            <Typography variant={'h5'} sx={{ color: 'rgba(0, 225, 0, 1)' }}>
               {t(MessageType.SUCCESS)}
             </Typography>
             <CheckCircleIcon color={'primary'} />

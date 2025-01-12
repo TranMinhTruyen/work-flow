@@ -13,17 +13,22 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const isLogin = checkLogin();
 
-    if (isSet && !isLogin) {
+    if (!isLogin) {
       navigate(LOGIN_URL, true);
     }
 
+    if (isSet) {
+      return;
+    }
+
     const currentPath = sessionStorage.getItem(CURRENT_PATH);
-    if (!isSet && !isNullOrEmpty(currentPath)) {
+    if (!isNullOrEmpty(currentPath)) {
       navigate(currentPath);
     }
 
     setIsSet(true);
-  }, [isSet, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <>{isSet && children}</>;
 };

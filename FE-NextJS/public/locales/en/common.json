@@ -44,5 +44,9 @@
     "503": "Service Unavailable",
     "504": "Gateway Timeout",
     "default": "An error occurred. HTTP status {0}"
+  },
+  "screenTitle": {
+    "login": "Login",
+    "register": "Register"
   }
 }

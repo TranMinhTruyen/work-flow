@@ -1,16 +1,27 @@
+import type { NextConfig } from 'next';
 import TerserPlugin from 'terser-webpack-plugin';
 
-const nextConfig = {
-  output: 'standalone',
+const nextConfig: NextConfig = {
   reactStrictMode: false,
+  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
+  compiler: {
+    emotion: {
+      sourceMap: true,
+    },
+  },
+  experimental: {
+    turbo: {
+      resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mjs', '.cjs', '.json'],
+    },
+  },
+  typescript: {
+    tsconfigPath: './tsconfig.json',
+  },
   webpack: (config, { webpack, dev }) => {
     config.plugins.push(new webpack.ProgressPlugin());
-    if (dev) {
-      config.devtool = 'source-map';
-    }
     config.optimization.minimizer = [
       new TerserPlugin({
         terserOptions: {

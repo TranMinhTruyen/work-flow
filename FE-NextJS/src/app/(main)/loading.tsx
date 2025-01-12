@@ -1,6 +1,6 @@
 'use client';
-import { memo } from 'react';
 import BackdropLoading from '@/components/loading/BackdropLoading';
+import { memo } from 'react';
 
 const Loading = () => {
   return <BackdropLoading />;

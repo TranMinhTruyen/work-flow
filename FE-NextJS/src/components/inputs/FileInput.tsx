@@ -28,7 +28,6 @@ import TextInput from './TextInput';
 
 export type FileInputProps = {
   id?: string;
-  i18n: I18nEnum;
   label?: string;
   height?: number;
   width?: number;
@@ -44,7 +43,6 @@ export type FileInputProps = {
 const FileInput = (props: FileInputProps) => {
   const {
     id,
-    i18n,
     label,
     height,
     width = 200,
@@ -138,7 +136,6 @@ const FileInput = (props: FileInputProps) => {
         size={'small'}
         label={label}
         error={error}
-        i18n={i18n}
         placeholder={t('label.totalFile') + `${fileList.length}`}
         sx={{ width: width, height: height }}
         onBlur={handleOnBlur}

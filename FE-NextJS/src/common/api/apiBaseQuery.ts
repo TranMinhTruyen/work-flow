@@ -8,10 +8,16 @@ import { ApiEnum } from '../enums/ApiEnum';
 import { axiosInstance } from '../provider/RootProvider';
 import { controller } from './apiUrl';
 
+export const axiosFetch = async (api: ApiEnum, configAxios: AxiosRequestConfig) => {
+  return await axiosInstance({
+    ...configAxios,
+    url: `${API_PREFIX}${controller[api].url}`,
+    method: controller[api].method,
+  });
+};
+
 const apiBaseQuery =
-  (
-    baseUrl: string = ''
-  ): BaseQueryFn<
+  (): BaseQueryFn<
     {
       api: ApiEnum;
       data?: AxiosRequestConfig['data'];
@@ -24,15 +30,12 @@ const apiBaseQuery =
   async ({ api, data, params, responseType }, { dispatch }) => {
     try {
       const configAxios: AxiosRequestConfig = {
-        url: baseUrl.concat(controller[api].url),
-        method: controller[api].method,
         data,
         params,
         responseType,
-        timeout: 180000,
       };
 
-      const response = await axiosInstance(configAxios);
+      const response = await axiosFetch(api, configAxios);
 
       const responseData: IBaseResponse = response.data;
 
@@ -50,7 +53,7 @@ const baseApi = createApi({
   refetchOnMountOrArgChange: true,
   keepUnusedDataFor: 0.0001,
   reducerPath: 'baseApi',
-  baseQuery: apiBaseQuery(API_PREFIX),
+  baseQuery: apiBaseQuery(),
   endpoints: () => ({}),
 });
 

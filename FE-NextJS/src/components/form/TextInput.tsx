@@ -1,4 +1,5 @@
 'use client';
+import { I18nEnum } from '@/common/enums/I18nEnum';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledTextInput, {
@@ -8,6 +9,7 @@ import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 export type TextInputProps = UncontrolledTextInputProps & {
+  i18n?: I18nEnum;
   name: string;
   control: Control;
   defaultValue?: string | number | boolean;

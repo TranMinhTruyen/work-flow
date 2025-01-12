@@ -44,5 +44,9 @@
     "503": "Dịch vụ không khả dụng",
     "504": "Gateway hết thời gian",
     "default": "Đã xảy ra lỗi. Trạng thái HTTP {0}"
+  },
+  "screenTitle": {
+    "login": "Đăng nhập",
+    "register": "Đăng kí"
   }
 }

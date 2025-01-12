@@ -1,5 +1,4 @@
 'use client';
-import { I18nEnum } from '@/common/enums/I18nEnum';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { InputAdornment, styled } from '@mui/material';
@@ -7,7 +6,6 @@ import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur'> & {
-  i18n?: I18nEnum;
   label?: string;
   width?: number;
   value?: string;

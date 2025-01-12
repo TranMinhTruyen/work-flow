@@ -1,12 +1,12 @@
 'use client';
-import { LOGIN_URL } from '@/common/constants/urlConst';
+import { authorities, role } from '@/common/constants/commonConst';
+
 import { I18nEnum } from '@/common/enums/I18nEnum';
-import { MessageType } from '@/common/enums/MessageEnum';
-import useNavigate from '@/common/hooks/useNavigate';
 import Button from '@/components/button/Button';
-import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import ImageInput from '@/components/form/ImageInput';
+import MultiSelectInput from '@/components/form/MultiSelectInput';
+import SelectInput from '@/components/form/SelectInput';
 import TextInput from '@/components/form/TextInput';
 import { IRegisterForm } from '@/model/register/RegisterForm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -20,23 +20,32 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { handleSubmitRegister } from './action';
 
-const Register = () => {
+const AdminRegisterUI = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
-  const { t } = useTranslation(I18nEnum.REGISTER_I18N);
-
-  const { navigate } = useNavigate();
-  const classes = registerStyles();
+  const { t } = useTranslation([I18nEnum.REGISTER_I18N, I18nEnum.COMMON_I18N]);
 
   const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>();
 
   useEffect(() => {
+    // if (proxyRole !== 'ADMIN') {
+    //   openDialogContainer({
+    //     type: 'message',
+    //     messageType: MessageType.WARN,
+    //     isPopup: false,
+    //     showCloseButton: false,
+    //     autoClose: true,
+    //     timeout: 15,
+    //     message: t(`${I18nEnum.COMMON_I18N}:message.noPermission`),
+    //     onConfirm: () => {
+    //       navigate(LOGIN_URL, true);
+    //     },
+    //   });
+    // }
     return () => {
       reset();
     };
@@ -45,19 +54,8 @@ const Register = () => {
   const handleRegister = useCallback(
     async (formData: IRegisterForm) => {
       await trigger();
-      const response = await handleSubmitRegister(formData);
-      if (response !== undefined) {
-        openDialogContainer({
-          type: 'message',
-          messageType: MessageType.SUCCESS,
-          message: `Create username: ${response.userName} success`,
-          onConfirm: () => {
-            navigate(LOGIN_URL);
-          },
-        });
-      }
     },
-    [navigate, trigger]
+    [trigger]
   );
 
   return (
@@ -71,7 +69,7 @@ const Register = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             required
-            className={classes.textInput}
+            sx={registerStyles.textInput}
             slotProps={{
               htmlInput: {
                 maxLength: 10,
@@ -92,7 +90,7 @@ const Register = () => {
             i18n={I18nEnum.REGISTER_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
-            className={classes.textInput}
+            sx={registerStyles.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -117,7 +115,7 @@ const Register = () => {
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
             type={'email'}
-            className={classes.textInput}
+            sx={registerStyles.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -133,7 +131,7 @@ const Register = () => {
             name={'fullName'}
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
-            className={classes.textInput}
+            sx={registerStyles.textInput}
           />
 
           <DatePickerInput
@@ -143,16 +141,35 @@ const Register = () => {
             required
             width={400}
           />
+
+          <SelectInput
+            name={'role'}
+            control={control}
+            required
+            displayNone
+            i18n={I18nEnum.REGISTER_I18N}
+            data={role}
+            width={400}
+          />
+
+          <MultiSelectInput
+            name={'authorities'}
+            control={control}
+            required
+            i18n={I18nEnum.REGISTER_I18N}
+            data={authorities}
+            width={400}
+          />
         </Stack>
       </CardContent>
 
       <Divider />
 
-      <CardActions className={classes.footer}>
+      <CardActions sx={registerStyles.footer}>
         <Stack direction={'row'} spacing={5}>
           <Button
-            label={<Typography className={classes.buttonLabel}>{t('button.register')}</Typography>}
-            className={classes.button}
+            label={<Typography sx={registerStyles.buttonLabel}>{t('button.register')}</Typography>}
+            sx={registerStyles.button}
             form={'register-form'}
             type={'submit'}
           />
@@ -162,7 +179,12 @@ const Register = () => {
   );
 };
 
-const registerStyles = makeStyles({
+const registerStyles = {
+  backButton: {
+    width: 50,
+    height: 50,
+  },
+
   textInput: {
     width: 400,
     maxWidth: 400,
@@ -186,6 +208,6 @@ const registerStyles = makeStyles({
     justifyContent: 'center',
     height: 70,
   },
-});
+};
 
-export default memo(Register);
+export default memo(AdminRegisterUI);
