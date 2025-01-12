@@ -1,5 +1,5 @@
 'use client';
-import { selectOpenDrawer, toggleDrawer } from '@/lib/slices/commonSlice';
+import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import Divider from '@mui/material/Divider';
@@ -34,7 +34,7 @@ const Drawer = (props: IDrawerProps) => {
           onClick={handleOpenDrawer}
           sx={{ width: '40px', height: '40px', justifyContent: 'center' }}
         >
-          <KeyboardArrowLeftIcon />
+          <KeyboardArrowLeftIcon fontSize={'large'} />
         </IconButton>
       </DrawerHeader>
       <Divider />
@@ -58,9 +58,9 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(5)} + 6px)`,
+  width: `calc(${theme.spacing(5)} + 9px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(6)} + 6px)`,
+    width: `calc(${theme.spacing(6)} + 9px)`,
   },
 });
 

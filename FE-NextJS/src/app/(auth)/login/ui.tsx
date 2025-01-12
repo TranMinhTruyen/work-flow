@@ -1,4 +1,5 @@
 'use client';
+import { ILoginForm } from '@/app/(auth)/login/model/LoginForm';
 import { ADMIN_REGISTER_URL, HOME_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
@@ -7,7 +8,6 @@ import Button from '@/components/button/Button';
 import CheckBox from '@/components/form/CheckboxInput';
 import TextInput from '@/components/form/TextInput';
 import DemoModal, { Item, TestInputValue } from '@/components/modal/DemoModal';
-import { ILoginForm } from '@/model/login/LoginForm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
@@ -24,7 +24,7 @@ import { NextPage } from 'next';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { handleSubmitLogin } from './action';
+import { handleSubmitLogin } from './service/action';
 
 const LoginUI: NextPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

@@ -1,20 +1,20 @@
+import { IContent } from '@/app/(main)/kanban/model/Content';
+import IconButton from '@/components/button/IconButton';
+import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
-import { memo, useCallback, MouseEvent } from 'react';
-import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import Grid2 from '@mui/material/Grid2';
-import IconButton from '@/components/button/IconButton';
-import { IContent } from '@/model/kanban/Content';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { memo, MouseEvent, useCallback } from 'react';
 
 type ItemProps = {
   snapshot: DraggableStateSnapshot;

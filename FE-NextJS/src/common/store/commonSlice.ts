@@ -1,6 +1,6 @@
-import { ILoginResponse } from '@/model/login/LoginModel';
+import { ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RootState } from '../../lib/store';
 
 interface CommonState {
   theme: string;

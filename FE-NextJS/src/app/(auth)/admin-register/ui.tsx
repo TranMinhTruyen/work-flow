@@ -1,6 +1,7 @@
 'use client';
 import { authorities, role } from '@/common/constants/commonConst';
 
+import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import Button from '@/components/button/Button';
 import DatePickerInput from '@/components/form/DatePickerInput';
@@ -8,7 +9,6 @@ import ImageInput from '@/components/form/ImageInput';
 import MultiSelectInput from '@/components/form/MultiSelectInput';
 import SelectInput from '@/components/form/SelectInput';
 import TextInput from '@/components/form/TextInput';
-import { IRegisterForm } from '@/model/register/RegisterForm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';

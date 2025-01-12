@@ -1,6 +1,6 @@
+import { ICategory } from '@/app/(main)/kanban/model/Category';
+import { IContent } from '@/app/(main)/kanban/model/Content';
 import { SelectDataType } from '@/common/constants/typeConst';
-import { ICategory } from '@/model/kanban/Category';
-import { IContent } from '@/model/kanban/Content';
 
 export const issueTypeSelect: SelectDataType[] = [
   {

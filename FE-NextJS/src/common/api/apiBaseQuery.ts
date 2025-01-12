@@ -1,5 +1,5 @@
-import { toggleLoading } from '@/lib/slices/commonSlice';
-import { IBaseResponse } from '@/model/common/BaseResponse';
+import { IBaseResponse } from '@/common/model/BaseResponse';
+import { toggleLoading } from '@/common/store/commonSlice';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosRequestConfig, ResponseType } from 'axios';

@@ -1,6 +1,6 @@
+import { ILoginRequest, ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
 import baseApi from '@/common/api/apiBaseQuery';
 import { ApiEnum } from '@/common/enums/ApiEnum';
-import { ILoginRequest, ILoginResponse } from '@/model/login/LoginModel';
 
 export const loginService = baseApi.injectEndpoints({
   endpoints: builder => ({

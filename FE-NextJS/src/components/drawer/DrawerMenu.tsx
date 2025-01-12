@@ -1,7 +1,7 @@
 'use client';
 import useNavigate from '@/common/hooks/useNavigate';
+import { selectOpenDrawer } from '@/common/store/commonSlice';
 import { checkAccessScreen } from '@/common/utils/authUtil';
-import { selectOpenDrawer } from '@/lib/slices/commonSlice';
 import { useAppSelector } from '@/lib/store';
 import { ExpandMore } from '@mui/icons-material';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -222,7 +222,7 @@ export const CustomListItem = styled(ListItem)({
 });
 
 export const CustomListItemButton = styled(ListItemButton)({
-  height: '40px',
+  height: '40px !important',
   padding: 0,
   justifyContent: 'center',
   borderRadius: 25,

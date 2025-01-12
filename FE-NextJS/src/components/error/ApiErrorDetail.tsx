@@ -1,6 +1,6 @@
 'use client';
 import { I18nEnum } from '@/common/enums/I18nEnum';
-import { IBaseResponse } from '@/model/common/BaseResponse';
+import { IBaseResponse } from '@/common/model/BaseResponse';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';

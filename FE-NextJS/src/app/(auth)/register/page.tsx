@@ -1,4 +1,5 @@
 'use client';
+import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { MessageType } from '@/common/enums/MessageEnum';
@@ -8,7 +9,6 @@ import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import ImageInput from '@/components/form/ImageInput';
 import TextInput from '@/components/form/TextInput';
-import { IRegisterForm } from '@/model/register/RegisterForm';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
@@ -24,7 +24,7 @@ import { makeStyles } from '@mui/styles';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { handleSubmitRegister } from './action';
+import { handleSubmitRegister } from './service/action';
 
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

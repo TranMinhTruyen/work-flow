@@ -1,8 +1,8 @@
 'use client';
 import MainProvider from '@/common/provider/MainProvider';
+import { selectOpenDrawer } from '@/common/store/commonSlice';
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
-import { selectOpenDrawer } from '@/lib/slices/commonSlice';
 import { useAppSelector } from '@/lib/store';
 import { styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';

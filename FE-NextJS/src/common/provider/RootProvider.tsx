@@ -1,12 +1,12 @@
 'use client';
+import { ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
 import i18n from '@/app/i18n';
+import { IBaseRequest } from '@/common/model/BaseRequest';
+import { IBaseResponse } from '@/common/model/BaseResponse';
+import { selectLanguage, toggleLoading } from '@/common/store/commonSlice';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import { selectLanguage, toggleLoading } from '@/lib/slices/commonSlice';
 import store, { useAppDispatch, useAppSelector } from '@/lib/store';
-import { IBaseRequest } from '@/model/common/BaseRequest';
-import { IBaseResponse } from '@/model/common/BaseResponse';
-import { ILoginResponse } from '@/model/login/LoginModel';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useRef, useState } from 'react';

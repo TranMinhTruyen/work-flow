@@ -14,7 +14,7 @@ import { DateView } from '@mui/x-date-pickers/models/views';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { selectLanguage } from '@/lib/slices/commonSlice';
+import { selectLanguage } from '@/common/store/commonSlice';
 import { useAppSelector } from '@/lib/store';
 import 'dayjs/locale/en';
 import 'dayjs/locale/ja';

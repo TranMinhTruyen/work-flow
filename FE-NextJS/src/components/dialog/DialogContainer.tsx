@@ -1,6 +1,6 @@
 'use client';
 import useDialog from '@/common/hooks/useDialog';
-import { selectIsLoading } from '@/lib/slices/commonSlice';
+import { selectIsLoading } from '@/common/store/commonSlice';
 import { useAppSelector } from '@/lib/store';
 import { useEffect } from 'react';
 import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';

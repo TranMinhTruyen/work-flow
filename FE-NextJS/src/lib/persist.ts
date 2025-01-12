@@ -1,11 +1,11 @@
+import kanbanSlice from '@/app/(main)/kanban/services/kanbanSlice';
 import baseApi from '@/common/api/apiBaseQuery';
 import { RESET_ALL } from '@/common/constants/commonConst';
+import commonSlice from '@/common/store/commonSlice';
 import { combineReducers } from '@reduxjs/toolkit';
 import { Transform } from 'redux-persist';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 import noopStorage from './noopStorage';
-import commonSlice from './slices/commonSlice';
-import kanbanSlice from './slices/kanbanSlice';
 
 // All state
 const combineReducer = combineReducers({

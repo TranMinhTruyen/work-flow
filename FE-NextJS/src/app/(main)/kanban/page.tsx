@@ -1,10 +1,10 @@
 'use client';
+import { ICategory } from '@/app/(main)/kanban/model/Category';
 import { CURRENT_PATH } from '@/common/constants/commonConst';
 import Button from '@/components/button/Button';
 import IconButton from '@/components/button/IconButton';
 import SelectInput from '@/components/inputs/SelectInput';
 import TextInput from '@/components/inputs/TextInput';
-import { ICategory } from '@/model/kanban/Category';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
@@ -15,8 +15,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import Category from './components/Category';
 import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/kanbanData';
-import Category from './page-components/Category';
 
 const Kanban = () => {
   const [state, setState] = useState<ICategory[]>([]);

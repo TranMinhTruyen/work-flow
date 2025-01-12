@@ -1,5 +1,5 @@
+import { ICategory } from '@/app/(main)/kanban/model/Category';
 import Button from '@/components/button/Button';
-import { ICategory } from '@/model/kanban/Category';
 import { Droppable } from '@hello-pangea/dnd';
 import AddIcon from '@mui/icons-material/Add';
 import Grid2 from '@mui/material/Grid2';

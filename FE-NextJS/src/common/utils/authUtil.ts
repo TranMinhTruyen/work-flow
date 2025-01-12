@@ -1,9 +1,9 @@
+import { ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
+import { ICheckProxyRequest, ICheckProxyResponse } from '@/common/auth/model/ProxyModel';
+import { proxyService } from '@/common/auth/service/proxyService';
+import { setLoginData, setProxyRole, toggleLogin } from '@/common/store/commonSlice';
 import { DrawerItem } from '@/components/drawer/DrawerListItem';
-import { setLoginData, setProxyRole, toggleLogin } from '@/lib/slices/commonSlice';
 import store from '@/lib/store';
-import { ILoginResponse } from '@/model/login/LoginModel';
-import { ICheckProxyRequest, ICheckProxyResponse } from '@/model/proxy/ProxyModel';
-import { proxyService } from '@/services/proxyService';
 import forge from 'node-forge';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import { isNullOrEmpty } from './stringUtil';

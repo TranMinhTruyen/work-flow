@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
-import { selectLoginData } from '@/lib/slices/commonSlice';
+import { selectLoginData } from '@/common/store/commonSlice';
 import useNavigate from '@/common/hooks/useNavigate';
 import { CURRENT_PATH, RESET_ALL } from '@/common/constants/commonConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
