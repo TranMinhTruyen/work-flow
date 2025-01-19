@@ -1,3 +1,4 @@
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import type { NextConfig } from 'next';
 import TerserPlugin from 'terser-webpack-plugin';
 
@@ -20,9 +21,9 @@ const nextConfig: NextConfig = {
   typescript: {
     tsconfigPath: './tsconfig.json',
   },
-  webpack: (config, { webpack, dev }) => {
+  webpack: (config, { webpack }) => {
     config.plugins.push(new webpack.ProgressPlugin());
-    config.optimization.minimizer = [
+    config.config.optimization.minimizer.push([
       new TerserPlugin({
         terserOptions: {
           compress: {
@@ -32,9 +33,19 @@ const nextConfig: NextConfig = {
             comments: false,
           },
         },
-        parallel: true,
       }),
-    ];
+      new CssMinimizerPlugin({
+        parallel: true,
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true },
+            },
+          ],
+        },
+      }),
+    ]);
 
     return config;
   },

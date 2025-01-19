@@ -13,12 +13,13 @@ import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { NextPage } from 'next';
 import { usePathname } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Category from './components/Category';
 import { assigneeSelect, issueTypeSelect, sampleData, statusTypeSelect } from './data/kanbanData';
 
-const Kanban = () => {
+const Kanban: NextPage = () => {
   const [state, setState] = useState<ICategory[]>([]);
   const [isShowFilter, setIsShowFilter] = useState<boolean>(true);
   const path = usePathname();
@@ -55,7 +56,7 @@ const Kanban = () => {
     // If drag in same column
     if (sInd === dInd) {
       setState(prevState => {
-        const copiesTasks = prevState[sInd].content.slice();
+        const copiesTasks = prevState[sInd].content;
 
         const [removed] = copiesTasks.splice(sPos, 1);
 

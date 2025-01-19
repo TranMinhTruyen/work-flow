@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "ESNext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ESNext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -18,7 +22,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "sourceMap": true,
     "noImplicitAny": true,
@@ -28,12 +34,16 @@
     "target": "ESNext"
   },
   "include": [
-    "src",
-    ".next/types/**/*.ts",
-    "next-env.d.ts",
-    "eslint.config.mjs",
+    "**/*.ts",
+    "**/*.tsx",
     "ecosystem.config.cjs",
-    "next.config.ts"
+    "eslint.config.mjs",
+    "next-env.d.ts",
+    "next.config.ts",
+    "src",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

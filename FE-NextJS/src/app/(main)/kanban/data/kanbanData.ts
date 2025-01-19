@@ -1,5 +1,4 @@
 import { ICategory } from '@/app/(main)/kanban/model/Category';
-import { IContent } from '@/app/(main)/kanban/model/Content';
 import { SelectDataType } from '@/common/constants/typeConst';
 
 export const issueTypeSelect: SelectDataType[] = [
@@ -70,6 +69,7 @@ export const open: ICategory = {
   content: [
     {
       id: 0,
+      categoryId: 0,
       title: 'CDC-fluzo-1048',
       type: {
         typeName: 'Error',
@@ -83,6 +83,7 @@ export const open: ICategory = {
     },
     {
       id: 1,
+      categoryId: 0,
       title: 'CDC-FLUZO-1065',
       type: {
         typeName: 'Info',
@@ -95,6 +96,7 @@ export const open: ICategory = {
     },
     {
       id: 2,
+      categoryId: 0,
       title: 'CDC-FLUZO-2052',
       type: {
         typeName: 'Warning',
@@ -107,6 +109,7 @@ export const open: ICategory = {
     },
     {
       id: 3,
+      categoryId: 0,
       title: 'item 3',
     },
   ],
@@ -119,18 +122,22 @@ export const inProgress: ICategory = {
   content: [
     {
       id: 4,
+      categoryId: 1,
       title: 'item 4',
     },
     {
       id: 5,
+      categoryId: 1,
       title: 'item 5',
     },
     {
       id: 6,
+      categoryId: 1,
       title: 'item 6',
     },
     {
       id: 7,
+      categoryId: 1,
       title: 'item 7',
     },
   ],
@@ -143,18 +150,22 @@ export const done: ICategory = {
   content: [
     {
       id: 8,
+      categoryId: 2,
       title: 'item 8',
     },
     {
       id: 9,
+      categoryId: 2,
       title: 'item 9',
     },
     {
       id: 10,
+      categoryId: 2,
       title: 'item 10',
     },
     {
       id: 11,
+      categoryId: 2,
       title: 'item 11',
     },
   ],
@@ -167,6 +178,7 @@ export const review: ICategory = {
   content: [
     {
       id: 12,
+      categoryId: 3,
       title: 'item 12',
     },
     {
@@ -232,73 +244,3 @@ export const test: ICategory = {
 };
 
 export const sampleData: ICategory[] = [open, inProgress, done, review, close, test];
-
-export const contentData: Map<number, IContent[]> = new Map([
-  [
-    0,
-    [
-      {
-        id: 0,
-        title: 'CDC-fluzo-1048',
-        type: {
-          typeName: 'Error',
-          typeColor: 'rgba(235, 52, 52)',
-        },
-        content:
-          'This is content of item 0, John Wick, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet',
-        assignee: 'John Wick',
-        dueDate: '01/04/2024',
-        priority: 'high',
-      },
-      {
-        id: 1,
-        title: 'CDC-FLUZO-1065',
-        type: {
-          typeName: 'Info',
-        },
-        content:
-          'This is content of item 1, John Wick chapter 2, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet',
-        assignee: 'Winton',
-        dueDate: '02/04/2024',
-        priority: 'low',
-      },
-      {
-        id: 2,
-        title: 'CDC-FLUZO-2052',
-        type: {
-          typeName: 'Warning',
-          typeColor: 'rgba(250, 250, 5)',
-        },
-        content: 'This is content of item 2, John Wick chapter 3, Lorem ipsum dolor sit amet',
-        assignee: 'Charon',
-        dueDate: '03/04/2024',
-        priority: 'normal',
-      },
-      {
-        id: 3,
-        title: 'item 3',
-      },
-    ],
-  ],
-  [
-    1,
-    [
-      {
-        id: 8,
-        title: 'item 8',
-      },
-      {
-        id: 9,
-        title: 'item 9',
-      },
-      {
-        id: 10,
-        title: 'item 10',
-      },
-      {
-        id: 11,
-        title: 'item 11',
-      },
-    ],
-  ],
-]);
