@@ -4,7 +4,6 @@ import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.repository.NotificationRepository;
 import com.org.workflow.domain.dto.reponse.notificationcontroller.NotificationResponse;
 import com.org.workflow.domain.dto.request.notificationcontroller.NotificationCreateRequest;
-import com.org.workflow.domain.utils.SeqUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class NotificationService extends AbstractService {
   public List<NotificationResponse> findResponseIsNotRead() {
 
     Optional<List<Notification>> result = notificationRepository
-      .findAllByIsReadIsFalseAndDeletedIsFalse();
+        .findAllByIsReadIsFalseAndDeletedIsFalse();
 
     List<NotificationResponse> notificationResponseList = new ArrayList<>();
 
