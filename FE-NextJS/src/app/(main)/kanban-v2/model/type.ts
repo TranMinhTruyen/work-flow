@@ -1,13 +1,13 @@
 export interface IColumn {
   id: number;
-  name: string;
+  title: string;
   color?: string;
-  cardList: ICard[];
 }
 
 export interface ICard {
   id: number;
-  categoryId?: number;
+  columnId: number;
+  order: number;
   title: string;
   type?: ITaskType;
   content?: string;

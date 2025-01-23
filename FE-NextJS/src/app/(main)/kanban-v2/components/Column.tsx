@@ -5,21 +5,29 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { Box } from '@mui/system';
-import { CSSProperties, memo } from 'react';
-import { IColumn } from '../model/type';
+import { CSSProperties, memo, useMemo } from 'react';
+import { ICard, IColumn } from '../model/type';
 import Card from './Card';
 
 export type ColumnProps = {
   columnData: IColumn;
+  cardList: ICard[];
 };
 
 const Column = (props: ColumnProps) => {
-  const { columnData } = props;
+  const { columnData, cardList } = props;
 
   const { setNodeRef, isOver } = useDroppable({
-    id: columnData.id,
-    data: columnData,
+    id: `col-${columnData.id}`,
+    data: {
+      type: 'COLUMN',
+      columnData: columnData,
+    },
   });
+
+  const cardId = useMemo(() => {
+    return cardList.map(item => item.id);
+  }, [cardList]);
 
   const style: CSSProperties = {
     backgroundColor: isOver ? '#f0f0f0' : '#fafafa',
@@ -31,10 +39,10 @@ const Column = (props: ColumnProps) => {
 
   return (
     <Paper ref={setNodeRef} style={style}>
-      <Typography variant={'h6'}>{columnData.name}</Typography>
+      <Typography variant={'h6'}>{columnData.title}</Typography>
       <Box>
-        <SortableContext items={columnData.cardList}>
-          {columnData.cardList.map(card => (
+        <SortableContext items={cardId}>
+          {cardList.map(card => (
             <Card key={card.id} cardData={card} />
           ))}
         </SortableContext>

@@ -6,6 +6,7 @@ import {
   DndContext,
   DragEndEvent,
   DragOverlay,
+  DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors,
@@ -14,13 +15,14 @@ import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { sampleData } from '../data/kanbanData';
+import { cardData, columnData } from '../data/kanbanData';
 import { ICard, IColumn } from '../model/type';
 import Card from './Card';
 import Column from './Column';
 
 const Board = () => {
-  const [data, setData] = useState<IColumn[]>([]);
+  const [column, setColumn] = useState<IColumn[]>([]);
+  const [card, setCard] = useState<ICard[]>([]);
   const [activeCard, setActiveCard] = useState<ICard | null>(null);
   const path = usePathname();
 
@@ -33,94 +35,40 @@ const Board = () => {
   );
 
   useEffect(() => {
-    setData(sampleData);
+    setColumn(columnData);
+    setCard(cardData);
     sessionStorage.setItem(CURRENT_PATH, path);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDragStart = useCallback(
-    (event: any) => {
-      const { active } = event;
-      for (const column of data) {
-        const card = column.cardList.find(card => card.id === active.id);
-        if (card) {
-          setActiveCard(card);
-          break;
-        }
-      }
-    },
-    [data]
-  );
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    const { active } = event;
+    setActiveCard(active.data.current?.cardData as ICard);
+  }, []);
 
   const handleDragCancel = useCallback(() => {
     setActiveCard(null);
   }, []);
 
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event;
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
 
-      if (!over) {
-        setActiveCard(null);
-        return;
+    if (!over) return;
+
+    const srcColIndex = active.data.current?.cardData.columnId;
+    const desColIndex = over.data.current?.columnData.id;
+
+    setCard(prev => {
+      const cardIndex = prev.findIndex(item => item.columnId === srcColIndex);
+      if (cardIndex !== -1) {
+        prev[cardIndex].columnId = desColIndex;
+        return prev;
       }
+      return prev;
+    });
 
-      if (active.id === over.id) {
-        setActiveCard(null);
-        return;
-      }
-
-      let sourceColIndex = -1;
-      let sourceCardIndex = -1;
-      let destColIndex = -1;
-
-      // Tìm vị trí của card được kéo
-      for (let i = 0; i < data.length; i++) {
-        const cardIndex = data[i].cardList.findIndex(card => card.id === active.id);
-        if (cardIndex !== -1) {
-          sourceColIndex = i;
-          sourceCardIndex = cardIndex;
-          break;
-        }
-      }
-
-      // Tìm vị trí của nơi thả
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === over.id) {
-          destColIndex = i;
-          break;
-        }
-      }
-
-      if (sourceColIndex === -1 || destColIndex === -1) {
-        setActiveCard(null);
-        return;
-      }
-
-      const movedCard = data[sourceColIndex].cardList[sourceCardIndex];
-
-      // Xóa card khỏi cột nguồn
-      const newSourceCards = [...data[sourceColIndex].cardList];
-      newSourceCards.splice(sourceCardIndex, 1);
-
-      // Thêm card vào cột đích
-      const newDestCards = [...data[destColIndex].cardList, movedCard];
-
-      const newColumns = [...data];
-      newColumns[sourceColIndex] = {
-        ...data[sourceColIndex],
-        cardList: newSourceCards,
-      };
-      newColumns[destColIndex] = {
-        ...data[destColIndex],
-        cardList: newDestCards,
-      };
-
-      setData(newColumns);
-      setActiveCard(null);
-    },
-    [data]
-  );
+    setActiveCard(null);
+  }, []);
 
   const overlay = useMemo(() => {
     if (activeCard) {
@@ -137,9 +85,13 @@ const Board = () => {
       onDragEnd={handleDragEnd}
     >
       <Box display={'flex'} justifyContent={'flex-start'} padding={4}>
-        {data.map(column => (
+        {column.map(column => (
           <Box key={column.id} margin={10} width={250}>
-            <Column key={column.id} columnData={column} />
+            <Column
+              key={column.id}
+              columnData={column}
+              cardList={card.filter(item => item.columnId === column.id)}
+            />
           </Box>
         ))}
       </Box>

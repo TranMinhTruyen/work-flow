@@ -1,6 +1,7 @@
 'use client';
 
 import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { CSSProperties, memo } from 'react';
@@ -12,20 +13,28 @@ export type CardProps = {
 
 const Card = (props: CardProps) => {
   const { cardData } = props;
-  const { setNodeRef, attributes, listeners, transform, isDragging } = useSortable({
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: cardData.id,
-    data: cardData,
+    data: {
+      type: 'CARD',
+      cardData,
+    },
   });
 
   const style: CSSProperties = {
-    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-    opacity: isDragging ? 0.5 : 1,
+    transition,
+    transform: CSS.Transform.toString(transform),
     cursor: 'grab',
     marginBottom: '8px',
+    height: '50px',
   };
 
+  if (isDragging) {
+    return <Paper ref={setNodeRef} style={style}></Paper>;
+  }
+
   return (
-    <Paper ref={setNodeRef} {...listeners} {...attributes} style={style}>
+    <Paper ref={setNodeRef} style={style} {...listeners} {...attributes}>
       <Typography variant={'body1'}>{cardData.title}</Typography>
     </Paper>
   );
