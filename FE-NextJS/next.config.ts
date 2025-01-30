@@ -13,11 +13,6 @@ const nextConfig: NextConfig = {
       sourceMap: true,
     },
   },
-  experimental: {
-    turbo: {
-      resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.mjs', '.cjs', '.json'],
-    },
-  },
   typescript: {
     tsconfigPath: './tsconfig.json',
   },

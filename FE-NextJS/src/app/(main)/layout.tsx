@@ -6,7 +6,7 @@ import MainHeader from '@/components/header/main-header/MainHeader';
 import { useAppSelector } from '@/lib/store';
 import { styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
-import { memo, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 const DRAWER_WIDTH: number = 200;
 
@@ -24,7 +24,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default memo(MainLayout);
+export default MainLayout;
 
 type ScreenLayoutProps = {
   open: boolean;

@@ -17,6 +17,7 @@ const Card = (props: CardProps) => {
     id: cardData.id,
     data: {
       type: 'CARD',
+      columnId: cardData.columnId,
       cardData,
     },
   });
@@ -30,7 +31,20 @@ const Card = (props: CardProps) => {
   };
 
   if (isDragging) {
-    return <Paper ref={setNodeRef} style={style}></Paper>;
+    return (
+      <Paper
+        ref={setNodeRef}
+        variant={'outlined'}
+        style={{
+          transition,
+          transform: CSS.Transform.toString(transform),
+          backgroundColor: 'rgba(200, 200, 200, 0.8)',
+          cursor: 'grab',
+          height: '50px',
+          marginBottom: '8px',
+        }}
+      ></Paper>
+    );
   }
 
   return (

@@ -1,11 +1,19 @@
-'use server';
-import BackdropLoading from '@/components/loading/BackdropLoading';
-import dynamic from 'next/dynamic';
+'use client';
+import { CURRENT_PATH } from '@/common/constants/commonConst';
+import { usePathname } from 'next/navigation';
+import { memo, useEffect } from 'react';
+import Board from './components/Board';
+import { initData } from './services/action';
 
-const KanbanUI = dynamic(() => import('./ui'), { ssr: true, loading: () => <BackdropLoading /> });
+const KanbanV2Page = () => {
+  const path = usePathname();
 
-const KanbanPage = () => {
-  return <KanbanUI />;
+  useEffect(() => {
+    sessionStorage.setItem(CURRENT_PATH, path);
+    initData();
+  }, [path]);
+
+  return <Board />;
 };
 
-export default KanbanPage;
+export default memo(KanbanV2Page);

@@ -1,30 +1,38 @@
 'use client';
-
-import { CURRENT_PATH } from '@/common/constants/commonConst';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 import {
-  closestCenter,
+  closestCorners,
   DndContext,
+  DragCancelEvent,
   DragEndEvent,
+  DragMoveEvent,
   DragOverlay,
   DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { Box } from '@mui/material';
-import { usePathname } from 'next/navigation';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import Box from '@mui/material/Box';
+import Stack from '@mui/system/Stack';
+import { memo, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { cardData, columnData } from '../data/kanbanData';
-import { ICard, IColumn } from '../model/type';
+import { cardData } from '../data/kanbanData';
+import { eventDragDropAction, eventDragDropMoveAction } from '../services/action';
+import {
+  selectActiveCard,
+  selectCardList,
+  selectColumnList,
+  setActiveCard,
+} from '../services/kanbanSlice';
 import Card from './Card';
 import Column from './Column';
 
 const Board = () => {
-  const [column, setColumn] = useState<IColumn[]>([]);
-  const [card, setCard] = useState<ICard[]>([]);
-  const [activeCard, setActiveCard] = useState<ICard | null>(null);
-  const path = usePathname();
+  const dispatch = useAppDispatch();
+
+  const columnList = useAppSelector(selectColumnList);
+  const activeCard = useAppSelector(selectActiveCard);
+  const cardList = useAppSelector(selectCardList);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -34,41 +42,65 @@ const Board = () => {
     })
   );
 
-  useEffect(() => {
-    setColumn(columnData);
-    setCard(cardData);
-    sessionStorage.setItem(CURRENT_PATH, path);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleDragStart = useCallback(
+    (event: DragStartEvent) => {
+      const { active } = event;
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    const { active } = event;
-    setActiveCard(active.data.current?.cardData as ICard);
-  }, []);
+      const activeId = active.id as number;
 
-  const handleDragCancel = useCallback(() => {
-    setActiveCard(null);
-  }, []);
+      const card = cardData.find(item => item.id === activeId);
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const srcColIndex = active.data.current?.cardData.columnId;
-    const desColIndex = over.data.current?.columnData.id;
-
-    setCard(prev => {
-      const cardIndex = prev.findIndex(item => item.columnId === srcColIndex);
-      if (cardIndex !== -1) {
-        prev[cardIndex].columnId = desColIndex;
-        return prev;
+      if (card && !activeCard) {
+        dispatch(setActiveCard(card));
       }
-      return prev;
-    });
+    },
+    [activeCard, dispatch]
+  );
 
-    setActiveCard(null);
+  /**
+   * Handle drop event.
+   */
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      if (over) {
+        eventDragDropAction(active, over);
+        dispatch(setActiveCard(null));
+      }
+    },
+    [dispatch]
+  );
+
+  /**
+   * Handle dragging event
+   */
+  const handleDragMove = useCallback((event: DragMoveEvent) => {
+    const { active, over } = event;
+    if (over) {
+      eventDragDropMoveAction(active, over);
+    }
   }, []);
+
+  /**
+   * Handle dragging event
+   */
+  const handleDragCancer = useCallback(
+    (event: DragCancelEvent) => {
+      dispatch(setActiveCard(null));
+    },
+    [dispatch]
+  );
+
+  const columns = useMemo(() => {
+    return columnList.map(column => {
+      const cardData = cardList.find(item => item.columnId === column.id)?.cards;
+      return (
+        <Box key={column.id} margin={10} width={250}>
+          <Column key={column.id} columnData={column} cardList={cardData ?? []} />
+        </Box>
+      );
+    });
+  }, [cardList, columnList]);
 
   const overlay = useMemo(() => {
     if (activeCard) {
@@ -79,22 +111,15 @@ const Board = () => {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+      collisionDetection={closestCorners}
       onDragStart={handleDragStart}
-      onDragCancel={handleDragCancel}
       onDragEnd={handleDragEnd}
+      onDragMove={handleDragMove}
+      onDragCancel={handleDragCancer}
     >
-      <Box display={'flex'} justifyContent={'flex-start'} padding={4}>
-        {column.map(column => (
-          <Box key={column.id} margin={10} width={250}>
-            <Column
-              key={column.id}
-              columnData={column}
-              cardList={card.filter(item => item.columnId === column.id)}
-            />
-          </Box>
-        ))}
-      </Box>
+      <Stack direction={'row'} spacing={10}>
+        {columns}
+      </Stack>
       {createPortal(<DragOverlay>{overlay}</DragOverlay>, document.body)}
     </DndContext>
   );

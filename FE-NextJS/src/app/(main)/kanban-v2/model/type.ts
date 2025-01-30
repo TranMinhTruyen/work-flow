@@ -20,3 +20,8 @@ export interface ITaskType {
   typeName?: string;
   typeColor?: string;
 }
+
+export interface IData {
+  columnId: number;
+  cards: ICard[];
+}

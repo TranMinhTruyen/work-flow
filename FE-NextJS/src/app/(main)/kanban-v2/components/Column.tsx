@@ -2,9 +2,9 @@
 
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
-import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { Box } from '@mui/system';
+import Typography from '@mui/material/Typography';
 import { CSSProperties, memo, useMemo } from 'react';
 import { ICard, IColumn } from '../model/type';
 import Card from './Card';
@@ -17,8 +17,8 @@ export type ColumnProps = {
 const Column = (props: ColumnProps) => {
   const { columnData, cardList } = props;
 
-  const { setNodeRef, isOver } = useDroppable({
-    id: `col-${columnData.id}`,
+  const { setNodeRef } = useDroppable({
+    id: columnData.id,
     data: {
       type: 'COLUMN',
       columnData: columnData,
@@ -26,28 +26,33 @@ const Column = (props: ColumnProps) => {
   });
 
   const cardId = useMemo(() => {
-    return cardList.map(item => item.id);
+    if (cardList) {
+      return cardList.map(item => item.id);
+    }
+    return [];
+  }, [cardList]);
+
+  const cards = useMemo(() => {
+    if (cardList) return cardList.map(card => <Card key={card.id} cardData={card} />);
+    return [];
   }, [cardList]);
 
   const style: CSSProperties = {
-    backgroundColor: isOver ? '#f0f0f0' : '#fafafa',
-    padding: '16px',
+    backgroundColor: 'rgba(225, 225, 225, 0.8)',
+    padding: '10px',
     minHeight: '500px',
+    maxHeight: '500px',
+    overflow: 'auto',
     width: '300px',
-    marginRight: '16px',
   };
 
   return (
-    <Paper ref={setNodeRef} style={style}>
+    <Box>
       <Typography variant={'h6'}>{columnData.title}</Typography>
-      <Box>
-        <SortableContext items={cardId}>
-          {cardList.map(card => (
-            <Card key={card.id} cardData={card} />
-          ))}
-        </SortableContext>
-      </Box>
-    </Paper>
+      <Paper variant={'outlined'} ref={setNodeRef} style={style}>
+        <SortableContext items={cardId}>{cards}</SortableContext>
+      </Paper>
+    </Box>
   );
 };
 
