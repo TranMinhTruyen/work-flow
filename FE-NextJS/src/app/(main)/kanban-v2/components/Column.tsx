@@ -1,12 +1,15 @@
 'use client';
 
-import { useDroppable } from '@dnd-kit/core';
-import { SortableContext } from '@dnd-kit/sortable';
+import { Type } from '@/common/enums/BoardEnum';
+import { useAppSelector } from '@/lib/store';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { CSSProperties, memo, useMemo } from 'react';
 import { ICard, IColumn } from '../model/type';
+import { selectIsColumnDragging } from '../services/kanbanSlice';
 import Card from './Card';
 
 export type ColumnProps = {
@@ -17,39 +20,53 @@ export type ColumnProps = {
 const Column = (props: ColumnProps) => {
   const { columnData, cardList } = props;
 
-  const { setNodeRef } = useDroppable({
+  const isColumnDragging = useAppSelector(selectIsColumnDragging);
+
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: columnData.id,
     data: {
-      type: 'COLUMN',
+      type: Type.COLUMN,
       columnData: columnData,
     },
+    disabled: !isColumnDragging,
   });
 
-  const cardId = useMemo(() => {
-    if (cardList) {
-      return cardList.map(item => item.id);
-    }
-    return [];
-  }, [cardList]);
+  const cardId = useMemo(() => cardList.map(item => item.id), [cardList]);
 
   const cards = useMemo(() => {
-    if (cardList) return cardList.map(card => <Card key={card.id} cardData={card} />);
-    return [];
+    return cardList.map(card => <Card key={card.id} cardData={card} />);
   }, [cardList]);
 
   const style: CSSProperties = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+    cursor: isColumnDragging ? 'grab' : 'default',
+  };
+
+  const containerStyle: CSSProperties = {
     backgroundColor: 'rgba(225, 225, 225, 0.8)',
     padding: '10px',
-    minHeight: '500px',
-    maxHeight: '500px',
+    minHeight: '80vh',
+    maxHeight: '80vh',
     overflow: 'auto',
     width: '300px',
   };
 
+  if (isDragging) {
+    return (
+      <Box ref={setNodeRef} style={style}>
+        <Typography variant={'h6'}>{columnData.title}</Typography>
+        <Paper variant={'outlined'} style={containerStyle}></Paper>
+      </Box>
+    );
+  }
+
   return (
-    <Box>
-      <Typography variant={'h6'}>{columnData.title}</Typography>
-      <Paper variant={'outlined'} ref={setNodeRef} style={style}>
+    <Box ref={setNodeRef} style={style}>
+      <Typography variant={'h6'} {...listeners} {...attributes}>
+        {columnData.title}
+      </Typography>
+      <Paper variant={'outlined'} style={containerStyle}>
         <SortableContext items={cardId}>{cards}</SortableContext>
       </Paper>
     </Box>

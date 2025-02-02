@@ -65,15 +65,23 @@ export const assigneeSelect: SelectDataType[] = [
 export const columnData: IColumn[] = [
   {
     id: 1,
+    order: 0,
     title: 'Open',
   },
   {
     id: 2,
+    order: 1,
     title: 'Inprogess',
   },
   {
-    id: 3,
+    id: 4,
+    order: 3,
     title: 'Resolve',
+  },
+  {
+    id: 3,
+    order: 2,
+    title: 'Reject',
   },
 ];
 

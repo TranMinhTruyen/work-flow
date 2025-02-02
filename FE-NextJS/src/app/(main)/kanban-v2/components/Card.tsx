@@ -1,5 +1,6 @@
 'use client';
 
+import { Type } from '@/common/enums/BoardEnum';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Typography } from '@mui/material';
@@ -16,7 +17,7 @@ const Card = (props: CardProps) => {
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: cardData.id,
     data: {
-      type: 'CARD',
+      type: Type.CARD,
       columnId: cardData.columnId,
       cardData,
     },
@@ -39,7 +40,6 @@ const Card = (props: CardProps) => {
           transition,
           transform: CSS.Transform.toString(transform),
           backgroundColor: 'rgba(200, 200, 200, 0.8)',
-          cursor: 'grab',
           height: '50px',
           marginBottom: '8px',
         }}

@@ -1,5 +1,6 @@
 export interface IColumn {
   id: number;
+  order: number;
   title: string;
   color?: string;
 }

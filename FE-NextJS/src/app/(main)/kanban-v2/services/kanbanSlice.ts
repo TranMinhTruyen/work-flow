@@ -6,11 +6,21 @@ type BoardSlice = {
   columnList: IColumn[];
   cardList: IData[];
   activeCard?: ICard | null;
+  activeColumn?: IColumn | null;
+  isColumnDragging: boolean;
 };
 
 const initialState: BoardSlice = {
   columnList: [],
   cardList: [],
+  isColumnDragging: true,
+};
+
+export type UpdateCardPayload = {
+  sourceColumnId?: number;
+  sourceCardList?: ICard[];
+  destinationColumnId?: number;
+  destinationCardList?: ICard[];
 };
 
 const kanbanSlice = createSlice({
@@ -19,19 +29,22 @@ const kanbanSlice = createSlice({
   reducers: {
     addColumn: (state, action: PayloadAction<IColumn | IColumn[]>) => {
       const { payload } = action;
+
+      const columnList = state.columnList;
+
       if (Array.isArray(payload)) {
         const newColumn = payload.filter(
-          newColumn => !state.columnList.some(existingColumn => existingColumn.id === newColumn.id)
+          newColumn => !columnList.some(existingColumn => existingColumn.id === newColumn.id)
         );
-        state.columnList.push(...newColumn);
+        columnList.push(...newColumn);
       } else {
-        const isColumnExist = state.columnList.some(
-          existingColumn => existingColumn.id === payload.id
-        );
+        const isColumnExist = columnList.some(existingColumn => existingColumn.id === payload.id);
         if (!isColumnExist) {
-          state.columnList.push(payload);
+          columnList.push(payload);
         }
       }
+
+      columnList.sort((a, b) => a.order - b.order);
     },
     addCard: (state, action: PayloadAction<{ columnId: number; card: ICard | ICard[] }>) => {
       const { columnId, card } = action.payload;
@@ -73,15 +86,7 @@ const kanbanSlice = createSlice({
         state.cardList.push(newCardList);
       }
     },
-    updateCard: (
-      state,
-      action: PayloadAction<{
-        sourceColumnId?: number;
-        sourceCardList?: ICard[];
-        destinationColumnId?: number;
-        destinationCardList?: ICard[];
-      }>
-    ) => {
+    updateCard: (state, action: PayloadAction<UpdateCardPayload>) => {
       const { sourceColumnId, sourceCardList, destinationColumnId, destinationCardList } =
         action.payload;
       let cardList;
@@ -89,28 +94,54 @@ const kanbanSlice = createSlice({
         cardList = state.cardList.find(item => item.columnId === sourceColumnId);
         if (cardList) {
           cardList.cards = sourceCardList;
+          cardList.cards.sort((a, b) => a.order - b.order);
         }
       }
       if (destinationColumnId && destinationCardList) {
         cardList = state.cardList.find(item => item.columnId === destinationColumnId);
         if (cardList) {
           cardList.cards = destinationCardList;
+          cardList.cards.sort((a, b) => a.order - b.order);
         }
       }
+    },
+    updateColumn: (state, action: PayloadAction<IColumn[] | null>) => {
+      const { payload } = action;
+      if (payload) {
+        state.columnList = payload;
+        state.columnList.sort((a, b) => a.order - b.order);
+      }
+    },
+    setActiveColumn: (state, action: PayloadAction<IColumn | null>) => {
+      const { payload } = action;
+      state.activeColumn = payload;
     },
     setActiveCard: (state, action: PayloadAction<ICard | null>) => {
       const { payload } = action;
       state.activeCard = payload;
     },
+    toggleColumnDragging: state => {
+      state.isColumnDragging = !state.isColumnDragging;
+    },
   },
 });
 
-export const { addColumn, addCard, updateCard, setActiveCard } = kanbanSlice.actions;
+export const {
+  addColumn,
+  addCard,
+  updateCard,
+  updateColumn,
+  setActiveColumn,
+  setActiveCard,
+  toggleColumnDragging,
+} = kanbanSlice.actions;
 
 export const selectColumnList = (state: RootState) => state.kanbanState.columnList;
 export const selectCardsByColumnId = (columnId: number) => (state: RootState) =>
   state.kanbanState.cardList.find(item => item.columnId === columnId)?.cards;
-export const selectActiveCard = (state: RootState) => state.kanbanState.activeCard;
 export const selectCardList = (state: RootState) => state.kanbanState.cardList;
+export const selectActiveColumn = (state: RootState) => state.kanbanState.activeColumn;
+export const selectActiveCard = (state: RootState) => state.kanbanState.activeCard;
+export const selectIsColumnDragging = (state: RootState) => state.kanbanState.isColumnDragging;
 
 export default kanbanSlice.reducer;
