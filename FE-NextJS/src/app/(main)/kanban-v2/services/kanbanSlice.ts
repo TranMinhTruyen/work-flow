@@ -1,6 +1,6 @@
 import { RootState } from '@/lib/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ICard, IColumn, IData } from '../model/type';
+import { ICard, IColumn, IData, UpdateCardPayload } from '../model/type';
 
 type BoardSlice = {
   columnList: IColumn[];
@@ -14,13 +14,6 @@ const initialState: BoardSlice = {
   columnList: [],
   cardList: [],
   isColumnDragging: true,
-};
-
-export type UpdateCardPayload = {
-  sourceColumnId?: number;
-  sourceCardList?: ICard[];
-  destinationColumnId?: number;
-  destinationCardList?: ICard[];
 };
 
 const kanbanSlice = createSlice({

@@ -4,19 +4,15 @@ import { Active, Over } from '@dnd-kit/core/dist/store/types';
 import { arrayMove } from '@dnd-kit/sortable';
 import lodash from 'lodash';
 import { cardData, columnData } from '../data/kanbanData';
-import { ICard, IColumn } from '../model/type';
-import { addCard, addColumn, updateCard, UpdateCardPayload, updateColumn } from './kanbanSlice';
-
-//#region Helper Types
-type CardMoveContext = {
-  activeId: number;
-  overId: number;
-  activeColumnId: number;
-  overColumnId: number;
-  activeCardIndex: number;
-  overCardIndex: number;
-};
-//#endregion
+import { CardMoveContext, ICard, IColumn, UpdateCardPayload } from '../model/type';
+import {
+  addCard,
+  addColumn,
+  setActiveCard,
+  setActiveColumn,
+  updateCard,
+  updateColumn,
+} from './kanbanSlice';
 
 export const initData = () => {
   store.dispatch(addColumn(columnData));
@@ -27,8 +23,9 @@ export const initData = () => {
 };
 
 //#region Common Helpers
-const getCardList = (columnId: number) =>
-  store.getState().kanbanState.cardList.find(c => c.columnId === columnId);
+const getCardList = (columnId: number) => {
+  return store.getState().kanbanState.cardList.find(c => c.columnId === columnId);
+};
 
 const updateCardsInStore = (
   sourceColumnId: number,
@@ -58,25 +55,28 @@ const normalizeCardOrder = (items: ICard[]) =>
 //#endregion
 
 //#region Card Helpers
-const getCardMoveContext = (active: Active, over: Over): CardMoveContext | null => {
-  const activeId = Number(active.id);
-  const overId = Number(over.id);
-  const activeColumnId = active.data.current?.columnId;
+const getDnDContext = (active: Active, over: Over): CardMoveContext | null => {
+  const activeCardId = Number(active.id);
+  const overCardId = Number(over.id);
+  const activeColumnId =
+    active.data.current?.type === Type.CARD ? active.data.current.columnId : Number(active.id);
   const overColumnId =
     over.data.current?.type === Type.CARD ? over.data.current.columnId : Number(over.id);
 
-  if (!activeColumnId || !overColumnId) return null;
+  const activeCardList = lodash.cloneDeep(getCardList(activeColumnId)?.cards || []);
+  const overCardList = lodash.cloneDeep(getCardList(overColumnId)?.cards || []);
 
-  const activeCardList = getCardList(activeColumnId)?.cards || [];
-  const overCardList = getCardList(overColumnId)?.cards || [];
+  const columnList = store.getState().kanbanState.columnList;
 
   return {
-    activeId,
-    overId,
+    activeCardId,
+    overCardId,
     activeColumnId,
     overColumnId,
-    activeCardIndex: activeCardList.findIndex(c => c.id === activeId),
-    overCardIndex: overCardList.findIndex(c => c.id === overId),
+    activeColumnIndex: columnList.findIndex(c => c.id === activeColumnId),
+    overColumnIndex: columnList.findIndex(c => c.id === overColumnId),
+    activeCardIndex: activeCardList.findIndex(c => c.id === activeCardId),
+    overCardIndex: overCardList.findIndex(c => c.id === overCardId),
   };
 };
 //#endregion
@@ -89,28 +89,35 @@ const getCardMoveContext = (active: Active, over: Over): CardMoveContext | null 
  * @returns
  */
 export const eventDropAction = (active: Active, over: Over | null) => {
+  store.dispatch(setActiveCard(null));
+  store.dispatch(setActiveColumn(null));
+
   if (!over) return;
+
+  const context = getDnDContext(active, over);
+
+  if (!context) return;
+
+  const { activeColumnId, activeColumnIndex, overColumnIndex, activeCardIndex, overCardIndex } =
+    context;
 
   // Handle Column Drag
   if (active.data.current?.type === Type.COLUMN) {
+    if (activeColumnIndex === overColumnIndex) return;
+
     const columns = lodash.cloneDeep(store.getState().kanbanState.columnList);
 
-    const oldIndex = columns.findIndex(c => c.id === Number(active.id));
-    const newIndex = columns.findIndex(c => c.id === Number(over.id));
-
-    if (oldIndex !== -1 && newIndex !== -1) {
-      const newColumns = normalizeColumnOrder(arrayMove(columns, oldIndex, newIndex));
+    if (activeColumnIndex !== -1 && overColumnIndex !== -1) {
+      const newColumns = normalizeColumnOrder(
+        arrayMove(columns, activeColumnIndex, overColumnIndex)
+      );
       store.dispatch(updateColumn(newColumns));
     }
     return;
   }
   // Handle Card Drag
   else {
-    const context = getCardMoveContext(active, over);
-
-    if (!context) return;
-
-    const { activeColumnId, activeCardIndex, overCardIndex } = context;
+    if (activeCardIndex === overCardIndex) return;
 
     const cardList = lodash.cloneDeep(getCardList(activeColumnId)?.cards || []);
 
@@ -118,6 +125,7 @@ export const eventDropAction = (active: Active, over: Over | null) => {
 
     const newCards = normalizeCardOrder(arrayMove(cardList, activeCardIndex, overCardIndex));
     updateCardsInStore(activeColumnId, newCards);
+
     return;
   }
 };
@@ -132,11 +140,18 @@ export const eventDropAction = (active: Active, over: Over | null) => {
 export const eventDragMoveAction = (active: Active, over: Over) => {
   if (!over) return;
 
-  const context = getCardMoveContext(active, over);
+  const context = getDnDContext(active, over);
 
   if (!context) return;
 
-  const { activeId, overId, activeColumnId, overColumnId } = context;
+  const {
+    activeCardId: activeId,
+    overCardId: overId,
+    activeColumnId,
+    overColumnId,
+    activeCardIndex,
+    overCardIndex,
+  } = context;
 
   if (activeId === overId) return;
 
@@ -160,19 +175,15 @@ export const eventDragMoveAction = (active: Active, over: Over) => {
     let returnActiveCardList: ICard[] = [];
     let returnOverCardList: ICard[] = [];
 
-    // find index of source and destination
-    const activeIndex = newActiveCardList.findIndex(i => i.id === activeId); // find index card is dragging
-    const overIndex = newOverCardList.findIndex(i => i.id === overId); // find index card is drop
-
-    if (activeIndex !== -1 && overIndex !== -1) {
+    if (activeCardIndex !== -1 && overCardIndex !== -1) {
       // remove card from source column
-      const [removed] = newActiveCardList.splice(activeIndex, 1);
+      const [removed] = newActiveCardList.splice(activeCardIndex, 1);
 
       // change card columnId
       removed.columnId = over.data.current?.columnId;
 
       // add card to destination column
-      newOverCardList.splice(overIndex, 0, removed);
+      newOverCardList.splice(overCardIndex, 0, removed);
 
       // setting order source column
       if (newActiveCardList.length > 0) {
@@ -185,12 +196,7 @@ export const eventDragMoveAction = (active: Active, over: Over) => {
       }
 
       // update source card store
-      updateCardsInStore(
-        active.data.current?.columnId,
-        returnActiveCardList,
-        over.data.current?.columnId,
-        returnOverCardList
-      );
+      updateCardsInStore(activeColumnId, returnActiveCardList, overColumnId, returnOverCardList);
     }
   }
 
@@ -208,12 +214,10 @@ export const eventDragMoveAction = (active: Active, over: Over) => {
       const newCardList = lodash.cloneDeep(activeCardData.cards);
       let returnActiveCardList: ICard[] = [];
 
-      const activeIndex = newCardList.findIndex(i => i.id === activeId); // find index card is dragging
-
-      if (activeIndex !== -1) {
+      if (activeCardIndex !== -1) {
         // swap position of card and setting order value
         returnActiveCardList = normalizeCardOrder(
-          arrayMove(newCardList, activeIndex, newCardList.length)
+          arrayMove(newCardList, activeCardIndex, newCardList.length)
         );
 
         // update store
@@ -230,16 +234,14 @@ export const eventDragMoveAction = (active: Active, over: Over) => {
         return;
       }
 
-      const newActiveCardList = lodash.cloneDeep(activeCardData.cards); // find index card is dragging
-      const newOverCardList = lodash.cloneDeep(overCardData.cards); // find index card is drop
+      const newActiveCardList = lodash.cloneDeep(activeCardData.cards);
+      const newOverCardList = lodash.cloneDeep(overCardData.cards);
       let returnActiveCardList: ICard[] = [];
       let returnOverCardList: ICard[] = [];
 
-      const activeIndex = newActiveCardList.findIndex(item => item.id === activeId);
-
-      if (activeIndex !== -1) {
+      if (activeCardIndex !== -1) {
         // remove card from source column
-        const [removed] = newActiveCardList.splice(activeIndex, 1);
+        const [removed] = newActiveCardList.splice(activeCardIndex, 1);
 
         // change card columnId
         removed.columnId = overId;

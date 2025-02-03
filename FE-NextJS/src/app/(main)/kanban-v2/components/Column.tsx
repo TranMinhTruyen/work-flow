@@ -26,7 +26,6 @@ const Column = (props: ColumnProps) => {
     id: columnData.id,
     data: {
       type: Type.COLUMN,
-      columnData: columnData,
     },
     disabled: !isColumnDragging,
   });

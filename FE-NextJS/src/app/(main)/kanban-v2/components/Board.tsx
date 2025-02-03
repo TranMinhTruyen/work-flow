@@ -78,16 +78,12 @@ const Board = () => {
   /**
    * Handle drop event.
    */
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event;
-      if (over) {
-        eventDropAction(active, over);
-        dispatch(setActiveCard(null));
-      }
-    },
-    [dispatch]
-  );
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over) {
+      eventDropAction(active, over);
+    }
+  }, []);
 
   /**
    * Handle dragging event

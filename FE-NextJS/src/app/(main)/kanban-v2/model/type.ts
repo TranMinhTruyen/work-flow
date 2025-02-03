@@ -26,3 +26,21 @@ export interface IData {
   columnId: number;
   cards: ICard[];
 }
+
+export type UpdateCardPayload = {
+  sourceColumnId?: number;
+  sourceCardList?: ICard[];
+  destinationColumnId?: number;
+  destinationCardList?: ICard[];
+};
+
+export type CardMoveContext = {
+  activeCardId: number;
+  overCardId: number;
+  activeColumnId: number;
+  overColumnId: number;
+  activeColumnIndex: number;
+  overColumnIndex: number;
+  activeCardIndex: number;
+  overCardIndex: number;
+};

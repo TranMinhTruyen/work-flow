@@ -19,7 +19,6 @@ const Card = (props: CardProps) => {
     data: {
       type: Type.CARD,
       columnId: cardData.columnId,
-      cardData,
     },
   });
 
