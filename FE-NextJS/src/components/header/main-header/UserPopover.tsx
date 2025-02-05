@@ -1,18 +1,19 @@
 'use client';
-import { useState, MouseEvent, useCallback } from 'react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Menu from '@mui/material/Menu';
-import { Logout, Settings } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import { useAppDispatch, useAppSelector } from '@/lib/store';
-import { selectLoginData } from '@/common/store/commonSlice';
-import useNavigate from '@/common/hooks/useNavigate';
+
 import { CURRENT_PATH, RESET_ALL } from '@/common/constants/commonConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
+import useNavigate from '@/common/hooks/useNavigate';
+import { selectLoginData } from '@/common/store/commonSlice';
 import IconButton from '@/components/button/IconButton';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import { Logout, Settings } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Divider from '@mui/material/Divider';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { styled } from '@mui/material/styles';
+import { MouseEvent, useCallback, useState } from 'react';
 
 const UserPopover = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

@@ -33,6 +33,7 @@ import {
 } from '../services/kanbanSlice';
 import Card from './Card';
 import Column from './Column';
+import { HTMLElement } from '@/common/constants/typeConst';
 
 const Board = () => {
   const dispatch = useAppDispatch();
@@ -129,7 +130,7 @@ const Board = () => {
     );
   }, [cardList, columnId, columnList]);
 
-  const overlay = useMemo(() => {
+  const overlay: HTMLElement = useMemo(() => {
     if (activeCard) {
       return <Card key={activeCard.id} cardData={activeCard} />;
     }

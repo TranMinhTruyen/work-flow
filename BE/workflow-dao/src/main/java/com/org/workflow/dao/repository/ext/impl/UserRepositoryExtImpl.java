@@ -43,7 +43,7 @@ public class UserRepositoryExtImpl implements UserRepositoryExt {
     Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria));
     AggregationResults<UserAccount> result = mongoTemplate.aggregate(aggregation, UserAccount.class, UserAccount.class);
 
-    return Optional.ofNullable(result.getUniqueMappedResult());
+    return Optional.of(result.getUniqueMappedResult());
   }
 
 }
