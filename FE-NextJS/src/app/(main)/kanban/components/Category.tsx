@@ -73,18 +73,18 @@ const Category = ({ categoryItem, index }: CategoryProps) => {
               maxHeight: '78vh',
               backgroundColor: snapshot.isDraggingOver
                 ? 'rgba(150, 255, 255, 0.8)'
-                : 'rgba(210, 210, 210)',
+                : 'rgba(210, 210, 210, 1)',
               borderRadius: 2,
             }}
           >
             <Grid2
               sx={{
                 padding: 2,
-                height: `calc(78vh - 16px)`,
-                maxHeight: `calc(78vh - 16px)`,
+                height: '78vh',
+                maxHeight: '78vh',
                 overflow: 'auto',
                 '& > *:not(:last-child)': {
-                  marginBottom: 2,
+                  marginBottom: '15px',
                 },
               }}
               ref={provided.innerRef}

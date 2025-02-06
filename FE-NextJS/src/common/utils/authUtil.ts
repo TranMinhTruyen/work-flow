@@ -1,11 +1,12 @@
 import { ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
-import { ICheckProxyRequest, ICheckProxyResponse } from '@/common/auth/model/ProxyModel';
-import { proxyService } from '@/common/auth/service/proxyService';
+import { ICheckProxyRequest, ICheckProxyResponse } from '@/common/model/Proxy';
+import { proxyService } from '@/common/services/proxyService';
 import { setLoginData, setProxyRole, toggleLogin } from '@/common/store/commonSlice';
 import { DrawerItem } from '@/components/drawer/DrawerListItem';
 import store from '@/lib/store';
 import forge from 'node-forge';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
+import { Authorizer } from '../constants/typeConst';
 import { isNullOrEmpty } from './stringUtil';
 
 /**
@@ -98,4 +99,38 @@ export const checkAccessScreen = (drawerItem: DrawerItem): boolean => {
   // }
 
   return isAccess;
+};
+
+/**
+ * Check authorizer of login user.
+ *
+ * @param authorizer
+ * @returns
+ */
+export const checkAuthorizer = (authorizer: Authorizer) => {
+  const loginData = getLoginData();
+
+  if (!loginData) return false;
+
+  const userAuthorizer = loginData.userResponse;
+
+  if (!userAuthorizer) return false;
+
+  if (authorizer.role && userAuthorizer.role && authorizer.role === userAuthorizer.role) {
+    return true;
+  }
+
+  if (
+    authorizer.authorities &&
+    userAuthorizer.authorities &&
+    authorizer.authorities.some(item => userAuthorizer.authorities?.includes(item))
+  ) {
+    return true;
+  }
+
+  if (authorizer.level && userAuthorizer.level && authorizer.level === userAuthorizer.level) {
+    return true;
+  }
+
+  return false;
 };

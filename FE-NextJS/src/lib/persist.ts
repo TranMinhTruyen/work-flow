@@ -1,4 +1,4 @@
-import kanbanSlice from '@/app/(main)/kanban/services/kanbanSlice';
+import kanbanSlice from '@/app/(main)/kanban-v2/services/kanbanSlice';
 import baseApi from '@/common/api/apiBaseQuery';
 import { RESET_ALL } from '@/common/constants/commonConst';
 import commonSlice from '@/common/store/commonSlice';

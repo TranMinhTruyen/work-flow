@@ -4,3 +4,4 @@ export const ADMIN_LOGIN_URL = '/admin-login';
 export const ADMIN_REGISTER_URL = '/admin-register';
 export const HOME_URL = '/home';
 export const KANBAN_URL = '/kanban';
+export const KANBAN_URL_V2 = '/kanban-v2';
