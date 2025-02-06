@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
+import { Authorizer, HTMLElement } from '../constants/typeConst';
 import { ScreenComponent } from '../model/ScreenMaster';
 import { checkAuthorizer } from '../utils/authUtil';
-import { Authorizer, HTMLElement } from '../constants/typeConst';
 
 const useScreenComponent = (screenComponentList: ScreenComponent[]) => {
   const checkComponentId = useCallback(
