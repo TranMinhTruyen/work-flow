@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { ScreenComponent } from '../model/ScreenMaster';
 import { checkAuthorizer } from '../utils/authUtil';
-import { HTMLElement } from '../constants/typeConst';
+import { Authorizer, HTMLElement } from '../constants/typeConst';
 
 const useScreenComponent = (screenComponentList: ScreenComponent[]) => {
-  const checkComponent = useCallback(
+  const checkComponentId = useCallback(
     (componentId: string) => {
       const component = screenComponentList.find(item => item.componentId === componentId);
 
@@ -19,18 +19,25 @@ const useScreenComponent = (screenComponentList: ScreenComponent[]) => {
     [screenComponentList]
   );
 
-  const createComponent = useCallback(
+  const createById = useCallback(
     (componentId: string, component: HTMLElement) => {
-      if (checkComponent(componentId)) {
+      if (checkComponentId(componentId)) {
         return component;
       }
     },
-    [checkComponent]
+    [checkComponentId]
   );
 
+  const createByAuthorizer = useCallback((authorizer: Authorizer, component: HTMLElement) => {
+    if (checkAuthorizer(authorizer)) {
+      return component;
+    }
+  }, []);
+
   return {
-    checkComponent,
-    createComponent,
+    checkComponentId,
+    createById,
+    createByAuthorizer,
   };
 };
 
