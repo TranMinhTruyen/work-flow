@@ -1,5 +1,6 @@
 'use client';
 
+import { HTMLElement } from '@/common/constants/typeConst';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import {
   DndContext,
@@ -14,11 +15,8 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import Switch from '@mui/material/Switch';
 import Stack from '@mui/system/Stack';
-import { memo, SyntheticEvent, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { eventDragMoveAction, eventDropAction } from '../services/action';
 import {
@@ -26,19 +24,15 @@ import {
   selectActiveColumn,
   selectCardList,
   selectColumnList,
-  selectIsColumnDragging,
   setActiveCard,
   setActiveColumn,
-  toggleColumnDragging,
 } from '../services/kanbanSlice';
 import Card from './Card';
 import Column from './Column';
-import { HTMLElement } from '@/common/constants/typeConst';
 
 const Board = () => {
   const dispatch = useAppDispatch();
 
-  const isColumnDragging = useAppSelector(selectIsColumnDragging);
   const columnList = useAppSelector(selectColumnList);
   const cardList = useAppSelector(selectCardList);
   const activeCard = useAppSelector(selectActiveCard);
@@ -106,13 +100,6 @@ const Board = () => {
     [dispatch]
   );
 
-  const handleChangeColumnDragging = useCallback(
-    (_event: SyntheticEvent, _checked: boolean) => {
-      dispatch(toggleColumnDragging());
-    },
-    [dispatch]
-  );
-
   const columnId = useMemo(() => columnList.map(item => item.id), [columnList]);
 
   const columns = useMemo(() => {
@@ -143,28 +130,18 @@ const Board = () => {
   }, [activeCard, activeColumn, cardList]);
 
   return (
-    <Stack spacing={2}>
-      <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={isColumnDragging} />}
-          onChange={handleChangeColumnDragging}
-          label={isColumnDragging ? 'Column dragging enable' : 'Column dragging disable'}
-        />
-      </FormGroup>
-
-      <DndContext
-        sensors={sensors}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragMove={handleDragMove}
-        onDragCancel={handleDragCancer}
-      >
-        <Stack direction={'row'} spacing={10}>
-          {columns}
-        </Stack>
-        {createPortal(<DragOverlay>{overlay}</DragOverlay>, document.body)}
-      </DndContext>
-    </Stack>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragMove={handleDragMove}
+      onDragCancel={handleDragCancer}
+    >
+      <Stack direction={'row'} spacing={10}>
+        {columns}
+      </Stack>
+      {createPortal(<DragOverlay>{overlay}</DragOverlay>, document.body)}
+    </DndContext>
   );
 };
 
