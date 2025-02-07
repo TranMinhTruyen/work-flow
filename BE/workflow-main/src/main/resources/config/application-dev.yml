@@ -12,6 +12,11 @@ spring:
       port: 27017
       database: work-flow
 
+s3:
+  accessKey: wVxJdDfUf9lzGDY03KKo
+  secretKey: dwhUHHvV2kVTvw3iUj8Gc88aOswaZN7JT9v8Q3xC
+  minio-endpoint: http://localhost:9999
+
 #logging
 logging:
   file:
