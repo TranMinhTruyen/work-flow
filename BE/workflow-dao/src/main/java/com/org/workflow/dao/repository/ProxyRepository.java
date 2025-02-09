@@ -28,6 +28,6 @@ public interface ProxyRepository extends MongoRepository<Proxy, String> {
           ]
         }
       """)
-  Optional<Proxy> getRole(String param);
+  Optional<Proxy> getProxy(String param);
 
 }

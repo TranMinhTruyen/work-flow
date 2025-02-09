@@ -20,15 +20,18 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitLogin } from './service/action';
+import useScreenComponent from '@/common/hooks/useScreenComponent';
+import { HTMLElement } from '@/common/constants/typeConst';
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const { t } = useTranslation(I18nEnum.LOGIN_I18N);
   const { navigate } = useNavigate();
+  const { createById } = useScreenComponent();
 
   const modalRef = useRef<PromiseModalRef<Item, TestInputValue>>(null);
 
@@ -66,6 +69,25 @@ const LoginPage = () => {
       setValue('userName', result?.name);
     }
   }, [setValue]);
+
+  const demoModal: HTMLElement = useMemo(() => {
+    return createById(
+      'model',
+      <>
+        <Button
+          width={200}
+          label={
+            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+              {'Test open modal'}
+            </Typography>
+          }
+          onClick={handleOpenModal}
+          sx={loginStyles.button}
+        />
+        <DemoModal ref={modalRef} />
+      </>
+    );
+  }, [createById, handleOpenModal]);
 
   return (
     <form id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
@@ -150,20 +172,8 @@ const LoginPage = () => {
           form={'login-form'}
           type={'submit'}
         />
-
-        <Button
-          width={200}
-          label={
-            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {'Test open modal'}
-            </Typography>
-          }
-          onClick={handleOpenModal}
-          sx={loginStyles.button}
-        />
+        {demoModal}
       </CardActions>
-
-      <DemoModal ref={modalRef} />
     </form>
   );
 };

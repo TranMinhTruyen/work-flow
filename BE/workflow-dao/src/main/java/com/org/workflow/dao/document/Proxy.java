@@ -22,4 +22,10 @@ public class Proxy extends AbstractDocument implements Serializable {
   @Field(name = "role", write = Write.ALWAYS)
   private String role;
 
+  @Field(name = "type", write = Write.ALWAYS)
+  private String type;
+
+  @Field(name = "status", write = Write.ALWAYS)
+  private String status;
+
 }

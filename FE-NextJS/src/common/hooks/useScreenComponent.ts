@@ -1,12 +1,14 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Authorizer, HTMLElement } from '../constants/typeConst';
 import { ScreenComponent } from '../model/ScreenMaster';
 import { checkAuthorizer } from '../utils/authUtil';
 
-const useScreenComponent = (screenComponentList: ScreenComponent[]) => {
+const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
+  const [conponentList, setComponentList] = useState<ScreenComponent[]>(screenComponentList);
+
   const checkComponentId = useCallback(
     (componentId: string) => {
-      const component = screenComponentList.find(item => item.componentId === componentId);
+      const component = conponentList.find(item => item.componentId === componentId);
 
       if (!component) return false;
 
@@ -16,7 +18,7 @@ const useScreenComponent = (screenComponentList: ScreenComponent[]) => {
         level: component.level,
       });
     },
-    [screenComponentList]
+    [conponentList]
   );
 
   const createById = useCallback(
@@ -35,6 +37,7 @@ const useScreenComponent = (screenComponentList: ScreenComponent[]) => {
   }, []);
 
   return {
+    setComponentList,
     checkComponentId,
     createById,
     createByAuthorizer,

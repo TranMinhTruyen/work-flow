@@ -1,4 +1,5 @@
 'use client';
+
 import BackdropLoading from '@/components/loading/BackdropLoading';
 
 const Loading = () => {
