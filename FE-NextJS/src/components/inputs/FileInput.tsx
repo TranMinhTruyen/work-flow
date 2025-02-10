@@ -1,6 +1,7 @@
 'use client';
-import { FileInputData } from '@/common/constants/typeConst';
+
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import { FileData } from '@/common/model/FileData';
 import { readFileAsByte } from '@/common/utils/convertUtil';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -31,13 +32,13 @@ export type FileInputProps = {
   label?: string;
   height?: number;
   width?: number;
-  value?: FileInputData[];
+  value?: FileData[];
   acceptFile?: Accept;
   multipleFile?: boolean;
   error?: boolean;
   helperText?: string | null;
-  onChange?: (value: FileInputData[]) => void;
-  onBlur?: (value: FileInputData[]) => void;
+  onChange?: (value: FileData[]) => void;
+  onBlur?: (value: FileData[]) => void;
 };
 
 const FileInput = (props: FileInputProps) => {
@@ -55,7 +56,7 @@ const FileInput = (props: FileInputProps) => {
     onBlur,
   } = props;
 
-  const [fileList, setFileList] = useState<FileInputData[]>(valueProps ?? []);
+  const [fileList, setFileList] = useState<FileData[]>(valueProps ?? []);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const open = Boolean(anchorEl);
@@ -64,11 +65,11 @@ const FileInput = (props: FileInputProps) => {
   const settingFileList = useCallback(
     async (fileInputList: FileList | any[] | null) => {
       if (fileInputList) {
-        const fileDataList: FileInputData[] = [];
+        const fileDataList: FileData[] = [];
 
         for (let i = 0; i < fileInputList.length; i++) {
-          const fileItem: FileInputData = {};
-          fileItem.fileData = await readFileAsByte(fileInputList[i] as File);
+          const fileItem: FileData = {};
+          fileItem.data = Array.from(await readFileAsByte(fileInputList[i] as File));
           fileItem.file = fileInputList[i] as File;
           fileDataList.push(fileItem);
         }

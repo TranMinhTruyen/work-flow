@@ -1,6 +1,7 @@
 'use client';
+
 import { IMAGE_FILE_TYPE } from '@/common/constants/commonConst';
-import { FileInputData } from '@/common/constants/typeConst';
+import { FileData } from '@/common/model/FileData';
 import { convertToDataURL, readFileAsByte, readFileAsDataURL } from '@/common/utils/convertUtil';
 import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -13,14 +14,14 @@ import { useDropzone } from 'react-dropzone';
 export type ImageInputProps = {
   id?: string;
   height?: number;
-  value?: FileInputData;
-  onChange?: (value: FileInputData | null) => void;
+  value?: FileData;
+  onChange?: (value: FileData | null) => void;
 };
 
 const ImageInput = (props: ImageInputProps) => {
   const { id, height = 150, value: valueProps, onChange } = props;
 
-  const [imageFile, setImageFile] = useState<FileInputData | null>(valueProps ?? null);
+  const [imageFile, setImageFile] = useState<FileData | null>(valueProps ?? null);
   const imageRef = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,15 +31,16 @@ const ImageInput = (props: ImageInputProps) => {
   }, []);
 
   const convertAndSetImage = useCallback(async () => {
-    imageRef.current = await convertToDataURL(imageFile?.fileData);
-  }, [imageFile?.fileData]);
+    imageRef.current = await convertToDataURL(imageFile?.data);
+  }, [imageFile?.data]);
 
   const settingImageFile = useCallback(
     async (fileInputList: FileList | any[] | null) => {
       if (fileInputList && fileInputList.length > 0) {
-        const fileItem: FileInputData = {};
-        fileItem.fileData = await readFileAsByte(fileInputList[0] as File);
+        const fileItem: FileData = {};
+        fileItem.data = Array.from(await readFileAsByte(fileInputList[0] as File));
         fileItem.file = fileInputList[0] as File;
+        fileItem.name = fileItem.file.name;
 
         imageRef.current = await readFileAsDataURL(fileInputList[0] as File);
 

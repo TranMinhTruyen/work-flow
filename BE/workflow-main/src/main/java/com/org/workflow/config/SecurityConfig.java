@@ -1,10 +1,11 @@
 package com.org.workflow.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.org.workflow.domain.utils.JwtUtil;
-import com.org.workflow.domain.service.UserService;
 import com.org.workflow.domain.filter.CustomAuthenticationEntryPoint;
 import com.org.workflow.domain.filter.SecurityFilter;
+import com.org.workflow.domain.service.UserService;
+import com.org.workflow.domain.utils.JwtUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,19 +29,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-  private final JwtUtil jwtUtil;
-
-  private final UserService userService;
-
-  private final ObjectMapper objectMapper;
 
   private static final String[] WHITE_LIST = {
       "/swagger-ui/**",
@@ -55,7 +48,14 @@ public class SecurityConfig {
       "/api/proxy/check-proxy",
       "/api/master-item/get",
       "/api/master-item/create",
+      "/api/file/**",
   };
+
+  private final JwtUtil jwtUtil;
+
+  private final UserService userService;
+
+  private final ObjectMapper objectMapper;
 
   @Value(value = "${client.url}")
   private String clientUrl;

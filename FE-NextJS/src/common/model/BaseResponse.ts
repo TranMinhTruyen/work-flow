@@ -5,11 +5,11 @@ export interface IErrorList {
   errorMessage: any;
 }
 
-export interface IBaseResponse {
+export interface IBaseResponse<T = any> {
   timestamp: string;
   messageType: MessageType;
   messageCode: string;
   message: string;
   errorList: IErrorList[];
-  body: any;
+  body: T;
 }

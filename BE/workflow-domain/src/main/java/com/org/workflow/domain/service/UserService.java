@@ -1,5 +1,13 @@
 package com.org.workflow.domain.service;
 
+import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_INACTIVE;
+import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
+import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
+import static com.org.workflow.core.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
+import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND;
+import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
+import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
+
 import com.google.common.hash.Hashing;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
@@ -23,26 +31,17 @@ import com.org.workflow.domain.utils.FileUtil;
 import com.org.workflow.domain.utils.HistoryUtil;
 import com.org.workflow.domain.utils.JwtUtil;
 import com.org.workflow.domain.utils.RSAUtil;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
-import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_INACTIVE;
-import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
-import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
-import static com.org.workflow.core.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
-import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND;
-import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
-import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
 
 /**
  * @author minh-truyen
@@ -147,7 +146,8 @@ public class UserService extends AbstractService {
     userAccount.setRole(createUserRequest.getRole());
     userAccount.setAuthorities(createUserRequest.getAuthorities());
     userAccount.setLevel(createUserRequest.getLevel());
-    if (createUserRequest.getImage() != null && createUserRequest.getImage().getData().length > 0) {
+    if (createUserRequest.getImage() != null
+        && createUserRequest.getImage().getData().length > 0) {
       userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
           userId + "_" + createUserRequest.getImage().getName(), imagePath));
     }

@@ -1,7 +1,8 @@
 'use client';
-import { FileInputData } from '@/common/constants/typeConst';
+
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useInput from '@/common/hooks/useInput';
+import { FileData } from '@/common/model/FileData';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
@@ -27,12 +28,12 @@ const FileInput = (props: FileInputProps) => {
     ...restProps
   } = props;
 
-  const { setIsCheck, checkDataInput, translateLabel, translateError } = useInput<FileInputData[]>({
+  const { setIsCheck, checkDataInput, translateLabel, translateError } = useInput<FileData[]>({
     ...props,
   });
 
   const handleOnChange = useCallback(
-    (onChange: (...event: unknown[]) => void) => (value: FileInputData[]) => {
+    (onChange: (...event: unknown[]) => void) => (value: FileData[]) => {
       control?.setError(name, { type: 'valid' });
       setIsCheck(true);
       onChange(value);
@@ -42,7 +43,7 @@ const FileInput = (props: FileInputProps) => {
   );
 
   const handleOnBlur = useCallback(
-    (value: FileInputData[]) => {
+    (value: FileData[]) => {
       checkDataInput(value);
       onBlurProps?.(value);
     },

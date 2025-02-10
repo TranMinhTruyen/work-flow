@@ -1,4 +1,4 @@
-import { Obj, SelectDataType } from '../constants/typeConst';
+import { FileType, Obj, SelectDataType } from '../constants/typeConst';
 
 /**
  *
@@ -51,9 +51,9 @@ export const readFileAsDataURL = (file: File): Promise<string> => {
  * @param data
  * @returns
  */
-export const convertToDataURL = (data?: Uint8Array | number[]): Promise<string> => {
+export const convertToDataURL = (data?: FileType): Promise<string> => {
   return new Promise(resolve => {
-    if (data === undefined) {
+    if (!data) {
       return;
     }
 

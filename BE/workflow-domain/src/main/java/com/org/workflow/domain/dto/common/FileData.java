@@ -1,8 +1,7 @@
 package com.org.workflow.domain.dto.common;
 
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * @author minh-truyen

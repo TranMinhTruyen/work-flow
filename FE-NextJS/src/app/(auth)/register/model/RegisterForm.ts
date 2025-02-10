@@ -1,4 +1,4 @@
-import { FileInputData } from '@/common/constants/typeConst';
+import { FileData } from '@/common/model/FileData';
 
 export interface IRegisterForm {
   userName?: string;
@@ -8,5 +8,5 @@ export interface IRegisterForm {
   birthDay?: string;
   role?: string;
   authorities?: string[];
-  image?: FileInputData;
+  image?: FileData;
 }
