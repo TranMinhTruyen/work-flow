@@ -25,14 +25,18 @@ const ImageInput = (props: ImageInputProps) => {
   const imageRef = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    convertAndSetImage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const convertAndSetImage = useCallback(async () => {
     imageRef.current = await convertToDataURL(imageFile?.data);
   }, [imageFile?.data]);
+
+  useEffect(() => {
+    if (!valueProps) {
+      imageRef.current = null;
+      setImageFile(null);
+    } else {
+      convertAndSetImage();
+    }
+  }, [convertAndSetImage, valueProps]);
 
   const settingImageFile = useCallback(
     async (fileInputList: FileList | any[] | null) => {

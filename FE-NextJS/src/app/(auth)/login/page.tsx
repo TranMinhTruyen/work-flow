@@ -1,9 +1,11 @@
 'use client';
 import { ILoginForm } from '@/app/(auth)/login/model/LoginForm';
+import { HTMLElement } from '@/common/constants/typeConst';
 import { ADMIN_REGISTER_URL, HOME_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import useScreenComponent from '@/common/hooks/useScreenComponent';
 import Button from '@/components/button/Button';
 import CheckBox from '@/components/form/CheckboxInput';
 import TextInput from '@/components/form/TextInput';
@@ -24,8 +26,6 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitLogin } from './service/action';
-import useScreenComponent from '@/common/hooks/useScreenComponent';
-import { HTMLElement } from '@/common/constants/typeConst';
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

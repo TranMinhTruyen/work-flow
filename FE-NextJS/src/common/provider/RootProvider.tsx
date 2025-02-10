@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
+import { CustomAxiosConfig } from '../constants/typeConst';
 import { LOGIN_URL } from '../constants/urlConst';
 import { I18nEnum } from '../enums/I18nEnum';
 import { MessageType } from '../enums/MessageEnum';
@@ -29,6 +30,8 @@ const whiteList: string[] = [
   '/api/user-account/create',
   '/api/master-item/get',
   '/api/proxy/check-proxy',
+  '/api/file/get-upload-url',
+  '/api/file/get-download-url',
 ];
 
 const RootProvider = ({ children }: { children: ReactNode }) => {
@@ -54,34 +57,36 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
     if (isSet) return;
 
     axiosInstance.interceptors.request.use(config => {
-      if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
-        const loginData: ILoginResponse | undefined = getLoginData();
+      if (!(config as CustomAxiosConfig).isFile) {
+        if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+          const loginData: ILoginResponse | undefined = getLoginData();
 
-        // If login data is undefined, back to login screen
-        if (loginData === undefined) {
-          navigate(LOGIN_URL, true);
-        } else {
-          // Set token to header
-          config.headers['Authorization'] = `Bearer ${loginData.token}`;
+          // If login data is undefined, back to login screen
+          if (loginData === undefined) {
+            navigate(LOGIN_URL, true);
+          } else {
+            // Set token to header
+            config.headers['Authorization'] = `Bearer ${loginData.token}`;
+          }
         }
-      }
 
-      // Transform request
-      if (config.data) {
-        const transformRequest: IBaseRequest = {
-          timestamp: dayjs(new Date()).format(DATE_TIME_FORMAT),
-          language: store.getState().commonState.language,
-          payload: config.data,
-        };
-        config.data = transformRequest;
-      }
+        // Transform request
+        if (config.data) {
+          const transformRequest: IBaseRequest = {
+            timestamp: dayjs(new Date()).format(DATE_TIME_FORMAT),
+            language: store.getState().commonState.language,
+            payload: config.data,
+          };
+          config.data = transformRequest;
+        }
 
-      // Set loading
-      if (!store.getState().commonState.isLoading) {
-        dispatch(toggleLoading(true));
-        openDialogContainer({
-          type: 'loading',
-        });
+        // Set loading
+        if (!store.getState().commonState.isLoading) {
+          dispatch(toggleLoading(true));
+          openDialogContainer({
+            type: 'loading',
+          });
+        }
       }
 
       return config;

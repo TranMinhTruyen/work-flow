@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { Dayjs } from 'dayjs';
 import { JSX, ReactElement } from 'react';
 
@@ -13,7 +14,7 @@ export type ApiType = {
   method: 'POST' | 'GET' | 'UPDATE' | 'DELETE';
 };
 
-export type FileType = Blob | ArrayBuffer | Uint8Array | Uint16Array | number[] | null;
+export type FileType = Uint8Array | number[];
 
 export type DateType = Dayjs | string | null;
 
@@ -23,4 +24,8 @@ export type Authorizer = {
   role?: string;
   authorities?: string[];
   level?: number;
+};
+
+export type CustomAxiosConfig = AxiosRequestConfig & {
+  isFile?: boolean;
 };

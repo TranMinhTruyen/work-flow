@@ -1,4 +1,5 @@
 'use client';
+
 import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
@@ -34,12 +35,12 @@ const Register = () => {
   const { navigate } = useNavigate();
   const classes = registerStyles();
 
-  const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>();
+  const { control, trigger, handleSubmit, reset, setValue } = useForm<IRegisterForm>({
+    defaultValues: { birthDay: '', image: undefined },
+  });
 
   useEffect(() => {
-    return () => {
-      reset();
-    };
+    reset();
   }, [reset]);
 
   const handleRegister = useCallback(
@@ -55,9 +56,11 @@ const Register = () => {
             navigate(LOGIN_URL);
           },
         });
+      } else {
+        reset();
       }
     },
-    [navigate, trigger]
+    [navigate, reset, trigger]
   );
 
   return (

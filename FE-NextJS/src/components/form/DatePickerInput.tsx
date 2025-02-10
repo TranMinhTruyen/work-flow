@@ -57,7 +57,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
       render={({ field: { value = valueProps, onChange }, fieldState: { error } }) => (
         <UncontrolledDatePickerInput
           label={translateLabel()}
-          value={value}
+          value={value ?? ''}
           inputFormat={inputFormat}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}

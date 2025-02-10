@@ -2,13 +2,14 @@ import { IBaseResponse } from '@/common/model/BaseResponse';
 import { toggleLoading } from '@/common/store/commonSlice';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { AxiosRequestConfig, ResponseType } from 'axios';
+import { ResponseType } from 'axios';
 import { API_PREFIX } from '../constants/apiPrefixConst';
+import { CustomAxiosConfig } from '../constants/typeConst';
 import { ApiEnum } from '../enums/ApiEnum';
 import { axiosInstance } from '../provider/RootProvider';
 import { controller } from './apiUrl';
 
-export const axiosFetch = async (api: ApiEnum, configAxios: AxiosRequestConfig) => {
+export const axiosFetch = async (api: ApiEnum, configAxios: CustomAxiosConfig) => {
   return await axiosInstance({
     ...configAxios,
     url: `${API_PREFIX}${controller[api].url}`,
@@ -20,8 +21,8 @@ const apiBaseQuery =
   (): BaseQueryFn<
     {
       api: ApiEnum;
-      data?: AxiosRequestConfig['data'];
-      params?: AxiosRequestConfig['params'];
+      data?: CustomAxiosConfig['data'];
+      params?: CustomAxiosConfig['params'];
       responseType?: ResponseType;
     },
     undefined | null | unknown,
@@ -29,7 +30,7 @@ const apiBaseQuery =
   > =>
   async ({ api, data, params, responseType }, { dispatch }) => {
     try {
-      const configAxios: AxiosRequestConfig = {
+      const configAxios: CustomAxiosConfig = {
         data,
         params,
         responseType,

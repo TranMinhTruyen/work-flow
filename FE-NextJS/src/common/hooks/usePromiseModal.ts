@@ -5,6 +5,10 @@ type OpenModalProps<P> = {
   isAction?: boolean;
 };
 
+/**
+ * T = return type when modal close.
+ * P = input type when open modal.
+ */
 export type PromiseModalRef<T, P = unknown> = {
   open: (props?: OpenModalProps<P>) => Promise<T | undefined>;
 };

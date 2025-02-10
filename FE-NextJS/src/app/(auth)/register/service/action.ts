@@ -1,14 +1,12 @@
 import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
 import { IRegisterRequest } from '@/app/(auth)/register/model/RegisterModel';
 import { registerService } from '@/app/(auth)/register/service/registerService';
-import { uploadFile } from '@/common/api/fileApi';
+import { uploadFile } from '@/common/api/apiFile';
 import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 
 export const handleSubmitRegister = async (formData: IRegisterForm) => {
-  // TODO upload file
-  const uploadUrl = await uploadFile(formData.image?.name);
-  console.log(`Upload file url: ${uploadUrl}`);
+  const fileName = await uploadFile(formData.image);
   const registerRequest: IRegisterRequest = {
     ...formData,
     password: encryptWithRSA(formData.password),

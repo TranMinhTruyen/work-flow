@@ -1,7 +1,9 @@
 'use client';
+import { FileData } from '@/common/model/FileData';
 import UncontrolledImageInput, {
   ImageInputProps as UncontrolledImageInputProps,
 } from '@/components/inputs/ImageInput';
+import { useCallback } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 export type ImageInputProps = UncontrolledImageInputProps & {
@@ -10,14 +12,22 @@ export type ImageInputProps = UncontrolledImageInputProps & {
 };
 
 const ImageInput = (props: ImageInputProps) => {
-  const { name, control, value: valueProps, ...restProps } = props;
+  const { name, control, value: valueProps, onChange: onChangeProps, ...restProps } = props;
+
+  const handleOnChange = useCallback(
+    (onChange: (...event: unknown[]) => void) => (value: FileData) => {
+      onChange(value);
+      onChangeProps?.(value);
+    },
+    [onChangeProps]
+  );
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value = valueProps } }) => (
-        <UncontrolledImageInput value={value} onChange={onChange} {...restProps} />
+      render={({ field: { value = valueProps, onChange } }) => (
+        <UncontrolledImageInput value={value} onChange={handleOnChange(onChange)} {...restProps} />
       )}
     />
   );

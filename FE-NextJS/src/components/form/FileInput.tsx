@@ -60,7 +60,7 @@ const FileInput = (props: FileInputProps) => {
       render={({ field: { onChange, value = valueProps }, fieldState: { error } }) => (
         <UncontrolledFileInput
           label={translateLabel()}
-          value={value}
+          value={value ?? []}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           error={!!(error && error.type !== 'valid')}
