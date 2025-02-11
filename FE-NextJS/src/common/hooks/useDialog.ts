@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DialogContainerProps } from '@/components/dialog/DialogContainer';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 type UseDialogProps = { open: boolean; dialogState?: DialogContainerProps };
 
@@ -39,11 +39,7 @@ const useDialog = () => {
   }, [state.dialogState]);
 
   useEffect(() => {
-    if (
-      state.open &&
-      state.dialogState?.autoClose !== undefined &&
-      state.dialogState?.autoClose === true
-    ) {
+    if (state.open && !state.dialogState?.autoClose && state.dialogState?.autoClose === true) {
       const timer = setInterval(() => {
         setCountdown(prev => prev - 1);
       }, 1000);
@@ -78,7 +74,7 @@ const useDialog = () => {
   return {
     openDialog,
     dialogProps,
-    isPropsNull: state.dialogState === undefined ? true : false,
+    isPropsNull: !state.dialogState ? true : false,
     dialogType: state.dialogState?.type,
   };
 };

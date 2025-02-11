@@ -1,5 +1,5 @@
-export interface IBaseRequest {
+export interface IBaseRequest<T = any> {
   timestamp?: string;
   language?: string;
-  payload?: any;
+  payload?: T;
 }

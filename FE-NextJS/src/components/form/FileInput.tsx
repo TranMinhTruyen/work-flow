@@ -63,7 +63,7 @@ const FileInput = (props: FileInputProps) => {
           value={value ?? []}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
-          error={!!(error && error.type !== 'valid')}
+          error={error && error.type !== 'valid'}
           helperText={
             error && error.type !== 'valid' && !isNullOrEmpty(error.message)
               ? translateError(error.message)

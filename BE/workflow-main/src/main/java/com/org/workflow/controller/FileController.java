@@ -4,8 +4,10 @@ import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.SUCCESS;
 
 import com.org.workflow.domain.dto.reponse.common.BaseResponse;
+import com.org.workflow.domain.dto.reponse.filecontroller.DownloadFileResponse;
 import com.org.workflow.domain.dto.reponse.filecontroller.UploadFileResponse;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
+import com.org.workflow.domain.dto.request.filecontroller.DownloadFileRequest;
 import com.org.workflow.domain.dto.request.filecontroller.UploadFileRequest;
 import com.org.workflow.domain.utils.S3Util;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,6 +38,16 @@ public class FileController extends AbstractController {
     UploadFileResponse uploadFileResponse = new UploadFileResponse();
     uploadFileResponse.setUploadUrl(uploadUrl);
     return this.returnBaseResponse(uploadFileResponse, "Create success", SUCCESS, HttpStatus.OK);
+  }
+
+  @PostMapping("/get-download-url")
+  public ResponseEntity<BaseResponse> getDownloadUrl(
+      @RequestBody BaseRequest<DownloadFileRequest> uploadFileRequest)
+      throws Exception {
+    String uploadUrl = s3Util.generateUrlDownload(uploadFileRequest.getPayload().getFileName());
+    DownloadFileResponse downloadFileResponse = new DownloadFileResponse();
+    downloadFileResponse.setDownloadUrl(uploadUrl);
+    return this.returnBaseResponse(downloadFileResponse, "Create success", SUCCESS, HttpStatus.OK);
   }
 
 }

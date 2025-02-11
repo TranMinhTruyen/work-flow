@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,7 +28,7 @@ public class ApplicationStartup {
 
   private final UserRepository userRepository;
 
-  //  @EventListener(ContextRefreshedEvent.class)
+  @EventListener(ContextRefreshedEvent.class)
   private void importAdminUser() {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail("admin");
     if (result.isEmpty()) {
@@ -58,7 +60,7 @@ public class ApplicationStartup {
     }
   }
 
-  //  @EventListener(ContextRefreshedEvent.class)
+  @EventListener(ContextRefreshedEvent.class)
   private void importDevEnvProxy() {
     Optional<Proxy> result = proxyRepository.getProxy("127.0.0.1");
     if (result.isEmpty()) {

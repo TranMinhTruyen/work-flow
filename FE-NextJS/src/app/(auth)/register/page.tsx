@@ -35,7 +35,7 @@ const Register = () => {
   const { navigate } = useNavigate();
   const classes = registerStyles();
 
-  const { control, trigger, handleSubmit, reset, setValue } = useForm<IRegisterForm>({
+  const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>({
     defaultValues: { birthDay: '', image: undefined },
   });
 
@@ -47,7 +47,7 @@ const Register = () => {
     async (formData: IRegisterForm) => {
       await trigger();
       const response = await handleSubmitRegister(formData);
-      if (response !== undefined) {
+      if (response) {
         openDialogContainer({
           type: 'message',
           messageType: MessageType.SUCCESS,

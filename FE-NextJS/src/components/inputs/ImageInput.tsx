@@ -21,7 +21,7 @@ export type ImageInputProps = {
 const ImageInput = (props: ImageInputProps) => {
   const { id, height = 150, value: valueProps, onChange } = props;
 
-  const [imageFile, setImageFile] = useState<FileData | null>(valueProps ?? null);
+  const [imageFile, setImageFile] = useState<FileData | null>(null);
   const imageRef = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -34,6 +34,7 @@ const ImageInput = (props: ImageInputProps) => {
       imageRef.current = null;
       setImageFile(null);
     } else {
+      setImageFile(valueProps);
       convertAndSetImage();
     }
   }, [convertAndSetImage, valueProps]);

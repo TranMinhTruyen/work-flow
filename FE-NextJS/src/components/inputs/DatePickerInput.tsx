@@ -60,7 +60,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     className,
     slotProps,
   } = props;
-  const [selectedDate, setSelectedDate] = useState<DateType>(defaultValue ?? '');
+  const [selectedDate, setSelectedDate] = useState<DateType>(null);
   const language: string = useAppSelector(selectLanguage);
 
   useMemo(() => {
@@ -68,13 +68,14 @@ const DatePickerInput = (props: DatePickerProps) => {
   }, [language]);
 
   useEffect(() => {
-    if (value === selectedDate) {
-      return;
-    }
-    if (value !== undefined) {
+    if (value) {
       setSelectedDate(value);
+    } else if (defaultValue) {
+      setSelectedDate(defaultValue);
+    } else {
+      setSelectedDate(null);
     }
-  }, [selectedDate, value]);
+  }, [defaultValue, selectedDate, value]);
 
   const handleOnChange = useCallback(
     (value: DateType) => {

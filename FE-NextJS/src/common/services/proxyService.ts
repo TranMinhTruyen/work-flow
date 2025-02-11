@@ -1,6 +1,6 @@
-import baseApi from '@/common/api/apiBaseQuery';
 import { ApiEnum } from '@/common/enums/ApiEnum';
 import { ICheckProxyRequest, ICheckProxyResponse } from '@/common/model/Proxy';
+import baseApi from '../api/apiBaseQuery';
 
 export const proxyService = baseApi.injectEndpoints({
   endpoints: builder => ({

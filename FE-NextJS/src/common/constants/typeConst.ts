@@ -26,6 +26,6 @@ export type Authorizer = {
   level?: number;
 };
 
-export type CustomAxiosConfig = AxiosRequestConfig & {
-  isFile?: boolean;
+export type CustomAxiosConfig<T = any> = AxiosRequestConfig<T> & {
+  isS3Url?: boolean;
 };

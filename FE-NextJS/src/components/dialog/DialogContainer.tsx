@@ -2,7 +2,7 @@
 import useDialog from '@/common/hooks/useDialog';
 import { selectIsLoading } from '@/common/store/commonSlice';
 import { useAppSelector } from '@/lib/store';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
 
@@ -22,23 +22,27 @@ const DialogContainer = () => {
     openDialogContainer = (props: DialogContainerProps) => openDialog(props);
   }, [openDialog]);
 
-  if (isPropsNull) return null;
-
   // Return dialog component
-  switch (dialogType) {
-    case 'confirm':
-      if (!isLoading) {
-        return <ConfirmDialog showCancelButton={true} {...dialogProps} />;
-      }
-      break;
-    case 'message':
-      if (!isLoading) {
-        return <ConfirmDialog {...dialogProps} />;
-      }
-      break;
-    case 'loading':
-      return <LoadingDialog />;
-  }
+  const returnDialog = useMemo(() => {
+    if (isPropsNull) return null;
+
+    switch (dialogType) {
+      case 'confirm':
+        if (!isLoading) {
+          return <ConfirmDialog showCancelButton={true} {...dialogProps} />;
+        }
+        break;
+      case 'message':
+        if (!isLoading) {
+          return <ConfirmDialog {...dialogProps} />;
+        }
+        break;
+      case 'loading':
+        return <LoadingDialog />;
+    }
+  }, [dialogProps, dialogType, isLoading, isPropsNull]);
+
+  return returnDialog;
 };
 
 export default DialogContainer;

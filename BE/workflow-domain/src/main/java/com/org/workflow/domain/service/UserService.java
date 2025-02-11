@@ -27,7 +27,6 @@ import com.org.workflow.domain.dto.request.usercontroller.CreateUserRequest;
 import com.org.workflow.domain.dto.request.usercontroller.LoginRequest;
 import com.org.workflow.domain.dto.request.usercontroller.UpdateUserRequest;
 import com.org.workflow.domain.utils.AuthUtil;
-import com.org.workflow.domain.utils.FileUtil;
 import com.org.workflow.domain.utils.HistoryUtil;
 import com.org.workflow.domain.utils.JwtUtil;
 import com.org.workflow.domain.utils.RSAUtil;
@@ -104,7 +103,7 @@ public class UserService extends AbstractService {
     userResponse.setRole(userAccount.getRole());
     userResponse.setAuthorities(userAccount.getAuthorities());
     userResponse.setLevel(userAccount.getLevel());
-    userResponse.setImage(FileUtil.readFile(userAccount.getImagePath()));
+    userResponse.setImage(userAccount.getImagePath());
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
     userResponse.setIsActive(userAccount.isActive());
     userResponse.setCreateDatetime(userAccount.getCreateDatetime());
@@ -146,10 +145,8 @@ public class UserService extends AbstractService {
     userAccount.setRole(createUserRequest.getRole());
     userAccount.setAuthorities(createUserRequest.getAuthorities());
     userAccount.setLevel(createUserRequest.getLevel());
-    if (createUserRequest.getImage() != null
-        && createUserRequest.getImage().getData().length > 0) {
-      userAccount.setImagePath(FileUtil.writeFile(createUserRequest.getImage().getData(),
-          userId + "_" + createUserRequest.getImage().getName(), imagePath));
+    if (createUserRequest.getImage() != null && createUserRequest.getImage().getData().length > 0) {
+      userAccount.setImagePath(userId + "_" + createUserRequest.getImage().getName());
     }
     userAccount.setActive(true);
     userAccount.setLoginFailCount(0);

@@ -11,9 +11,12 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { controller } from '../api/apiUrl';
+import { API_PREFIX } from '../constants/apiPrefixConst';
 import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { LOGIN_URL } from '../constants/urlConst';
+import { ApiEnum } from '../enums/ApiEnum';
 import { I18nEnum } from '../enums/I18nEnum';
 import { MessageType } from '../enums/MessageEnum';
 import useNavigate from '../hooks/useNavigate';
@@ -25,13 +28,26 @@ export const axiosInstance = axios.create({
   timeout: TIME_OUT,
 });
 
-const whiteList: string[] = [
+export const axiosFetch = async (configAxios: CustomAxiosConfig) => {
+  return await axiosInstance(configAxios);
+};
+
+export const axiosApiEnumFetch = async (api: ApiEnum, configAxios: CustomAxiosConfig) => {
+  return await axiosFetch({
+    ...configAxios,
+    url: `${API_PREFIX}${controller[api].url}`,
+    method: controller[api].method,
+  });
+};
+
+const FILE_API: string[] = ['/api/file/get-upload-url', '/api/file/get-download-url'];
+
+const AUTH_WHITE_LIST: string[] = [
   '/api/user-account/login',
   '/api/user-account/create',
   '/api/master-item/get',
   '/api/proxy/check-proxy',
-  '/api/file/get-upload-url',
-  '/api/file/get-download-url',
+  ...FILE_API,
 ];
 
 const RootProvider = ({ children }: { children: ReactNode }) => {
@@ -57,8 +73,8 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
     if (isSet) return;
 
     axiosInstance.interceptors.request.use(config => {
-      if (!(config as CustomAxiosConfig).isFile) {
-        if (!whiteList.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+      if (!(config as CustomAxiosConfig).isS3Url) {
+        if (!AUTH_WHITE_LIST.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
           const loginData: ILoginResponse | undefined = getLoginData();
 
           // If login data is undefined, back to login screen
@@ -72,7 +88,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
 
         // Transform request
         if (config.data) {
-          const transformRequest: IBaseRequest = {
+          const transformRequest: IBaseRequest<typeof config.data> = {
             timestamp: dayjs(new Date()).format(DATE_TIME_FORMAT),
             language: store.getState().commonState.language,
             payload: config.data,
@@ -81,11 +97,13 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Set loading
-        if (!store.getState().commonState.isLoading) {
-          dispatch(toggleLoading(true));
-          openDialogContainer({
-            type: 'loading',
-          });
+        if (!FILE_API.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+          if (!store.getState().commonState.isLoading) {
+            dispatch(toggleLoading(true));
+            openDialogContainer({
+              type: 'loading',
+            });
+          }
         }
       }
 

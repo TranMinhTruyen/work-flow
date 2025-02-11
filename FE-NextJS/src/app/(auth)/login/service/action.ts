@@ -19,7 +19,7 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
     .dispatch(loginService.endpoints.login.initiate(loginRequest))
     .unwrap();
 
-  if (response !== undefined) {
+  if (!response) {
     setToken(response, data.isRemember);
     return true;
   } else {

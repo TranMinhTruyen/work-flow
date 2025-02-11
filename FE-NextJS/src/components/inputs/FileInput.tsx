@@ -22,7 +22,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { ChangeEvent, MouseEvent, useCallback, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import TextInput from './TextInput';
@@ -56,11 +56,20 @@ const FileInput = (props: FileInputProps) => {
     onBlur,
   } = props;
 
-  const [fileList, setFileList] = useState<FileData[]>(valueProps ?? []);
+  const [fileList, setFileList] = useState<FileData[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const open = Boolean(anchorEl);
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
+
+  useEffect(() => {
+    if (!valueProps) {
+      inputRef.current = null;
+      setFileList([]);
+    } else {
+      setFileList(valueProps);
+    }
+  }, [valueProps]);
 
   const settingFileList = useCallback(
     async (fileInputList: FileList | any[] | null) => {

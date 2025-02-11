@@ -3,19 +3,9 @@ import { toggleLoading } from '@/common/store/commonSlice';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { ResponseType } from 'axios';
-import { API_PREFIX } from '../constants/apiPrefixConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { ApiEnum } from '../enums/ApiEnum';
-import { axiosInstance } from '../provider/RootProvider';
-import { controller } from './apiUrl';
-
-export const axiosFetch = async (api: ApiEnum, configAxios: CustomAxiosConfig) => {
-  return await axiosInstance({
-    ...configAxios,
-    url: `${API_PREFIX}${controller[api].url}`,
-    method: controller[api].method,
-  });
-};
+import { axiosApiEnumFetch } from '../provider/RootProvider';
 
 const apiBaseQuery =
   (): BaseQueryFn<
@@ -36,7 +26,7 @@ const apiBaseQuery =
         responseType,
       };
 
-      const response = await axiosFetch(api, configAxios);
+      const response = await axiosApiEnumFetch(api, configAxios);
 
       const responseData: IBaseResponse = response.data;
 

@@ -1,3 +1,4 @@
+# docker compose -f minio.yml -p minio up -d
 version: "3"
 services:
   minio:

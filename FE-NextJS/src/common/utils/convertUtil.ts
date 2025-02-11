@@ -88,3 +88,20 @@ export const toSelectData = (
     key: item[keys?.key || 'key'],
     value: item[keys?.value || 'value'],
   }));
+
+export const blobToBase64 = (blob: Blob): Promise<string | null> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject('Failed to convert blob to base64');
+      }
+    };
+    reader.onerror = () => {
+      reject(null);
+    };
+    reader.readAsDataURL(blob);
+  });
+};
