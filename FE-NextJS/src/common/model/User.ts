@@ -1,5 +1,3 @@
-import { FileData } from './FileData';
-
 export interface IUserResponse {
   userId?: string;
   email?: string;
@@ -12,7 +10,7 @@ export interface IUserResponse {
   authorities?: string[];
   level?: number;
   accessScreenList?: string[];
-  image?: FileData;
+  image?: string;
   createDatetime?: string;
   updateDatetime?: string;
 }

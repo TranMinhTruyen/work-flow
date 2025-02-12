@@ -36,3 +36,8 @@ export const formatString = (template: string, ...args: (string | number)[]): st
     return args[paramIndex] !== undefined ? args[paramIndex].toString() : match;
   });
 };
+
+export const randomNumberString = (): string => {
+  const randomNum = Math.floor(Math.random() * 1000000);
+  return randomNum.toString().padStart(6, '0');
+};

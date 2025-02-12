@@ -17,7 +17,7 @@ RUN curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh" |
 ENV NVM_DIR="/root/.nvm"
 ENV PATH="$NVM_DIR/versions/node/v22.9.0/bin:$PATH"
 RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 22 && nvm alias default 22 && nvm use default"
-RUN npm install -g yarn
+RUN bash -c "source /root/.nvm/nvm.sh && nvm use default && npm install -g yarn"
 
 # Install JDK
 RUN curl -L "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_linux_hotspot_21.0.4_7.tar.gz" -o /tmp/jdk21.tar.gz \

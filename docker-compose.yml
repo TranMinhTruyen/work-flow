@@ -1,0 +1,75 @@
+# docker compose -f docker-compose.yml -p work-flow up -d
+
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=work-flow
+    volumes:
+      - D:\work-flow\mongodb:/data
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    volumes:
+      - D:\work-flow\redis:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9998:9000" # API
+      - "9999:9001" # Console
+    environment:
+      LANG: en_US.UTF-8
+      MINIO_PROMETHEUS_AUTH_TYPE: "public"
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - D:\minio\data:/data
+      - D:\minio\config:/root/.minio
+    command: server --address ":9000" --console-address ":9001" /data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  jenkins:
+    container_name: jenkins
+    privileged: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - DOCKER_HOST=tcp://host.docker.internal:2375
+    volumes:
+      - D:\JenkinsHome:/var/jenkins_home
+      - D:\nginx-1.26.2\html:/nginx-1.26.2/html
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8086:8080"
+      - "50003:50000"
+    networks:
+      - jenkins
+      - app-network
+
+networks:
+  jenkins:
+    driver: bridge
+  app-network:
+    driver: bridge

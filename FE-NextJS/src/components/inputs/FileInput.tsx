@@ -77,9 +77,11 @@ const FileInput = (props: FileInputProps) => {
         const fileDataList: FileData[] = [];
 
         for (let i = 0; i < fileInputList.length; i++) {
-          const fileItem: FileData = {};
-          fileItem.data = Array.from(await readFileAsByte(fileInputList[i] as File));
-          fileItem.file = fileInputList[i] as File;
+          const fileItem: FileData = {
+            file: fileInputList[i] as File,
+            name: fileInputList[i].name,
+            data: Array.from(await readFileAsByte(fileInputList[i] as File)),
+          };
           fileDataList.push(fileItem);
         }
 

@@ -1,13 +1,11 @@
 package com.org.workflow.domain.dto.request.usercontroller;
 
-import com.org.workflow.domain.dto.common.FileData;
+import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Builder
@@ -31,6 +29,6 @@ public class CreateUserRequest implements Serializable {
 
   private Integer level;
 
-  private FileData image;
+  private String image;
 
 }

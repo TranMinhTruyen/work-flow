@@ -34,7 +34,7 @@ public class FileController extends AbstractController {
   public ResponseEntity<BaseResponse> getUploadUrl(
       @RequestBody BaseRequest<UploadFileRequest> uploadFileRequest)
       throws Exception {
-    String uploadUrl = s3Util.generateUrlUpload(uploadFileRequest.getPayload().getFileName());
+    String uploadUrl = s3Util.generateUrlUpload(uploadFileRequest.getPayload().getObjectId());
     UploadFileResponse uploadFileResponse = new UploadFileResponse();
     uploadFileResponse.setUploadUrl(uploadUrl);
     return this.returnBaseResponse(uploadFileResponse, "Create success", SUCCESS, HttpStatus.OK);
@@ -44,7 +44,7 @@ public class FileController extends AbstractController {
   public ResponseEntity<BaseResponse> getDownloadUrl(
       @RequestBody BaseRequest<DownloadFileRequest> uploadFileRequest)
       throws Exception {
-    String uploadUrl = s3Util.generateUrlDownload(uploadFileRequest.getPayload().getFileName());
+    String uploadUrl = s3Util.generateUrlDownload(uploadFileRequest.getPayload().getObjectId());
     DownloadFileResponse downloadFileResponse = new DownloadFileResponse();
     downloadFileResponse.setDownloadUrl(uploadUrl);
     return this.returnBaseResponse(downloadFileResponse, "Create success", SUCCESS, HttpStatus.OK);

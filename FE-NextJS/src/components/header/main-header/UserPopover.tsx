@@ -1,5 +1,6 @@
 'use client';
 
+import { getFile } from '@/common/api/fileApi';
 import { CURRENT_PATH, RESET_ALL } from '@/common/constants/commonConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
@@ -13,14 +14,25 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 
 const UserPopover = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [imageBase64, setImageBase64] = useState<string | null | undefined>(null);
+
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);
   const dispatch = useAppDispatch();
   const { navigate } = useNavigate();
+
+  useEffect(() => {
+    const settingImage = async () => {
+      const imageFile = await getFile(loginData?.userResponse?.image);
+      setImageBase64(imageFile?.base64);
+    };
+
+    settingImage();
+  }, [loginData?.userResponse?.image]);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,9 +55,7 @@ const UserPopover = () => {
         onClick={handleClick}
         icon={!loginData?.userResponse?.image ? <AccountCircleIcon /> : null}
         sx={{
-          backgroundImage: loginData?.userResponse?.image
-            ? `url(data:image/png;base64,${loginData?.userResponse?.image?.data})`
-            : '',
+          backgroundImage: loginData?.userResponse?.image ? `url(${imageBase64})` : '',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           '&:hover': {

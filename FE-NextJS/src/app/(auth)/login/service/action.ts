@@ -19,8 +19,8 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
     .dispatch(loginService.endpoints.login.initiate(loginRequest))
     .unwrap();
 
-  if (!response) {
-    setToken(response, data.isRemember);
+  if (response) {
+    await setToken(response, data.isRemember);
     return true;
   } else {
     return false;
@@ -33,12 +33,13 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
  * @param loginResponse
  * @param isRemember
  */
-const setToken = (loginResponse: ILoginResponse, isRemember: boolean = false) => {
+const setToken = async (loginResponse: ILoginResponse, isRemember: boolean = false) => {
   if (!isRemember) {
     sessionStorage.setItem('login', JSON.stringify(loginResponse) ?? '');
   } else {
     localStorage.setItem('login', JSON.stringify(loginResponse) ?? '');
   }
+
   store.dispatch(setLoginData(loginResponse));
   store.dispatch(toggleLogin(true));
 };

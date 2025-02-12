@@ -1,19 +1,41 @@
+import { AxiosResponse } from 'axios';
+import dayjs from 'dayjs';
+import { DATE_TIME_STRING_FORMAT } from '../constants/commonConst';
+import { CustomAxiosConfig } from '../constants/typeConst';
 import { ApiEnum } from '../enums/ApiEnum';
+import { IBaseResponse } from '../model/BaseResponse';
 import { FileData, S3FileData } from '../model/FileData';
+import {
+  IDownloadFileRequest,
+  IDownloadFileResponse,
+  IUploadFileRequest,
+  IUploadFileResponse,
+} from '../model/S3Object';
 import { axiosApiEnumFetch, axiosFetch } from '../provider/RootProvider';
 import { blobToBase64 } from '../utils/convertUtil';
+import { randomNumberString } from '../utils/stringUtil';
 
-export const uploadFile = async (fileName: string, fileData?: FileData) => {
-  if (!fileName || !fileData) {
-    return;
-  }
+/**
+ * Upload file to S3.
+ *
+ * @param fileName
+ * @param fileData
+ * @returns
+ */
+export const uploadFile = async (
+  fileName?: string | null,
+  fileData?: FileData | null
+): Promise<string | undefined> => {
+  if (!fileName || !fileData) return undefined;
 
   try {
-    const getUrlResponse = await axiosApiEnumFetch(ApiEnum.UPLOAD_FILE, {
-      data: {
-        fileName: fileName,
-      },
-    });
+    const objectId = `WFS3-${fileName}-${randomNumberString()}-${dayjs(new Date()).format(DATE_TIME_STRING_FORMAT)}`;
+    const getUrlResponse: AxiosResponse<IBaseResponse<IUploadFileResponse>> =
+      await axiosApiEnumFetch(ApiEnum.UPLOAD_FILE, {
+        data: {
+          objectId: objectId,
+        },
+      } as CustomAxiosConfig<IUploadFileRequest>);
 
     await axiosFetch({
       url: getUrlResponse.data.body.uploadUrl,
@@ -25,18 +47,26 @@ export const uploadFile = async (fileName: string, fileData?: FileData) => {
       isS3Url: true,
     });
 
-    return fileName;
+    return objectId;
   } catch (error) {
     return error;
   }
 };
 
-export const getFile = async (fileName: string): Promise<S3FileData> => {
-  const getUrlResponse = await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
-    data: {
-      fileName: fileName,
-    },
-  });
+/**
+ * Get file from objectId.
+ *
+ * @param objectId
+ * @returns
+ */
+export const getFile = async (objectId?: string | null): Promise<S3FileData | null> => {
+  if (!objectId) return null;
+  const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
+    await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
+      data: {
+        objectId: objectId,
+      },
+    } as CustomAxiosConfig<IDownloadFileRequest>);
 
   const response = await axiosFetch({
     url: getUrlResponse.data.body.downloadUrl,
@@ -46,7 +76,7 @@ export const getFile = async (fileName: string): Promise<S3FileData> => {
   });
 
   const blob = response.data;
-
+  const fileName = getFileName(objectId);
   const file = new File([blob], fileName, { type: blob.type });
 
   let data: number[] = [];
@@ -76,12 +106,18 @@ export const getFile = async (fileName: string): Promise<S3FileData> => {
   };
 };
 
-export const downloadFile = async (fileName: string): Promise<void> => {
-  const getUrlResponse = await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
-    data: {
-      fileName: fileName,
-    },
-  });
+/**
+ * Download file from objectId.
+ *
+ * @param objectId
+ */
+export const downloadFile = async (objectId: string): Promise<void> => {
+  const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
+    await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
+      data: {
+        objectId: objectId,
+      },
+    } as CustomAxiosConfig<IDownloadFileRequest>);
 
   const response = await axiosFetch({
     url: getUrlResponse.data.body.downloadUrl,
@@ -93,10 +129,33 @@ export const downloadFile = async (fileName: string): Promise<void> => {
   const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', fileName);
+  link.setAttribute('download', getFileName(objectId));
   document.body.appendChild(link);
   link.click();
 
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
+};
+
+/**
+ * Download multiple files.
+ *
+ * @param objectIdList
+ */
+export const downloadMultipleFiles = async (objectIdList: string[]): Promise<void> => {
+  await Promise.all(
+    objectIdList.map(async item => {
+      await downloadFile(item);
+    })
+  );
+};
+
+/**
+ * Get file name from objectId.
+ *
+ * @param objectId
+ * @returns
+ */
+export const getFileName = (objectId: string) => {
+  return objectId.split('-')[1];
 };

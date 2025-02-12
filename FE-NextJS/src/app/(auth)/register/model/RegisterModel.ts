@@ -1,5 +1,3 @@
-import { FileData } from '@/common/model/FileData';
-
 export interface IRegisterRequest {
   userName?: string;
   password?: string;
@@ -9,7 +7,7 @@ export interface IRegisterRequest {
   role?: string;
   authorities?: string[];
   level?: number;
-  image?: FileData;
+  image?: string;
 }
 
 export interface IRegisterResponse {

@@ -42,10 +42,11 @@ const ImageInput = (props: ImageInputProps) => {
   const settingImageFile = useCallback(
     async (fileInputList: FileList | any[] | null) => {
       if (fileInputList && fileInputList.length > 0) {
-        const fileItem: FileData = {};
-        fileItem.data = Array.from(await readFileAsByte(fileInputList[0] as File));
-        fileItem.file = fileInputList[0] as File;
-        fileItem.name = fileItem.file.name;
+        const fileItem: FileData = {
+          file: fileInputList[0] as File,
+          name: fileInputList[0].name,
+          data: Array.from(await readFileAsByte(fileInputList[0] as File)),
+        };
 
         imageRef.current = await readFileAsDataURL(fileInputList[0] as File);
 

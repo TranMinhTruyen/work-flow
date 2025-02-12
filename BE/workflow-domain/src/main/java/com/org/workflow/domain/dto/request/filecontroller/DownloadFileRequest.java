@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DownloadFileRequest implements Serializable {
 
-  public String fileName;
+  public String objectId;
 
 }

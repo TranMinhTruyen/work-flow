@@ -1,7 +1,7 @@
 export interface FileData {
-  file?: File;
-  name?: string;
-  data?: number[];
+  file: File;
+  name: string;
+  data: number[];
 }
 
 export interface S3FileData {

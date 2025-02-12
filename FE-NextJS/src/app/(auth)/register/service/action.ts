@@ -1,31 +1,25 @@
 import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
 import { IRegisterRequest } from '@/app/(auth)/register/model/RegisterModel';
 import { registerService } from '@/app/(auth)/register/service/registerService';
-import { downloadFile, uploadFile } from '@/common/api/fileApi';
+import { uploadFile } from '@/common/api/fileApi';
 import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 
 export const handleSubmitRegister = async (formData: IRegisterForm) => {
+  const fileName = await uploadFile(formData.image!.name, formData.image);
+
   const registerRequest: IRegisterRequest = {
     ...formData,
     password: encryptWithRSA(formData.password),
     role: 'USER',
     authorities: ['CREATE', 'GET', 'UPDATE'],
     level: 1,
-    image: formData?.image,
+    image: fileName,
   };
 
   const response = await store
     .dispatch(registerService.endpoints.register.initiate(registerRequest))
     .unwrap();
-
-  if (response && response.imagePath) {
-    await uploadFile(response.imagePath, formData.image);
-  }
-
-  if (response && response.imagePath) {
-    await downloadFile(response.imagePath);
-  }
 
   return response;
 };

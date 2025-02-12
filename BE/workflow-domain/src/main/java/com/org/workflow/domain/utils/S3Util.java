@@ -1,9 +1,12 @@
 package com.org.workflow.domain.utils;
 
+import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.StatObjectArgs;
 import io.minio.http.Method;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,8 +21,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class S3Util {
-  
+
   private static final String BUCKET_NAME = "workflow";
+
+  private static final String TRASH_BUCKET = "trash";
 
   private static final int EXPIRY = 2 * 60;
 
@@ -71,25 +76,85 @@ public class S3Util {
     }
   }
 
+  /**
+   * Check bucket is exist.
+   *
+   * @param bucketName String
+   * @return boolean
+   */
+  public boolean isBucketExist(String bucketName) {
+    try {
+      return minioClient.bucketExists(
+          BucketExistsArgs.builder().bucket(bucketName).build());
+    } catch (Exception exception) {
+      return false;
+    }
+  }
+
+  /**
+   * Check file is exist in bucket.
+   *
+   * @param bucketName String
+   * @param objectName String
+   * @return boolean
+   */
+  public boolean isFileExist(String bucketName, String objectName) {
+    if (!isBucketExist(bucketName)) {
+      return false;
+    }
+    try {
+      minioClient.statObject(StatObjectArgs.builder()
+          .bucket(bucketName)
+          .object(objectName)
+          .build()
+      );
+      return true;
+    } catch (Exception exception) {
+      return false;
+    }
+  }
+
+  /**
+   * Get uploadURL.
+   *
+   * @param objectName String
+   * @return String
+   * @throws Exception Exception
+   */
   public String generateUrlUpload(String objectName) throws Exception {
-    return minioClient.getPresignedObjectUrl(
-        GetPresignedObjectUrlArgs.builder()
-            .method(Method.PUT)
-            .bucket(BUCKET_NAME)
-            .object(objectName)
-            .expiry(EXPIRY)
-            .build()
+    if (!isBucketExist(BUCKET_NAME)) {
+      minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
+    }
+    return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+        .method(Method.PUT)
+        .bucket(BUCKET_NAME)
+        .object(objectName)
+        .expiry(EXPIRY)
+        .build()
     );
   }
 
+  /**
+   * Get downloadURL.
+   *
+   * @param objectName String
+   * @return String
+   * @throws Exception Exception
+   */
   public String generateUrlDownload(String objectName) throws Exception {
-    return minioClient.getPresignedObjectUrl(
-        GetPresignedObjectUrlArgs.builder()
-            .method(Method.GET)
-            .bucket(BUCKET_NAME)
-            .object(objectName)
-            .expiry(EXPIRY)
-            .build()
-    );
+    if (isFileExist(BUCKET_NAME, objectName)) {
+      return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+          .method(Method.GET)
+          .bucket(BUCKET_NAME)
+          .object(objectName)
+          .expiry(EXPIRY)
+          .build()
+      );
+    }
+    return null;
+  }
+
+  public void deleteFile(String fileName) {
+
   }
 }

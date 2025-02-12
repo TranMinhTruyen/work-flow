@@ -13,7 +13,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { controller } from '../api/apiUrl';
 import { API_PREFIX } from '../constants/apiPrefixConst';
-import { DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
+import { FULL_DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { LOGIN_URL } from '../constants/urlConst';
 import { ApiEnum } from '../enums/ApiEnum';
@@ -89,7 +89,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         // Transform request
         if (config.data) {
           const transformRequest: IBaseRequest<typeof config.data> = {
-            timestamp: dayjs(new Date()).format(DATE_TIME_FORMAT),
+            timestamp: dayjs(new Date()).format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,
             payload: config.data,
           };
@@ -115,7 +115,10 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         const transformResponse: IBaseResponse = response.data;
 
         // TODO Check warning
-        if (transformResponse.messageType !== MessageType.SUCCESS) {
+        if (
+          transformResponse.messageType &&
+          transformResponse.messageType !== MessageType.SUCCESS
+        ) {
           openDialogContainer({
             type: 'message',
             maxWidth: 'sm',
