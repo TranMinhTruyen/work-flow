@@ -111,7 +111,8 @@ export const getFile = async (objectId?: string | null): Promise<S3FileData | nu
  *
  * @param objectId
  */
-export const downloadFile = async (objectId: string): Promise<void> => {
+export const downloadFile = async (objectId?: string | null): Promise<void> => {
+  if (!objectId) return;
   const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
     await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
       data: {
@@ -142,7 +143,8 @@ export const downloadFile = async (objectId: string): Promise<void> => {
  *
  * @param objectIdList
  */
-export const downloadMultipleFiles = async (objectIdList: string[]): Promise<void> => {
+export const downloadMultipleFiles = async (objectIdList?: string[] | null): Promise<void> => {
+  if (!objectIdList) return;
   await Promise.all(
     objectIdList.map(async item => {
       await downloadFile(item);
