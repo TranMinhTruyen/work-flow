@@ -1,7 +1,7 @@
 'use client';
 
+import { FileData } from '@/common/constants/typeConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
-import { FileData } from '@/common/model/FileData';
 import { readFileAsByte } from '@/common/utils/convertUtil';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import DeleteIcon from '@mui/icons-material/Delete';

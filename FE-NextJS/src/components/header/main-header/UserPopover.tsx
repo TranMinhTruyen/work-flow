@@ -1,7 +1,8 @@
 'use client';
 
-import { getFile } from '@/common/api/fileApi';
-import { CURRENT_PATH, RESET_ALL } from '@/common/constants/commonConst';
+import { get } from '@/common/api/apiS3Object';
+import { RESET_ALL } from '@/common/constants/commonConst';
+import { HTMLElement, NullString } from '@/common/constants/typeConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
 import { selectLoginData } from '@/common/store/commonSlice';
@@ -14,11 +15,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
 
 const UserPopover = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [imageBase64, setImageBase64] = useState<string | null | undefined>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement>(null);
+  const [imageBase64, setImageBase64] = useState<NullString>(null);
 
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);
@@ -26,26 +27,33 @@ const UserPopover = () => {
   const { navigate } = useNavigate();
 
   useEffect(() => {
-    const settingImage = async () => {
-      const imageFile = await getFile(loginData?.userResponse?.image);
-      setImageBase64(imageFile?.base64);
+    const getImage = async () => {
+      if (loginData && loginData.userResponse && loginData.userResponse.image) {
+        const imageFile = await get({
+          bucketName: 'workflow',
+          objectId: loginData.userResponse.image,
+        });
+        if (imageFile) {
+          setImageBase64(imageFile.base64);
+        }
+      }
     };
 
-    settingImage();
-  }, [loginData?.userResponse?.image]);
+    getImage();
+  }, [loginData]);
 
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
+  const handleClick = useCallback((event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+  }, []);
+
+  const handleClose = useCallback(async () => {
     setAnchorEl(null);
-  };
+  }, []);
 
   const handleLogout = useCallback(() => {
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
-    sessionStorage.removeItem(CURRENT_PATH);
     navigate(LOGIN_URL, true);
   }, [dispatch, navigate]);
 
@@ -53,9 +61,9 @@ const UserPopover = () => {
     <>
       <IconButton
         onClick={handleClick}
-        icon={!loginData?.userResponse?.image ? <AccountCircleIcon /> : null}
+        icon={!imageBase64 ? <AccountCircleIcon /> : null}
         sx={{
-          backgroundImage: loginData?.userResponse?.image ? `url(${imageBase64})` : '',
+          backgroundImage: imageBase64 ? `url(${imageBase64})` : '',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           '&:hover': {
@@ -64,11 +72,10 @@ const UserPopover = () => {
         }}
       />
       <StyledMenu
-        anchorEl={anchorEl}
-        id="account-menu"
+        anchorEl={anchorEl as unknown as Element}
+        id={'account-menu'}
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         slotProps={{
@@ -129,4 +136,4 @@ const StyledMenu = styled(Menu)({
   },
 });
 
-export default UserPopover;
+export default memo(UserPopover);

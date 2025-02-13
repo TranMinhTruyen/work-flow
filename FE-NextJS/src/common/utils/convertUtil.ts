@@ -96,7 +96,7 @@ export const blobToBase64 = (blob: Blob): Promise<string | null> => {
       if (typeof reader.result === 'string') {
         resolve(reader.result);
       } else {
-        reject('Failed to convert blob to base64');
+        reject(null);
       }
     };
     reader.onerror = () => {

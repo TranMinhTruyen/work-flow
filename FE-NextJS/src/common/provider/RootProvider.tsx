@@ -7,7 +7,7 @@ import { selectLanguage, toggleLoading } from '@/common/store/commonSlice';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import store, { useAppDispatch, useAppSelector } from '@/lib/store';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -136,6 +136,8 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         return response;
       },
       error => {
+        const axiosError = error as AxiosError<IBaseResponse>;
+
         let responseStatus = 500;
         let responseMessage = '';
 
@@ -153,8 +155,10 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         } else if (!error.response) {
           responseMessage = t('network.serverDown');
         } else {
-          responseStatus = error.response.status;
-          responseData = error.response.data;
+          if (axiosError.response) {
+            responseStatus = axiosError.response?.status;
+            responseData = axiosError.response?.data;
+          }
 
           switch (responseStatus) {
             case 400:

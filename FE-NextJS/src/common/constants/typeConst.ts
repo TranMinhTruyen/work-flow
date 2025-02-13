@@ -16,9 +16,15 @@ export type ApiType = {
 
 export type FileType = Uint8Array | number[];
 
+export type FileData = {
+  file: File;
+  name: string;
+  data: number[];
+};
+
 export type DateType = Dayjs | string | null;
 
-export type HTMLElement = JSX.Element | ReactElement | undefined | null;
+export type HTMLElement = Element | JSX.Element | ReactElement | undefined | null;
 
 export type Authorizer = {
   role?: string;
@@ -29,3 +35,5 @@ export type Authorizer = {
 export type CustomAxiosConfig<T = any> = AxiosRequestConfig<T> & {
   isS3Url?: boolean;
 };
+
+export type NullString = string | null | undefined;

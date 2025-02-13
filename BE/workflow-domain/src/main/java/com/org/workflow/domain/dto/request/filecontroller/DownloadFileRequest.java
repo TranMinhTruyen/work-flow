@@ -17,4 +17,6 @@ public class DownloadFileRequest implements Serializable {
 
   public String objectId;
 
+  public String bucketName;
+
 }

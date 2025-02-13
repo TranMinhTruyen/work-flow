@@ -16,5 +16,7 @@ import lombok.NoArgsConstructor;
 public class UploadFileRequest implements Serializable {
 
   public String objectId;
+  
+  public String bucketName;
 
 }

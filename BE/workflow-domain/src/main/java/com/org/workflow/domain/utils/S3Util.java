@@ -1,5 +1,7 @@
 package com.org.workflow.domain.utils;
 
+import com.org.workflow.domain.dto.request.filecontroller.DownloadFileRequest;
+import com.org.workflow.domain.dto.request.filecontroller.UploadFileRequest;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
@@ -121,14 +123,15 @@ public class S3Util {
    * @return String
    * @throws Exception Exception
    */
-  public String generateUrlUpload(String objectName) throws Exception {
-    if (!isBucketExist(BUCKET_NAME)) {
-      minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
+  public String generateUrlUpload(UploadFileRequest uploadFileRequest) throws Exception {
+    if (!isBucketExist(uploadFileRequest.getBucketName())) {
+      minioClient.makeBucket(
+          MakeBucketArgs.builder().bucket(uploadFileRequest.getBucketName()).build());
     }
     return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
         .method(Method.PUT)
-        .bucket(BUCKET_NAME)
-        .object(objectName)
+        .bucket(uploadFileRequest.getBucketName())
+        .object(uploadFileRequest.getObjectId())
         .expiry(EXPIRY)
         .build()
     );
@@ -141,12 +144,12 @@ public class S3Util {
    * @return String
    * @throws Exception Exception
    */
-  public String generateUrlDownload(String objectName) throws Exception {
-    if (isFileExist(BUCKET_NAME, objectName)) {
+  public String generateUrlDownload(DownloadFileRequest downloadFileRequest) throws Exception {
+    if (isFileExist(downloadFileRequest.getBucketName(), downloadFileRequest.getObjectId())) {
       return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
           .method(Method.GET)
-          .bucket(BUCKET_NAME)
-          .object(objectName)
+          .bucket(downloadFileRequest.getBucketName())
+          .object(downloadFileRequest.getObjectId())
           .expiry(EXPIRY)
           .build()
       );

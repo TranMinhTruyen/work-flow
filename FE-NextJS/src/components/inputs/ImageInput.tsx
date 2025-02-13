@@ -1,7 +1,7 @@
 'use client';
 
 import { IMAGE_FILE_TYPE } from '@/common/constants/commonConst';
-import { FileData } from '@/common/model/FileData';
+import { FileData } from '@/common/constants/typeConst';
 import { convertToDataURL, readFileAsByte, readFileAsDataURL } from '@/common/utils/convertUtil';
 import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
 import ClearIcon from '@mui/icons-material/Clear';
