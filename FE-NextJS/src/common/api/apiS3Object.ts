@@ -90,7 +90,7 @@ export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | 
     data = [];
   }
 
-  let base64: string | null = null;
+  let base64: NullString;
   if (blob.type.startsWith('image/')) {
     try {
       base64 = await blobToBase64(blob);
