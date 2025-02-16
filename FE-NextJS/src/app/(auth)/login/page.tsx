@@ -1,6 +1,6 @@
 'use client';
 import { ILoginForm } from '@/app/(auth)/login/model/LoginForm';
-import { HTMLElement } from '@/common/constants/typeConst';
+import { CommonElement } from '@/common/constants/typeConst';
 import { ADMIN_REGISTER_URL, HOME_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
@@ -70,7 +70,7 @@ const LoginPage = () => {
     }
   }, [setValue]);
 
-  const demoModal: HTMLElement = useMemo(() => {
+  const demoModal: CommonElement = useMemo(() => {
     return createById(
       'model',
       <>

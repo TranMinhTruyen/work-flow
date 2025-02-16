@@ -1,3 +1,5 @@
+import { IScreenMaster } from './ScreenMaster';
+
 export interface IUserResponse {
   userId?: string;
   email?: string;
@@ -9,7 +11,7 @@ export interface IUserResponse {
   isActive?: boolean;
   authorities?: string[];
   level?: number;
-  accessScreenList?: string[];
+  screenMasterList?: IScreenMaster[];
   image?: string;
   createDatetime?: string;
   updateDatetime?: string;

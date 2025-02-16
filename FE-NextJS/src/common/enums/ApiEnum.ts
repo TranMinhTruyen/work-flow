@@ -13,6 +13,7 @@ export enum ApiEnum {
 
   // Proxy api
   CHECK_PROXY = 'CHECK_PROXY',
+  GET_ACCESS_SCREEN = 'GET_ACCESS_SCREEN',
 
   // File api
   UPLOAD_FILE = 'UPLOAD_FILE',

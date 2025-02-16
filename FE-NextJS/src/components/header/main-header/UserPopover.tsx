@@ -2,7 +2,7 @@
 
 import { get } from '@/common/api/apiS3Object';
 import { RESET_ALL } from '@/common/constants/commonConst';
-import { HTMLElement, NullString } from '@/common/constants/typeConst';
+import { NullString } from '@/common/constants/typeConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
 import { selectLoginData } from '@/common/store/commonSlice';
@@ -18,7 +18,7 @@ import { styled } from '@mui/material/styles';
 import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
 
 const UserPopover = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const [imageBase64, setImageBase64] = useState<NullString>(null);
 
   const open = Boolean(anchorEl);
@@ -42,7 +42,7 @@ const UserPopover = () => {
     getImage();
   }, [loginData]);
 
-  const handleClick = useCallback((event: MouseEvent<HTMLElement>) => {
+  const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   }, []);
 

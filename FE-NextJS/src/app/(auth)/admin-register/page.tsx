@@ -1,7 +1,7 @@
 'use client';
-import { authorities, role } from '@/common/constants/commonConst';
 
 import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
+import { authorities, role } from '@/common/constants/commonConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import Button from '@/components/button/Button';
 import DatePickerInput from '@/components/form/DatePickerInput';

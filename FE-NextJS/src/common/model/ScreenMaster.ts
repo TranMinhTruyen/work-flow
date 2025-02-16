@@ -1,8 +1,13 @@
-export interface ScreenMaster {
+export interface IAccessScreenResponse {
+  screenMasterList: IScreenMaster[];
+}
+
+export interface IScreenMaster {
   screenId: string;
   screenName: string;
-  url: string;
+  screenUrl: string;
   screenComponentList: ScreenComponent[];
+  isActive: boolean;
 }
 
 export interface ScreenComponent {

@@ -34,6 +34,10 @@ export const controller: Record<ApiEnum, ApiType> = {
     url: `${PROXY_PREFIX}/check-proxy`,
     method: 'POST',
   },
+  [ApiEnum.GET_ACCESS_SCREEN]: {
+    url: `${PROXY_PREFIX}/get-access-screen`,
+    method: 'POST',
+  },
 
   // File api
   [ApiEnum.UPLOAD_FILE]: {

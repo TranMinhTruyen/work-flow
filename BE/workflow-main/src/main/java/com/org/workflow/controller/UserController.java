@@ -1,5 +1,7 @@
 package com.org.workflow.controller;
 
+import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
+
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.reponse.common.BaseResponse;
@@ -17,14 +19,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.lang.reflect.InvocationTargetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.lang.reflect.InvocationTargetException;
-import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 public class UserController extends AbstractController {
 
   private final UserService userService;
+
 
   /**
    * Create AppUser.
@@ -49,6 +51,7 @@ public class UserController extends AbstractController {
         result.getUserName());
   }
 
+
   /**
    * Login AppUser.
    *
@@ -63,6 +66,7 @@ public class UserController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
+
   /**
    * Get AppUser profile.
    *
@@ -76,6 +80,7 @@ public class UserController extends AbstractController {
     UserResponse result = userService.getProfile(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
+
 
   /**
    * Update AppUser.
@@ -93,6 +98,7 @@ public class UserController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
+  
   /**
    * Change login password.
    *

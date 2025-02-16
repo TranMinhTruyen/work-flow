@@ -6,15 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author minh-truyen
- */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckProxyResponse implements Serializable {
+public class ScreenMasterResponse implements Serializable {
 
-  private String role;
+  private String screenId;
+
+  private String screenName;
+
+  private String screenUrl;
 
 }

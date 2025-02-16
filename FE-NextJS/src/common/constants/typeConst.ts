@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import { Dayjs } from 'dayjs';
-import { JSX, ReactElement } from 'react';
+import { JSX, ReactElement, ReactNode } from 'react';
 
 export type SelectDataType = {
   key: string;
@@ -24,7 +24,7 @@ export type FileData = {
 
 export type DateType = Dayjs | string | null;
 
-export type HTMLElement = Element | JSX.Element | ReactElement | undefined | null;
+export type CommonElement = JSX.Element | ReactElement | ReactNode | undefined | null;
 
 export type Authorizer = {
   role?: string;

@@ -11,12 +11,15 @@ import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
 import com.google.common.hash.Hashing;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
+import com.org.workflow.dao.document.ScreenMaster;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.document.UserHistory;
 import com.org.workflow.dao.document.sub.ChangeValue;
+import com.org.workflow.dao.repository.ProxyRepository;
 import com.org.workflow.dao.repository.UserHistoryRepository;
 import com.org.workflow.dao.repository.UserRepository;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
+import com.org.workflow.domain.dto.reponse.proxycontroller.ScreenMasterResponse;
 import com.org.workflow.domain.dto.reponse.usercontroller.CreateUserResponse;
 import com.org.workflow.domain.dto.reponse.usercontroller.LoginResponse;
 import com.org.workflow.domain.dto.reponse.usercontroller.UpdateUserResponse;
@@ -34,6 +37,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
@@ -59,6 +64,8 @@ public class UserService extends AbstractService {
 
   private final UserHistoryRepository userHistoryRepository;
 
+  private final ProxyRepository proxyRepository;
+
   private final JwtUtil jwtUtil;
 
   private final RedisTemplate<Object, Object> redisTemplate;
@@ -70,6 +77,7 @@ public class UserService extends AbstractService {
 
   @Value("${rsa.private-key}")
   private String privateKey;
+
 
   /**
    * Create CreateUserResponse
@@ -85,7 +93,7 @@ public class UserService extends AbstractService {
     createUserResponse.setRole(saveUserAccount.getRole());
     createUserResponse.setAuthorities(saveUserAccount.getAuthorities());
     createUserResponse.setLevel(saveUserAccount.getLevel());
-    createUserResponse.setImagePath(saveUserAccount.getImagePath());
+    createUserResponse.setImagePath(saveUserAccount.getImageObject());
     createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
     createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
     createUserResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
@@ -93,7 +101,9 @@ public class UserService extends AbstractService {
     return createUserResponse;
   }
 
-  private static UserResponse setUserResponse(UserAccount userAccount) throws WFException {
+
+  private static UserResponse setUserResponse(UserAccount userAccount,
+      List<ScreenMasterResponse> screenMasterResponseList) {
     UserResponse userResponse = new UserResponse();
     userResponse.setUserId(userAccount.getUserId());
     userResponse.setEmail(userAccount.getEmail());
@@ -103,13 +113,15 @@ public class UserService extends AbstractService {
     userResponse.setRole(userAccount.getRole());
     userResponse.setAuthorities(userAccount.getAuthorities());
     userResponse.setLevel(userAccount.getLevel());
-    userResponse.setImage(userAccount.getImagePath());
+    userResponse.setScreenMasterList(screenMasterResponseList);
+    userResponse.setImage(userAccount.getImageObject());
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
     userResponse.setIsActive(userAccount.isActive());
     userResponse.setCreateDatetime(userAccount.getCreateDatetime());
     userResponse.setUpdateDatetime(userAccount.getUpdateDatetime());
     return userResponse;
   }
+
 
   /**
    * Create new user.
@@ -145,7 +157,7 @@ public class UserService extends AbstractService {
     userAccount.setRole(createUserRequest.getRole());
     userAccount.setAuthorities(createUserRequest.getAuthorities());
     userAccount.setLevel(createUserRequest.getLevel());
-    userAccount.setImagePath(createUserRequest.getImage());
+    userAccount.setImageObject(createUserRequest.getImage());
     userAccount.setActive(true);
     userAccount.setLoginFailCount(0);
     userAccount.setCreatedBy(createUserRequest.getFullName());
@@ -159,6 +171,7 @@ public class UserService extends AbstractService {
 
     return setCreateUserResponse(saveUserAccount);
   }
+
 
   /**
    * Login.
@@ -200,7 +213,23 @@ public class UserService extends AbstractService {
           loginRequest.getIsRemember());
       loginResponse.setToken(token);
       loginResponse.setTokenType(BEARER);
-      loginResponse.setUserResponse(setUserResponse(userAccount));
+
+      Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
+          userAccount.getAccessScreenList());
+
+      List<ScreenMasterResponse> screenMasterResponseList = new ArrayList<>();
+      if (screenMasterList.isPresent()) {
+        ScreenMasterResponse screenMasterResponse;
+        for (ScreenMaster screenMaster : screenMasterList.get()) {
+          screenMasterResponse = new ScreenMasterResponse();
+          screenMasterResponse.setScreenId(screenMaster.getScreenId());
+          screenMasterResponse.setScreenName(screenMaster.getScreenName());
+          screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
+          screenMasterResponseList.add(screenMasterResponse);
+        }
+      }
+
+      loginResponse.setUserResponse(setUserResponse(userAccount, screenMasterResponseList));
       return loginResponse;
     } else {
       if (userAccount.getLoginFailCount() == null) {
@@ -217,6 +246,7 @@ public class UserService extends AbstractService {
     }
   }
 
+
   /**
    * Load by username.
    *
@@ -232,6 +262,7 @@ public class UserService extends AbstractService {
     return new CustomUserDetail(userAccount);
   }
 
+
   /**
    * Get profile user.
    *
@@ -244,8 +275,25 @@ public class UserService extends AbstractService {
     UserAccount userAccount = result.orElseThrow(
         () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(),
             username));
-    return setUserResponse(userAccount);
+    
+    Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
+        userAccount.getAccessScreenList());
+
+    List<ScreenMasterResponse> screenMasterResponseList = new ArrayList<>();
+    if (screenMasterList.isPresent()) {
+      ScreenMasterResponse screenMasterResponse;
+      for (ScreenMaster screenMaster : screenMasterList.get()) {
+        screenMasterResponse = new ScreenMasterResponse();
+        screenMasterResponse.setScreenId(screenMaster.getScreenId());
+        screenMasterResponse.setScreenName(screenMaster.getScreenName());
+        screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
+        screenMasterResponseList.add(screenMasterResponse);
+      }
+    }
+
+    return setUserResponse(userAccount, screenMasterResponseList);
   }
+
 
   /**
    * Update user.
@@ -296,6 +344,7 @@ public class UserService extends AbstractService {
     return response;
   }
 
+
   /**
    * Change password.
    *
@@ -326,6 +375,7 @@ public class UserService extends AbstractService {
 
     this.saveHistory(before, userAccountUpdateResult, ChangeTypeEnum.UPDATE);
   }
+
 
   /**
    * Save history.
@@ -374,8 +424,8 @@ public class UserService extends AbstractService {
 
     // Set change value for image path
     changeValue = new ChangeValue();
-    changeValue.setFieldValueBefore(before.getImagePath());
-    changeValue.setFieldValueAfter(after.getImagePath());
+    changeValue.setFieldValueBefore(before.getImageObject());
+    changeValue.setFieldValueAfter(after.getImageObject());
     changeValue.setChangeType(HistoryUtil.checkChangeType(changeValue.getFieldValueBefore(),
         changeValue.getFieldValueAfter(), changeType));
     userHistory.setImagePath(changeValue);

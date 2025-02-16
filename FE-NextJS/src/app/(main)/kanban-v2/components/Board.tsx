@@ -1,6 +1,6 @@
 'use client';
 
-import { HTMLElement } from '@/common/constants/typeConst';
+import { CommonElement } from '@/common/constants/typeConst';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import {
   DndContext,
@@ -117,7 +117,7 @@ const Board = () => {
     );
   }, [cardList, columnId, columnList]);
 
-  const overlay: HTMLElement = useMemo(() => {
+  const overlay: CommonElement = useMemo(() => {
     if (activeCard) {
       return <Card key={activeCard.id} cardData={activeCard} />;
     }

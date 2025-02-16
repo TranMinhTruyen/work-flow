@@ -1,17 +1,17 @@
 package com.org.workflow.dao.repository;
 
 import com.org.workflow.dao.document.Proxy;
+import com.org.workflow.dao.repository.ext.ProxyRepositoryExt;
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 /**
  * @author minh-truyen
  */
 @Repository
-public interface ProxyRepository extends MongoRepository<Proxy, String> {
+public interface ProxyRepository extends MongoRepository<Proxy, String>, ProxyRepositoryExt {
 
   @Query(value = """
         {

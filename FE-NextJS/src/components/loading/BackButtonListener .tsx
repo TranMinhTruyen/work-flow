@@ -1,7 +1,8 @@
 'use client';
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+
 import { CURRENT_PATH } from '@/common/constants/commonConst';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 const BackButtonListener = () => {
   const pathname = usePathname();
@@ -17,8 +18,6 @@ const BackButtonListener = () => {
       window.removeEventListener('popstate', () => {});
     };
   }, [pathname]);
-
-  return null;
 };
 
 export default BackButtonListener;

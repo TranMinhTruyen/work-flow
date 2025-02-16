@@ -1,14 +1,10 @@
 package com.org.workflow.domain.utils;
 
-import com.google.common.hash.Hashing;
 import com.org.workflow.dao.document.Proxy;
-import com.org.workflow.dao.document.UserAccount;
+import com.org.workflow.dao.document.ScreenMaster;
 import com.org.workflow.dao.repository.ProxyRepository;
-import com.org.workflow.dao.repository.UserRepository;
-import java.nio.charset.StandardCharsets;
+import com.org.workflow.dao.repository.ScreenMasterRepository;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,45 +16,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ApplicationStartup {
 
-  private static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
-  private static final String USER_ID_PREFIX = "WF";
   private static final String SYSTEM = "System";
 
   private final ProxyRepository proxyRepository;
 
-  private final UserRepository userRepository;
+  private final ScreenMasterRepository screenMasterRepository;
 
-  @EventListener(ContextRefreshedEvent.class)
-  private void importAdminUser() {
-    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail("admin");
-    if (result.isEmpty()) {
-      LocalDateTime now = LocalDateTime.now();
-      UserAccount userAccount = new UserAccount();
-      String userId = USER_ID_PREFIX.concat(
-          now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
-      userAccount.setUserId(userId);
-      userAccount.setUserName("admin");
-      userAccount.setPassword(
-          Hashing.sha512().hashString("123", StandardCharsets.UTF_16).toString());
-      List<String> authorities = new ArrayList<>();
-      authorities.add("CREATE");
-      authorities.add("GET");
-      authorities.add("UPDATE");
-      authorities.add("DELETE");
-      userAccount.setAuthorities(authorities);
-      userAccount.setRole("ADMIN");
-      userAccount.setLevel(3);
-      userAccount.setActive(true);
-      userAccount.setLoginFailCount(0);
-      userAccount.setCreatedBy(SYSTEM);
-      userAccount.setCreateDatetime(now);
-      userAccount.setUpdateBy(SYSTEM);
-      userAccount.setUpdateDatetime(now);
-      userAccount.setDeleted(false);
-
-      userRepository.save(userAccount);
-    }
-  }
 
   @EventListener(ContextRefreshedEvent.class)
   private void importDevEnvProxy() {
@@ -77,6 +40,41 @@ public class ApplicationStartup {
       proxy.setDeleted(false);
 
       proxyRepository.save(proxy);
+    }
+  }
+
+
+  @EventListener(ContextRefreshedEvent.class)
+  private void importDevScreenMaster() {
+    Optional<List<ScreenMaster>> result = proxyRepository.findScreenMasterByListScreenId(
+        List.of("SCR00001", "SCR00002"));
+    if (result.isEmpty()) {
+      LocalDateTime now = LocalDateTime.now();
+      ScreenMaster screenMaster = new ScreenMaster();
+      screenMaster.setScreenId("SCR00001");
+      screenMaster.setScreenName("HOME");
+      screenMaster.setScreenUrl("/home");
+      screenMaster.setActive(true);
+      screenMaster.setCreatedBy(SYSTEM);
+      screenMaster.setCreateDatetime(now);
+      screenMaster.setUpdateBy(SYSTEM);
+      screenMaster.setUpdateDatetime(now);
+      screenMaster.setDeleted(false);
+
+      screenMasterRepository.save(screenMaster);
+
+      screenMaster = new ScreenMaster();
+      screenMaster.setScreenId("SCR00002");
+      screenMaster.setScreenName("KANBAN");
+      screenMaster.setScreenUrl("/kanban-v2");
+      screenMaster.setActive(true);
+      screenMaster.setCreatedBy(SYSTEM);
+      screenMaster.setCreateDatetime(now);
+      screenMaster.setUpdateBy(SYSTEM);
+      screenMaster.setUpdateDatetime(now);
+      screenMaster.setDeleted(false);
+
+      screenMasterRepository.save(screenMaster);
     }
   }
 

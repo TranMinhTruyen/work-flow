@@ -1,13 +1,12 @@
 package com.org.workflow.dao.document;
 
+import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
-
-import java.io.Serializable;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -32,8 +31,8 @@ public class UserAccount extends AbstractDocument implements Serializable {
   @Field(name = "birth_day", write = Write.ALWAYS)
   private String birthDay;
 
-  @Field(name = "image_path", write = Write.ALWAYS)
-  private String imagePath;
+  @Field(name = "image_object", write = Write.ALWAYS)
+  private String imageObject;
 
   @Field(name = "role", write = Write.ALWAYS)
   private String role;
@@ -44,7 +43,7 @@ public class UserAccount extends AbstractDocument implements Serializable {
   @Field(name = "level", write = Write.ALWAYS)
   private Integer level;
 
-  @Field(name = "access_screen_list", write = Write.ALWAYS)
+  @Field(name = "access_screens", write = Write.ALWAYS)
   private List<String> accessScreenList;
 
   @Field(name = "login_fail_count", write = Write.ALWAYS)

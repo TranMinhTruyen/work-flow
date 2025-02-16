@@ -1,5 +1,4 @@
 'use client';
-import { HTMLElement } from '@/common/constants/typeConst';
 import useNavigate from '@/common/hooks/useNavigate';
 import { selectOpenDrawer } from '@/common/store/commonSlice';
 import { checkAccessScreen } from '@/common/utils/authUtil';
@@ -18,7 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import { useCallback, useMemo, useState } from 'react';
+import { ReactElement, useCallback, useMemo, useState } from 'react';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
 
 const itemList = DrawerItemList;
@@ -29,10 +28,8 @@ export type DrawerMenuItemProps = {
 };
 
 const DrawerMenu = () => {
-  // const loginData = useAppSelector(selectLoginData);
-
   const drawerItemList = useMemo(() => {
-    const returnItem: HTMLElement[] = [];
+    const returnItem: ReactElement[] = [];
 
     if (itemList.length === 0) {
       return returnItem;
@@ -145,8 +142,8 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     [item.screenIcon]
   );
 
-  const childItem: HTMLElement[] = useMemo(() => {
-    const returnItem: HTMLElement[] = [];
+  const childItem: ReactElement[] = useMemo(() => {
+    const returnItem: ReactElement[] = [];
 
     if (item.screenChild === undefined || item.screenChild === null) {
       return returnItem;

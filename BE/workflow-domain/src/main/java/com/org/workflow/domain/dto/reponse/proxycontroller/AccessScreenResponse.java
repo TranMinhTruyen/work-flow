@@ -1,20 +1,18 @@
 package com.org.workflow.domain.dto.reponse.proxycontroller;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author minh-truyen
- */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckProxyResponse implements Serializable {
+public class AccessScreenResponse implements Serializable {
 
-  private String role;
+  private List<ScreenMasterResponse> screenMasterList;
 
 }

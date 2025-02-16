@@ -1,6 +1,7 @@
 import { ApiEnum } from '@/common/enums/ApiEnum';
 import { ICheckProxyRequest, ICheckProxyResponse } from '@/common/model/Proxy';
 import baseApi from '../api/apiBaseQuery';
+import { IAccessScreenResponse } from '../model/ScreenMaster';
 
 export const proxyService = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -10,7 +11,12 @@ export const proxyService = baseApi.injectEndpoints({
         data: request,
       }),
     }),
+    getAccessScreen: builder.mutation<IAccessScreenResponse, void>({
+      query: () => ({
+        api: ApiEnum.GET_ACCESS_SCREEN,
+      }),
+    }),
   }),
 });
 
-export const { useCheckProxyMutation } = proxyService;
+export const { useCheckProxyMutation, useGetAccessScreenMutation } = proxyService;
