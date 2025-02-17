@@ -1,7 +1,7 @@
 package com.org.workflow.domain.utils;
 
-import com.org.workflow.domain.dto.request.filecontroller.DownloadFileRequest;
-import com.org.workflow.domain.dto.request.filecontroller.UploadFileRequest;
+import com.org.workflow.domain.dto.request.file.DownloadFileRequest;
+import com.org.workflow.domain.dto.request.file.UploadFileRequest;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;

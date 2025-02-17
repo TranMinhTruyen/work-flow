@@ -5,7 +5,7 @@ import com.org.workflow.controller.AbstractController;
 import com.org.workflow.core.common.enums.MessageTypeEnum;
 import com.org.workflow.core.common.exception.ErrorMessage;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,13 +97,15 @@ public class ExceptionInterceptor extends AbstractController {
           Map<String, Object> attr = getAttributes(fieldError);
 
           // format message
-          String errorMessage = formatValidateMessage(fieldName, messageId, attr, messageSource, locale);
+          String errorMessage = formatValidateMessage(fieldName, messageId, attr, messageSource,
+              locale);
 
           errorItem.setErrorOrder(attr.get("order").toString());
           errorItem.setErrorCode(error.getDefaultMessage());
           errorItem.setErrorMessage(errorMessage);
           return errorItem;
-        }).sorted(Comparator.comparing((ErrorMessage x) -> Integer.parseInt(x.getErrorOrder()))).toList();
+        }).sorted(Comparator.comparing((ErrorMessage x) -> Integer.parseInt(x.getErrorOrder())))
+        .toList();
 
     baseResponse.setMessageType(MessageTypeEnum.ERROR);
     baseResponse.setMessage("Validation failed");

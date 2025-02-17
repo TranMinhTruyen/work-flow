@@ -3,7 +3,7 @@ package com.org.workflow.controller;
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.enums.MessageTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
 import jakarta.annotation.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-                                                            @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
+      @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageType);
     baseResponse.setMessage(message);
@@ -45,7 +45,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(HttpStatus httpStatus,
-                                                            @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
+      @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());

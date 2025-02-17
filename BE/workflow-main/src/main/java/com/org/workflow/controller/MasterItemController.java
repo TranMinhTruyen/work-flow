@@ -10,10 +10,10 @@ import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.MasterItem;
 import com.org.workflow.domain.annotation.Authentication;
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
-import com.org.workflow.domain.dto.reponse.mastercontroller.MasterItemResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
+import com.org.workflow.domain.dto.response.master.MasterItemResponse;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.mastercontroller.MasterItemRequest;
+import com.org.workflow.domain.dto.request.master.MasterItemRequest;
 import com.org.workflow.domain.service.ItemMasterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "ItemMasterController")
 @RequestMapping(path = API_PREFIX + "/master-item")
 public class MasterItemController extends AbstractController {
-  
+
   private final ItemMasterService itemMasterService;
 
   @Operation(security = {@SecurityRequirement(name = "Authorization")})

@@ -1,9 +1,9 @@
 package com.org.workflow.controller;
 
 
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.notificationcontroller.NotificationCreateRequest;
+import com.org.workflow.domain.dto.request.notification.NotificationCreateRequest;
 import com.org.workflow.domain.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

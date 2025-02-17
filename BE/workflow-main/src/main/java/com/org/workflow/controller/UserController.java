@@ -4,16 +4,16 @@ import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
-import com.org.workflow.domain.dto.reponse.usercontroller.CreateUserResponse;
-import com.org.workflow.domain.dto.reponse.usercontroller.LoginResponse;
-import com.org.workflow.domain.dto.reponse.usercontroller.UpdateUserResponse;
-import com.org.workflow.domain.dto.reponse.usercontroller.UserResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
+import com.org.workflow.domain.dto.response.user.CreateUserResponse;
+import com.org.workflow.domain.dto.response.user.LoginResponse;
+import com.org.workflow.domain.dto.response.user.UpdateUserResponse;
+import com.org.workflow.domain.dto.response.user.UserResponse;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.usercontroller.ChangePasswordRequest;
-import com.org.workflow.domain.dto.request.usercontroller.CreateUserRequest;
-import com.org.workflow.domain.dto.request.usercontroller.LoginRequest;
-import com.org.workflow.domain.dto.request.usercontroller.UpdateUserRequest;
+import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
+import com.org.workflow.domain.dto.request.user.CreateUserRequest;
+import com.org.workflow.domain.dto.request.user.LoginRequest;
+import com.org.workflow.domain.dto.request.user.UpdateUserRequest;
 import com.org.workflow.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -98,7 +98,7 @@ public class UserController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
-  
+
   /**
    * Change login password.
    *

@@ -3,12 +3,12 @@ package com.org.workflow.controller;
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.SUCCESS;
 
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
-import com.org.workflow.domain.dto.reponse.filecontroller.DownloadFileResponse;
-import com.org.workflow.domain.dto.reponse.filecontroller.UploadFileResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
+import com.org.workflow.domain.dto.response.file.DownloadFileResponse;
+import com.org.workflow.domain.dto.response.file.UploadFileResponse;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.filecontroller.DownloadFileRequest;
-import com.org.workflow.domain.dto.request.filecontroller.UploadFileRequest;
+import com.org.workflow.domain.dto.request.file.DownloadFileRequest;
+import com.org.workflow.domain.dto.request.file.UploadFileRequest;
 import com.org.workflow.domain.utils.S3Util;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

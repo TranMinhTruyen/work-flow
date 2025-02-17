@@ -1,7 +1,7 @@
 package com.org.workflow.domain.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.org.workflow.domain.dto.reponse.common.BaseResponse;
+import com.org.workflow.domain.dto.response.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response,
-                       AuthenticationException authException) throws IOException {
+      AuthenticationException authException) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessage("Access denied");
