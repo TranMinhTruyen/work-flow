@@ -1,14 +1,17 @@
 package com.org.workflow.domain.filter;
 
+import static com.org.workflow.domain.utils.CommonUtil.getLanguageFromRequest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
+import com.org.workflow.domain.services.UserService;
 import com.org.workflow.domain.utils.JwtUtil;
-import com.org.workflow.domain.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,10 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-
-import static com.org.workflow.domain.utils.CommonUtil.getLanguageFromRequest;
 
 /**
  * @author minh-truyen
@@ -35,7 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
   private final ObjectMapper objectMapper;
 
   public SecurityFilter(JwtUtil jwtUtil, UserService userService,
-                        ObjectMapper objectMapper) {
+      ObjectMapper objectMapper) {
     this.jwtUtil = jwtUtil;
     this.userService = userService;
     this.objectMapper = objectMapper;
@@ -50,7 +49,7 @@ public class SecurityFilter extends OncePerRequestFilter {
    */
   @Override
   public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                               FilterChain filterChain) throws ServletException, IOException {
+      FilterChain filterChain) throws ServletException, IOException {
     String token = getJwtFromRequest(request);
 
     if (!StringUtils.isBlank(token) && jwtUtil.validateToken(token)) {

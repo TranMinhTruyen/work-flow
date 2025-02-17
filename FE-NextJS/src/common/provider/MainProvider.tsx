@@ -1,4 +1,5 @@
 'use client';
+
 import { ReactNode, useEffect, useState } from 'react';
 import { CURRENT_PATH } from '../constants/commonConst';
 import { LOGIN_URL } from '../constants/urlConst';
@@ -9,10 +10,9 @@ import { isNullOrEmpty } from '../utils/stringUtil';
 const MainProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const { navigate } = useNavigate();
+  const isLogin = checkLogin();
 
   useEffect(() => {
-    const isLogin = checkLogin();
-
     if (!isLogin) {
       navigate(LOGIN_URL, true);
     }
@@ -27,8 +27,7 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsSet(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLogin, isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

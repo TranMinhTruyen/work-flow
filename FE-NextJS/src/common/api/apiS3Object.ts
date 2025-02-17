@@ -50,8 +50,9 @@ export const upload = async (
     });
 
     return objectId;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -63,49 +64,55 @@ export const upload = async (
  */
 export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | null> => {
   if (!params) return null;
-  const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
-    await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
-      data: params,
-    } as CustomAxiosConfig<IDownloadFileRequest>);
 
-  if (!getUrlResponse.data.body.downloadUrl) return null;
-
-  const response = await axiosFetch({
-    url: getUrlResponse.data.body.downloadUrl,
-    method: 'GET',
-    isS3Url: true,
-    responseType: 'blob',
-  });
-
-  const blob = response.data;
-  const fileName = getFileName(params.objectId);
-  const file = new File([blob], fileName, { type: blob.type });
-
-  let data: number[] = [];
   try {
-    const arrayBuffer = await blob.arrayBuffer();
-    data = Array.from(new Uint8Array(arrayBuffer));
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  } catch (error) {
-    data = [];
-  }
+    const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
+      await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
+        data: params,
+      } as CustomAxiosConfig<IDownloadFileRequest>);
 
-  let base64: NullString;
-  if (blob.type.startsWith('image/')) {
+    if (!getUrlResponse.data.body.downloadUrl) return null;
+
+    const response = await axiosFetch({
+      url: getUrlResponse.data.body.downloadUrl,
+      method: 'GET',
+      isS3Url: true,
+      responseType: 'blob',
+    });
+
+    const blob = response.data;
+    const fileName = getFileName(params.objectId);
+    const file = new File([blob], fileName, { type: blob.type });
+
+    let data: number[] = [];
     try {
-      base64 = await blobToBase64(blob);
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      const arrayBuffer = await blob.arrayBuffer();
+      data = Array.from(new Uint8Array(arrayBuffer));
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     } catch (error) {
-      base64 = null;
+      data = [];
     }
-  }
 
-  return {
-    file,
-    name: fileName,
-    data,
-    base64,
-  };
+    let base64: NullString;
+    if (blob.type.startsWith('image/')) {
+      try {
+        base64 = await blobToBase64(blob);
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      } catch (error) {
+        base64 = null;
+      }
+    }
+
+    return {
+      file,
+      name: fileName,
+      data,
+      base64,
+    };
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return null;
+  }
 };
 
 /**
@@ -115,29 +122,35 @@ export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | 
  */
 export const download = async (params?: IDownloadFileRequest): Promise<void> => {
   if (!params) return;
-  const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
-    await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
-      data: params,
-    } as CustomAxiosConfig<IDownloadFileRequest>);
 
-  if (!getUrlResponse.data.body.downloadUrl) return;
+  try {
+    const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
+      await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
+        data: params,
+      } as CustomAxiosConfig<IDownloadFileRequest>);
 
-  const response = await axiosFetch({
-    url: getUrlResponse.data.body.downloadUrl,
-    method: 'GET',
-    isS3Url: true,
-    responseType: 'blob',
-  });
+    if (!getUrlResponse.data.body.downloadUrl) return;
 
-  const url = window.URL.createObjectURL(new Blob([response.data]));
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', getFileName(params.objectId));
-  document.body.appendChild(link);
-  link.click();
+    const response = await axiosFetch({
+      url: getUrlResponse.data.body.downloadUrl,
+      method: 'GET',
+      isS3Url: true,
+      responseType: 'blob',
+    });
 
-  document.body.removeChild(link);
-  window.URL.revokeObjectURL(url);
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', getFileName(params.objectId));
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return;
+  }
 };
 
 /**
@@ -147,11 +160,16 @@ export const download = async (params?: IDownloadFileRequest): Promise<void> => 
  */
 export const downloadMultiple = async (objectIdList?: IDownloadFileRequest[]): Promise<void> => {
   if (!objectIdList) return;
-  await Promise.all(
-    objectIdList.map(async item => {
-      await download(item);
-    })
-  );
+  try {
+    await Promise.all(
+      objectIdList.map(async item => {
+        await download(item);
+      })
+    );
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return;
+  }
 };
 
 /**

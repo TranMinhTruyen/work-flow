@@ -64,6 +64,15 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 
   const dialogHeader = useMemo(() => {
     switch (messageType) {
+      case MessageType.SUCCESS:
+        return (
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography variant={'h5'} sx={{ color: 'rgba(0, 225, 0, 1)' }}>
+              {t(MessageType.SUCCESS)}
+            </Typography>
+            <CheckCircleIcon color={'primary'} />
+          </Stack>
+        );
       case MessageType.WARN:
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
@@ -82,22 +91,13 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
             <ErrorIcon color={'error'} />
           </Stack>
         );
-      case MessageType.INFO:
+      default:
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={1}>
             <Typography variant={'h5'} sx={{ color: 'rgba(0, 80, 255, 1)' }}>
               {t(MessageType.INFO)}
             </Typography>
             <InfoIcon color={'primary'} />
-          </Stack>
-        );
-      case MessageType.SUCCESS:
-        return (
-          <Stack direction={'row'} alignItems={'center'} spacing={1}>
-            <Typography variant={'h5'} sx={{ color: 'rgba(0, 225, 0, 1)' }}>
-              {t(MessageType.SUCCESS)}
-            </Typography>
-            <CheckCircleIcon color={'primary'} />
           </Stack>
         );
     }

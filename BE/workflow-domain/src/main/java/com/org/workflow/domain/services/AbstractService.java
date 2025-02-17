@@ -1,4 +1,4 @@
-package com.org.workflow.domain.service;
+package com.org.workflow.domain.services;
 
 import org.springframework.transaction.annotation.Transactional;
 

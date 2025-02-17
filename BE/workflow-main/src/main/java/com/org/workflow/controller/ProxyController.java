@@ -3,12 +3,12 @@ package com.org.workflow.controller;
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
 import com.org.workflow.core.common.enums.MessageEnum;
+import com.org.workflow.domain.dto.request.common.BaseRequest;
+import com.org.workflow.domain.dto.request.proxy.CheckProxyRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.proxy.AccessScreenResponse;
 import com.org.workflow.domain.dto.response.proxy.CheckProxyResponse;
-import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.proxy.CheckProxyRequest;
-import com.org.workflow.domain.service.ProxyService;
+import com.org.workflow.domain.services.ProxyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

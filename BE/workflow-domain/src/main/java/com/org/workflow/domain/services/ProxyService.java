@@ -1,14 +1,14 @@
-package com.org.workflow.domain.service;
+package com.org.workflow.domain.services;
 
 import com.org.workflow.dao.document.Proxy;
 import com.org.workflow.dao.document.ScreenMaster;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.ProxyRepository;
 import com.org.workflow.dao.repository.UserRepository;
+import com.org.workflow.domain.dto.request.proxy.CheckProxyRequest;
 import com.org.workflow.domain.dto.response.proxy.AccessScreenResponse;
 import com.org.workflow.domain.dto.response.proxy.CheckProxyResponse;
 import com.org.workflow.domain.dto.response.proxy.ScreenMasterResponse;
-import com.org.workflow.domain.dto.request.proxy.CheckProxyRequest;
 import com.org.workflow.domain.utils.AuthUtil;
 import java.util.ArrayList;
 import java.util.List;

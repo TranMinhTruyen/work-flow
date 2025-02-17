@@ -1,15 +1,14 @@
-package com.org.workflow.domain.service;
+package com.org.workflow.domain.services;
 
 import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.repository.NotificationRepository;
-import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import com.org.workflow.domain.dto.request.notification.NotificationCreateRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
+import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

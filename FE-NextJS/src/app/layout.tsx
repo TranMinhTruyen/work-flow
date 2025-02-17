@@ -13,7 +13,7 @@ import './globals.css';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = ({ children }: { children: Readonly<ReactNode> }) => {
   return (
     <html>
       <head>

@@ -25,7 +25,7 @@ public class OpenApiConfig {
                 .name("Tran Minh Truyen"))
             .license(new License()
                 .name("Apache 2.0")
-                .url("http://www.apache.org/licenses/LICENSE-2.0.html"))
+                .url("https://www.apache.org/licenses/LICENSE-2.0.html"))
             .version("0.1.1"))
         .components(new Components()
             .addSecuritySchemes("Authorization", new SecurityScheme()

@@ -1,4 +1,4 @@
-package com.org.workflow.domain.service;
+package com.org.workflow.domain.services;
 
 import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_INACTIVE;
 import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
@@ -19,16 +19,16 @@ import com.org.workflow.dao.repository.ProxyRepository;
 import com.org.workflow.dao.repository.UserHistoryRepository;
 import com.org.workflow.dao.repository.UserRepository;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
-import com.org.workflow.domain.dto.response.proxy.ScreenMasterResponse;
-import com.org.workflow.domain.dto.response.user.CreateUserResponse;
-import com.org.workflow.domain.dto.response.user.LoginResponse;
-import com.org.workflow.domain.dto.response.user.UpdateUserResponse;
-import com.org.workflow.domain.dto.response.user.UserResponse;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
 import com.org.workflow.domain.dto.request.user.CreateUserRequest;
 import com.org.workflow.domain.dto.request.user.LoginRequest;
 import com.org.workflow.domain.dto.request.user.UpdateUserRequest;
+import com.org.workflow.domain.dto.response.proxy.ScreenMasterResponse;
+import com.org.workflow.domain.dto.response.user.CreateUserResponse;
+import com.org.workflow.domain.dto.response.user.LoginResponse;
+import com.org.workflow.domain.dto.response.user.UpdateUserResponse;
+import com.org.workflow.domain.dto.response.user.UserResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.HistoryUtil;
 import com.org.workflow.domain.utils.JwtUtil;

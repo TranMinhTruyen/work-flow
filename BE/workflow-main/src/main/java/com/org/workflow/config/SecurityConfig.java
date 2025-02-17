@@ -3,7 +3,7 @@ package com.org.workflow.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.domain.filter.CustomAuthenticationEntryPoint;
 import com.org.workflow.domain.filter.SecurityFilter;
-import com.org.workflow.domain.service.UserService;
+import com.org.workflow.domain.services.UserService;
 import com.org.workflow.domain.utils.JwtUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

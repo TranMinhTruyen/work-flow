@@ -1,4 +1,5 @@
 'use client';
+
 import { ILoginForm } from '@/app/(auth)/login/model/LoginForm';
 import { CommonElement } from '@/common/constants/typeConst';
 import { ADMIN_REGISTER_URL, HOME_URL } from '@/common/constants/urlConst';
