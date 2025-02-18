@@ -1,10 +1,19 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html,
+body,
+#root {
+  min-width: 650px;
+  min-height: 500px;
+}
+
+@media (max-width: 650px) {
+  #root {
+    min-width: auto;
+    width: 100%;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  #root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }

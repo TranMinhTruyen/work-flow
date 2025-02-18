@@ -1,4 +1,5 @@
 'use client';
+
 import { languageConst } from '@/common/constants/commonConst';
 import { HOME_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
@@ -26,7 +27,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import UserPopover from './UserPopover';
 
-type IHeaderProps = {
+type HeaderProps = {
   drawerWidth: number;
 };
 
@@ -35,10 +36,10 @@ type AppBarProps = MuiAppBarProps & {
   open?: boolean;
 };
 
-const MainHeader = (props: IHeaderProps) => {
+const MainHeader = (props: HeaderProps) => {
   const { drawerWidth } = props;
-  const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const [hoverOpenDrawer, setHoverOpenDrawer] = useState<boolean>(false);
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const { navigate } = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -87,18 +88,16 @@ const MainHeader = (props: IHeaderProps) => {
           {openDrawerButton}
         </MuiIconButton>
 
-        <Stack direction={'row'} sx={{ flexGrow: 1 }}>
-          <Typography
-            variant={'h5'}
-            component={'span'}
-            sx={styles.title}
-            onClick={() => navigate(HOME_URL)}
-          >
-            WORK FLOW
-          </Typography>
-        </Stack>
+        <Typography
+          variant={'h5'}
+          component={'span'}
+          sx={styles.title}
+          onClick={() => navigate(HOME_URL)}
+        >
+          WORK FLOW
+        </Typography>
 
-        <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center' }}>
+        <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center', ml: 'auto' }}>
           <LanguageSelect
             id={'language'}
             width={150}
@@ -138,6 +137,7 @@ const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',
 })<AppBarProps>(({ theme, open, drawerWidth }) => ({
   height: '55px',
+  width: '100%',
   position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {

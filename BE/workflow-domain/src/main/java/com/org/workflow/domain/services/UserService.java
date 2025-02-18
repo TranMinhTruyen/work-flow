@@ -214,18 +214,21 @@ public class UserService extends AbstractService {
       loginResponse.setToken(token);
       loginResponse.setTokenType(BEARER);
 
-      Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
-          userAccount.getAccessScreenList());
-
       List<ScreenMasterResponse> screenMasterResponseList = new ArrayList<>();
-      if (screenMasterList.isPresent()) {
-        ScreenMasterResponse screenMasterResponse;
-        for (ScreenMaster screenMaster : screenMasterList.get()) {
-          screenMasterResponse = new ScreenMasterResponse();
-          screenMasterResponse.setScreenId(screenMaster.getScreenId());
-          screenMasterResponse.setScreenName(screenMaster.getScreenName());
-          screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
-          screenMasterResponseList.add(screenMasterResponse);
+      if (userAccount.getAccessScreenList() != null && !userAccount.getAccessScreenList()
+          .isEmpty()) {
+        Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
+            userAccount.getAccessScreenList());
+
+        if (screenMasterList.isPresent()) {
+          ScreenMasterResponse screenMasterResponse;
+          for (ScreenMaster screenMaster : screenMasterList.get()) {
+            screenMasterResponse = new ScreenMasterResponse();
+            screenMasterResponse.setScreenId(screenMaster.getScreenId());
+            screenMasterResponse.setScreenName(screenMaster.getScreenName());
+            screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
+            screenMasterResponseList.add(screenMasterResponse);
+          }
         }
       }
 

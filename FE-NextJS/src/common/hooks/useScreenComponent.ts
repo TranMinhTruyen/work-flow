@@ -36,10 +36,17 @@ const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
     }
   }, []);
 
+  const createByCondition = useCallback((condition: () => boolean, component: CommonElement) => {
+    if (condition()) {
+      return component;
+    }
+  }, []);
+
   return {
     setComponentList,
     checkComponentId,
     createById,
+    createByCondition,
     createByAuthorizer,
   };
 };

@@ -15,11 +15,11 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <MainProvider>
-      <Grid2>
+      <ScreenLayout open={openDrawer}>
         <MainHeader drawerWidth={DRAWER_WIDTH} />
         <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
-        <ScreenLayout open={openDrawer}>{children}</ScreenLayout>
-      </Grid2>
+        {children}
+      </ScreenLayout>
     </MainProvider>
   );
 };

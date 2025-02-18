@@ -2,7 +2,7 @@
 
 import { ILoginForm } from '@/app/(auth)/login/model/LoginForm';
 import { CommonElement } from '@/common/constants/typeConst';
-import { ADMIN_REGISTER_URL, HOME_URL } from '@/common/constants/urlConst';
+import { HOME_URL, REGISTER_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
@@ -151,7 +151,7 @@ const LoginPage = () => {
           <Typography sx={{ fontSize: 18 }}>
             {t('label.noAcccount')}
             {
-              <Link onClick={() => navigate(ADMIN_REGISTER_URL)} sx={{ cursor: 'pointer' }}>
+              <Link onClick={() => navigate(REGISTER_URL)} sx={{ cursor: 'pointer' }}>
                 {t('label.register')}
               </Link>
             }

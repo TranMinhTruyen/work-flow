@@ -1,6 +1,7 @@
 'use client';
+
 import { CURRENT_PATH, languageConst } from '@/common/constants/commonConst';
-import { ADMIN_REGISTER_URL, LOGIN_URL, REGISTER_URL } from '@/common/constants/urlConst';
+import { LOGIN_URL, REGISTER_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
 import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
@@ -44,7 +45,6 @@ const AuthHeader = () => {
     }
     switch (currentPath) {
       case REGISTER_URL:
-      case ADMIN_REGISTER_URL:
         return (
           <IconButton onClick={() => navigate(LOGIN_URL)} color={'primary'}>
             <ChevronLeftIcon fontSize={'large'} />
@@ -63,7 +63,6 @@ const AuthHeader = () => {
       case LOGIN_URL:
         return t('screenTitle.login');
       case REGISTER_URL:
-      case ADMIN_REGISTER_URL:
         return t('screenTitle.register');
       default:
         break;

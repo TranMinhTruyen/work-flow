@@ -1,15 +1,21 @@
 'use client';
 
 import { IRegisterForm } from '@/app/(auth)/register/model/RegisterForm';
+import { authorities, role } from '@/common/constants/commonConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { MessageType } from '@/common/enums/MessageEnum';
 import useNavigate from '@/common/hooks/useNavigate';
+import useScreenComponent from '@/common/hooks/useScreenComponent';
+import { selectProxyType } from '@/common/store/commonSlice';
 import Button from '@/components/button/Button';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import ImageInput from '@/components/form/ImageInput';
+import MultiSelectInput from '@/components/form/MultiSelectInput';
+import SelectInput from '@/components/form/SelectInput';
 import TextInput from '@/components/form/TextInput';
+import { useAppSelector } from '@/lib/store';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
@@ -22,7 +28,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitRegister } from './service/action';
@@ -31,6 +37,8 @@ const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
   const { t } = useTranslation(I18nEnum.REGISTER_I18N);
+  const { createByCondition } = useScreenComponent();
+  const proxyType = useAppSelector(selectProxyType);
 
   const { navigate } = useNavigate();
   const classes = registerStyles();
@@ -62,6 +70,34 @@ const Register = () => {
     },
     [navigate, reset, trigger]
   );
+
+  const authorizerComponent = useMemo(() => {
+    return createByCondition(
+      () => {
+        return proxyType && proxyType === 'SYSTEM' ? true : false;
+      },
+      <>
+        <SelectInput
+          name={'role'}
+          control={control}
+          required
+          displayNone
+          i18n={I18nEnum.REGISTER_I18N}
+          data={role}
+          width={400}
+        />
+
+        <MultiSelectInput
+          name={'authorities'}
+          control={control}
+          required
+          i18n={I18nEnum.REGISTER_I18N}
+          data={authorities}
+          width={400}
+        />
+      </>
+    );
+  }, [control, createByCondition, proxyType]);
 
   return (
     <form id={'register-form'} onSubmit={handleSubmit(handleRegister)}>
@@ -146,6 +182,8 @@ const Register = () => {
             required
             width={400}
           />
+
+          {authorizerComponent}
         </Stack>
       </CardContent>
 

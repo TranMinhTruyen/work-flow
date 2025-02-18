@@ -1,5 +1,11 @@
 'use client';
-import { HOME_URL, KANBAN_URL, KANBAN_URL_V2 } from '@/common/constants/urlConst';
+import {
+  HOME_URL,
+  KANBAN_URL,
+  KANBAN_URL_V2,
+  SCREEN_MASTER,
+  USER_MASTER,
+} from '@/common/constants/urlConst';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -59,33 +65,24 @@ const DrawerItemList: DrawerItem[] = [
     screenLabel: 'Master page',
     screenPath: '',
     screenRole: ['ADMIN'],
-    screenLevel: 1,
+    screenLevel: 3,
     screenChild: [
       {
         screenKey: '4.1',
         screenIcon: <ListAltIcon />,
-        screenLabel: 'Role',
-        screenPath: '',
-        screenRole: null,
-        screenLevel: 1,
+        screenLabel: 'Screen master',
+        screenPath: SCREEN_MASTER,
+        screenRole: ['ADMIN'],
+        screenLevel: 3,
         screenChild: null,
       },
       {
         screenKey: '4.2',
         screenIcon: <ListAltIcon />,
-        screenLabel: 'TEST 1',
-        screenPath: '',
-        screenRole: null,
-        screenLevel: 1,
-        screenChild: null,
-      },
-      {
-        screenKey: '4.3',
-        screenIcon: <ListAltIcon />,
-        screenLabel: 'TEST 2',
-        screenPath: '',
-        screenRole: null,
-        screenLevel: 1,
+        screenLabel: 'User master',
+        screenPath: USER_MASTER,
+        screenRole: ['ADMIN'],
+        screenLevel: 3,
         screenChild: null,
       },
     ],

@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CheckProxyResponse implements Serializable {
 
-  private String role;
+  private String type;
 
 }

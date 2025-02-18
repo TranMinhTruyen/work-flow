@@ -1,7 +1,7 @@
 import { ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
 import { ICheckProxyRequest, ICheckProxyResponse } from '@/common/model/Proxy';
 import { proxyService } from '@/common/services/proxyService';
-import { setLoginData, setProxyRole, toggleLogin } from '@/common/store/commonSlice';
+import { setLoginData, setProxyType, toggleLogin } from '@/common/store/commonSlice';
 import { DrawerItem } from '@/components/drawer/DrawerListItem';
 import store from '@/lib/store';
 import forge from 'node-forge';
@@ -78,7 +78,7 @@ export const handleCheckProxy = async () => {
     .dispatch(proxyService.endpoints.checkProxy.initiate(request))
     .unwrap();
 
-  store.dispatch(setProxyRole(response?.role));
+  store.dispatch(setProxyType(response?.type));
 };
 
 export const checkAccessScreen = (drawerItem: DrawerItem): boolean => {

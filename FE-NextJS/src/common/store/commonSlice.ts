@@ -10,7 +10,7 @@ interface CommonState {
   isLoading: boolean;
   openConfirmDialog: boolean;
   loginData?: ILoginResponse;
-  proxyRole?: string;
+  proxyType?: string;
 }
 
 const initialState: CommonState = {
@@ -20,7 +20,7 @@ const initialState: CommonState = {
   isLogin: false,
   isLoading: false,
   openConfirmDialog: false,
-  proxyRole: '',
+  proxyType: '',
 };
 
 const commonSlice = createSlice({
@@ -71,11 +71,11 @@ const commonSlice = createSlice({
     resetCommon: () => {
       return initialState;
     },
-    setProxyRole: (state, action: PayloadAction<string | undefined>) => {
+    setProxyType: (state, action: PayloadAction<string | undefined>) => {
       const { payload } = action;
       return {
         ...state,
-        proxyRole: payload,
+        proxyType: payload,
       };
     },
   },
@@ -89,7 +89,7 @@ export const {
   toggleConfirmDialog,
   setLanguage,
   resetCommon,
-  setProxyRole,
+  setProxyType,
 } = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;
@@ -98,6 +98,6 @@ export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
 export const selectOpenConfirmDialog = (state: RootState) => state.commonState.openConfirmDialog;
 export const selectLanguage = (state: RootState) => state.commonState.language;
-export const selectProxyRole = (state: RootState) => state.commonState.proxyRole;
+export const selectProxyType = (state: RootState) => state.commonState.proxyType;
 
 export default commonSlice.reducer;

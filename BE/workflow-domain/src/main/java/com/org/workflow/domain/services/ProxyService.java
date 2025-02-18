@@ -64,7 +64,7 @@ public class ProxyService {
 
     if (result.isPresent()) {
       Proxy proxy = result.get();
-      checkProxyResponse.setRole(proxy.getRole());
+      checkProxyResponse.setType(proxy.getType());
     }
 
     return checkProxyResponse;

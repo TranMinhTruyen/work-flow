@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { CURRENT_PATH } from '../constants/commonConst';
 import { HOME_URL } from '../constants/urlConst';
 import useNavigate from '../hooks/useNavigate';
-import { checkLogin } from '../utils/authUtil';
+import { checkLogin, handleCheckProxy } from '../utils/authUtil';
 import { isNullOrEmpty } from '../utils/stringUtil';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -26,9 +26,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       navigate(currentPath);
     }
 
-    // if (!isSet) {
-    //   handleCheckProxy();
-    // }
+    if (!isSet) {
+      handleCheckProxy();
+    }
 
     setIsSet(true);
   }, [isLogin, isSet, navigate]);

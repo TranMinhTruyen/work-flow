@@ -1,4 +1,5 @@
 'use client';
+
 import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -59,6 +60,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(5)} + 9px)`,
+  minWidth: '57px',
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(6)} + 9px)`,
   },

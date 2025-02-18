@@ -4,5 +4,5 @@ export interface ICheckProxyRequest {
 }
 
 export interface ICheckProxyResponse {
-  role?: string;
+  type?: string;
 }
