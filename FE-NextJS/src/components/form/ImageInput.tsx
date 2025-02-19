@@ -1,5 +1,6 @@
 'use client';
-import { FileData } from '@/common/model/FileData';
+
+import { FileData } from '@/common/constants/typeConst';
 import UncontrolledImageInput, {
   ImageInputProps as UncontrolledImageInputProps,
 } from '@/components/inputs/ImageInput';

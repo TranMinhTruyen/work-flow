@@ -1,3 +1,5 @@
+import { NullString } from '@/common/constants/typeConst';
+
 export interface IRegisterRequest {
   userName?: string;
   password?: string;
@@ -7,7 +9,7 @@ export interface IRegisterRequest {
   role?: string;
   authorities?: string[];
   level?: number;
-  image?: string;
+  image?: NullString;
 }
 
 export interface IRegisterResponse {
