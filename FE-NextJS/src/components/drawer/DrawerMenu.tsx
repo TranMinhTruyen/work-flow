@@ -1,9 +1,11 @@
 'use client';
+
 import useNavigate from '@/common/hooks/useNavigate';
-import { selectOpenDrawer } from '@/common/store/commonSlice';
+import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
 import { checkAccessScreen } from '@/common/utils/authUtil';
-import { useAppSelector } from '@/lib/store';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { ExpandMore } from '@mui/icons-material';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -28,6 +30,23 @@ export type DrawerMenuItemProps = {
 };
 
 const DrawerMenu = () => {
+  const dispatch = useAppDispatch();
+  const openDrawer = useAppSelector(selectOpenDrawer);
+
+  const handleDrawerOpen = useCallback(() => {
+    dispatch(toggleDrawer());
+  }, [dispatch]);
+
+  const openDrawerButton = useMemo(
+    () =>
+      !openDrawer ? (
+        <KeyboardArrowRightIcon fontSize={'large'} />
+      ) : (
+        <KeyboardArrowLeftIcon fontSize={'large'} />
+      ),
+    [openDrawer]
+  );
+
   const drawerItemList = useMemo(() => {
     const returnItem: ReactElement[] = [];
 
@@ -56,9 +75,36 @@ const DrawerMenu = () => {
   }, []);
 
   return (
-    <Grid2 key={'drawer-menu'} container sx={{ padding: 1 }} spacing={1}>
-      {drawerItemList}
-    </Grid2>
+    <>
+      <Grid2
+        key={'drawer-menu'}
+        container
+        sx={{
+          padding: 1,
+          overflowX: 'hidden',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        }}
+        spacing={1}
+      >
+        {drawerItemList}
+      </Grid2>
+      <Grid2
+        container
+        sx={{
+          height: '40px',
+          mt: 'auto',
+        }}
+      >
+        <ListItemButton sx={{ padding: 0 }} onClick={handleDrawerOpen}>
+          <ListItemIcon sx={{ justifyContent: 'center' }}>{openDrawerButton}</ListItemIcon>
+          <ListItemText primary={'Collapse sidebar'} />
+        </ListItemButton>
+      </Grid2>
+    </>
   );
 };
 
@@ -123,7 +169,6 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
   const { item } = props;
   const [openChild, setOpenChild] = useState<boolean>(false);
   const openDrawer = useAppSelector(selectOpenDrawer);
-  // const loginData = useAppSelector(selectLoginData);
 
   const expandButton = useMemo(
     () =>

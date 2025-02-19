@@ -4,27 +4,20 @@ import { languageConst } from '@/common/constants/commonConst';
 import { HOME_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
-import {
-  selectLanguage,
-  selectOpenDrawer,
-  setLanguage,
-  toggleDrawer,
-} from '@/common/store/commonSlice';
+import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';
 import IconButton from '@/components/button/IconButton';
 import SelectInput from '@/components/inputs/SelectInput';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { IconButton as MuiIconButton } from '@mui/material';
+import { SvgIcon } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import LogoSvg from '../../../../public/assets/logo.svg';
 import UserPopover from './UserPopover';
 
 type HeaderProps = {
@@ -32,23 +25,16 @@ type HeaderProps = {
 };
 
 type AppBarProps = MuiAppBarProps & {
-  drawerWidth?: number;
-  open?: boolean;
+  drawerwidth?: number;
 };
 
 const MainHeader = (props: HeaderProps) => {
   const { drawerWidth } = props;
-  const [hoverOpenDrawer, setHoverOpenDrawer] = useState<boolean>(false);
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const { navigate } = useNavigate();
 
   const dispatch = useAppDispatch();
-  const opendrawer = useAppSelector(selectOpenDrawer);
   const language: string = useAppSelector(selectLanguage);
-
-  const handleDrawerOpen = useCallback(() => {
-    dispatch(toggleDrawer());
-  }, [dispatch]);
 
   const handleChangeLanguage = useCallback(
     (value: string) => {
@@ -66,38 +52,33 @@ const MainHeader = (props: HeaderProps) => {
     [t]
   );
 
-  const openDrawerButton = useMemo(
-    () => (hoverOpenDrawer ? <KeyboardArrowRightIcon fontSize={'large'} /> : <MenuIcon />),
-    [hoverOpenDrawer]
-  );
-
   return (
-    <AppBar drawerWidth={drawerWidth} open={opendrawer}>
-      <Toolbar sx={{ minHeight: '55px !important' }}>
-        <MuiIconButton
-          color={'inherit'}
-          onClick={handleDrawerOpen}
-          edge={'start'}
-          sx={{
-            ...styles.openDrawer,
-            ...(opendrawer && { display: 'none' }),
-          }}
-          onMouseEnter={() => setHoverOpenDrawer(true)}
-          onMouseLeave={() => setHoverOpenDrawer(false)}
-        >
-          {openDrawerButton}
-        </MuiIconButton>
+    <AppBar elevation={0} drawerwidth={drawerWidth}>
+      <Stack direction={'row'} sx={{ minHeight: '55px !important' }}>
+        <Stack direction={'row'} sx={{ alignItems: 'center', mr: 'auto' }} spacing={1.5}>
+          <Stack
+            direction={'row'}
+            sx={{ alignItems: 'center', justifyContent: 'center', width: '57px', height: '57px' }}
+          >
+            <SvgIcon
+              component={LogoSvg}
+              viewBox={'0 0 100 100'}
+              sx={{ height: '35px !important', width: '35px !important', borderRadius: '15px' }}
+              onClick={() => navigate(HOME_URL)}
+            />
+          </Stack>
 
-        <Typography
-          variant={'h5'}
-          component={'span'}
-          sx={styles.title}
-          onClick={() => navigate(HOME_URL)}
-        >
-          WORK FLOW
-        </Typography>
+          <Typography
+            variant={'h5'}
+            component={'span'}
+            sx={styles.title}
+            onClick={() => navigate(HOME_URL)}
+          >
+            WORK FLOW
+          </Typography>
+        </Stack>
 
-        <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center', ml: 'auto' }}>
+        <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center', ml: 'auto', padding: 1 }}>
           <LanguageSelect
             id={'language'}
             width={150}
@@ -111,7 +92,7 @@ const MainHeader = (props: HeaderProps) => {
 
           <UserPopover />
         </Stack>
-      </Toolbar>
+      </Stack>
     </AppBar>
   );
 };
@@ -119,13 +100,6 @@ const MainHeader = (props: HeaderProps) => {
 export default MainHeader;
 
 const styles = {
-  openDrawer: {
-    width: '40px',
-    height: '40px',
-    marginRight: 4,
-    marginLeft: '-16px',
-  },
-
   title: {
     cursor: 'pointer',
     fontWeight: 'bold',
@@ -133,35 +107,16 @@ const styles = {
   },
 };
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: prop => prop !== 'open' && prop !== 'drawerWidth',
-})<AppBarProps>(({ theme, open, drawerWidth }) => ({
+const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
   height: '55px',
   width: '100%',
   position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${drawerWidth}px`,
-  ...(open && {
-    marginLeft: `${drawerWidth}px`,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
 }));
 
 const LanguageSelect = styled(SelectInput)({
   '& .MuiInputBase-formControl': {
     height: '40px',
-  },
-
-  '& .MuiChip-root': {
-    // marginTop: '2px',
   },
 
   '& .MuiOutlinedInput-input': {

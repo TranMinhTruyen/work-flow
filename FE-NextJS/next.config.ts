@@ -18,7 +18,12 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { webpack }) => {
     config.plugins.push(new webpack.ProgressPlugin());
-    config.config.optimization.minimizer.push([
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    });
+    config.optimization.minimizer.push(
       new TerserPlugin({
         terserOptions: {
           compress: {
@@ -28,7 +33,9 @@ const nextConfig: NextConfig = {
             comments: false,
           },
         },
-      }),
+      })
+    );
+    config.optimization.minimizer.push(
       new CssMinimizerPlugin({
         parallel: true,
         minimizerOptions: {
@@ -39,9 +46,8 @@ const nextConfig: NextConfig = {
             },
           ],
         },
-      }),
-    ]);
-
+      })
+    );
     return config;
   },
 };

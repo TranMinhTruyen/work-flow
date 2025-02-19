@@ -1,14 +1,11 @@
 'use client';
 
-import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/store';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import { selectOpenDrawer } from '@/common/store/commonSlice';
+import { useAppSelector } from '@/lib/store';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';
-import IconButton from '@mui/material/IconButton';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
-import { useCallback } from 'react';
 import DrawerMenu from './DrawerMenu';
 
 type IDrawerProps = {
@@ -21,23 +18,11 @@ type ICustomDrawerProps = DrawerProps & {
 
 const Drawer = (props: IDrawerProps) => {
   const { drawerWidth } = props;
-  const dispatch = useAppDispatch();
   const openDrawer = useAppSelector(selectOpenDrawer);
-
-  const handleOpenDrawer = useCallback(() => {
-    dispatch(toggleDrawer());
-  }, [dispatch]);
 
   return (
     <CustomDrawer drawerWidth={drawerWidth} variant={'permanent'} open={openDrawer}>
-      <DrawerHeader sx={{ minHeight: '55px !important' }}>
-        <IconButton
-          onClick={handleOpenDrawer}
-          sx={{ width: '40px', height: '40px', justifyContent: 'center' }}
-        >
-          <KeyboardArrowLeftIcon fontSize={'large'} />
-        </IconButton>
-      </DrawerHeader>
+      <DrawerHeader sx={{ minHeight: '55px !important' }}></DrawerHeader>
       <Divider />
       <DrawerMenu />
     </CustomDrawer>
