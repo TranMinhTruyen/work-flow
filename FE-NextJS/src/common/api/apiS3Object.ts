@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import { DATE_TIME_STRING_FORMAT } from '../constants/commonConst';
-import { CustomAxiosConfig, FileData, NullString } from '../constants/typeConst';
+import { CustomAxiosConfig, FileData } from '../constants/typeConst';
 import { ApiEnum } from '../enums/ApiEnum';
 import { IBaseResponse } from '../model/BaseResponse';
 import {
@@ -23,9 +23,9 @@ import { randomNumberString } from '../utils/stringUtil';
  * @returns
  */
 export const upload = async (
-  bucketName?: NullString,
+  bucketName?: string | null,
   fileData?: FileData | null
-): Promise<NullString> => {
+): Promise<string | null | undefined> => {
   if (!bucketName || !fileData) return undefined;
   try {
     const objectId = `WFS3-${randomNumberString()}-${dayjs(new Date()).format(DATE_TIME_STRING_FORMAT)}-${fileData.name}`;
@@ -93,7 +93,7 @@ export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | 
       data = [];
     }
 
-    let base64: NullString;
+    let base64: string | null | undefined;
     if (blob.type.startsWith('image/')) {
       try {
         base64 = await blobToBase64(blob);

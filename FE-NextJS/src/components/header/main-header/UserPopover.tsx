@@ -2,7 +2,6 @@
 
 import { get } from '@/common/api/apiS3Object';
 import { RESET_ALL } from '@/common/constants/commonConst';
-import { NullString } from '@/common/constants/typeConst';
 import { LOGIN_URL } from '@/common/constants/urlConst';
 import useNavigate from '@/common/hooks/useNavigate';
 import { selectLoginData } from '@/common/store/commonSlice';
@@ -19,7 +18,7 @@ import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
 
 const UserPopover = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
-  const [imageBase64, setImageBase64] = useState<NullString>(null);
+  const [imageBase64, setImageBase64] = useState<string | null | undefined>(null);
 
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);

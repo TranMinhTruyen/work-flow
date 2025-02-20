@@ -35,5 +35,3 @@ export type Authorizer = {
 export type CustomAxiosConfig<T = any> = AxiosRequestConfig<T> & {
   isS3Url?: boolean;
 };
-
-export type NullString = string | null | undefined;
