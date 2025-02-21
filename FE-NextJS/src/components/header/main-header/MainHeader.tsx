@@ -78,7 +78,11 @@ const MainHeader = (props: HeaderProps) => {
           </Typography>
         </Stack>
 
-        <Stack direction={'row'} spacing={2} sx={{ alignItems: 'center', ml: 'auto', padding: 1 }}>
+        <Stack
+          direction={'row'}
+          spacing={1.5}
+          sx={{ alignItems: 'center', ml: 'auto', paddingRight: 1.5 }}
+        >
           <LanguageSelect
             id={'language'}
             width={150}

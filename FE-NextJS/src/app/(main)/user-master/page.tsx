@@ -3,7 +3,7 @@
 import { memo } from 'react';
 
 const UserMaster = () => {
-  return <></>;
+  return <>User master</>;
 };
 
 export default memo(UserMaster);

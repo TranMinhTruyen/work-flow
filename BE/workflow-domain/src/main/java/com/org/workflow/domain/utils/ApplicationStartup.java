@@ -5,6 +5,7 @@ import com.org.workflow.dao.document.ScreenMaster;
 import com.org.workflow.dao.repository.ProxyRepository;
 import com.org.workflow.dao.repository.ScreenMasterRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +51,37 @@ public class ApplicationStartup {
         List.of("SCR00001", "SCR00002"));
     if (result.isEmpty()) {
       LocalDateTime now = LocalDateTime.now();
-      ScreenMaster screenMaster = new ScreenMaster();
+      List<ScreenMaster> screenMasterList = new ArrayList<>();
+      ScreenMaster screenMaster;
+
+      screenMaster = new ScreenMaster();
+      screenMaster.setScreenId("SCR00000");
+      screenMaster.setScreenName("SCREEN MASTER");
+      screenMaster.setScreenUrl("/screen-master");
+      screenMaster.setActive(true);
+      screenMaster.setCreatedBy(SYSTEM);
+      screenMaster.setCreateDatetime(now);
+      screenMaster.setUpdateBy(SYSTEM);
+      screenMaster.setUpdateDatetime(now);
+      screenMaster.setDeleted(false);
+
+      screenMasterList.add(screenMaster);
+
+      screenMaster = new ScreenMaster();
       screenMaster.setScreenId("SCR00001");
+      screenMaster.setScreenName("USER MASTER");
+      screenMaster.setScreenUrl("/user-master");
+      screenMaster.setActive(true);
+      screenMaster.setCreatedBy(SYSTEM);
+      screenMaster.setCreateDatetime(now);
+      screenMaster.setUpdateBy(SYSTEM);
+      screenMaster.setUpdateDatetime(now);
+      screenMaster.setDeleted(false);
+
+      screenMasterList.add(screenMaster);
+
+      screenMaster = new ScreenMaster();
+      screenMaster.setScreenId("SCR00002");
       screenMaster.setScreenName("HOME");
       screenMaster.setScreenUrl("/home");
       screenMaster.setActive(true);
@@ -61,10 +91,10 @@ public class ApplicationStartup {
       screenMaster.setUpdateDatetime(now);
       screenMaster.setDeleted(false);
 
-      screenMasterRepository.save(screenMaster);
+      screenMasterList.add(screenMaster);
 
       screenMaster = new ScreenMaster();
-      screenMaster.setScreenId("SCR00002");
+      screenMaster.setScreenId("SCR00003");
       screenMaster.setScreenName("KANBAN");
       screenMaster.setScreenUrl("/kanban-v2");
       screenMaster.setActive(true);
@@ -74,7 +104,9 @@ public class ApplicationStartup {
       screenMaster.setUpdateDatetime(now);
       screenMaster.setDeleted(false);
 
-      screenMasterRepository.save(screenMaster);
+      screenMasterList.add(screenMaster);
+
+      screenMasterRepository.saveAll(screenMasterList);
     }
   }
 

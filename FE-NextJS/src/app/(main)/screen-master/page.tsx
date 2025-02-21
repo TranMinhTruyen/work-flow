@@ -3,7 +3,7 @@
 import { memo } from 'react';
 
 const ScreenMaster = () => {
-  return <></>;
+  return <>Screen master</>;
 };
 
 export default memo(ScreenMaster);

@@ -6,7 +6,7 @@ import BackButtonListener from '@/components/loading/BackButtonListener ';
 import store, { persistor } from '@/lib/store';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import './globals.css';
@@ -38,4 +38,4 @@ const RootLayout = ({ children }: { children: Readonly<ReactNode> }) => {
   );
 };
 
-export default RootLayout;
+export default memo(RootLayout);

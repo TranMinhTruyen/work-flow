@@ -94,11 +94,13 @@ export const checkAccessScreen = (drawerItem: DrawerItem): boolean => {
     isAccess = false;
   }
 
-  if (
-    !userData?.screenMasterList ||
-    !userData?.screenMasterList?.map(item => item.screenUrl).includes(drawerItem.screenPath)
-  ) {
-    isAccess = false;
+  if (isNullOrEmpty(drawerItem.screenPath) || drawerItem.screenChild === null) {
+    if (
+      !userData?.screenMasterList ||
+      !userData?.screenMasterList?.map(item => item.screenId).includes(drawerItem.screenKey)
+    ) {
+      isAccess = false;
+    }
   }
 
   return isAccess;

@@ -4,7 +4,7 @@ import useNavigate from '@/common/hooks/useNavigate';
 import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
 import { checkAccessScreen } from '@/common/utils/authUtil';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
-import { ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Box from '@mui/material/Box';
@@ -19,7 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import DrawerItemList, { DrawerItem } from './DrawerListItem';
 
 const itemList = DrawerItemList;
@@ -48,21 +48,21 @@ const DrawerMenu = () => {
   );
 
   const drawerItemList = useMemo(() => {
-    const returnItem: ReactElement[] = [];
+    const returnItem: ReactNode[] = [];
 
     if (itemList.length === 0) {
       return returnItem;
     }
 
     for (const screen of itemList) {
-      if (!checkAccessScreen(screen)) {
-        continue;
-      } else if (screen.screenChild == null) {
-        returnItem.push(
-          <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
-            <DrawerMenuItem item={screen} />
-          </Grid2>
-        );
+      if (screen.screenChild == null) {
+        if (checkAccessScreen(screen)) {
+          returnItem.push(
+            <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
+              <DrawerMenuItem item={screen} />
+            </Grid2>
+          );
+        }
       } else {
         returnItem.push(
           <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
@@ -168,6 +168,8 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
 const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
   const { item } = props;
   const [openChild, setOpenChild] = useState<boolean>(false);
+  const [hoverItem, setHoverItem] = useState<boolean>(false);
+
   const openDrawer = useAppSelector(selectOpenDrawer);
 
   const expandButton = useMemo(
@@ -182,45 +184,63 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     [openChild, openDrawer]
   );
 
-  const itemCustomListItemIcon = useMemo(
+  const itemCustomListItemIcon: ReactNode = useMemo(
     () => <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>{item.screenIcon}</Stack>,
     [item.screenIcon]
   );
 
-  const childItem: ReactElement[] = useMemo(() => {
-    const returnItem: ReactElement[] = [];
+  const openDrawerButton: ReactNode = useMemo(() => {
+    if (!openDrawer && openChild && !hoverItem) {
+      return itemCustomListItemIcon;
+    }
+
+    if (!openDrawer && openChild && hoverItem) {
+      return <ExpandLess fontSize={'large'} />;
+    }
+
+    if (!openDrawer && !openChild && hoverItem) {
+      return <ExpandMore fontSize={'large'} />;
+    }
+
+    if (!openDrawer && !openChild && !hoverItem) {
+      return itemCustomListItemIcon;
+    }
+
+    return itemCustomListItemIcon;
+  }, [hoverItem, itemCustomListItemIcon, openChild, openDrawer]);
+
+  const childItem: ReactNode[] = useMemo(() => {
+    const returnItem: ReactNode[] = [];
 
     if (item.screenChild === undefined || item.screenChild === null) {
       return returnItem;
     }
 
-    for (const componentChildItem of item.screenChild) {
-      if (componentChildItem.screenRole !== null) {
-        continue;
-      } else if (componentChildItem.screenChild == null) {
-        returnItem.push(
-          <DrawerMenuItem
-            key={componentChildItem.screenKey}
-            item={componentChildItem}
-            childIndex={item.screenChild?.indexOf(componentChildItem)}
-          />
-        );
+    for (const childScreen of item.screenChild) {
+      if (childScreen.screenChild == null) {
+        if (checkAccessScreen(childScreen)) {
+          returnItem.push(
+            <DrawerMenuItem
+              key={childScreen.screenKey}
+              item={childScreen}
+              childIndex={item.screenChild?.indexOf(childScreen)}
+            />
+          );
+        }
       } else {
-        returnItem.push(
-          <DrawerMenuItemWithChild key={componentChildItem.screenKey} item={componentChildItem} />
-        );
+        returnItem.push(<DrawerMenuItemWithChild key={childScreen.screenKey} item={childScreen} />);
       }
     }
 
     return returnItem;
   }, [item.screenChild]);
 
+  const handleExpand = useCallback(() => {
+    setOpenChild(!openChild);
+  }, [openChild]);
+
   const childItemCollapse = useMemo(() => {
     if (childItem.length > 0) {
-      const handleExpand = () => {
-        setOpenChild(!openChild);
-      };
-
       const customListItemButtonSx = { justifyContent: openDrawer ? 'initial' : 'center' };
 
       const listItemTextSx = { opacity: openDrawer ? 1 : 0, color: 'rgba(98, 98, 98, 1)' };
@@ -229,8 +249,12 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
         <>
           <Tooltip title={!openDrawer ? item.screenLabel : ''} placement={'right'} arrow>
             <CustomListItem onClick={handleExpand} disablePadding>
-              <CustomListItemButton sx={customListItemButtonSx}>
-                <CustomListItemIcon>{itemCustomListItemIcon}</CustomListItemIcon>
+              <CustomListItemButton
+                sx={customListItemButtonSx}
+                onMouseEnter={() => setHoverItem(true)}
+                onMouseLeave={() => setHoverItem(false)}
+              >
+                <CustomListItemIcon>{openDrawerButton}</CustomListItemIcon>
                 <ListItemText primary={item.screenLabel} sx={listItemTextSx} />
                 {expandButton}
               </CustomListItemButton>
@@ -238,13 +262,13 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
           </Tooltip>
 
           <Collapse in={openChild} unmountOnExit>
-            <Divider style={{ marginTop: 8 }} />
+            <Divider style={{ marginTop: '8px' }} />
             <List
               component={'div'}
               style={{
-                marginLeft: openDrawer ? 20 : 0,
-                paddingTop: 5,
-                paddingBottom: 5,
+                marginLeft: openDrawer ? '8px' : '0px',
+                paddingTop: '8px',
+                paddingBottom: '8px',
               }}
             >
               {childItem}
@@ -254,7 +278,15 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
         </>
       );
     }
-  }, [childItem, expandButton, item.screenLabel, itemCustomListItemIcon, openChild, openDrawer]);
+  }, [
+    childItem,
+    expandButton,
+    handleExpand,
+    item.screenLabel,
+    openChild,
+    openDrawer,
+    openDrawerButton,
+  ]);
 
   return <Box>{childItemCollapse}</Box>;
 };
