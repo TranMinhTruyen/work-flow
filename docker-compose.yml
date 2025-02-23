@@ -3,9 +3,11 @@
 services:
   mongodb:
     container_name: mongodb
-    image: mongo:latest
+    image: mongo
     restart: always
     environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=workflow@123
       - MONGO_INITDB_DATABASE=work-flow
     volumes:
       - D:\work-flow\mongodb:/data
@@ -13,17 +15,38 @@ services:
       - "27017:27017"
     networks:
       - app-network
+    command:
+      - "--auth"
+      - "--bind_ip_all"
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 2g
 
   redis:
     container_name: redis
-    image: redis:latest
+    image: redis
     restart: always
+    command:
+      - redis-server
+      - "--requirepass workflow@123"
+      - "--maxmemory 1gb"
+      - "--maxmemory-policy allkeys-lru"
+      - "--protected-mode yes"
     volumes:
       - D:\work-flow\redis:/data
     ports:
       - "6379:6379"
     networks:
       - app-network
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 1.5g
 
   minio:
     image: minio/minio

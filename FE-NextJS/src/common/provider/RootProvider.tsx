@@ -1,4 +1,5 @@
 'use client';
+
 import { ILoginResponse } from '@/app/(auth)/login/model/LoginModel';
 import i18n from '@/app/i18n';
 import { IBaseRequest } from '@/common/model/BaseRequest';
@@ -133,10 +134,18 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
           });
         }
 
+        if (store.getState().commonState.isLoading) {
+          dispatch(toggleLoading(false));
+        }
+
         return response;
       },
       error => {
         const axiosError = error as AxiosError<IBaseResponse>;
+
+        if (axiosError.config?.url === '/api/proxy/check-proxy') {
+          return;
+        }
 
         let responseStatus = 500;
         let responseMessage = '';
@@ -216,6 +225,10 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
             />
           ),
         });
+
+        if (store.getState().commonState.isLoading) {
+          dispatch(toggleLoading(false));
+        }
 
         return Promise.reject(error);
       }

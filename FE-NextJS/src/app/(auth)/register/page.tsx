@@ -43,9 +43,7 @@ const Register = () => {
   const { navigate } = useNavigate();
   const classes = registerStyles();
 
-  const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>({
-    defaultValues: { birthDay: '', image: undefined },
-  });
+  const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>();
 
   useEffect(() => {
     reset();
@@ -179,7 +177,6 @@ const Register = () => {
             name={'birthDay'}
             control={control}
             i18n={I18nEnum.REGISTER_I18N}
-            required
             width={400}
           />
 

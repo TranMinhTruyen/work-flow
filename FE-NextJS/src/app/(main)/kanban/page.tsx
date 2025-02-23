@@ -104,7 +104,6 @@ const Kanban: NextPage = () => {
           <SelectInput
             displayNone
             data={issueTypeSelect}
-            defaultValue={''}
             label={'Issue Type'}
             disabled={!isShowFilter}
             sx={styles.selectInput}
@@ -113,7 +112,6 @@ const Kanban: NextPage = () => {
           <SelectInput
             displayNone
             data={statusTypeSelect}
-            defaultValue={''}
             label={'Status'}
             disabled={!isShowFilter}
             sx={styles.selectInput}
@@ -122,7 +120,6 @@ const Kanban: NextPage = () => {
           <SelectInput
             displayNone
             data={assigneeSelect}
-            defaultValue={''}
             label={'Assignee'}
             disabled={!isShowFilter}
             sx={styles.selectInput}

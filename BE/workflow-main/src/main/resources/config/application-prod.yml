@@ -4,10 +4,14 @@ client:
 redis:
   host: 192.168.1.10
   port: 6379
+  password: workflow@123
 
 spring:
   data:
     mongodb:
+      authentication-database: admin
+      username: root
+      password: workflow@123
       host: 192.168.1.10
       port: 27017
       database: work-flow

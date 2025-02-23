@@ -1,4 +1,5 @@
 'use client';
+
 import { SelectDataType } from '@/common/constants/typeConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
@@ -22,7 +23,6 @@ export type MultiSelectInputProps = Omit<
   width?: number;
   sx?: SxProps<Theme>;
   value?: string[];
-  defaultValue?: string[];
   data: SelectDataType[];
   helperText?: string | null;
   onChange?: (value: string[]) => void;
@@ -41,7 +41,6 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     sx,
     data,
     value: valueProps,
-    defaultValue,
     onChange: onChangeProps,
     onBlur: onBlurProps,
     label,
@@ -51,22 +50,16 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
     ...restProps
   } = props;
 
-  const [selectValues, setSelectValues] = useState<string[]>(defaultValue ?? []);
+  const [selectValues, setSelectValues] = useState<string[]>([]);
 
   useEffect(() => {
-    if (valueProps?.every(element => selectValues.includes(element))) {
-      return;
-    }
-    if (valueProps !== undefined) {
-      setSelectValues(valueProps);
-    }
-  }, [selectValues, valueProps]);
+    setSelectValues(valueProps ?? []);
+  }, [valueProps]);
 
   const handleOnChange = useCallback(
     (event: SelectChangeEvent<string[]>) => {
       const currentValue = event.target.value;
 
-      // On autofill we get a stringified value.
       let newValues: string[];
       if (typeof currentValue === 'string') {
         newValues = currentValue.split(',');
@@ -112,13 +105,12 @@ const MultiSelectInput = (props: MultiSelectInputProps) => {
         notched={true}
         error={error}
         value={selectValues}
-        defaultValue={selectValues}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
         sx={sx}
         multiple
         renderValue={selected => {
-          const renderValue = data.filter(item => selected.includes(item.key));
+          const renderValue = data.filter(item => (selected as string[]).includes(item.key));
           return (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {renderValue.map((item, index) => (

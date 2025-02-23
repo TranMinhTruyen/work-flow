@@ -1,19 +1,13 @@
 'use client';
 
-import RootProvider from '@/common/provider/RootProvider';
-import DialogContainer from '@/components/dialog/DialogContainer';
-import BackButtonListener from '@/components/loading/BackButtonListener ';
-import store, { persistor } from '@/lib/store';
-import CssBaseline from '@mui/material/CssBaseline';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { memo, ReactNode } from 'react';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+import { ReactNode } from 'react';
 import './globals.css';
+import Main from './main';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const RootLayout = ({ children }: { children: Readonly<ReactNode> }) => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html>
       <head>
@@ -24,18 +18,11 @@ const RootLayout = ({ children }: { children: Readonly<ReactNode> }) => {
       </head>
       <body>
         <div id="root">
-          <Provider store={store}>
-            <CssBaseline />
-            <RootProvider>
-              <PersistGate persistor={persistor}>{children}</PersistGate>
-            </RootProvider>
-            <BackButtonListener />
-            <DialogContainer />
-          </Provider>
+          <Main>{children}</Main>
         </div>
       </body>
     </html>
   );
 };
 
-export default memo(RootLayout);
+export default RootLayout;

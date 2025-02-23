@@ -87,7 +87,7 @@ const MainHeader = (props: HeaderProps) => {
             id={'language'}
             width={150}
             data={toSelectData(languageData, { key: 'id', value: 'label' })}
-            defaultValue={language}
+            value={language}
             label={t('label.language')}
             onChange={handleChangeLanguage}
           />

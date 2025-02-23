@@ -22,13 +22,12 @@ import 'dayjs/locale/vi';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
-  'value' | 'onChange' | 'onBlur' | 'onFocus' | 'onClose'
+  'value' | 'onChange' | 'onBlur' | 'onFocus' | 'onClose' | 'defaultValue'
 > & {
   i18n: I18nEnum;
   height?: number;
   width?: number;
   value?: DateType;
-  defaultValue?: DateType;
   inputFormat?: string;
   views?: DateView[] | undefined;
   openTo?: DateView;
@@ -45,8 +44,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     id,
     width = 200,
     label,
-    value,
-    defaultValue,
+    value: valueProps,
     inputFormat = FULL_DATE_FORMAT,
     views,
     openTo,
@@ -68,14 +66,8 @@ const DatePickerInput = (props: DatePickerProps) => {
   }, [language]);
 
   useEffect(() => {
-    if (value) {
-      setSelectedDate(value);
-    } else if (defaultValue) {
-      setSelectedDate(defaultValue);
-    } else {
-      setSelectedDate(null);
-    }
-  }, [defaultValue, selectedDate, value]);
+    setSelectedDate(valueProps ?? null);
+  }, [valueProps]);
 
   const handleOnChange = useCallback(
     (value: DateType) => {
@@ -111,7 +103,6 @@ const DatePickerInput = (props: DatePickerProps) => {
     >
       <CustomDatePicker
         className={className}
-        defaultValue={defaultValue ? dayjs(defaultValue, inputFormat) : null}
         value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate, inputFormat)}
         views={views}
         format={inputFormat}

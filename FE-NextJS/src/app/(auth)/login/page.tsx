@@ -1,16 +1,12 @@
 'use client';
 
 import { ILoginForm } from '@/app/(auth)/login/model/LoginForm';
-import { CommonElement } from '@/common/constants/typeConst';
 import { HOME_URL, REGISTER_URL } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import useNavigate from '@/common/hooks/useNavigate';
-import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
-import useScreenComponent from '@/common/hooks/useScreenComponent';
 import Button from '@/components/button/Button';
 import CheckBox from '@/components/form/CheckboxInput';
 import TextInput from '@/components/form/TextInput';
-import DemoModal, { Item, TestInputValue } from '@/components/modal/DemoModal';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
@@ -23,7 +19,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitLogin } from './service/action';
@@ -32,18 +28,14 @@ const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const { t } = useTranslation(I18nEnum.LOGIN_I18N);
   const { navigate } = useNavigate();
-  const { createById } = useScreenComponent();
 
-  const modalRef = useRef<PromiseModalRef<Item, TestInputValue>>(null);
-
-  const { control, setValue, reset, trigger, handleSubmit } = useForm<ILoginForm>({
+  const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
     defaultValues: { isRemember: false },
   });
 
   useEffect(() => {
     reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reset]);
 
   const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
@@ -58,37 +50,6 @@ const LoginPage = () => {
     },
     [navigate, trigger]
   );
-
-  const handleOpenModal = useCallback(async () => {
-    if (modalRef.current) {
-      const result = await modalRef.current.open({
-        inputValue: {
-          value1: 'Input value 1',
-          value2: 'Input value 2',
-        },
-      });
-      setValue('userName', result?.name);
-    }
-  }, [setValue]);
-
-  const demoModal: CommonElement = useMemo(() => {
-    return createById(
-      'model',
-      <>
-        <Button
-          width={200}
-          label={
-            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {'Test open modal'}
-            </Typography>
-          }
-          onClick={handleOpenModal}
-          sx={loginStyles.button}
-        />
-        <DemoModal ref={modalRef} />
-      </>
-    );
-  }, [createById, handleOpenModal]);
 
   return (
     <form id={'login-form'} onSubmit={handleSubmit(handleLogin)}>
@@ -173,7 +134,6 @@ const LoginPage = () => {
           form={'login-form'}
           type={'submit'}
         />
-        {demoModal}
       </CardActions>
     </form>
   );

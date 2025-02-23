@@ -7,7 +7,7 @@ type OpenModalProps<P> = {
 
 /**
  * T = return type when modal close.
- * P = input type when open modal.
+ * P = inputValue type when open modal.
  */
 export type PromiseModalRef<T, P = unknown> = {
   open: (props?: OpenModalProps<P>) => Promise<T | undefined>;
@@ -32,6 +32,7 @@ const usePromiseModal = <T, P = unknown>(ref: Ref<PromiseModalRef<T, P>>) => {
       }
 
       setOpen(true);
+
       return new Promise(resolve => {
         resolveRef.current = resolve;
       });

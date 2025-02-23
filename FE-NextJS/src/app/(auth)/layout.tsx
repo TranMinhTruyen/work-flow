@@ -1,4 +1,5 @@
 'use client';
+
 import AuthProvider from '@/common/provider/AuthProvider';
 import AuthHeader from '@/components/header/auth-header/AuthHeader';
 import Card from '@mui/material/Card';

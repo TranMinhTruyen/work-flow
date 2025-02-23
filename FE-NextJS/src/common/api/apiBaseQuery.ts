@@ -1,5 +1,4 @@
 import { IBaseResponse } from '@/common/model/BaseResponse';
-import { toggleLoading } from '@/common/store/commonSlice';
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { ResponseType } from 'axios';
@@ -34,8 +33,6 @@ const apiBaseQuery =
       // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     } catch (error) {
       return { data: undefined, error: '', meta: undefined };
-    } finally {
-      dispatch(toggleLoading(false));
     }
   };
 

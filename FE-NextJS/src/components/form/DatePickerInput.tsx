@@ -62,7 +62,7 @@ const DatePickerInput = (props: DatePickerInputProps) => {
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           onClose={handleOnBlur}
-          error={!!(error && error.type !== 'valid')}
+          error={error && error.type !== 'valid'}
           helperText={
             error && error.type !== 'valid' && !isNullOrEmpty(error.message)
               ? translateError(error.message)

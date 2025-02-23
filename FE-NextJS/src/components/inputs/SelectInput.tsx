@@ -24,7 +24,6 @@ export type SelectInputProps = Omit<
   value?: string;
   placeholder?: string;
   data: SelectDataType[];
-  defaultValue?: string;
   displayNone?: boolean;
   helperText?: string | null;
   onChange?: (value: string) => void;
@@ -41,7 +40,6 @@ const SelectInput = (props: SelectInputProps) => {
     value: valueProps,
     onChange: onChangeProps,
     onBlur: onBlurProps,
-    defaultValue,
     placeholder,
     displayNone,
     error = false,
@@ -50,16 +48,11 @@ const SelectInput = (props: SelectInputProps) => {
     ...restProps
   } = props;
 
-  const [selectValue, setSelectValue] = useState<string>(defaultValue ?? '');
+  const [selectValue, setSelectValue] = useState<string>('');
 
   useEffect(() => {
-    if (valueProps !== undefined && selectValue.includes(valueProps)) {
-      return;
-    }
-    if (valueProps !== undefined) {
-      setSelectValue(valueProps);
-    }
-  }, [selectValue, valueProps]);
+    setSelectValue(valueProps ?? '');
+  }, [valueProps]);
 
   const handleOnChange = useCallback(
     (event: SelectChangeEvent<any>) => {

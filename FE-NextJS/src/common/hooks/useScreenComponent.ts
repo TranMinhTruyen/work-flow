@@ -1,10 +1,38 @@
 import { useCallback, useState } from 'react';
 import { Authorizer, CommonElement } from '../constants/typeConst';
 import { ScreenComponent } from '../model/ScreenMaster';
-import { checkAuthorizer } from '../utils/authUtil';
+import { getLoginData } from '../utils/authUtil';
 
 const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
   const [conponentList, setComponentList] = useState<ScreenComponent[]>(screenComponentList);
+
+  const checkAuthorizer = useCallback((authorizer: Authorizer) => {
+    const loginData = getLoginData();
+
+    if (!loginData) return false;
+
+    const userAuthorizer = loginData.userResponse;
+
+    if (!userAuthorizer) return false;
+
+    if (authorizer.role && userAuthorizer.role && authorizer.role === userAuthorizer.role) {
+      return true;
+    }
+
+    if (
+      authorizer.authorities &&
+      userAuthorizer.authorities &&
+      authorizer.authorities.some(item => userAuthorizer.authorities?.includes(item))
+    ) {
+      return true;
+    }
+
+    if (authorizer.level && userAuthorizer.level && authorizer.level === userAuthorizer.level) {
+      return true;
+    }
+
+    return false;
+  }, []);
 
   const checkComponentId = useCallback(
     (componentId: string) => {
