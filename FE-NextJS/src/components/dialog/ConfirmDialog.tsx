@@ -1,4 +1,5 @@
 'use client';
+
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { MessageType } from '@/common/enums/MessageEnum';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';

@@ -13,6 +13,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isLogin = checkLogin();
 
   useEffect(() => {
+    const check = async () => {
+      handleCheckProxy();
+    };
+
+    check();
+  }, []);
+
+  useEffect(() => {
     if (isLogin) {
       navigate(HOME_URL, true);
     }
@@ -24,10 +32,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const currentPath = sessionStorage.getItem(CURRENT_PATH);
     if (!isNullOrEmpty(currentPath)) {
       navigate(currentPath);
-    }
-
-    if (!isSet) {
-      handleCheckProxy();
     }
 
     setIsSet(true);

@@ -46,7 +46,7 @@ const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
         level: component.level,
       });
     },
-    [conponentList]
+    [checkAuthorizer, conponentList]
   );
 
   const createById = useCallback(
@@ -58,11 +58,14 @@ const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
     [checkComponentId]
   );
 
-  const createByAuthorizer = useCallback((authorizer: Authorizer, component: CommonElement) => {
-    if (checkAuthorizer(authorizer)) {
-      return component;
-    }
-  }, []);
+  const createByAuthorizer = useCallback(
+    (authorizer: Authorizer, component: CommonElement) => {
+      if (checkAuthorizer(authorizer)) {
+        return component;
+      }
+    },
+    [checkAuthorizer]
+  );
 
   const createByCondition = useCallback((condition: () => boolean, component: CommonElement) => {
     if (condition()) {

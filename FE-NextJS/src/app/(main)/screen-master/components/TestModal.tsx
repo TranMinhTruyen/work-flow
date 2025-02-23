@@ -1,3 +1,5 @@
+'use client';
+
 import { CommonElement } from '@/common/constants/typeConst';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 import useScreenComponent from '@/common/hooks/useScreenComponent';

@@ -1,8 +1,7 @@
 'use client';
 
 import useDialog from '@/common/hooks/useDialog';
-import { selectIsLoading } from '@/common/store/commonSlice';
-import { useAppSelector } from '@/lib/store';
+import store from '@/lib/store';
 import { useEffect, useMemo } from 'react';
 import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
@@ -17,7 +16,7 @@ export let openDialogContainer = (_props: DialogContainerProps) => {};
 
 const DialogContainer = () => {
   const { openDialog, dialogProps, isPropsNull, dialogType } = useDialog();
-  const isLoading: boolean = useAppSelector(selectIsLoading);
+  const isLoading: boolean = store.getState().commonState.isLoading;
 
   useEffect(() => {
     openDialogContainer = (props: DialogContainerProps) => openDialog(props);

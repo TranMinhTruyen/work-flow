@@ -6,9 +6,12 @@ import BackButtonListener from '@/components/loading/BackButtonListener ';
 import BackdropLoading from '@/components/loading/BackdropLoading';
 import store, { persistor } from '@/lib/store';
 import CssBaseline from '@mui/material/CssBaseline';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 import { Provider } from 'react-redux';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 const PersistGate = dynamic(
   () => import('redux-persist/integration/react').then(mod => mod.PersistGate),

@@ -1,11 +1,8 @@
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { ReactNode } from 'react';
 import './globals.css';
 import Main from './main';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
-
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = ({ children }: { children: Readonly<ReactNode> }) => {
   return (
     <html>
       <head>
