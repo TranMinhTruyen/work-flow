@@ -1,5 +1,3 @@
-'use client';
-
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { ReactNode } from 'react';
 import './globals.css';
