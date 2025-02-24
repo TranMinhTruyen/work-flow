@@ -6,14 +6,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true,
+    open: '/login',
   },
   build: {
     sourcemap: true,
   },
   resolve: {
     alias: {
-      // eslint-disable-next-line no-undef
       '@': path.resolve(__dirname, 'src'),
     },
   },

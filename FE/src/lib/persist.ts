@@ -1,3 +1,4 @@
+import baseApi from '@/common/api/apiBaseQuery';
 import { RESET_ALL } from '@/common/constants/commonConst';
 import commonSlice from '@/common/store/commonSlice';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -6,6 +7,7 @@ import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 
 // All state
 const combineReducer = combineReducers({
+  [baseApi.reducerPath]: baseApi.reducer,
   commonState: commonSlice,
 });
 

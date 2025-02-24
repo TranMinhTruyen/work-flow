@@ -1,6 +1,6 @@
-import useRouter from '@/common/hooks/useNavigate';
+import useRouter from '@/common/hooks/useRouter';
 import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
-// import { checkAccessScreen } from '@/common/utils/authUtil';
+import { checkAccessScreen } from '@/common/utils/authUtil';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -314,7 +314,3 @@ export const CustomListItemIcon = styled(ListItemIcon)({
 });
 
 export default DrawerMenu;
-
-const checkAccessScreen = (screen: any) => {
-  return true;
-};

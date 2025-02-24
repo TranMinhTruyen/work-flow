@@ -1,5 +1,5 @@
 import { CURRENT_PATH } from '@/common/constants/commonConst';
-import useRouter from '@/common/hooks/useNavigate';
+import useRouter from '@/common/hooks/useRouter';
 import { useEffect } from 'react';
 
 const BackButtonListener = () => {

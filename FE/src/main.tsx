@@ -5,7 +5,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import App from './App.tsx';
-import BackButtonListener from './components/loading/BackButtonListener .tsx';
 import './i18n.ts';
 import './index.css';
 import store, { persistor } from './lib/store.ts';
@@ -18,7 +17,6 @@ createRoot(document.getElementById('root')!).render(
       <PersistGate loading={null} persistor={persistor}>
         <CssBaseline />
         <App />
-        <BackButtonListener />
       </PersistGate>
     </Provider>
   </StrictMode>

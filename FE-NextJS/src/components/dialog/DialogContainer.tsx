@@ -1,16 +1,10 @@
 'use client';
 
-import useDialog from '@/common/hooks/useDialog';
+import useDialog, { DialogContainerProps } from '@/common/hooks/useDialog';
 import store from '@/lib/store';
 import { useEffect, useMemo } from 'react';
-import ConfirmDialog, { ConfirmDialogProps } from './ConfirmDialog';
+import ConfirmDialog from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
-
-export type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancelButton'> & {
-  type: DialogType;
-};
-
-type DialogType = 'confirm' | 'loading' | 'message';
 
 export let openDialogContainer = (_props: DialogContainerProps) => {};
 

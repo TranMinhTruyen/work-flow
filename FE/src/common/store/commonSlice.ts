@@ -1,3 +1,4 @@
+import { ILoginResponse } from '@/pages/auth-page/login/model/LoginModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../lib/store';
 
@@ -8,6 +9,7 @@ interface CommonState {
   isLogin: boolean;
   isLoading: boolean;
   openConfirmDialog: boolean;
+  loginData?: ILoginResponse;
   proxyType?: string;
 }
 
@@ -25,6 +27,13 @@ const commonSlice = createSlice({
   name: 'commonState',
   initialState,
   reducers: {
+    setLoginData: (state, action: PayloadAction<ILoginResponse>) => {
+      const { payload } = action;
+      return {
+        ...state,
+        loginData: payload,
+      };
+    },
     toggleDrawer: state => {
       return {
         ...state,
@@ -73,6 +82,7 @@ const commonSlice = createSlice({
 });
 
 export const {
+  setLoginData,
   toggleDrawer,
   toggleLogin,
   toggleLoading,
@@ -82,6 +92,7 @@ export const {
   setProxyType,
 } = commonSlice.actions;
 
+export const selectLoginData = (state: RootState) => state.commonState.loginData;
 export const selectOpenDrawer = (state: RootState) => state.commonState.isOpenDrawer;
 export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
