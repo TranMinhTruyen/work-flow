@@ -1,0 +1,15 @@
+{
+  "label": {
+    "userName": "ユーザー名",
+    "password": "パスワード",
+    "email": "メール",
+    "fullName": "フルネーム",
+    "birthDay": "生年月日",
+    "role": "役割",
+    "authorities": "権限",
+    "uploadImage": "画像をアップロード"
+  },
+  "button": {
+    "register": "登録"
+  }
+}

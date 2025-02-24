@@ -1,4 +1,4 @@
-import { SelectDataFunc } from 'common/constants/type';
+import { FileType, Obj, SelectDataType } from '../constants/typeConst';
 
 /**
  *
@@ -51,9 +51,9 @@ export const readFileAsDataURL = (file: File): Promise<string> => {
  * @param data
  * @returns
  */
-export const convertToDataURL = (data?: Uint8Array | number[]): Promise<string> => {
+export const convertToDataURL = (data?: FileType): Promise<string> => {
   return new Promise(resolve => {
-    if (data === undefined) {
+    if (!data) {
       return;
     }
 
@@ -80,8 +80,28 @@ export const convertToDataURL = (data?: Uint8Array | number[]): Promise<string> 
  * @param keys
  * @returns
  */
-export const toSelectData: SelectDataFunc = (items, keys) =>
+export const toSelectData = (
+  items: Obj[],
+  keys: { key?: string; value?: string }
+): SelectDataType[] =>
   items.map(item => ({
     key: item[keys?.key || 'key'],
     value: item[keys?.value || 'value'],
   }));
+
+export const blobToBase64 = (blob: Blob): Promise<string | null> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(null);
+      }
+    };
+    reader.onerror = () => {
+      reject(null);
+    };
+    reader.readAsDataURL(blob);
+  });
+};

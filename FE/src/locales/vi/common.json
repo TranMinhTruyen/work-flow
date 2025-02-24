@@ -1,0 +1,52 @@
+{
+  "en": "Tiếng Anh",
+  "vi": "Tiếng Việt",
+  "ja": "Tiếng Nhật",
+  "validate": {
+    "isRequired": "{0} là bắt buộc",
+    "maxLengthError": "{0} chiều dài tối đa là {1}",
+    "emailError": "{0} không hợp lệ"
+  },
+  "label": {
+    "language": "Ngôn ngữ",
+    "totalFile": "Tổng số file: "
+  },
+  "button": {
+    "save": "Lưu",
+    "back": "Quay lại",
+    "cancel": "Hủy"
+  },
+  "ERROR": "Lỗi",
+  "SUCCESS": "Thành công",
+  "WARN": "Cảnh báo",
+  "INFO": "Thông báo",
+  "errorcode": "Mã lỗi",
+  "errormessage": "Thông báo lỗi",
+  "message": {
+    "noPermission": "Bạn không có quyền!"
+  },
+  "table": {
+    "noData": "Không có dữ liệu"
+  },
+  "network": {
+    "interrupted": "Kết nối đã bị gián đoạn.",
+    "serverDown": "Đã kết nối Internet hoặc máy chủ có thể bị ngắt.",
+    "400": "Request lỗi",
+    "401": "Không được phép",
+    "403": "Không có quyền truy cập",
+    "404": "Không tìm thấy",
+    "408": "Hết thời gian yêu cầu",
+    "409": "Xung đột",
+    "413": "Payload quá lớn",
+    "429": "Yêu cầu quá nhiều",
+    "500": "Lỗi máy chủ nội bộ",
+    "502": "Bad Gateway",
+    "503": "Dịch vụ không khả dụng",
+    "504": "Gateway hết thời gian",
+    "default": "Đã xảy ra lỗi. Trạng thái HTTP {0}"
+  },
+  "screenTitle": {
+    "login": "Đăng nhập",
+    "register": "Đăng kí"
+  }
+}

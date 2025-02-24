@@ -1,0 +1,15 @@
+{
+  "label": {
+    "userName": "Tài khoản",
+    "password": "Mật khẩu",
+    "email": "Email",
+    "fullName": "Tên đầy đủ",
+    "birthDay": "Ngày sinh",
+    "role": "Vai trò",
+    "authorities": "Quyền hạn",
+    "uploadImage": "Tải lên tệp hình ảnh"
+  },
+  "button": {
+    "register": "Đăng kí"
+  }
+}

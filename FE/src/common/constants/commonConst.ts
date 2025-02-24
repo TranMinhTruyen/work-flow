@@ -1,4 +1,5 @@
 import { Accept } from 'react-dropzone';
+import { SelectDataType } from './typeConst';
 
 //#region Axios config
 export const TIME_OUT: number = 60000;
@@ -38,13 +39,13 @@ export const RESET_ALL: string = 'RESET_ALL';
 //#region Language
 export const languageConst = [
   {
-    id: 'EN',
+    id: 'en',
   },
   {
-    id: 'VN',
+    id: 'vi',
   },
   {
-    id: 'JP',
+    id: 'ja',
   },
 ];
 //#endregion
@@ -52,3 +53,41 @@ export const languageConst = [
 //#region
 export const CURRENT_PATH: string = 'currentPath';
 //#endregion
+
+export const authorities: SelectDataType[] = [
+  {
+    key: 'CREATE',
+    value: 'Allow CREATE',
+  },
+  {
+    key: 'GET',
+    value: 'Allow GET',
+  },
+  {
+    key: 'UPDATE',
+    value: 'Allow UPDATE',
+  },
+  {
+    key: 'DELETE',
+    value: 'Allow DELETE',
+  },
+];
+
+export const role: SelectDataType[] = [
+  {
+    key: 'ADMIN',
+    value: 'Role Administrator',
+  },
+  {
+    key: 'USER',
+    value: 'Role User',
+  },
+];
+
+export const FULL_DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm:ss';
+
+export const FULL_DATE_FORMAT = 'DD/MM/YYYY';
+
+export const FULL_TIME_FORMAT = 'HH:mm:ss';
+
+export const DATE_TIME_STRING_FORMAT = 'DDMMYYYYHHmmss';

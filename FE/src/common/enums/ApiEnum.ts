@@ -1,0 +1,21 @@
+/* eslint-disable no-unused-vars */
+
+export enum ApiEnum {
+  // User api
+  CREATE_USER = 'CREATE_USER',
+  LOGIN = 'LOGIN',
+  GET_PROFILE = 'GET_PROFILE',
+  UPDATE_USER_ACCOUNT = 'UPDATE_USER_ACCOUNT',
+  CHANGE_LOGIN_PASSWORD = 'CHANGE_LOGIN_PASSWORD',
+
+  // Master item api
+  CREATE_MASTER = 'CREATE_MASTER',
+
+  // Proxy api
+  CHECK_PROXY = 'CHECK_PROXY',
+  GET_ACCESS_SCREEN = 'GET_ACCESS_SCREEN',
+
+  // File api
+  UPLOAD_FILE = 'UPLOAD_FILE',
+  DOWNLOAD_FILE = 'DOWNLOAD_FILE',
+}

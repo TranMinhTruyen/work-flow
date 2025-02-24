@@ -1,8 +1,12 @@
 {
-  "EN": "English",
-  "VN": "Vietnamese",
-  "JP": "Japanese",
-  "isRequired": "is required",
+  "en": "English",
+  "vi": "Vietnamese",
+  "ja": "Japanese",
+  "validate": {
+    "isRequired": "{0} is required",
+    "maxLengthError": "{0} max length is {1}",
+    "emailError": "{0} format invalid"
+  },
   "label": {
     "language": "Language",
     "totalFile": "Total file: "
@@ -11,5 +15,38 @@
     "save": "Save",
     "back": "Back",
     "cancel": "Cancel"
+  },
+  "ERROR": "Error",
+  "SUCCESS": "Success",
+  "WARNING": "Warning",
+  "INFO": "Info",
+  "errorcode": "Error code",
+  "errormessage": "Error message",
+  "message": {
+    "noPermission": "You don't have any permission!"
+  },
+  "table": {
+    "noData": "No data"
+  },
+  "network": {
+    "interrupted": "The connection was interrupted.",
+    "serverDown": "Connected to the Internet or the server may be down.",
+    "400": "Bad request",
+    "401": "Unauthorized",
+    "403": "Forbidden",
+    "404": "Not Found",
+    "408": "Request Timeout",
+    "409": "Conflict",
+    "413": "Payload Too Large",
+    "429": "Too Many Requests",
+    "500": "Internal Server Error",
+    "502": "Bad Gateway",
+    "503": "Service Unavailable",
+    "504": "Gateway Timeout",
+    "default": "An error occurred. HTTP status {0}"
+  },
+  "screenTitle": {
+    "login": "Login",
+    "register": "Register"
   }
 }

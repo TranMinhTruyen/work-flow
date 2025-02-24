@@ -1,13 +1,10 @@
+import { selectOpenDrawer } from '@/common/store/commonSlice';
+import { useAppSelector } from '@/lib/store';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';
-import IconButton from '@mui/material/IconButton';
-import { memo, useCallback } from 'react';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
 import DrawerMenu from './DrawerMenu';
-import { ChevronLeft } from '@mui/icons-material';
-import { selectOpenDrawer, toggleDrawer } from 'common/commonSlice';
-import { useAppDispatch, useAppSelector } from 'common/store';
 
 type IDrawerProps = {
   drawerWidth: number;
@@ -19,20 +16,11 @@ type ICustomDrawerProps = DrawerProps & {
 
 const Drawer = (props: IDrawerProps) => {
   const { drawerWidth } = props;
-  const dispatch = useAppDispatch();
   const openDrawer = useAppSelector(selectOpenDrawer);
 
-  const handleOpenDrawer = useCallback(() => {
-    dispatch(toggleDrawer());
-  }, [dispatch]);
-
   return (
-    <CustomDrawer drawerWidth={drawerWidth} variant="permanent" open={openDrawer}>
-      <DrawerHeader>
-        <IconButton onClick={handleOpenDrawer} sx={{ justifyContent: 'center' }}>
-          <ChevronLeft fontSize="large" />
-        </IconButton>
-      </DrawerHeader>
+    <CustomDrawer drawerWidth={drawerWidth} variant={'permanent'} open={openDrawer}>
+      <DrawerHeader sx={{ minHeight: '55px !important' }}></DrawerHeader>
       <Divider />
       <DrawerMenu />
     </CustomDrawer>
@@ -54,9 +42,10 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 6px)`,
+  width: `calc(${theme.spacing(5)} + 9px)`,
+  minWidth: '57px',
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 6px)`,
+    width: `calc(${theme.spacing(6)} + 9px)`,
   },
 });
 
@@ -85,4 +74,4 @@ const CustomDrawer = styled(MuiDrawer, {
   }),
 }));
 
-export default memo(Drawer);
+export default Drawer;
