@@ -16,9 +16,11 @@ const useDialog = () => {
   const [countdown, setCountdown] = useState<number>(0);
 
   const openDialog = useCallback((newState: DialogContainerProps) => {
-    const timeout =
-      newState.timeout !== undefined && newState.timeout > 0 ? newState.timeout * 1000 : 10000;
-    setCountdown(timeout / 1000);
+    if (newState.timeout) {
+      const timeout =
+        newState.timeout !== undefined && newState.timeout > 0 ? newState.timeout * 1000 : 10000;
+      setCountdown(timeout / 1000);
+    }
     setState(prev => ({
       ...prev,
       open: true,

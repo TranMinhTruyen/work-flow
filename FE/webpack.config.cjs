@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -23,8 +22,9 @@ module.exports = (env, argv) => {
         common: path.resolve(__dirname, 'src/common/'),
         components: path.resolve(__dirname, 'src/components/'),
         lib: path.resolve(__dirname, 'src/lib/'),
-        locales: path.resolve(__dirname, 'src/locales'),
+        locales: path.resolve(__dirname, 'src/locales/'),
         pages: path.resolve(__dirname, 'src/pages/'),
+        services: path.resolve(__dirname, 'src/services/'),
       },
     },
 

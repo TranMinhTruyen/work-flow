@@ -2,6 +2,7 @@
 
 export enum ApiEnum {
   // User api
+  CREATE_USER_ADMIN = 'CREATE_USER_ADMIN',
   CREATE_USER = 'CREATE_USER',
   LOGIN = 'LOGIN',
   GET_PROFILE = 'GET_PROFILE',

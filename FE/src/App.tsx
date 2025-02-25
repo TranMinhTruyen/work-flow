@@ -1,11 +1,14 @@
 import { ReactNode, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import routerItemList from './common/constants/routerItemList';
 import { AUTH_PREFIX, MAIN_PREFIX, screenUrl } from './common/constants/urlConst';
 import AuthProvider from './common/provider/AuthProvider';
+import MainProvider from './common/provider/MainProvider';
 import RootProvider from './common/provider/RootProvider';
+import DialogContainer from './components/dialog/DialogContainer';
 import AuthLayout from './components/layouts/AuthLayout';
+import MainLayout from './components/layouts/MainLayout';
 import BackButtonListener from './components/loading/BackButtonListener ';
 import BackdropLoading from './components/loading/BackdropLoading';
 
@@ -19,6 +22,7 @@ const App = () => {
     <BrowserRouter>
       <RootProvider>
         <Routes>
+          <Route path={'/'} element={<Navigate to={screenUrl['LOGIN'].path} replace />} />
           <Route
             path={'/'}
             element={
@@ -40,7 +44,16 @@ const App = () => {
               ))}
           </Route>
 
-          <Route path={'/'}>
+          <Route
+            path={'/'}
+            element={
+              <BackgroundLoading>
+                <MainProvider>
+                  <MainLayout />
+                </MainProvider>
+              </BackgroundLoading>
+            }
+          >
             {routerItemList
               .filter(item => item.screenPrefix === MAIN_PREFIX)
               .map((item, index) => (
@@ -54,6 +67,7 @@ const App = () => {
           </Route>
         </Routes>
       </RootProvider>
+      <DialogContainer />
       <BackButtonListener />
     </BrowserRouter>
   );

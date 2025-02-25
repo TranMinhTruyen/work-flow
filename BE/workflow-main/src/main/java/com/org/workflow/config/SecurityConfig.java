@@ -44,7 +44,7 @@ public class SecurityConfig {
       "/api-docs",
       "/ws/**",
       "/api/user-account/login",
-      "/api/user-account/create",
+      "/api/user-account/createUser",
       "/api/proxy/check-proxy",
       "/api/master-item/get",
       "/api/master-item/create",

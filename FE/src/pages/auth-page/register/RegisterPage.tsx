@@ -22,8 +22,8 @@ import { makeStyles } from '@mui/styles';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { handleSubmitRegister } from './action';
 import { IRegisterForm } from './model/RegisterForm';
-import { handleSubmitRegister } from './service/action';
 
 const Register = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

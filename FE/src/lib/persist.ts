@@ -1,6 +1,7 @@
 import baseApi from '@/common/api/apiBaseQuery';
 import { RESET_ALL } from '@/common/constants/commonConst';
 import commonSlice from '@/common/store/commonSlice';
+import kanbanSlice from '@/pages/main-page/kanban/action/kanbanSlice';
 import { combineReducers } from '@reduxjs/toolkit';
 import { Transform } from 'redux-persist';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
@@ -9,10 +10,8 @@ import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 const combineReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
   commonState: commonSlice,
+  kanbanState: kanbanSlice,
 });
-
-// Check is client or server
-export const isClient = typeof window !== 'undefined';
 
 // Create sessionStorage
 export const sessionStorage = createWebStorage('session');
@@ -43,6 +42,7 @@ export const commonTransform: Transform<any, any> = {
       language: inboundState.language,
       isOpenDrawer: inboundState.isOpenDrawer,
       isLogin: inboundState.isLogin,
+      screenExpand: inboundState.screenExpand,
     };
   },
   out: (outboundState: any) => {

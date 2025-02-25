@@ -37,16 +37,32 @@ public class UserController extends AbstractController {
 
 
   /**
-   * Create AppUser.
+   * Create new user admin role.
+   *
+   * @param createUserRequest CreateUserRequest
+   * @return ResponseEntity<BaseResponse>
+   * @throws WFException WFException
+   */
+  @PostMapping(value = "/create-user-for-admin")
+  public ResponseEntity<BaseResponse> createUserForAdmin(
+      @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WFException {
+    CreateUserResponse result = userService.createUserForAdmin(createUserRequest);
+    return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
+        result.getUserName());
+  }
+
+
+  /**
+   * Create new user.
    *
    * @param createUserRequest CreateAppUserRequest
    * @return ResponseEntity<BaseResponse>
-   * @throws WFException AppException
+   * @throws WFException WFException
    */
-  @PostMapping(value = "/create")
-  public ResponseEntity<BaseResponse> createUserAccount(
+  @PostMapping(value = "/create-user")
+  public ResponseEntity<BaseResponse> createUser(
       @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WFException {
-    CreateUserResponse result = userService.createUserAccount(createUserRequest);
+    CreateUserResponse result = userService.createUser(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
         result.getUserName());
   }
@@ -57,7 +73,7 @@ public class UserController extends AbstractController {
    *
    * @param loginRequest LoginRequest
    * @return ResponseEntity<BaseResponse>
-   * @throws WFException AppException
+   * @throws WFException WFException
    */
   @PostMapping("/login")
   public ResponseEntity<BaseResponse> loginUserAccount(
@@ -71,7 +87,7 @@ public class UserController extends AbstractController {
    * Get AppUser profile.
    *
    * @return ResponseEntity<BaseResponse>
-   * @throws WFException AppException
+   * @throws WFException WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/get-profile")
@@ -87,7 +103,7 @@ public class UserController extends AbstractController {
    *
    * @param updateUserRequest UpdateUserRequest
    * @return ResponseEntity<BaseResponse>
-   * @throws WFException AppException
+   * @throws WFException WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/update-user-account")
@@ -104,7 +120,7 @@ public class UserController extends AbstractController {
    *
    * @param changePasswordRequest ChangePasswordRequest
    * @return ResponseEntity<BaseResponse>
-   * @throws WFException AppException
+   * @throws WFException WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/change-login-password")

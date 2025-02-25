@@ -1,5 +1,11 @@
 import useRouter from '@/common/hooks/useRouter';
-import { selectOpenDrawer, toggleDrawer } from '@/common/store/commonSlice';
+import {
+  removeScreenExpand,
+  selectOpenDrawer,
+  selectScreenExpand,
+  setScreenExpand,
+  toggleDrawer,
+} from '@/common/store/commonSlice';
 import { checkAccessScreen } from '@/common/utils/authUtil';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -17,7 +23,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import screenItemList, { IScreenItem } from './ScreenListItem';
 
 export type DrawerMenuItemProps = {
@@ -168,7 +174,15 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
   const [openChild, setOpenChild] = useState<boolean>(false);
   const [hoverItem, setHoverItem] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+  const screenExpand = useAppSelector(selectScreenExpand);
   const openDrawer = useAppSelector(selectOpenDrawer);
+
+  useEffect(() => {
+    if (screenExpand.includes('ALL') || screenExpand.find(x => x === item.screenKey)) {
+      setOpenChild(true);
+    }
+  }, []);
 
   const expandButton = useMemo(
     () =>
@@ -235,6 +249,11 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
 
   const handleExpand = useCallback(() => {
     setOpenChild(!openChild);
+    if (!openChild) {
+      dispatch(setScreenExpand(item.screenKey));
+    } else {
+      dispatch(removeScreenExpand(item.screenKey));
+    }
   }, [openChild]);
 
   const childItemCollapse = useMemo(() => {

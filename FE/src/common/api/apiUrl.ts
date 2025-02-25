@@ -8,8 +8,12 @@ export const controller: Record<ApiEnum, ApiType> = {
     url: `${USER_PREFIX}/login`,
     method: 'POST',
   },
+  [ApiEnum.CREATE_USER_ADMIN]: {
+    url: `${USER_PREFIX}/create-user-for-admin`,
+    method: 'POST',
+  },
   [ApiEnum.CREATE_USER]: {
-    url: `${USER_PREFIX}/create`,
+    url: `${USER_PREFIX}/create-user`,
     method: 'POST',
   },
   [ApiEnum.GET_PROFILE]: {

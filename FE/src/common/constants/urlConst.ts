@@ -1,8 +1,8 @@
 // Auth screen
-export const AUTH_PREFIX = '/auth';
+export const AUTH_PREFIX = 'auth';
 
 // Main screen
-export const MAIN_PREFIX = '/';
+export const MAIN_PREFIX = 'main';
 
 export const screenUrl: Record<
   string,

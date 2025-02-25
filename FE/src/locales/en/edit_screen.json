@@ -1,0 +1,9 @@
+{
+  "label": {
+    "screenId": "Screen ID",
+    "screenName": "Screen name",
+    "screenUrl": "Screen URL",
+    "createDateTime": "Create datetime",
+    "updateDateTime": "Update dateTime"
+  }
+}

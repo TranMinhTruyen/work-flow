@@ -22,8 +22,10 @@ import useRouter from '../hooks/useRouter';
 import { getLoginData } from '../utils/authUtil';
 import { formatString } from '../utils/stringUtil';
 
+const URL = import.meta.env.VITE_SERVER_URL;
+
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8085',
+  baseURL: URL,
   timeout: TIME_OUT,
 });
 

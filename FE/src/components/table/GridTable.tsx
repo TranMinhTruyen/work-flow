@@ -38,7 +38,14 @@ const GridTable = (props: TableProps) => {
       minWidth={minWidth}
       maxWidth={maxWidth}
     >
-      <AgGridReact headerHeight={50} rowHeight={rowHeight} rowData={rowData} {...restProps} />
+      <AgGridReact
+        headerHeight={50}
+        rowHeight={rowHeight}
+        rowData={rowData}
+        enableCellTextSelection={true}
+        ensureDomOrder={true}
+        {...restProps}
+      />
     </AgGridContainer>
   );
 };

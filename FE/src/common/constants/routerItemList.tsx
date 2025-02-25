@@ -3,6 +3,10 @@ import { screenUrl } from './urlConst';
 
 const LoginPage = lazy(() => import('@/pages/auth-page/login/LoginPage'));
 const RegisterPage = lazy(() => import('@/pages/auth-page/register/RegisterPage'));
+const HomePage = lazy(() => import('@/pages/main-page/home/HomePage'));
+const KanbanPage = lazy(() => import('@/pages/main-page/kanban/KanbanPage'));
+const ScreenPage = lazy(() => import('@/pages/main-page/master/screen/ScreenPage'));
+const UserPage = lazy(() => import('@/pages/main-page/master/user/UserPage'));
 
 export interface IRouterItem {
   screen: ReactNode;
@@ -22,27 +26,22 @@ const routerItemList: Array<IRouterItem> = [
     screenPath: screenUrl['REGISTER'].path,
   },
   {
-    screen: null,
+    screen: <HomePage />,
     screenPrefix: screenUrl['HOME'].prefix,
     screenPath: screenUrl['HOME'].path,
   },
   {
-    screen: null,
+    screen: <KanbanPage />,
     screenPrefix: screenUrl['KANBAN'].prefix,
     screenPath: screenUrl['KANBAN'].path,
   },
   {
-    screen: null,
-    screenPrefix: screenUrl['KANBAN_V2'].prefix,
-    screenPath: screenUrl['KANBAN_V2'].path,
-  },
-  {
-    screen: null,
+    screen: <ScreenPage />,
     screenPrefix: screenUrl['SCREEN_MASTER'].prefix,
     screenPath: screenUrl['SCREEN_MASTER'].path,
   },
   {
-    screen: null,
+    screen: <UserPage />,
     screenPrefix: screenUrl['USER_MASTER'].prefix,
     screenPath: screenUrl['USER_MASTER'].path,
   },

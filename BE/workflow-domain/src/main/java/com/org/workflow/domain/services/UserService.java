@@ -9,7 +9,10 @@ import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
 
 import com.google.common.hash.Hashing;
+import com.org.workflow.core.common.enums.AuthorityEnums;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
+import com.org.workflow.core.common.enums.LevelEnums;
+import com.org.workflow.core.common.enums.RoleEnums;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.ScreenMaster;
 import com.org.workflow.dao.document.UserAccount;
@@ -124,14 +127,16 @@ public class UserService extends AbstractService {
 
 
   /**
-   * Create new user.
+   * Create new user admin role.
    *
    * @param baseRequest BaseRequest<CreateUserRequest>
    * @return CreateUserResponse
    * @throws WFException AppException
    */
-  public CreateUserResponse createUserAccount(BaseRequest<CreateUserRequest> baseRequest)
+  public CreateUserResponse createUserForAdmin(BaseRequest<CreateUserRequest> baseRequest)
       throws WFException {
+    String username = AuthUtil.getAuthentication().getUsername();
+
     CreateUserRequest createUserRequest = baseRequest.getPayload();
 
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
@@ -158,7 +163,59 @@ public class UserService extends AbstractService {
     userAccount.setAuthorities(createUserRequest.getAuthorities());
     userAccount.setLevel(createUserRequest.getLevel());
     userAccount.setImageObject(createUserRequest.getImage());
-    userAccount.setActive(true);
+    userAccount.setActive(false);
+    userAccount.setLoginFailCount(0);
+    userAccount.setCreatedBy(username);
+    userAccount.setCreateDatetime(now);
+    userAccount.setUpdateBy(username);
+    userAccount.setUpdateDatetime(now);
+    userAccount.setDeleted(false);
+    UserAccount saveUserAccount = userRepository.save(userAccount);
+
+    this.saveHistory(new UserAccount(), saveUserAccount, ChangeTypeEnum.CREATE);
+
+    return setCreateUserResponse(saveUserAccount);
+  }
+
+
+  /**
+   * Create new user.
+   *
+   * @param baseRequest BaseRequest<CreateUserRequest>
+   * @return CreateUserResponse
+   * @throws WFException AppException
+   */
+  public CreateUserResponse createUser(BaseRequest<CreateUserRequest> baseRequest)
+      throws WFException {
+    CreateUserRequest createUserRequest = baseRequest.getPayload();
+
+    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
+        createUserRequest.getUserName());
+    if (result.isPresent()) {
+      throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(),
+          createUserRequest.getUserName());
+    }
+    LocalDateTime now = LocalDateTime.now();
+    UserAccount userAccount = new UserAccount();
+
+    String userId = USER_ID_PREFIX.concat(now.format(DateTimeFormatter.ofPattern(ID_FULL_TIME)));
+    userAccount.setUserId(userId);
+    userAccount.setUserName(createUserRequest.getUserName());
+
+    String passwordDecrypted = RSAUtil.decryptRSA(createUserRequest.getPassword(), privateKey);
+
+    userAccount.setPassword(
+        Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16).toString());
+    userAccount.setFullName(createUserRequest.getFullName());
+    userAccount.setBirthDay(createUserRequest.getBirthDay());
+    userAccount.setEmail(createUserRequest.getEmail());
+    userAccount.setRole(RoleEnums.ROLE_USER.getRole());
+    userAccount.setAuthorities(
+        List.of(AuthorityEnums.CREATE.getAuthority(), AuthorityEnums.GET.getAuthority(),
+            AuthorityEnums.UPDATE.getAuthority()));
+    userAccount.setLevel(LevelEnums.LOW_LEVEL.getLevel());
+    userAccount.setImageObject(createUserRequest.getImage());
+    userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
     userAccount.setCreatedBy(createUserRequest.getFullName());
     userAccount.setCreateDatetime(now);

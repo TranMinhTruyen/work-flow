@@ -1,4 +1,3 @@
-'use client';
 import { selectIsLoading } from '@/common/store/commonSlice';
 import { useAppSelector } from '@/lib/store';
 import Dialog from '@mui/material/Dialog';

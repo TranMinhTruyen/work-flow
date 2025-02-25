@@ -19,8 +19,8 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { handleSubmitLogin } from './action/action';
 import { ILoginForm } from './model/LoginForm';
-import { handleSubmitLogin } from './service/action';
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

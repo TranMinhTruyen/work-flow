@@ -1,7 +1,7 @@
 import { Box, Container } from '@mui/material';
 import { memo } from 'react';
 
-const Home = () => {
+const HomePage = () => {
   return (
     <Container>
       <Box>Home page</Box>
@@ -9,4 +9,4 @@ const Home = () => {
   );
 };
 
-export default memo(Home);
+export default memo(HomePage);

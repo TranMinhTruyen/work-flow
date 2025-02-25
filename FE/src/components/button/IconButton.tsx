@@ -1,4 +1,3 @@
-'use client';
 import { Badge, CircularProgress } from '@mui/material';
 import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -51,8 +50,8 @@ export default memo(IconButton);
 const StyleIconButton = styled(MuiButton)<IconButtonProps>(({ width, height }) => ({
   width: `${width}px !important`,
   height: `${height}px !important`,
-  minHeight: '40px',
-  minWidth: '40px',
+  minHeight: `${width}px`,
+  minWidth: `${height}px`,
   boxShadow: 'rgba(168, 168, 168, 1)',
   textTransform: 'none',
   fontSize: 16,

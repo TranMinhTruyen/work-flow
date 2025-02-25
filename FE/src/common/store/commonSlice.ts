@@ -11,6 +11,7 @@ interface CommonState {
   openConfirmDialog: boolean;
   loginData?: ILoginResponse;
   proxyType?: string;
+  screenExpand: string[];
 }
 
 const initialState: CommonState = {
@@ -21,6 +22,7 @@ const initialState: CommonState = {
   isLoading: false,
   openConfirmDialog: false,
   proxyType: '',
+  screenExpand: [],
 };
 
 const commonSlice = createSlice({
@@ -78,6 +80,17 @@ const commonSlice = createSlice({
         proxyType: payload,
       };
     },
+    setScreenExpand: (state, action: PayloadAction<string>) => {
+      const { payload } = action;
+      state.screenExpand.push(payload);
+    },
+    removeScreenExpand: (state, action: PayloadAction<string>) => {
+      const { payload } = action;
+      state.screenExpand.splice(
+        state.screenExpand.findIndex(item => item === payload),
+        1
+      );
+    },
   },
 });
 
@@ -90,6 +103,8 @@ export const {
   setLanguage,
   resetCommon,
   setProxyType,
+  setScreenExpand,
+  removeScreenExpand,
 } = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;
@@ -99,5 +114,6 @@ export const selectIsLoading = (state: RootState) => state.commonState.isLoading
 export const selectOpenConfirmDialog = (state: RootState) => state.commonState.openConfirmDialog;
 export const selectLanguage = (state: RootState) => state.commonState.language;
 export const selectProxyType = (state: RootState) => state.commonState.proxyType;
+export const selectScreenExpand = (state: RootState) => state.commonState.screenExpand;
 
 export default commonSlice.reducer;

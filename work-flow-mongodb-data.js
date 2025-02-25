@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : work-flow-mongodb
+ Source Server         : work-flow
  Source Server Type    : MongoDB
- Source Server Version : 80000 (8.0.0)
+ Source Server Version : 80004 (8.0.4)
  Source Host           : localhost:27017
  Source Schema         : work-flow
 
  Target Server Type    : MongoDB
- Target Server Version : 80000 (8.0.0)
+ Target Server Version : 80004 (8.0.4)
  File Encoding         : 65001
 
- Date: 23/02/2025 01:24:38
+ Date: 25/02/2025 13:38:12
 */
 
 
@@ -102,7 +102,7 @@ db.getCollection("screen_master").insert([ {
     _id: ObjectId("67b9fc0c8dd5436d5f1ab094"),
     screen_id: "SCR00003",
     screen_name: "KANBAN",
-    screen_url: "/kanban-v2",
+    screen_url: "/kanban",
     screen_components: null,
     is_active: true,
     is_deleted: false,
@@ -132,7 +132,7 @@ db.getCollection("user_account").insert([ {
     password: "f3d8c3cfcbcc97909ba87fa997a4698c38ce134898f88330691456b96c39fdef6a9b486a2a232beeded9a285d721e26225247965d357f7e1e8ab10753f99b11a",
     full_name: "Administrator",
     birth_day: "14/10/1999",
-    image_object: "WFS3-515685-22022025234610-Untitleddesign.png",
+    image_object: null,
     role: "ADMIN",
     authorities: [
         "CREATE",
@@ -140,7 +140,7 @@ db.getCollection("user_account").insert([ {
         "UPDATE",
         "DELETE"
     ],
-    level: NumberInt("1"),
+    level: NumberInt("3"),
     access_screen_list: [
         "SCR00000",
         "SCR00001",
