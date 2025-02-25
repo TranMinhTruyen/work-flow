@@ -76,7 +76,7 @@ const ScreenMaster = () => {
         wrapText: true,
       },
       {
-        headerName: 'Active',
+        headerName: 'Status',
         field: 'active',
         sortable: false,
         headerClass: 'active-column',

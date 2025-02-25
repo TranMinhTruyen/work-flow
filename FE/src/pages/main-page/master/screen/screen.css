@@ -1,3 +1,9 @@
 .active-column .ag-header-cell-label {
   justify-content: center;
 }
+
+#detail-title {
+  margin-top: 8px;
+  font-size: 18px !important;
+  font-weight: bold;
+}
