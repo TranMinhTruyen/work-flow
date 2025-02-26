@@ -4,14 +4,13 @@ import Checkbox, { CheckboxProps as MuiCheckboxProps } from '@mui/material/Check
 
 export type CheckBoxProps = MuiCheckboxProps & {
   label?: string;
-  error?: boolean;
 };
 
-const CheckBox = (props: CheckBoxProps) => {
+const CheckBoxInput = (props: CheckBoxProps) => {
   const { id, label, className, ...restProps } = props;
 
   if (!label) {
-    return <Checkbox id={`checkBox${capitalizeFirst(id)}`} {...restProps} />;
+    return <Checkbox id={`checkBox${capitalizeFirst(id)}`} className={className} {...restProps} />;
   }
 
   return (
@@ -25,4 +24,4 @@ const CheckBox = (props: CheckBoxProps) => {
   );
 };
 
-export default CheckBox;
+export default CheckBoxInput;

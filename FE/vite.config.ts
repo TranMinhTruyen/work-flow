@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), svgr()],
   server: {
     port: 3000,
-    open: '/login',
+    open: '/home',
   },
   build: {
     sourcemap: true,

@@ -48,7 +48,7 @@ public class ApplicationStartup {
   @EventListener(ContextRefreshedEvent.class)
   private void importDevScreenMaster() {
     Optional<List<ScreenMaster>> result = proxyRepository.findScreenMasterByListScreenId(
-        List.of("SCR00001", "SCR00002"));
+        List.of("SCR00000", "SCR00001", "SCR00002", "SCR00003"));
     if (result.isEmpty()) {
       LocalDateTime now = LocalDateTime.now();
       List<ScreenMaster> screenMasterList = new ArrayList<>();

@@ -1,15 +1,21 @@
+import { FormContext } from '@/common/constants/typeConst';
+import useInput from '@/common/hooks/useInput';
 import UncontrolledCheckBoxInput, {
   CheckBoxProps as UncontrolledCheckboxProps,
-} from '@/components/inputs/CheckboxInput';
-import { Controller, UseControllerProps } from 'react-hook-form';
+} from '@/components/inputs/CheckBoxInput';
+import { Control, Controller } from 'react-hook-form';
 
 export type CheckboxProps = UncontrolledCheckboxProps & {
   name: string;
-  control?: UseControllerProps['control'];
+  control: Control<any, FormContext>;
 };
 
-const CheckBox = (props: CheckboxProps) => {
+const CheckBoxInput = (props: CheckboxProps) => {
   const { name, control, defaultValue, disabled, ...restProps } = props;
+
+  const { translateLabel } = useInput<boolean>({
+    ...props,
+  });
 
   return (
     <Controller
@@ -18,6 +24,8 @@ const CheckBox = (props: CheckboxProps) => {
       defaultValue={defaultValue}
       render={({ field: { onChange, value = '' } }) => (
         <UncontrolledCheckBoxInput
+          id={name}
+          label={translateLabel()}
           checked={value}
           onChange={onChange}
           disabled={disabled}
@@ -28,4 +36,4 @@ const CheckBox = (props: CheckboxProps) => {
   );
 };
 
-export default CheckBox;
+export default CheckBoxInput;

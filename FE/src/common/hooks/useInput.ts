@@ -2,22 +2,25 @@ import { useCallback, useState } from 'react';
 import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
+import { FormContext } from '../constants/typeConst';
 import { I18nEnum } from '../enums/I18nEnum';
 import { formatString } from '../utils/stringUtil';
 
 type UseCheckRequiredProps = {
   name: string;
-  control: Control;
+  control: Control<any, FormContext>;
   required?: boolean;
   type?: string;
-  i18n?: string;
   minLength?: number;
   maxLength?: number;
 };
 
 const useInput = <T>(props: UseCheckRequiredProps) => {
-  const { name, control, required, type, i18n, minLength, maxLength } = props;
-  const { t } = useTranslation([i18n, I18nEnum.COMMON_I18N]);
+  const { name, control, required, type, minLength, maxLength } = props;
+  const { t } = useTranslation([
+    control._options.context?.language ?? I18nEnum.COMMON_I18N,
+    I18nEnum.COMMON_I18N,
+  ]);
   const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const checkDataInput = useCallback(

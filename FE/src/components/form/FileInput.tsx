@@ -1,5 +1,4 @@
-import { FileData } from '@/common/constants/typeConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { FileData, FormContext } from '@/common/constants/typeConst';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledFileInput, {
@@ -10,9 +9,8 @@ import { Control, Controller } from 'react-hook-form';
 
 export type FileInputProps = UncontrolledFileInputProps & {
   name: string;
-  control: Control;
-  i18n: I18nEnum;
   required?: boolean;
+  control: Control<any, FormContext>;
 };
 
 const FileInput = (props: FileInputProps) => {

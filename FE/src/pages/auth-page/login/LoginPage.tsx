@@ -1,8 +1,9 @@
 import { screenUrl } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
+import useForm from '@/common/hooks/useForm';
 import useRouter from '@/common/hooks/useRouter';
 import Button from '@/components/button/Button';
-import CheckBox from '@/components/form/CheckboxInput';
+import CheckBoxInput from '@/components/form/CheckBoxInput';
 import TextInput from '@/components/form/TextInput';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -17,7 +18,6 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitLogin } from './action/action';
 import { ILoginForm } from './model/LoginForm';
@@ -28,6 +28,7 @@ const LoginPage = () => {
   const { navigate } = useRouter();
 
   const { control, reset, trigger, handleSubmit } = useForm<ILoginForm>({
+    context: { language: I18nEnum.LOGIN_I18N },
     defaultValues: { isRemember: false },
   });
 
@@ -57,7 +58,6 @@ const LoginPage = () => {
           <TextInput
             name={'userName'}
             control={control}
-            i18n={I18nEnum.LOGIN_I18N}
             required
             sx={loginStyles.textInput}
             slotProps={{
@@ -74,7 +74,6 @@ const LoginPage = () => {
           <TextInput
             name={'password'}
             control={control}
-            i18n={I18nEnum.LOGIN_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
             sx={loginStyles.textInput}
@@ -103,7 +102,7 @@ const LoginPage = () => {
         </Stack>
 
         <Stack alignItems={'end'} sx={loginStyles.checkBox}>
-          <CheckBox name={'isRemember'} control={control} label={t('label.remember')} />
+          <CheckBoxInput name={'isRemember'} control={control} />
         </Stack>
 
         <Stack alignItems={'center'}>
@@ -123,11 +122,7 @@ const LoginPage = () => {
       <CardActions sx={loginStyles.footer}>
         <Button
           width={120}
-          label={
-            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {t('button.login')}
-            </Typography>
-          }
+          label={<Typography sx={loginStyles.buttonLabel}>{t('button.login')}</Typography>}
           sx={loginStyles.button}
           form={'login-form'}
           type={'submit'}
@@ -157,6 +152,11 @@ const loginStyles = {
 
   button: {
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
+  },
+
+  buttonLabel: {
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 
   footer: {

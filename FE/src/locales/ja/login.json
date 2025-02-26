@@ -2,7 +2,7 @@
   "label": {
     "userName": "ユーザー名またはメールアドレス",
     "password": "パスワード",
-    "remember": "ログイン状態を保持する",
+    "isRemember": "ログイン状態を保持する",
     "noAcccount": "アカウントをお持ちでない場合は、",
     "register": "登録"
   },

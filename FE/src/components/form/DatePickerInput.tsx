@@ -1,4 +1,4 @@
-import { DateType } from '@/common/constants/typeConst';
+import { DateType, FormContext } from '@/common/constants/typeConst';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledDatePickerInput, {
@@ -9,7 +9,7 @@ import { Control, Controller } from 'react-hook-form';
 
 export type DatePickerInputProps = UncontrolledDatePickerProps & {
   name: string;
-  control: Control;
+  control: Control<any, FormContext>;
 };
 
 const DatePickerInput = (props: DatePickerInputProps) => {

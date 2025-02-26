@@ -1,3 +1,4 @@
+import { FormContext } from '@/common/constants/typeConst';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledSelectInput, {
@@ -8,9 +9,8 @@ import { Control, Controller } from 'react-hook-form';
 
 export type SelectInputProps = UncontrolledSelectInputProps & {
   name: string;
-  control: Control;
   required?: boolean;
-  helperText?: string;
+  control: Control<any, FormContext>;
 };
 
 const SelectInput = (props: SelectInputProps) => {

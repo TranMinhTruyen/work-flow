@@ -1,4 +1,4 @@
-import { FileData } from '@/common/constants/typeConst';
+import { FileData, FormContext } from '@/common/constants/typeConst';
 import UncontrolledImageInput, {
   ImageInputProps as UncontrolledImageInputProps,
 } from '@/components/inputs/ImageInput';
@@ -7,7 +7,7 @@ import { Control, Controller } from 'react-hook-form';
 
 export type ImageInputProps = UncontrolledImageInputProps & {
   name: string;
-  control: Control;
+  control: Control<any, FormContext>;
 };
 
 const ImageInput = (props: ImageInputProps) => {

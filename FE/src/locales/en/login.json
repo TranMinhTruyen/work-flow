@@ -2,7 +2,7 @@
   "label": {
     "userName": "Username or email",
     "password": "Password",
-    "remember": "Remember me",
+    "isRemember": "Remember me",
     "noAcccount": "If you don't have account, please ",
     "register": "register"
   },

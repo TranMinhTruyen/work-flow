@@ -1,9 +1,9 @@
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 import IconButton from '@/components/button/IconButton';
+import SwitchInput from '@/components/inputs/SwitchInput';
 import GridTable from '@/components/table/GridTable';
 import EditIcon from '@mui/icons-material/Edit';
 import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { cloneDeep } from 'lodash';
@@ -85,7 +85,7 @@ const ScreenMaster = () => {
         cellRenderer: (params: { data: IScreenMasterRow; value: boolean }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
-              <Switch checked={params.value} onChange={handleSwitchActive(params.data)} />
+              <SwitchInput checked={params.value} onChange={handleSwitchActive(params.data)} />
             </Stack>
           );
         },

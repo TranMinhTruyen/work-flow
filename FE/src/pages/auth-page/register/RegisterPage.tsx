@@ -1,6 +1,7 @@
 import { screenUrl } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/I18nEnum';
 import { MessageType } from '@/common/enums/MessageEnum';
+import useForm from '@/common/hooks/useForm';
 import useNavigate from '@/common/hooks/useRouter';
 import Button from '@/components/button/Button';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
@@ -18,26 +19,26 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { handleSubmitRegister } from './action';
+import { handleSubmitRegister } from './action/action';
 import { IRegisterForm } from './model/RegisterForm';
 
-const Register = () => {
+const RegisterPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
+
   const { t } = useTranslation(I18nEnum.REGISTER_I18N);
-
   const { navigate } = useNavigate();
-  const classes = registerStyles();
 
-  const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>();
+  const { control, trigger, handleSubmit, reset } = useForm<IRegisterForm>({
+    context: { language: I18nEnum.REGISTER_I18N },
+  });
 
   useEffect(() => {
     reset();
   }, [reset]);
+
+  const handleClickShowPassword = useCallback(() => setIsShowPassword(show => !show), []);
 
   const handleRegister = useCallback(
     async (formData: IRegisterForm) => {
@@ -68,9 +69,8 @@ const Register = () => {
           <TextInput
             name={'userName'}
             control={control}
-            i18n={I18nEnum.REGISTER_I18N}
             required
-            className={classes.textInput}
+            sx={registerStyles.textInput}
             slotProps={{
               htmlInput: {
                 maxLength: 10,
@@ -88,10 +88,9 @@ const Register = () => {
           <TextInput
             name={'password'}
             control={control}
-            i18n={I18nEnum.REGISTER_I18N}
             required
             type={isShowPassword ? 'text' : 'password'}
-            className={classes.textInput}
+            sx={registerStyles.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -114,9 +113,8 @@ const Register = () => {
           <TextInput
             name={'email'}
             control={control}
-            i18n={I18nEnum.REGISTER_I18N}
             type={'email'}
-            className={classes.textInput}
+            sx={registerStyles.textInput}
             slotProps={{
               input: {
                 startAdornment: (
@@ -128,29 +126,20 @@ const Register = () => {
             }}
           />
 
-          <TextInput
-            name={'fullName'}
-            control={control}
-            i18n={I18nEnum.REGISTER_I18N}
-            className={classes.textInput}
-          />
+          <TextInput name={'fullName'} control={control} sx={registerStyles.textInput} />
 
-          <DatePickerInput
-            name={'birthDay'}
-            control={control}
-            i18n={I18nEnum.REGISTER_I18N}
-            width={400}
-          />
+          <DatePickerInput name={'birthDay'} control={control} width={400} />
         </Stack>
       </CardContent>
 
       <Divider />
 
-      <CardActions className={classes.footer}>
+      <CardActions sx={registerStyles.footer}>
         <Stack direction={'row'} spacing={5}>
           <Button
-            label={<Typography className={classes.buttonLabel}>{t('button.register')}</Typography>}
-            className={classes.button}
+            width={120}
+            label={<Typography sx={registerStyles.buttonLabel}>{t('button.register')}</Typography>}
+            sx={registerStyles.button}
             form={'register-form'}
             type={'submit'}
           />
@@ -160,17 +149,13 @@ const Register = () => {
   );
 };
 
-const registerStyles = makeStyles({
+const registerStyles = {
   textInput: {
     width: 400,
     maxWidth: 400,
   },
 
   button: {
-    width: 150,
-    maxWidth: 200,
-    height: 40,
-    maxHeight: 40,
     backgroundColor: 'rgba(0, 170, 255, 0.8) !important',
   },
 
@@ -184,6 +169,6 @@ const registerStyles = makeStyles({
     justifyContent: 'center',
     height: 70,
   },
-});
+};
 
-export default memo(Register);
+export default memo(RegisterPage);

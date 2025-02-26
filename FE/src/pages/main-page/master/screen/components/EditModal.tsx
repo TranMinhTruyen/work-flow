@@ -1,6 +1,6 @@
-import { I18nEnum } from '@/common/enums/I18nEnum';
 import usePromiseModal, { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 import Button from '@/components/button/Button';
+import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import GridTable from '@/components/table/GridTable';
 import CloseIcon from '@mui/icons-material/Close';
@@ -8,7 +8,6 @@ import { Divider } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, Ref, useMemo } from 'react';
@@ -84,45 +83,20 @@ const EditModal = (props: EditModalProps) => {
         <form id={'edit-screen-form'}>
           <Stack spacing={3} direction={'row'}>
             <Stack spacing={3}>
-              <TextInput
-                name={'screenId'}
-                control={control}
-                i18n={I18nEnum.EDIT_SCREEN_I18N}
-                disabled
-              />
+              <TextInput name={'screenId'} control={control} disabled />
 
-              <TextInput
-                name={'screenName'}
-                control={control}
-                i18n={I18nEnum.EDIT_SCREEN_I18N}
-                required
-              />
+              <TextInput name={'screenName'} control={control} required />
             </Stack>
 
             <Stack spacing={3}>
-              <TextInput
-                name={'createDateTime'}
-                control={control}
-                i18n={I18nEnum.EDIT_SCREEN_I18N}
-                disabled
-              />
+              <TextInput name={'createDateTime'} control={control} disabled />
 
-              <TextInput
-                name={'screenUrl'}
-                control={control}
-                i18n={I18nEnum.EDIT_SCREEN_I18N}
-                required
-              />
+              <TextInput name={'screenUrl'} control={control} required />
             </Stack>
 
             <Stack spacing={3}>
-              <TextInput
-                name={'updateDateTime'}
-                control={control}
-                i18n={I18nEnum.EDIT_SCREEN_I18N}
-                disabled
-              />
-              <Switch checked={inputValue?.active} />
+              <TextInput name={'updateDateTime'} control={control} disabled />
+              <SwitchInput name={'active'} control={control} label={'Status'} />
             </Stack>
           </Stack>
         </form>

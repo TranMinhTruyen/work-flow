@@ -25,6 +25,7 @@ export const rootReducer = (state: any, action: any) => {
       ...commonState,
       isLogin: false,
       loginData: undefined,
+      screenExpand: [],
     };
 
     state = {

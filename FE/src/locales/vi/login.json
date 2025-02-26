@@ -2,7 +2,7 @@
   "label": {
     "userName": "Tài khoản hoặc email",
     "password": "Mật khẩu",
-    "remember": "Ghi nhớ tài khoản",
+    "isRemember": "Ghi nhớ tài khoản",
     "noAcccount": "Nếu bạn chưa có tài khoản, hãy ",
     "register": "đăng kí"
   },

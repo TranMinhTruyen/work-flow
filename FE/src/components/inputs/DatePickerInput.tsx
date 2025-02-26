@@ -1,7 +1,8 @@
 import { FULL_DATE_FORMAT } from '@/common/constants/commonConst';
 import { DateType } from '@/common/constants/typeConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { selectLanguage } from '@/common/store/commonSlice';
 import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
+import { useAppSelector } from '@/lib/store';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
@@ -11,19 +12,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateView } from '@mui/x-date-pickers/models/views';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import { selectLanguage } from '@/common/store/commonSlice';
-import { useAppSelector } from '@/lib/store';
 import 'dayjs/locale/en';
 import 'dayjs/locale/ja';
 import 'dayjs/locale/vi';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
   'value' | 'onChange' | 'onBlur' | 'onFocus' | 'onClose' | 'defaultValue'
 > & {
-  i18n: I18nEnum;
   height?: number;
   width?: number;
   value?: DateType;
@@ -53,7 +50,6 @@ const DatePickerInput = (props: DatePickerProps) => {
     onClose,
     error = false,
     helperText,
-    i18n,
     className,
     slotProps,
   } = props;
@@ -108,7 +104,6 @@ const DatePickerInput = (props: DatePickerProps) => {
         openTo={openTo}
         onChange={handleOnChange}
         width={width}
-        i18n={i18n}
         localeText={{
           todayButtonLabel: language === 'ja' ? '今日' : 'Today',
         }}

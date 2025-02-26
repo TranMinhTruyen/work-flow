@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { Dayjs } from 'dayjs';
 import { JSX, ReactElement, ReactNode } from 'react';
+import { I18nEnum } from '../enums/I18nEnum';
 
 export type SelectDataType = {
   key: string;
@@ -34,4 +35,8 @@ export type Authorizer = {
 
 export type CustomAxiosConfig<T = any> = AxiosRequestConfig<T> & {
   isS3Url?: boolean;
+};
+
+export type FormContext = {
+  language: I18nEnum;
 };
