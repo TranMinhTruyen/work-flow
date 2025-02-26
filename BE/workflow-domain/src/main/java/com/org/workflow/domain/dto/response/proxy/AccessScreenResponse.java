@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccessScreenResponse implements Serializable {
 
-  private List<ScreenMasterResponse> screenMasterList;
+  private List<ScreenResponse> screenMasterList;
 
 }

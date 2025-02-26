@@ -1,10 +1,7 @@
 package com.org.workflow.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.domain.filter.CustomAuthenticationEntryPoint;
 import com.org.workflow.domain.filter.SecurityFilter;
-import com.org.workflow.domain.services.UserService;
-import com.org.workflow.domain.utils.JwtUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,7 +27,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -49,26 +44,24 @@ public class SecurityConfig {
       "/api/master-item/get",
       "/api/master-item/create",
       "/api/file/**",
+      "/api/screen/search"
   };
-
-  private final JwtUtil jwtUtil;
-
-  private final UserService userService;
-
-  private final ObjectMapper objectMapper;
 
   @Value(value = "${client.url}")
   private String clientUrl;
+
 
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder(12);
   }
 
+
   @Bean
   public SecurityFilter jwtAuthenticationFilter() {
-    return new SecurityFilter(jwtUtil, userService, objectMapper);
+    return new SecurityFilter();
   }
+
 
   @Bean
   public AuthenticationManager authenticationManager() {
@@ -78,10 +71,12 @@ public class SecurityConfig {
     return new ProviderManager(providers);
   }
 
+
   @Bean
   public AuthenticationEntryPoint authenticationEntryPoint() {
     return new CustomAuthenticationEntryPoint();
   }
+
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -100,6 +95,7 @@ public class SecurityConfig {
         .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
+
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {

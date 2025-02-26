@@ -1,6 +1,6 @@
 package com.org.workflow.domain.dto.response.user;
 
-import com.org.workflow.domain.dto.response.proxy.ScreenMasterResponse;
+import com.org.workflow.domain.dto.response.proxy.ScreenResponse;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +35,7 @@ public class UserResponse implements Serializable {
 
   private Integer level;
 
-  private List<ScreenMasterResponse> screenMasterList;
+  private List<ScreenResponse> screenMasterList;
 
   private String image;
 

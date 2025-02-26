@@ -2,7 +2,7 @@ export interface ISearchRequest<T> {
   condition?: T;
   page: number;
   size: number;
-  searchOrderList: ISearchOrder[];
+  orderList: ISearchOrder[];
 }
 
 export interface ISearchOrder {

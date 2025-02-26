@@ -2,7 +2,7 @@ package com.org.workflow.dao.repository.ext.impl;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-import com.org.workflow.dao.document.ScreenMaster;
+import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.repository.ext.ProxyRepositoryExt;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +21,7 @@ public class ProxyRepositoryExtImpl implements ProxyRepositoryExt {
 
 
   @Override
-  public Optional<List<ScreenMaster>> findScreenMasterByListScreenId(List<String> listScreenId) {
+  public Optional<List<Screen>> findScreenMasterByListScreenId(List<String> listScreenId) {
     Criteria criteria = new Criteria().andOperator(
         where("screen_id").in(listScreenId),
         new Criteria().orOperator(
@@ -32,7 +32,7 @@ public class ProxyRepositoryExtImpl implements ProxyRepositoryExt {
         where("delete_date_time").isNull()
     );
 
-    List<ScreenMaster> result = mongoTemplate.find(new Query(criteria), ScreenMaster.class);
+    List<Screen> result = mongoTemplate.find(new Query(criteria), Screen.class);
 
     if (result.isEmpty()) {
       return Optional.empty();

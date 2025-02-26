@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Field.Write;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(value = "screen_master")
-public class ScreenMaster extends AbstractDocument implements Serializable {
+@Document(value = "screen")
+public class Screen extends AbstractDocument implements Serializable {
 
   @Field(name = "screen_id", write = Field.Write.ALWAYS)
   private String screenId;

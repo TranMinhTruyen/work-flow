@@ -14,7 +14,7 @@ import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.enums.LevelEnums;
 import com.org.workflow.core.common.enums.RoleEnums;
 import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.ScreenMaster;
+import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.document.UserHistory;
 import com.org.workflow.dao.document.sub.ChangeValue;
@@ -27,7 +27,7 @@ import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
 import com.org.workflow.domain.dto.request.user.CreateUserRequest;
 import com.org.workflow.domain.dto.request.user.LoginRequest;
 import com.org.workflow.domain.dto.request.user.UpdateUserRequest;
-import com.org.workflow.domain.dto.response.proxy.ScreenMasterResponse;
+import com.org.workflow.domain.dto.response.proxy.ScreenResponse;
 import com.org.workflow.domain.dto.response.user.CreateUserResponse;
 import com.org.workflow.domain.dto.response.user.LoginResponse;
 import com.org.workflow.domain.dto.response.user.UpdateUserResponse;
@@ -69,8 +69,6 @@ public class UserService extends AbstractService {
 
   private final ProxyRepository proxyRepository;
 
-  private final JwtUtil jwtUtil;
-
   private final RedisTemplate<Object, Object> redisTemplate;
 
   private final ExceptionService exceptionService;
@@ -106,7 +104,7 @@ public class UserService extends AbstractService {
 
 
   private static UserResponse setUserResponse(UserAccount userAccount,
-      List<ScreenMasterResponse> screenMasterResponseList) {
+      List<ScreenResponse> screenResponseList) {
     UserResponse userResponse = new UserResponse();
     userResponse.setUserId(userAccount.getUserId());
     userResponse.setEmail(userAccount.getEmail());
@@ -116,7 +114,7 @@ public class UserService extends AbstractService {
     userResponse.setRole(userAccount.getRole());
     userResponse.setAuthorities(userAccount.getAuthorities());
     userResponse.setLevel(userAccount.getLevel());
-    userResponse.setScreenMasterList(screenMasterResponseList);
+    userResponse.setScreenMasterList(screenResponseList);
     userResponse.setImage(userAccount.getImageObject());
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
     userResponse.setIsActive(userAccount.isActive());
@@ -266,30 +264,30 @@ public class UserService extends AbstractService {
 
     if (userAccount.getPassword().equals(loginPassword)) {
       LoginResponse loginResponse = new LoginResponse();
-      String token = jwtUtil.generateAccessToken(new CustomUserDetail(userAccount),
+      String token = JwtUtil.generateAccessToken(new CustomUserDetail(userAccount),
           loginRequest.getIsRemember());
       loginResponse.setToken(token);
       loginResponse.setTokenType(BEARER);
 
-      List<ScreenMasterResponse> screenMasterResponseList = new ArrayList<>();
+      List<ScreenResponse> screenResponseList = new ArrayList<>();
       if (userAccount.getAccessScreenList() != null && !userAccount.getAccessScreenList()
           .isEmpty()) {
-        Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
+        Optional<List<Screen>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
             userAccount.getAccessScreenList());
 
         if (screenMasterList.isPresent()) {
-          ScreenMasterResponse screenMasterResponse;
-          for (ScreenMaster screenMaster : screenMasterList.get()) {
-            screenMasterResponse = new ScreenMasterResponse();
-            screenMasterResponse.setScreenId(screenMaster.getScreenId());
-            screenMasterResponse.setScreenName(screenMaster.getScreenName());
-            screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
-            screenMasterResponseList.add(screenMasterResponse);
+          ScreenResponse screenResponse;
+          for (Screen screen : screenMasterList.get()) {
+            screenResponse = new ScreenResponse();
+            screenResponse.setScreenId(screen.getScreenId());
+            screenResponse.setScreenName(screen.getScreenName());
+            screenResponse.setScreenUrl(screen.getScreenUrl());
+            screenResponseList.add(screenResponse);
           }
         }
       }
 
-      loginResponse.setUserResponse(setUserResponse(userAccount, screenMasterResponseList));
+      loginResponse.setUserResponse(setUserResponse(userAccount, screenResponseList));
       return loginResponse;
     } else {
       if (userAccount.getLoginFailCount() == null) {
@@ -336,22 +334,22 @@ public class UserService extends AbstractService {
         () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(),
             username));
 
-    Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
+    Optional<List<Screen>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
         userAccount.getAccessScreenList());
 
-    List<ScreenMasterResponse> screenMasterResponseList = new ArrayList<>();
+    List<ScreenResponse> screenResponseList = new ArrayList<>();
     if (screenMasterList.isPresent()) {
-      ScreenMasterResponse screenMasterResponse;
-      for (ScreenMaster screenMaster : screenMasterList.get()) {
-        screenMasterResponse = new ScreenMasterResponse();
-        screenMasterResponse.setScreenId(screenMaster.getScreenId());
-        screenMasterResponse.setScreenName(screenMaster.getScreenName());
-        screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
-        screenMasterResponseList.add(screenMasterResponse);
+      ScreenResponse screenResponse;
+      for (Screen screen : screenMasterList.get()) {
+        screenResponse = new ScreenResponse();
+        screenResponse.setScreenId(screen.getScreenId());
+        screenResponse.setScreenName(screen.getScreenName());
+        screenResponse.setScreenUrl(screen.getScreenUrl());
+        screenResponseList.add(screenResponse);
       }
     }
 
-    return setUserResponse(userAccount, screenMasterResponseList);
+    return setUserResponse(userAccount, screenResponseList);
   }
 
 

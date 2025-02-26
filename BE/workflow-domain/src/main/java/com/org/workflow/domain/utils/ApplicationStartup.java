@@ -1,9 +1,9 @@
 package com.org.workflow.domain.utils;
 
 import com.org.workflow.dao.document.Proxy;
-import com.org.workflow.dao.document.ScreenMaster;
+import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.repository.ProxyRepository;
-import com.org.workflow.dao.repository.ScreenMasterRepository;
+import com.org.workflow.dao.repository.ScreenRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ApplicationStartup {
 
   private final ProxyRepository proxyRepository;
 
-  private final ScreenMasterRepository screenMasterRepository;
+  private final ScreenRepository screenRepository;
 
 
   @EventListener(ContextRefreshedEvent.class)
@@ -47,66 +47,66 @@ public class ApplicationStartup {
 
   @EventListener(ContextRefreshedEvent.class)
   private void importDevScreenMaster() {
-    Optional<List<ScreenMaster>> result = proxyRepository.findScreenMasterByListScreenId(
+    Optional<List<Screen>> result = proxyRepository.findScreenMasterByListScreenId(
         List.of("SCR00000", "SCR00001", "SCR00002", "SCR00003"));
     if (result.isEmpty()) {
       LocalDateTime now = LocalDateTime.now();
-      List<ScreenMaster> screenMasterList = new ArrayList<>();
-      ScreenMaster screenMaster;
+      List<Screen> screenList = new ArrayList<>();
+      Screen screen;
 
-      screenMaster = new ScreenMaster();
-      screenMaster.setScreenId("SCR00000");
-      screenMaster.setScreenName("SCREEN MASTER");
-      screenMaster.setScreenUrl("/screen-master");
-      screenMaster.setActive(true);
-      screenMaster.setCreatedBy(SYSTEM);
-      screenMaster.setCreateDatetime(now);
-      screenMaster.setUpdateBy(SYSTEM);
-      screenMaster.setUpdateDatetime(now);
-      screenMaster.setDeleted(false);
+      screen = new Screen();
+      screen.setScreenId("SCR00000");
+      screen.setScreenName("SCREEN MASTER");
+      screen.setScreenUrl("/screen-master");
+      screen.setActive(true);
+      screen.setCreatedBy(SYSTEM);
+      screen.setCreateDatetime(now);
+      screen.setUpdateBy(SYSTEM);
+      screen.setUpdateDatetime(now);
+      screen.setDeleted(false);
 
-      screenMasterList.add(screenMaster);
+      screenList.add(screen);
 
-      screenMaster = new ScreenMaster();
-      screenMaster.setScreenId("SCR00001");
-      screenMaster.setScreenName("USER MASTER");
-      screenMaster.setScreenUrl("/user-master");
-      screenMaster.setActive(true);
-      screenMaster.setCreatedBy(SYSTEM);
-      screenMaster.setCreateDatetime(now);
-      screenMaster.setUpdateBy(SYSTEM);
-      screenMaster.setUpdateDatetime(now);
-      screenMaster.setDeleted(false);
+      screen = new Screen();
+      screen.setScreenId("SCR00001");
+      screen.setScreenName("USER MASTER");
+      screen.setScreenUrl("/user-master");
+      screen.setActive(true);
+      screen.setCreatedBy(SYSTEM);
+      screen.setCreateDatetime(now);
+      screen.setUpdateBy(SYSTEM);
+      screen.setUpdateDatetime(now);
+      screen.setDeleted(false);
 
-      screenMasterList.add(screenMaster);
+      screenList.add(screen);
 
-      screenMaster = new ScreenMaster();
-      screenMaster.setScreenId("SCR00002");
-      screenMaster.setScreenName("HOME");
-      screenMaster.setScreenUrl("/home");
-      screenMaster.setActive(true);
-      screenMaster.setCreatedBy(SYSTEM);
-      screenMaster.setCreateDatetime(now);
-      screenMaster.setUpdateBy(SYSTEM);
-      screenMaster.setUpdateDatetime(now);
-      screenMaster.setDeleted(false);
+      screen = new Screen();
+      screen.setScreenId("SCR00002");
+      screen.setScreenName("HOME");
+      screen.setScreenUrl("/home");
+      screen.setActive(true);
+      screen.setCreatedBy(SYSTEM);
+      screen.setCreateDatetime(now);
+      screen.setUpdateBy(SYSTEM);
+      screen.setUpdateDatetime(now);
+      screen.setDeleted(false);
 
-      screenMasterList.add(screenMaster);
+      screenList.add(screen);
 
-      screenMaster = new ScreenMaster();
-      screenMaster.setScreenId("SCR00003");
-      screenMaster.setScreenName("KANBAN");
-      screenMaster.setScreenUrl("/kanban-v2");
-      screenMaster.setActive(true);
-      screenMaster.setCreatedBy(SYSTEM);
-      screenMaster.setCreateDatetime(now);
-      screenMaster.setUpdateBy(SYSTEM);
-      screenMaster.setUpdateDatetime(now);
-      screenMaster.setDeleted(false);
+      screen = new Screen();
+      screen.setScreenId("SCR00003");
+      screen.setScreenName("KANBAN");
+      screen.setScreenUrl("/kanban");
+      screen.setActive(true);
+      screen.setCreatedBy(SYSTEM);
+      screen.setCreateDatetime(now);
+      screen.setUpdateBy(SYSTEM);
+      screen.setUpdateDatetime(now);
+      screen.setDeleted(false);
 
-      screenMasterList.add(screenMaster);
+      screenList.add(screen);
 
-      screenMasterRepository.saveAll(screenMasterList);
+      screenRepository.saveAll(screenList);
     }
   }
 

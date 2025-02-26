@@ -1,14 +1,14 @@
 package com.org.workflow.domain.services;
 
 import com.org.workflow.dao.document.Proxy;
-import com.org.workflow.dao.document.ScreenMaster;
+import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.ProxyRepository;
 import com.org.workflow.dao.repository.UserRepository;
 import com.org.workflow.domain.dto.request.proxy.CheckProxyRequest;
 import com.org.workflow.domain.dto.response.proxy.AccessScreenResponse;
 import com.org.workflow.domain.dto.response.proxy.CheckProxyResponse;
-import com.org.workflow.domain.dto.response.proxy.ScreenMasterResponse;
+import com.org.workflow.domain.dto.response.proxy.ScreenResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,18 +29,18 @@ public class ProxyService {
   private final UserRepository userRepository;
 
 
-  private static List<ScreenMasterResponse> setScreenMasterResponses(
-      List<ScreenMaster> screenMasterList) {
-    List<ScreenMasterResponse> screenMasterResponseList = new ArrayList<>();
-    ScreenMasterResponse screenMasterResponse;
-    for (ScreenMaster screenMaster : screenMasterList) {
-      screenMasterResponse = new ScreenMasterResponse();
-      screenMasterResponse.setScreenId(screenMaster.getScreenId());
-      screenMasterResponse.setScreenName(screenMaster.getScreenName());
-      screenMasterResponse.setScreenUrl(screenMaster.getScreenUrl());
-      screenMasterResponseList.add(screenMasterResponse);
+  private static List<ScreenResponse> setScreenMasterResponses(
+      List<Screen> screenList) {
+    List<ScreenResponse> screenResponseList = new ArrayList<>();
+    ScreenResponse screenResponse;
+    for (Screen screen : screenList) {
+      screenResponse = new ScreenResponse();
+      screenResponse.setScreenId(screen.getScreenId());
+      screenResponse.setScreenName(screen.getScreenName());
+      screenResponse.setScreenUrl(screen.getScreenUrl());
+      screenResponseList.add(screenResponse);
     }
-    return screenMasterResponseList;
+    return screenResponseList;
   }
 
 
@@ -81,13 +81,13 @@ public class ProxyService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     if (result.isPresent()) {
-      Optional<List<ScreenMaster>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
+      Optional<List<Screen>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
           result.get().getAccessScreenList());
 
       if (screenMasterList.isPresent()) {
-        List<ScreenMasterResponse> screenMasterResponseList = setScreenMasterResponses(
+        List<ScreenResponse> screenResponseList = setScreenMasterResponses(
             screenMasterList.get());
-        accessScreenResponse.setScreenMasterList(screenMasterResponseList);
+        accessScreenResponse.setScreenMasterList(screenResponseList);
       }
     }
 

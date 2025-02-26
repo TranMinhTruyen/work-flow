@@ -5,14 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
-import org.springframework.validation.FieldError;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.validation.FieldError;
 
 /**
  * @author minh-truyen
@@ -22,27 +21,31 @@ public class CommonUtil {
   private CommonUtil() {
   }
 
+
   /**
    * Get language from payload.
    *
    * @param request HttpServletRequest
    * @return String
    */
-  public static String getLanguageFromRequest(HttpServletRequest request, ObjectMapper objectMapper) {
+  public static String getLanguageFromRequest(HttpServletRequest request) {
     StringBuilder stringBuilder = new StringBuilder();
-    try (BufferedReader bufferedReader = new BufferedReader(
-        new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8))) {
+    try {
+      BufferedReader bufferedReader = new BufferedReader(
+          new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8));
       String line;
       while ((line = bufferedReader.readLine()) != null) {
         stringBuilder.append(line);
       }
-      JsonNode jsonNode = objectMapper.readTree(stringBuilder.toString());
+      ObjectMapper mapper = new ObjectMapper();
+      JsonNode jsonNode = mapper.readTree(stringBuilder.toString());
 
       return jsonNode.has("language") ? jsonNode.get("language").asText() : "en";
     } catch (Exception e) {
       return "en";
     }
   }
+
 
   /**
    * Get language from payload.
@@ -60,6 +63,7 @@ public class CommonUtil {
       return "en";
     }
   }
+
 
   /**
    * @param error

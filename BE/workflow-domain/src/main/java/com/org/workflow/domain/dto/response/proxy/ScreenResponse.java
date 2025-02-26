@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScreenMasterResponse implements Serializable {
+public class ScreenResponse implements Serializable {
 
   private String screenId;
 

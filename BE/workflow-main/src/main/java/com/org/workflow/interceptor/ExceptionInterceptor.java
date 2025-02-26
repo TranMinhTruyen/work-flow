@@ -1,11 +1,21 @@
 package com.org.workflow.interceptor;
 
 
+import static com.org.workflow.core.common.cnst.CommonConst.CLASS_NAME;
+import static com.org.workflow.domain.utils.CommonUtil.getAttributes;
+import static com.org.workflow.domain.utils.CommonUtil.getLanguageFromRequest;
+import static com.org.workflow.domain.utils.ValidateUtil.formatValidateMessage;
+
 import com.org.workflow.controller.AbstractController;
 import com.org.workflow.core.common.enums.MessageTypeEnum;
 import com.org.workflow.core.common.exception.ErrorMessage;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +30,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import static com.org.workflow.core.common.cnst.CommonConst.CLASS_NAME;
-import static com.org.workflow.domain.utils.CommonUtil.getAttributes;
-import static com.org.workflow.domain.utils.CommonUtil.getLanguageFromRequest;
-import static com.org.workflow.domain.utils.ValidateUtil.formatValidateMessage;
-
 
 @ControllerAdvice
 @RestControllerAdvice
@@ -42,6 +41,7 @@ public class ExceptionInterceptor extends AbstractController {
   private final MessageSource messageSource;
 
   private final DefaultErrorAttributes errorAttributes;
+
 
   @ExceptionHandler(value = WFException.class)
   public ResponseEntity<BaseResponse> handleAppException(WFException WFException) {
@@ -58,20 +58,21 @@ public class ExceptionInterceptor extends AbstractController {
     return returnErrorBaseResponse(WFException);
   }
 
-  @ExceptionHandler(Throwable.class)
-  public ResponseEntity<BaseResponse> handleException(Throwable exception) {
-    if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
-        .isPresent()) {
-      for (StackTraceElement item : exception.getStackTrace()) {
-        if (item.getClassName().contains(CLASS_NAME)) {
-          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
-              item.getClassName(), item.getMethodName(), item.getLineNumber(),
-              exception.getMessage());
-        }
-      }
-    }
-    return returnErrorBaseResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+//  @ExceptionHandler(Throwable.class)
+//  public ResponseEntity<BaseResponse> handleException(Throwable exception) {
+//    if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
+//        .isPresent()) {
+//      for (StackTraceElement item : exception.getStackTrace()) {
+//        if (item.getClassName().contains(CLASS_NAME)) {
+//          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
+//              item.getClassName(), item.getMethodName(), item.getLineNumber(),
+//              exception.getMessage());
+//        }
+//      }
+//    }
+//    return returnErrorBaseResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+//  }
+
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<BaseResponse> handleValidationExceptions(
