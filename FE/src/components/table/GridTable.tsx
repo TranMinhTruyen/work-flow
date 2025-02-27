@@ -60,6 +60,10 @@ const AgGridContainer = styled('div')<TableProps>(
     maxWidth: maxWidth,
     overflow: 'auto',
 
+    '& .ag-root-wrapper': {
+      borderRadius: '5px',
+    },
+
     '& .ag-header-cell': {
       borderRight: '1px solid #ccc',
     },

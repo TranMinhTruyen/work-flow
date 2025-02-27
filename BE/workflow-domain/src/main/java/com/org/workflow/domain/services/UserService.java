@@ -310,14 +310,10 @@ public class UserService extends AbstractService {
    *
    * @param username String
    * @return CustomUserDetail
-   * @throws WFException AppException
    */
-  public CustomUserDetail loadByUserName(String username, String language)
-      throws WFException {
-    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
-    UserAccount userAccount = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, language, username));
-    return new CustomUserDetail(userAccount);
+  public UserAccount loadByUserName(String username) {
+    Optional<UserAccount> result = userRepository.findUserAccountByUserName(username);
+    return result.orElse(null);
   }
 
 

@@ -19,4 +19,7 @@ export enum ApiEnum {
   // File api
   UPLOAD_FILE = 'UPLOAD_FILE',
   DOWNLOAD_FILE = 'DOWNLOAD_FILE',
+
+  // Screen api
+  SEARCH_SCREEN = 'SEARCH_SCREEN',
 }

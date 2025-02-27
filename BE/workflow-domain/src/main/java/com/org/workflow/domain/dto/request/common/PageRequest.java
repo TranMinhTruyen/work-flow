@@ -1,5 +1,6 @@
 package com.org.workflow.domain.dto.request.common;
 
+import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
 
@@ -7,7 +8,9 @@ import lombok.Data;
  * @author minh-truyen
  */
 @Data
-public class Pageable {
+public class PageRequest<T> implements Serializable {
+
+  private T condition;
 
   private int page;
 

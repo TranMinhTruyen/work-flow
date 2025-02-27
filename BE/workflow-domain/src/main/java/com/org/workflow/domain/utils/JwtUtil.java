@@ -9,6 +9,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +29,15 @@ public class JwtUtil {
     } else {
       expiryDate = new Date(now + CommonConst.EXPIRATIONTIME_FOR_REMEMBER);
     }
-    Claims claims = Jwts.claims()
-        .id(userDetail.getUserAccount().getUserId())
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("userName", userDetail.getUserAccount().getUserName());
+    return Jwts.builder()
+        .claims(claims)
         .subject(userDetail.getUsername())
-        .audience()
-        .and()
+        .issuedAt(new Date())
         .expiration(expiryDate)
-        .build();
-    return Jwts.builder().claims(claims).issuedAt(new Date()).expiration(expiryDate)
-        .signWith(getSigningKey()).compact();
+        .signWith(getSigningKey())
+        .compact();
   }
 
 
@@ -63,7 +65,7 @@ public class JwtUtil {
   }
 
 
-  private static Jws<Claims> extractClaims(String token) {
+  public static Jws<Claims> extractClaims(String token) {
     return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token);
   }
 

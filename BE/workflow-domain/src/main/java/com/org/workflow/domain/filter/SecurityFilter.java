@@ -1,9 +1,14 @@
 package com.org.workflow.domain.filter;
 
+import static com.org.workflow.core.common.enums.MessageEnum.ACCESS_DENIED;
+
+import com.org.workflow.core.common.exception.ErrorDetail;
 import com.org.workflow.core.common.exception.WFException;
+import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
 import com.org.workflow.domain.services.UserService;
 import com.org.workflow.domain.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +17,6 @@ import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -22,7 +26,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author minh-truyen
  */
 public class SecurityFilter extends OncePerRequestFilter {
-
 
   @Autowired
   private UserService userService;
@@ -40,21 +43,26 @@ public class SecurityFilter extends OncePerRequestFilter {
       FilterChain filterChain) throws ServletException, IOException {
     String token = getJwtFromRequest(request);
 
-    if (!StringUtils.isBlank(token) && JwtUtil.validateToken(token)) {
-      String language = "en";
-      String username = JwtUtil.getUserNameFromToken(token);
-      try {
-        CustomUserDetail customUserDetail = userService.loadByUserName(username, language);
-        if (customUserDetail.isEnabled()) {
-          UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-              customUserDetail, null, customUserDetail.getAuthorities());
-          authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-          SecurityContextHolder.getContext().setAuthentication(authentication);
+    try {
+      if (!StringUtils.isBlank(token)) {
+        if (JwtUtil.validateToken(token)) {
+          Claims claims = JwtUtil.extractClaims(token).getPayload();
+          UserAccount userAccount = userService.loadByUserName((String) claims.get("userName"));
+          if (userAccount != null && userAccount.isActive()) {
+            CustomUserDetail customUserDetail = new CustomUserDetail(userAccount);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                customUserDetail, null, customUserDetail.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+          } else {
+            throw new WFException(new ErrorDetail(ACCESS_DENIED));
+          }
+        } else {
+          throw new WFException(new ErrorDetail(ACCESS_DENIED));
         }
-      } catch (WFException e) {
-        SecurityContextHolder.clearContext();
-        response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
       }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
     filterChain.doFilter(request, response);
   }

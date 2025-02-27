@@ -13,16 +13,16 @@ import { ColDef } from 'ag-grid-community';
 import { memo, Ref, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { IEditModalForm } from '../model/EditModalForm';
-import { IScreenMasterRow } from '../model/Table';
+import { IScreenTableRow } from '../model/Table';
 
 type EditModalProps = {
-  ref: Ref<PromiseModalRef<null, IScreenMasterRow>>;
+  ref: Ref<PromiseModalRef<null, IScreenTableRow>>;
 };
 
 const EditModal = (props: EditModalProps) => {
   const { ref } = props;
 
-  const { inputValue, handleClose, handleOk, openModal } = usePromiseModal<null, IScreenMasterRow>(
+  const { inputValue, handleClose, handleOk, openModal } = usePromiseModal<null, IScreenTableRow>(
     ref
   );
 

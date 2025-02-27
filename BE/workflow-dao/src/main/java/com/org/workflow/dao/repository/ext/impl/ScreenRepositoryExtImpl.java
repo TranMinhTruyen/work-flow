@@ -6,6 +6,7 @@ import com.org.workflow.dao.repository.ext.ScreenRepositoryExt;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -25,13 +26,13 @@ public class ScreenRepositoryExtImpl implements ScreenRepositoryExt {
       Pageable pageable) {
     Criteria criteria = new Criteria();
 
-    if (condition.getScreenId() != null) {
+    if (!StringUtils.isBlank(condition.getScreenId())) {
       criteria.and("screen_id").is(condition.getScreenId());
     }
-    if (condition.getScreenName() != null) {
+    if (!StringUtils.isBlank(condition.getScreenName())) {
       criteria.and("screen_name").is(condition.getScreenName());
     }
-    if (condition.getIsActive() != null) {
+    if (!StringUtils.isBlank(condition.getIsActive())) {
       criteria.and("is_active").is(Boolean.parseBoolean(condition.getIsActive()));
     }
 

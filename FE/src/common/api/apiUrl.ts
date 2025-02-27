@@ -1,4 +1,4 @@
-import { FILE_PREFIX, PROXY_PREFIX, USER_PREFIX } from '../constants/apiPrefixConst';
+import { FILE_PREFIX, PROXY_PREFIX, SCREEN_PREFIX, USER_PREFIX } from '../constants/apiPrefixConst';
 import { ApiType } from '../constants/typeConst';
 import { ApiEnum } from '../enums/ApiEnum';
 
@@ -50,6 +50,12 @@ export const controller: Record<ApiEnum, ApiType> = {
   },
   [ApiEnum.DOWNLOAD_FILE]: {
     url: `${FILE_PREFIX}/get-download-url`,
+    method: 'POST',
+  },
+
+  // Screen api
+  [ApiEnum.SEARCH_SCREEN]: {
+    url: `${SCREEN_PREFIX}/search`,
     method: 'POST',
   },
 };

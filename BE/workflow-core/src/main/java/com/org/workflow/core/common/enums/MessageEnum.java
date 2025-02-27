@@ -1,12 +1,12 @@
 package com.org.workflow.core.common.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
-
 import static com.org.workflow.core.common.enums.MessageTypeEnum.ERROR;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.INFO;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.SUCCESS;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 
 @Getter
@@ -44,6 +44,7 @@ public enum MessageEnum {
   //endregion
   
   //region USER_ACCOUNT_ERROR
+  ACCESS_DENIED(ERROR, "EA0000", "Access denied", HttpStatus.UNAUTHORIZED),
   AUTHENTICATION_ERROR(ERROR, "EA001", "Authority not found!", HttpStatus.UNAUTHORIZED),
   ROLE_ERROR(ERROR, "EA002", "RoleEnums not accept!", HttpStatus.UNAUTHORIZED),
   AUTHORITY_ERROR(ERROR, "EA003", "Authority not accept!", HttpStatus.UNAUTHORIZED),

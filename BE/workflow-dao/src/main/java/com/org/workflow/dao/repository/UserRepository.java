@@ -2,11 +2,10 @@ package com.org.workflow.dao.repository;
 
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.ext.UserRepositoryExt;
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 /**
  * @author minh-truyen
@@ -24,4 +23,5 @@ public interface UserRepository extends MongoRepository<UserAccount, String>, Us
       """)
   Optional<UserAccount> findUserAccountByUserNameAndLoginPassword(String username, String password);
 
+  Optional<UserAccount> findUserAccountByUserName(String userName);
 }

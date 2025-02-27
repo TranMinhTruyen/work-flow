@@ -1,7 +1,6 @@
 package com.org.workflow.dao.repository.ext;
 
 import com.org.workflow.dao.document.UserAccount;
-
 import java.util.Optional;
 
 /**
@@ -10,5 +9,5 @@ import java.util.Optional;
 public interface UserRepositoryExt {
 
   Optional<UserAccount> findUserAccountByUserNameOrEmail(String param);
-
+  
 }

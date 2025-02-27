@@ -58,20 +58,35 @@ public class ExceptionInterceptor extends AbstractController {
     return returnErrorBaseResponse(WFException);
   }
 
-//  @ExceptionHandler(Throwable.class)
-//  public ResponseEntity<BaseResponse> handleException(Throwable exception) {
-//    if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
-//        .isPresent()) {
-//      for (StackTraceElement item : exception.getStackTrace()) {
-//        if (item.getClassName().contains(CLASS_NAME)) {
-//          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
-//              item.getClassName(), item.getMethodName(), item.getLineNumber(),
-//              exception.getMessage());
-//        }
-//      }
-//    }
-//    return returnErrorBaseResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
-//  }
+  @ExceptionHandler(Throwable.class)
+  public ResponseEntity<BaseResponse> handleException(Throwable exception) {
+    if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
+        .isPresent()) {
+      for (StackTraceElement item : exception.getStackTrace()) {
+        if (item.getClassName().contains(CLASS_NAME)) {
+          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
+              item.getClassName(), item.getMethodName(), item.getLineNumber(),
+              exception.getMessage());
+        }
+      }
+    }
+    return returnErrorBaseResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<BaseResponse> handleException(RuntimeException exception) {
+    if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
+        .isPresent()) {
+      for (StackTraceElement item : exception.getStackTrace()) {
+        if (item.getClassName().contains(CLASS_NAME)) {
+          LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
+              item.getClassName(), item.getMethodName(), item.getLineNumber(),
+              exception.getMessage());
+        }
+      }
+    }
+    return returnErrorBaseResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
