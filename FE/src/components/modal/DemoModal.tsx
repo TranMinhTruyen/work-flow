@@ -49,7 +49,7 @@ const DemoModal = (props: DemoModalProps) => {
 
   useEffect(() => {
     setItems(data);
-  }, []);
+  }, [setItems]);
 
   const colDefs = useMemo<ColDef<Item>[]>(
     () => [

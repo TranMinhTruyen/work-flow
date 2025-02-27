@@ -14,7 +14,7 @@ const eslintConfig = [
       es2021: true,
       node: true,
     },
-    extends: ['eslint:recommended', 'prettier'],
+    extends: ['eslint:recommended', 'plugin:react/recommended', 'prettier'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
       ecmaVersion: 'latest',
@@ -25,12 +25,16 @@ const eslintConfig = [
       project: ['./tsconfig.app.json'],
     },
     plugins: [
+      'react',
+      'react-hooks',
       'eslint-plugin-prettier',
       '@typescript-eslint/eslint-plugin',
       '@typescript-eslint',
       'import',
     ],
     rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       'no-console': 'warn',
       'no-mixed-spaces-and-tabs': 'warn',
       'no-unused-vars': [
@@ -42,6 +46,8 @@ const eslintConfig = [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/no-unknown-property': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {

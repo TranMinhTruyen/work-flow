@@ -3,11 +3,11 @@ import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 import { IPageRequest } from '@/common/model/Pageable';
 import IconButton from '@/components/button/IconButton';
 import SwitchInput from '@/components/inputs/SwitchInput';
-import GridTable from '@/components/table/GridTable';
+import PageGridTable from '@/components/table/PageGridTable';
 import EditIcon from '@mui/icons-material/Edit';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { ColDef, SortChangedEvent } from 'ag-grid-community';
+import { ColDef } from 'ag-grid-community';
 import { cloneDeep } from 'lodash';
 import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { searchAction } from './action/action';
@@ -20,7 +20,7 @@ import './screen.css';
 const ScreenMaster = () => {
   const [data, setData] = useState<IScreenTableRow[]>([]);
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
-  const { sortList, onSort } = usePageGridTable();
+  const { commonProps, orderList } = usePageGridTable();
 
   const handleSearch = useCallback(async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
     const result = await searchAction(searchCondition);
@@ -36,12 +36,12 @@ const ScreenMaster = () => {
 
   useEffect(() => {
     const searchCondition: IPageRequest<ISearchScreenRequest> = {
-      orderList: sortList,
+      orderList: orderList,
       page: 0,
       size: 10,
     };
     handleSearch(searchCondition);
-  }, [sortList]);
+  }, [handleSearch, orderList]);
 
   const handleSwitchActive = useCallback(
     (rowData: IScreenTableRow) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +68,8 @@ const ScreenMaster = () => {
     () => ({
       resizable: false,
       autoHeight: true,
+      unSortIcon: true,
+      comparator: () => 0,
     }),
     []
   );
@@ -95,8 +97,8 @@ const ScreenMaster = () => {
         wrapText: true,
       },
       {
-        headerName: 'Create datetime',
-        field: 'createDateTime',
+        headerName: 'Created datetime',
+        field: 'createdDatetime',
         width: 200,
         wrapText: true,
       },
@@ -134,7 +136,7 @@ const ScreenMaster = () => {
         },
       },
     ],
-    []
+    [handleEdit, handleSwitchActive]
   );
 
   return (
@@ -145,14 +147,11 @@ const ScreenMaster = () => {
       </Stack>
 
       <Stack>
-        <GridTable
+        <PageGridTable
           rowData={data}
           defaultColDef={defaultColDef}
           columnDefs={colDefs}
-          suppressMovableColumns
-          onSortChanged={(event: SortChangedEvent<IScreenTableRow>) => {
-            onSort(event.columns);
-          }}
+          commonProps={commonProps}
         />
       </Stack>
       <EditModal ref={modalRef} />

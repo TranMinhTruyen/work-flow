@@ -43,6 +43,7 @@ bin/
 
 ### production ###
 /FE/dist
+/FE/.eslintcache
 /FE-NextJS/.next
 /FE-NextJS/deploy
 mongodb-data

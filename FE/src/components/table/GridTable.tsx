@@ -1,17 +1,20 @@
+import { CommonProps } from '@/common/hooks/usePageGridTable';
 import { styled } from '@mui/material/styles';
+import { SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useMemo } from 'react';
 
-export type TableProps = AgGridReactProps & {
+export type GridTableProps = AgGridReactProps & {
   height?: number | string;
   minHeight?: number | string;
   maxHeight?: number | string;
   width?: number | string;
   minWidth?: number | string;
   maxWidth?: number | string;
+  commonProps?: CommonProps;
 };
 
-const GridTable = (props: TableProps) => {
+const GridTable = (props: GridTableProps) => {
   const {
     className,
     maxHeight = 300,
@@ -20,6 +23,7 @@ const GridTable = (props: TableProps) => {
     maxWidth = '100%',
     rowHeight = 55,
     rowData = [],
+    commonProps,
     ...restProps
   } = props;
 
@@ -44,13 +48,16 @@ const GridTable = (props: TableProps) => {
         rowData={rowData}
         enableCellTextSelection={true}
         ensureDomOrder={true}
+        onSortChanged={(event: SortChangedEvent) => {
+          commonProps?._onSort(event.columns);
+        }}
         {...restProps}
       />
     </AgGridContainer>
   );
 };
 
-const AgGridContainer = styled('div')<TableProps>(
+const AgGridContainer = styled('div')<GridTableProps>(
   ({ height, maxHeight, width, minWidth, maxWidth }) => ({
     height: height,
     maxHeight: maxHeight,
