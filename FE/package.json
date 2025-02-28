@@ -20,7 +20,6 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@hello-pangea/dnd": "^18.0.1",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
     "@mui/styles": "^6.4.6",

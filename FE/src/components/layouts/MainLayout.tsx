@@ -1,4 +1,3 @@
-import MainProvider from '@/common/provider/MainProvider';
 import { selectOpenDrawer } from '@/common/store/commonSlice';
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
@@ -14,13 +13,11 @@ const MainLayout = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
 
   return (
-    <MainProvider>
-      <ScreenLayout open={openDrawer}>
-        <MainHeader drawerWidth={DRAWER_WIDTH} />
-        <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
-        <Outlet />
-      </ScreenLayout>
-    </MainProvider>
+    <ScreenLayout open={openDrawer}>
+      <MainHeader drawerWidth={DRAWER_WIDTH} />
+      <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
+      <Outlet />
+    </ScreenLayout>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Column } from 'ag-grid-community';
 import { useCallback, useEffect, useState } from 'react';
-import { IPageableOrder } from '../model/Pageable';
+import { IPageableOrder } from '../model/pageable';
 
 export type CommonProps = {
   _orderList: IPageableOrder[];

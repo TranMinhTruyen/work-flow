@@ -2,18 +2,18 @@ import { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import { DATE_TIME_STRING_FORMAT } from '../constants/commonConst';
 import { CustomAxiosConfig, FileData } from '../constants/typeConst';
-import { ApiEnum } from '../enums/ApiEnum';
-import { IBaseResponse } from '../model/BaseResponse';
+import { IBaseResponse } from '../model/baseResponse';
 import {
   IDownloadFileRequest,
   IDownloadFileResponse,
   IS3FileData,
   IUploadFileRequest,
   IUploadFileResponse,
-} from '../model/S3Object';
+} from '../model/s3Object';
 import { axiosApiEnumFetch, axiosFetch } from '../provider/RootProvider';
 import { blobToBase64 } from '../utils/convertUtil';
 import { randomNumberString } from '../utils/stringUtil';
+import { ApiEnum } from './apiUrl';
 
 /**
  * Upload file to S3.

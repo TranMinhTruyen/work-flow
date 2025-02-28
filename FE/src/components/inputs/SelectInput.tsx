@@ -1,5 +1,5 @@
 import { SelectDataType } from '@/common/constants/typeConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';

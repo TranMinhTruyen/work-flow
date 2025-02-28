@@ -1,6 +1,6 @@
-import usePageGridTable from '@/common/hooks/usePageGridTable';
+import usePageGridTable from '@/common/hooks/useGridTable';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
-import { IPageRequest } from '@/common/model/Pageable';
+import { IPageRequest } from '@/common/model/pageable';
 import IconButton from '@/components/button/IconButton';
 import SwitchInput from '@/components/inputs/SwitchInput';
 import PageGridTable from '@/components/table/PageGridTable';
@@ -13,8 +13,8 @@ import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef, useState } 
 import { searchAction } from './action/action';
 import EditModal from './components/EditModal';
 import TestModal from './components/TestModal';
-import { ISearchScreenRequest } from './model/ScreenRequest';
-import { IScreenTableRow } from './model/Table';
+import { ISearchScreenRequest } from './model/screenRequest';
+import { IScreenTableRow } from './model/table';
 import './screen.css';
 
 const ScreenMaster = () => {

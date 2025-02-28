@@ -1,4 +1,4 @@
-import { Type } from '@/common/enums/BoardEnum';
+import { Type } from '@/common/enums/boardEnum';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Typography } from '@mui/material';

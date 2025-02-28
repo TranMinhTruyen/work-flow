@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { Dayjs } from 'dayjs';
 import { JSX, ReactElement, ReactNode } from 'react';
-import { I18nEnum } from '../enums/I18nEnum';
+import { I18nEnum } from '../enums/i18nEnum';
 
 export type SelectDataType = {
   key: string;

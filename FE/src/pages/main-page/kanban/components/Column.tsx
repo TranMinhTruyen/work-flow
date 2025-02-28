@@ -1,4 +1,4 @@
-import { Type } from '@/common/enums/BoardEnum';
+import { Type } from '@/common/enums/boardEnum';
 import { useAppSelector } from '@/lib/store';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';

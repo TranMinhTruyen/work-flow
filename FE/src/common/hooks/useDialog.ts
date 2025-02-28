@@ -47,7 +47,7 @@ const useDialog = () => {
   }, [state.dialogState]);
 
   useEffect(() => {
-    if (state.open && !state.dialogState?.autoClose && state.dialogState?.autoClose === true) {
+    if (state.open && state.dialogState?.autoClose && state.dialogState?.autoClose === true) {
       const timer = setInterval(() => {
         setCountdown(prev => prev - 1);
       }, 1000);

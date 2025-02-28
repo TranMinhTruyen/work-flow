@@ -1,17 +1,51 @@
-import useDialog, { DialogContainerProps } from '@/common/hooks/useDialog';
+import { MessageType } from '@/common/enums/messageEnum';
+import useDialog, { DialogType } from '@/common/hooks/useDialog';
 import store from '@/lib/store';
-import { useEffect, useMemo } from 'react';
+import { Breakpoint } from '@mui/material/styles';
+import { ReactNode, useEffect, useMemo } from 'react';
 import ConfirmDialog from './ConfirmDialog';
 import LoadingDialog from './LoadingDialog';
 
-export let openDialogContainer = (_props: DialogContainerProps) => {};
+type DialogProps = {
+  type: DialogType;
+  maxWidth?: Breakpoint | false;
+  bodyElement?: ReactNode;
+  messageType?: MessageType;
+  cancelText?: string;
+  confirmText?: string;
+  isPopup?: boolean;
+  showCancelButton?: boolean;
+  showCloseButton?: boolean;
+  /**
+   * Auto close dialog after timeout
+   * @default false
+   */
+  autoClose?: boolean;
+  /**
+   * Show countdown time
+   * @default true
+   */
+  showCountdown?: boolean;
+  /**
+   * Countdown time
+   * @default 10 second
+   */
+  timeout?: number;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+};
+
+export let openDialogContainer = (_props: DialogProps) => {};
 
 const DialogContainer = () => {
   const { openDialog, dialogProps, isPropsNull, dialogType } = useDialog();
   const isLoading: boolean = store.getState().commonState.isLoading;
 
   useEffect(() => {
-    openDialogContainer = (props: DialogContainerProps) => openDialog(props);
+    openDialogContainer = (props: DialogProps) =>
+      openDialog({
+        ...props,
+      });
   }, [openDialog]);
 
   // Return dialog component

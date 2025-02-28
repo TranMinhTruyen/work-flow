@@ -1,4 +1,3 @@
-import AuthProvider from '@/common/provider/AuthProvider';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
@@ -8,15 +7,13 @@ import AuthHeader from '../header/auth-header/AuthHeader';
 
 const AuthLayout = () => {
   return (
-    <AuthProvider>
-      <Grid2 container direction={'column'} sx={authStyles.rootContainer}>
-        <Card elevation={5} sx={{ width: 650, maxWidth: 650 }}>
-          <AuthHeader />
-          <Divider />
-          <Outlet />
-        </Card>
-      </Grid2>
-    </AuthProvider>
+    <Grid2 container direction={'column'} sx={authStyles.rootContainer}>
+      <Card elevation={5} sx={{ width: 650, maxWidth: 650 }}>
+        <AuthHeader />
+        <Divider />
+        <Outlet />
+      </Card>
+    </Grid2>
   );
 };
 

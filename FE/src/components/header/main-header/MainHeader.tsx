@@ -1,7 +1,7 @@
 import logoUrl from '@/assets/logo.svg';
 import { languageConst } from '@/common/constants/commonConst';
 import { screenUrl } from '@/common/constants/urlConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
 import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';
@@ -61,7 +61,7 @@ const MainHeader = (props: HeaderProps) => {
             <SvgIcon
               viewBox={'0 0 100 100'}
               sx={{ height: '35px !important', width: '35px !important', borderRadius: '15px' }}
-              onClick={() => navigate(screenUrl['HOME'].path)}
+              onClick={() => navigate(screenUrl.HOME.path)}
             >
               <image href={logoUrl} viewBox={'0 0 100 100'} />
             </SvgIcon>
@@ -71,7 +71,7 @@ const MainHeader = (props: HeaderProps) => {
             variant={'h5'}
             component={'span'}
             sx={styles.title}
-            onClick={() => navigate(screenUrl['HOME'].path)}
+            onClick={() => navigate(screenUrl.HOME.path)}
           >
             WORK FLOW
           </Typography>

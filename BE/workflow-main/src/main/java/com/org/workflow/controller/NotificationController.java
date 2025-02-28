@@ -29,6 +29,7 @@ public class NotificationController extends AbstractController {
 
   private final SimpMessagingTemplate messagingTemplate;
 
+
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/create")
   public ResponseEntity<BaseResponse> createNotification(

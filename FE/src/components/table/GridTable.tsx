@@ -1,4 +1,4 @@
-import { CommonProps } from '@/common/hooks/usePageGridTable';
+import { CommonProps } from '@/common/hooks/useGridTable';
 import { styled } from '@mui/material/styles';
 import { SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';

@@ -17,33 +17,33 @@ export interface IRouterItem {
 const routerItemList: Array<IRouterItem> = [
   {
     screen: <LoginPage />,
-    screenPrefix: screenUrl['LOGIN'].prefix,
-    screenPath: screenUrl['LOGIN'].path,
+    screenPrefix: screenUrl.LOGIN.prefix,
+    screenPath: screenUrl.LOGIN.path,
   },
   {
     screen: <RegisterPage />,
-    screenPrefix: screenUrl['REGISTER'].prefix,
-    screenPath: screenUrl['REGISTER'].path,
+    screenPrefix: screenUrl.REGISTER.prefix,
+    screenPath: screenUrl.REGISTER.path,
   },
   {
     screen: <HomePage />,
-    screenPrefix: screenUrl['HOME'].prefix,
-    screenPath: screenUrl['HOME'].path,
+    screenPrefix: screenUrl.HOME.prefix,
+    screenPath: screenUrl.HOME.path,
   },
   {
     screen: <KanbanPage />,
-    screenPrefix: screenUrl['KANBAN'].prefix,
-    screenPath: screenUrl['KANBAN'].path,
+    screenPrefix: screenUrl.KANBAN.prefix,
+    screenPath: screenUrl.KANBAN.path,
   },
   {
     screen: <ScreenPage />,
-    screenPrefix: screenUrl['SCREEN_MASTER'].prefix,
-    screenPath: screenUrl['SCREEN_MASTER'].path,
+    screenPrefix: screenUrl.SCREEN_MASTER.prefix,
+    screenPath: screenUrl.SCREEN_MASTER.path,
   },
   {
     screen: <UserPage />,
-    screenPrefix: screenUrl['USER_MASTER'].prefix,
-    screenPath: screenUrl['USER_MASTER'].path,
+    screenPrefix: screenUrl.USER_MASTER.prefix,
+    screenPath: screenUrl.USER_MASTER.path,
   },
 ];
 

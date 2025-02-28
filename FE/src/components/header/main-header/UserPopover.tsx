@@ -51,7 +51,7 @@ const UserPopover = () => {
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
-    navigate(screenUrl['LOGIN'].path, true);
+    navigate(screenUrl.LOGIN.path, true);
   }, [dispatch, navigate]);
 
   return (

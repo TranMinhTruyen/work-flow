@@ -2,17 +2,20 @@ import { ReactNode, useEffect, useState } from 'react';
 import { CURRENT_PATH } from '../constants/commonConst';
 import { screenUrl } from '../constants/urlConst';
 import useRouter from '../hooks/useRouter';
-import { checkLogin } from '../utils/authUtil';
+import { checkLogin, handleCheckToken } from '../utils/authUtil';
 import { isNullOrEmpty } from '../utils/stringUtil';
 
 const MainProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const { navigate } = useRouter();
-  const isLogin = checkLogin();
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!checkLogin()) {
       navigate(screenUrl['LOGIN'].path, true);
+    }
+
+    if (!isSet && checkLogin()) {
+      handleCheckToken();
     }
 
     if (isSet) {
@@ -25,7 +28,7 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsSet(true);
-  }, [isLogin, isSet, navigate]);
+  }, [isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

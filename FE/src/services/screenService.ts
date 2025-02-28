@@ -1,8 +1,8 @@
 import baseApi from '@/common/api/apiBaseQuery';
-import { ApiEnum } from '@/common/enums/ApiEnum';
-import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
-import { ISearchScreenRequest } from '@/pages/main-page/master/screen/model/ScreenRequest';
-import { ISearchScreenResponse } from '@/pages/main-page/master/screen/model/ScreenResponse';
+import { ApiEnum } from '@/common/api/apiUrl';
+import { IPageRequest, IPageResponse } from '@/common/model/pageable';
+import { ISearchScreenRequest } from '@/pages/main-page/master/screen/model/screenRequest';
+import { ISearchScreenResponse } from '@/pages/main-page/master/screen/model/screenResponse';
 
 export const screenService = baseApi.injectEndpoints({
   endpoints: builder => ({

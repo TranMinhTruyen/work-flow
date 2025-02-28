@@ -1,7 +1,8 @@
 import { setLoginData } from '@/common/store/commonSlice';
 import { IScreenItem } from '@/components/drawer/ScreenListItem';
 import store from '@/lib/store';
-import { ILoginResponse } from '@/pages/auth-page/login/model/LoginModel';
+import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
+import { securityService } from '@/services/securityService';
 import forge from 'node-forge';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import { isNullOrEmpty } from './stringUtil';
@@ -94,4 +95,8 @@ export const checkAccessScreen = (screenItem: IScreenItem): boolean => {
   }
 
   return isAccess;
+};
+
+export const handleCheckToken = async () => {
+  await store.dispatch(securityService.endpoints.tokenCheck.initiate()).unwrap();
 };

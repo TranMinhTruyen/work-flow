@@ -1,10 +1,10 @@
 import baseApi from '@/common/api/apiBaseQuery';
-import { ApiEnum } from '@/common/enums/ApiEnum';
-import { ILoginRequest, ILoginResponse } from '@/pages/auth-page/login/model/LoginModel';
+import { ApiEnum } from '@/common/api/apiUrl';
+import { ILoginRequest, ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 import {
   IRegisterRequest,
   IRegisterResponse,
-} from '../pages/auth-page/register/model/RegisterModel';
+} from '../pages/auth-page/register/model/registerModel';
 
 export const userServices = baseApi.injectEndpoints({
   endpoints: builder => ({

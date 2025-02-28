@@ -6,7 +6,7 @@ import {
   setScreenExpand,
   toggleDrawer,
 } from '@/common/store/commonSlice';
-import { checkAccessScreen } from '@/common/utils/authUtil';
+import { checkAccessScreen, handleCheckToken } from '@/common/utils/authUtil';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -118,7 +118,8 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
   const { navigate, currentPath } = useRouter();
 
   const handleOnClickItem = useCallback(
-    (path: string) => () => {
+    (path: string) => async () => {
+      await handleCheckToken();
       navigate(path);
     },
     [navigate]
@@ -182,7 +183,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     if (screenExpand.includes('ALL') || screenExpand.find(x => x === item.screenKey)) {
       setOpenChild(true);
     }
-  }, []);
+  }, [item.screenKey, screenExpand]);
 
   const expandButton = useMemo(
     () =>
@@ -254,7 +255,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     } else {
       dispatch(removeScreenExpand(item.screenKey));
     }
-  }, [openChild]);
+  }, [dispatch, item.screenKey, openChild]);
 
   const childItemCollapse = useMemo(() => {
     if (childItem.length > 0) {

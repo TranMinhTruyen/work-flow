@@ -1,4 +1,4 @@
-import { MessageType } from '@/common/enums/MessageEnum';
+import { MessageType } from '@/common/enums/messageEnum';
 
 export interface IErrorList {
   errorCode: string;

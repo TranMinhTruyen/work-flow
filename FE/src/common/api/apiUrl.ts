@@ -1,8 +1,37 @@
-import { FILE_PREFIX, PROXY_PREFIX, SCREEN_PREFIX, USER_PREFIX } from '../constants/apiPrefixConst';
+/* eslint-disable no-unused-vars */
+import {
+  FILE_PREFIX,
+  SCREEN_PREFIX,
+  SECURITY_PREFIX,
+  USER_PREFIX,
+} from '../constants/apiPrefixConst';
 import { ApiType } from '../constants/typeConst';
-import { ApiEnum } from '../enums/ApiEnum';
 
-export const controller: Record<ApiEnum, ApiType> = {
+export enum ApiEnum {
+  // User api
+  CREATE_USER_ADMIN,
+  CREATE_USER,
+  LOGIN,
+  GET_PROFILE,
+  UPDATE_USER_ACCOUNT,
+  CHANGE_LOGIN_PASSWORD,
+
+  // Master item api
+  CREATE_MASTER,
+
+  // Proxy api
+  TOKEN_CHECK,
+  GET_ACCESS_SCREEN,
+
+  // File api
+  UPLOAD_FILE,
+  DOWNLOAD_FILE,
+
+  // Screen api
+  SEARCH_SCREEN,
+}
+
+export const controller: Record<string, ApiType> = {
   // User api
   [ApiEnum.LOGIN]: {
     url: `${USER_PREFIX}/login`,
@@ -33,13 +62,13 @@ export const controller: Record<ApiEnum, ApiType> = {
     method: 'POST',
   },
 
-  // Proxy api
-  [ApiEnum.CHECK_PROXY]: {
-    url: `${PROXY_PREFIX}/check-proxy`,
+  // Security api
+  [ApiEnum.TOKEN_CHECK]: {
+    url: `${SECURITY_PREFIX}/token-check`,
     method: 'POST',
   },
   [ApiEnum.GET_ACCESS_SCREEN]: {
-    url: `${PROXY_PREFIX}/get-access-screen`,
+    url: `${SECURITY_PREFIX}/get-access-screen`,
     method: 'POST',
   },
 

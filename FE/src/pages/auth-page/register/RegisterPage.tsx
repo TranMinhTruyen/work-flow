@@ -1,6 +1,6 @@
 import { screenUrl } from '@/common/constants/urlConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { MessageType } from '@/common/enums/MessageEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { MessageType } from '@/common/enums/messageEnum';
 import useForm from '@/common/hooks/useForm';
 import useNavigate from '@/common/hooks/useRouter';
 import Button from '@/components/button/Button';
@@ -22,7 +22,7 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitRegister } from './action/action';
-import { IRegisterForm } from './model/RegisterForm';
+import { IRegisterForm } from './model/registerForm';
 
 const RegisterPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -48,9 +48,9 @@ const RegisterPage = () => {
         openDialogContainer({
           type: 'message',
           messageType: MessageType.SUCCESS,
-          message: `Create username: ${response.userName} success`,
+          bodyElement: `Create username: ${response.userName} success`,
           onConfirm: () => {
-            navigate(screenUrl['LOGIN'].path);
+            navigate(screenUrl.LOGIN.path);
           },
         });
       } else {

@@ -7,7 +7,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  { ignores: ['**/*.config.cjs'], files: ['**/*.ts', '**/*.tsx'] },
+  { ignores: ['**/*.config.cjs', 'vite.config.ts'], files: ['**/*.ts', '**/*.tsx'] },
   ...compat.config({
     env: {
       browser: true,
@@ -56,7 +56,23 @@ const eslintConfig = [
           varsIgnorePattern: '^_',
         },
       ],
-      'prettier/prettier': 'warn',
+      'prettier/prettier': [
+        'warn',
+        {
+          semi: true,
+          tabWidth: 2,
+          useTabs: false,
+          printWidth: 100,
+          singleQuote: true,
+          trailingComma: 'es5',
+          bracketSpacing: true,
+          bracketSameLine: false,
+          arrowParens: 'avoid',
+          'no-mixed-spaces-and-tabs': ['warn'],
+          'no-unused-vars': ['warn'],
+          endOfLine: 'auto',
+        },
+      ],
     },
   }),
 ];

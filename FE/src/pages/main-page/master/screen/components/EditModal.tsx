@@ -12,8 +12,8 @@ import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, Ref, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { IEditModalForm } from '../model/EditModalForm';
-import { IScreenTableRow } from '../model/Table';
+import { IEditModalForm } from '../model/editModalForm';
+import { IScreenTableRow } from '../model/table';
 
 type EditModalProps = {
   ref: Ref<PromiseModalRef<null, IScreenTableRow>>;

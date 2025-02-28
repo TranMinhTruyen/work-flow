@@ -1,21 +1,19 @@
 package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
+import static com.org.workflow.core.common.enums.MessageTypeEnum.SUCCESS;
 
 import com.org.workflow.core.common.enums.MessageEnum;
-import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.proxy.CheckProxyRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.proxy.AccessScreenResponse;
-import com.org.workflow.domain.dto.response.proxy.CheckProxyResponse;
-import com.org.workflow.domain.services.ProxyService;
+import com.org.workflow.domain.services.SecurityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,26 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "ProxyController")
-@RequestMapping(path = API_PREFIX + "/proxy")
-public class ProxyController extends AbstractController {
+@Tag(name = "SecurityController")
+@RequestMapping(path = API_PREFIX + "/security")
+public class SecurityController extends AbstractController {
 
-  private final ProxyService proxyService;
+  private final SecurityService securityService;
 
-
-  /**
-   * Check proxy api.
-   *
-   * @param checkProxyRequest CheckProxyRequest
-   * @return BaseResponse
-   */
-  @PostMapping(value = "/check-proxy")
-  public ResponseEntity<BaseResponse> checkProxy(
-      @RequestBody BaseRequest<CheckProxyRequest> checkProxyRequest) {
-    CheckProxyResponse result = proxyService.checkProxy(checkProxyRequest.getPayload());
-    return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @PostMapping("/token-check")
+  public ResponseEntity<BaseResponse> tokenCheck() {
+    return this.returnBaseResponse(null, "Token check success", SUCCESS,
+        HttpStatus.OK);
   }
-
 
   /**
    * Get access screen api.
@@ -53,7 +43,7 @@ public class ProxyController extends AbstractController {
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/get-access-screen")
   public ResponseEntity<BaseResponse> getAccessScreen() {
-    AccessScreenResponse result = proxyService.getAccessScreen();
+    AccessScreenResponse result = securityService.getAccessScreen();
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 

@@ -1,10 +1,10 @@
-import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
+import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 import mockData from '../data/mockData.json';
-import { ISearchScreenRequest } from '../model/ScreenRequest';
-import { ISearchScreenResponse } from '../model/ScreenResponse';
-import { IScreenTableRow } from '../model/Table';
+import { ISearchScreenRequest } from '../model/screenRequest';
+import { ISearchScreenResponse } from '../model/screenResponse';
+import { IScreenTableRow } from '../model/table';
 
 export const initMockData = () => {
   const data: IScreenTableRow[] = mockData.map(item => ({ ...item }));

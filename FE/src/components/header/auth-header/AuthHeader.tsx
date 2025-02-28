@@ -1,6 +1,6 @@
 import { CURRENT_PATH, languageConst } from '@/common/constants/commonConst';
 import { screenUrl } from '@/common/constants/urlConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
 import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';
@@ -42,9 +42,9 @@ const AuthHeader = () => {
       return;
     }
     switch (currentPath) {
-      case screenUrl['REGISTER'].path:
+      case screenUrl.REGISTER.path:
         return (
-          <IconButton onClick={() => navigate(screenUrl['LOGIN'].path)} color={'primary'}>
+          <IconButton onClick={() => navigate(screenUrl.LOGIN.path)} color={'primary'}>
             <ChevronLeftIcon fontSize={'large'} />
           </IconButton>
         );
@@ -58,9 +58,9 @@ const AuthHeader = () => {
       return;
     }
     switch (currentPath) {
-      case screenUrl['LOGIN'].path:
+      case screenUrl.LOGIN.path:
         return t('screenTitle.login');
-      case screenUrl['REGISTER'].path:
+      case screenUrl.REGISTER.path:
         return t('screenTitle.register');
       default:
         break;

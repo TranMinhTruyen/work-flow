@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Authorizer, CommonElement } from '../constants/typeConst';
-import { ScreenComponent } from '../model/ScreenMaster';
+import { ScreenComponent } from '../model/screenMaster';
 import { getLoginData } from '../utils/authUtil';
 
 const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {

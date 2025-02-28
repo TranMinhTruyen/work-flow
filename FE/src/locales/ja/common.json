@@ -12,9 +12,10 @@
     "totalFile": "ファイル合計: "
   },
   "button": {
+    "ok": "OK",
     "save": "保存",
     "back": "戻る",
-    "cancel": "取消"
+    "cancel": "キャンセル"
   },
   "ERROR": "エラー",
   "SUCCESS": "成功",

@@ -2,9 +2,9 @@ import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { ResponseType } from 'axios';
 import { CustomAxiosConfig } from '../constants/typeConst';
-import { ApiEnum } from '../enums/ApiEnum';
-import { IBaseResponse } from '../model/BaseResponse';
+import { IBaseResponse } from '../model/baseResponse';
 import { axiosApiEnumFetch } from '../provider/RootProvider';
+import { ApiEnum } from './apiUrl';
 
 const apiBaseQuery =
   (): BaseQueryFn<

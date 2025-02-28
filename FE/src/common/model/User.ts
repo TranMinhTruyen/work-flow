@@ -1,4 +1,4 @@
-import { IScreenMaster } from './ScreenMaster';
+import { IScreenMaster } from './screenMaster';
 
 export interface IUserResponse {
   userId?: string;

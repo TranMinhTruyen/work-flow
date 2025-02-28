@@ -3,7 +3,7 @@ import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { FormContext } from '../constants/typeConst';
-import { I18nEnum } from '../enums/I18nEnum';
+import { I18nEnum } from '../enums/i18nEnum';
 import { formatString } from '../utils/stringUtil';
 
 type UseCheckRequiredProps = {

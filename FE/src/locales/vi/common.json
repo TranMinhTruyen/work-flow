@@ -12,6 +12,7 @@
     "totalFile": "Tổng số file: "
   },
   "button": {
+    "ok": "OK",
     "save": "Lưu",
     "back": "Quay lại",
     "cancel": "Hủy"

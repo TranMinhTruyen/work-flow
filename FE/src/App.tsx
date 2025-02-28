@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode, Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import routerItemList from './common/constants/routerItemList';
@@ -6,23 +6,31 @@ import { AUTH_PREFIX, MAIN_PREFIX, screenUrl } from './common/constants/urlConst
 import AuthProvider from './common/provider/AuthProvider';
 import MainProvider from './common/provider/MainProvider';
 import RootProvider from './common/provider/RootProvider';
+import { selectLanguage } from './common/store/commonSlice';
 import DialogContainer from './components/dialog/DialogContainer';
 import AuthLayout from './components/layouts/AuthLayout';
 import MainLayout from './components/layouts/MainLayout';
 import BackButtonListener from './components/loading/BackButtonListener ';
 import BackdropLoading from './components/loading/BackdropLoading';
+import i18n from './i18n';
+import { useAppSelector } from './lib/store';
 
 const BackgroundLoading = ({ children }: { children: ReactNode }) => {
   return <Suspense fallback={<BackdropLoading />}>{children}</Suspense>;
 };
 
-// TODO add suspense
 const App = () => {
+  const language = useAppSelector(selectLanguage);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
+
   return (
     <BrowserRouter>
       <RootProvider>
         <Routes>
-          <Route path={'/'} element={<Navigate to={screenUrl['LOGIN'].path} replace />} />
+          <Route path={'/'} element={<Navigate to={screenUrl.LOGIN.path} replace />} />
           <Route
             path={'/'}
             element={
@@ -59,7 +67,7 @@ const App = () => {
               .map((item, index) => (
                 <Route
                   key={index}
-                  index={item.screenPath === screenUrl['LOGIN'].path ? true : false}
+                  index={item.screenPath === screenUrl.LOGIN.path ? true : false}
                   path={item.screenPath}
                   element={<BackgroundLoading>{item.screen}</BackgroundLoading>}
                 />

@@ -1,5 +1,5 @@
 import { screenUrl } from '@/common/constants/urlConst';
-import { I18nEnum } from '@/common/enums/I18nEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import useRouter from '@/common/hooks/useRouter';
 import Button from '@/components/button/Button';
@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { handleSubmitLogin } from './action/action';
-import { ILoginForm } from './model/LoginForm';
+import { ILoginForm } from './model/loginForm';
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -44,7 +44,7 @@ const LoginPage = () => {
       await trigger();
       const result = await handleSubmitLogin(data);
       if (result) {
-        navigate(screenUrl['LOGIN'].path, true);
+        navigate(screenUrl.LOGIN.path, true);
       }
     },
     [navigate, trigger]
@@ -109,7 +109,7 @@ const LoginPage = () => {
           <Typography sx={{ fontSize: 18 }}>
             {t('label.noAcccount')}
             {
-              <Link onClick={() => navigate(screenUrl['REGISTER'].path)} sx={{ cursor: 'pointer' }}>
+              <Link onClick={() => navigate(screenUrl.REGISTER.path)} sx={{ cursor: 'pointer' }}>
                 {t('label.register')}
               </Link>
             }

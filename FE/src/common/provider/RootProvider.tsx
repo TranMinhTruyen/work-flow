@@ -1,23 +1,21 @@
-import { IBaseRequest } from '@/common/model/BaseRequest';
-import { IBaseResponse } from '@/common/model/BaseResponse';
-import { selectLanguage, toggleLoading } from '@/common/store/commonSlice';
+import { IBaseRequest } from '@/common/model/baseRequest';
+import { IBaseResponse } from '@/common/model/baseResponse';
+import { toggleLoading } from '@/common/store/commonSlice';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import i18n from '@/i18n';
-import store, { useAppDispatch, useAppSelector } from '@/lib/store';
-import { ILoginResponse } from '@/pages/auth-page/login/model/LoginModel';
+import store, { useAppDispatch } from '@/lib/store';
+import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { controller } from '../api/apiUrl';
+import { ApiEnum, controller } from '../api/apiUrl';
 import { API_PREFIX } from '../constants/apiPrefixConst';
-import { FULL_DATE_TIME_FORMAT, TIME_OUT } from '../constants/commonConst';
+import { FULL_DATE_TIME_FORMAT, RESET_ALL, TIME_OUT } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { screenUrl } from '../constants/urlConst';
-import { ApiEnum } from '../enums/ApiEnum';
-import { I18nEnum } from '../enums/I18nEnum';
-import { MessageType } from '../enums/MessageEnum';
+import { I18nEnum } from '../enums/i18nEnum';
+import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
 import { getLoginData } from '../utils/authUtil';
 import { formatString } from '../utils/stringUtil';
@@ -47,7 +45,6 @@ const AUTH_WHITE_LIST: string[] = [
   '/api/user-account/login',
   '/api/user-account/create',
   '/api/master-item/get',
-  '/api/proxy/check-proxy',
   ...FILE_API,
 ];
 
@@ -57,11 +54,6 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
-  const language = useAppSelector(selectLanguage);
-
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
@@ -80,7 +72,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
 
           // If login data is undefined, back to login screen
           if (loginData === undefined) {
-            navigate(screenUrl['LOGIN'].path, true);
+            navigate(screenUrl.LOGIN.path, true);
           } else {
             // Set token to header
             config.headers['Authorization'] = `Bearer ${loginData.token}`;
@@ -124,7 +116,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
             type: 'message',
             maxWidth: 'sm',
             messageType: transformResponse.messageType,
-            message: (
+            bodyElement: (
               <ApiErrorDetail
                 status={response.status}
                 message={transformResponse.message}
@@ -142,10 +134,6 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
       },
       error => {
         const axiosError = error as AxiosError<IBaseResponse>;
-
-        if (axiosError.config?.url === '/api/proxy/check-proxy') {
-          return;
-        }
 
         let responseStatus = 500;
         let responseMessage = '';
@@ -212,19 +200,58 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        openDialogContainer({
-          type: 'message',
-          maxWidth: 'sm',
-          messageType: responseData.messageType,
-          isPopup: false,
-          message: (
-            <ApiErrorDetail
-              status={responseStatus}
-              message={responseMessage}
-              responseData={responseData}
-            />
-          ),
-        });
+        if (responseStatus === 401) {
+          openDialogContainer({
+            type: 'message',
+            maxWidth: 'sm',
+            messageType: responseData.messageType,
+            isPopup: false,
+            showCloseButton: false,
+            autoClose: true,
+            timeout: 15,
+            onConfirm: () => {
+              dispatch({ type: RESET_ALL });
+              localStorage.removeItem('login');
+              sessionStorage.removeItem('login');
+              navigate(screenUrl.LOGIN.path, true);
+            },
+            bodyElement: 'Session time out',
+          });
+        } else if (responseStatus === 500) {
+          openDialogContainer({
+            type: 'message',
+            maxWidth: 'sm',
+            messageType: responseData.messageType,
+            isPopup: false,
+            onConfirm: () => {
+              dispatch({ type: RESET_ALL });
+              localStorage.removeItem('login');
+              sessionStorage.removeItem('login');
+              navigate(screenUrl.LOGIN.path, true);
+            },
+            bodyElement: (
+              <ApiErrorDetail
+                status={responseStatus}
+                message={responseMessage}
+                responseData={responseData}
+              />
+            ),
+          });
+        } else {
+          openDialogContainer({
+            type: 'message',
+            maxWidth: 'sm',
+            messageType: responseData.messageType,
+            isPopup: false,
+            bodyElement: (
+              <ApiErrorDetail
+                status={responseStatus}
+                message={responseMessage}
+                responseData={responseData}
+              />
+            ),
+          });
+        }
 
         if (store.getState().commonState.isLoading) {
           dispatch(toggleLoading(false));

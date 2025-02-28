@@ -1,4 +1,4 @@
-import { ILoginResponse } from '@/pages/auth-page/login/model/LoginModel';
+import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../lib/store';
 

@@ -1,10 +1,11 @@
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { MessageType } from '@/common/enums/MessageEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { MessageType } from '@/common/enums/messageEnum';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -17,16 +18,28 @@ import { useTranslation } from 'react-i18next';
 import Button from '../button/Button';
 
 export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
-  message?: ReactNode;
+  bodyElement?: ReactNode;
   messageType?: MessageType;
   cancelText?: string;
   confirmText?: string;
   isPopup?: boolean;
   showCancelButton?: boolean;
   showCloseButton?: boolean;
-  autoClose?: boolean;
-  showCountdown?: boolean;
   countdown?: number;
+  /**
+   * Auto close dialog after timeout
+   * @default false
+   */
+  autoClose?: boolean;
+  /**
+   * Show countdown time
+   * @default true
+   */
+  showCountdown?: boolean;
+  /**
+   * Countdown time
+   * @default 10 second
+   */
   timeout?: number;
   onConfirm?: () => void;
   onCancel?: () => void;
@@ -35,7 +48,7 @@ export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
 const ConfirmDialog = (props: ConfirmDialogProps) => {
   const {
     open,
-    message,
+    bodyElement,
     messageType,
     cancelText,
     confirmText,
@@ -48,6 +61,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     onConfirm,
     onCancel,
     maxWidth = 'xs',
+    timeout,
     ...restProps
   } = props;
 
@@ -102,17 +116,17 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     }
   }, [messageType, t]);
 
-  const messageElement = useMemo(() => {
-    if (message) {
-      if (typeof message === 'string') {
-        return <Typography sx={{ fontSize: 20 }}>{message}</Typography>;
+  const body = useMemo(() => {
+    if (bodyElement) {
+      if (typeof bodyElement === 'string') {
+        return <Typography sx={{ fontSize: 20 }}>{bodyElement}</Typography>;
       } else {
-        return message;
+        return bodyElement;
       }
     } else {
       return null;
     }
-  }, [message]);
+  }, [bodyElement]);
 
   const cancelButton = useMemo(() => {
     if (showCancelButton !== undefined && showCancelButton) {
@@ -120,19 +134,19 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         <Button
           label={
             <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {cancelText ?? 'Cancel'}
+              {cancelText ?? t('button.cancel')}
             </Typography>
           }
           sx={{
             width: 120,
-            height: 40,
+            height: 30,
             backgroundColor: 'rgba(255, 50, 50, 0.8)',
           }}
           onClick={handleCancelClick}
         />
       );
     }
-  }, [cancelText, handleCancelClick, showCancelButton]);
+  }, [cancelText, handleCancelClick, showCancelButton, t]);
 
   const dialogBody = useMemo(
     () => (
@@ -158,8 +172,32 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
 
         <DialogContent sx={{ padding: 2.5 }}>
           <Stack alignItems={'center'}>
-            {messageElement}
-            {showCountdown && autoClose ? countdown : null}
+            {body}
+            {showCountdown && autoClose && countdown && timeout ? (
+              <>
+                <Box sx={{ marginTop: '18px', position: 'relative', display: 'inline-flex' }}>
+                  <CircularProgress variant={'determinate'} value={(countdown / timeout) * 100} />
+                  <Box
+                    sx={{
+                      top: 0,
+                      left: 0,
+                      bottom: 0,
+                      right: 0,
+                      position: 'absolute',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      sx={{ color: 'text.secondary' }}
+                    >{`${Math.round(countdown)}s`}</Typography>
+                  </Box>
+                </Box>
+              </>
+            ) : null}
           </Stack>
         </DialogContent>
 
@@ -170,12 +208,12 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
             <Button
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  {confirmText ?? 'OK'}
+                  {confirmText ?? t('button.ok')}
                 </Typography>
               }
               sx={{
                 width: 120,
-                height: 40,
+                height: 30,
                 backgroundColor: 'rgba(0, 170, 255, 0.8)',
               }}
               onClick={handleConfirmClick}
@@ -189,11 +227,13 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       dialogHeader,
       showCloseButton,
       handleCancelClick,
-      messageElement,
+      body,
       showCountdown,
       autoClose,
       countdown,
+      timeout,
       confirmText,
+      t,
       handleConfirmClick,
       cancelButton,
     ]

@@ -1,5 +1,5 @@
-import { I18nEnum } from '@/common/enums/I18nEnum';
-import { IBaseResponse } from '@/common/model/BaseResponse';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { IBaseResponse } from '@/common/model/baseResponse';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -65,18 +65,26 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
     []
   );
 
-  return (
-    <Container>
-      <Stack spacing={1}>
-        <Typography sx={{ color: 'rgba(225, 0, 0, 1)' }}>
-          {status} {message}
-        </Typography>
+  const errorTable = useMemo(() => {
+    if (status !== 500) {
+      return (
         <GridTable
           columnDefs={colDefs}
           defaultColDef={defaultColDef}
           rowData={tableData}
           suppressMovableColumns
         />
+      );
+    }
+  }, [colDefs, defaultColDef, status, tableData]);
+
+  return (
+    <Container>
+      <Stack spacing={1}>
+        <Typography sx={{ color: 'rgba(225, 0, 0, 1)' }}>
+          {status} {message}
+        </Typography>
+        {errorTable}
       </Stack>
     </Container>
   );
