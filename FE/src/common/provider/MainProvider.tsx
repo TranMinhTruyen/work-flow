@@ -11,7 +11,8 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!checkLogin()) {
-      navigate(screenUrl['LOGIN'].path, true);
+      navigate(screenUrl.LOGIN.path, true);
+      return;
     }
 
     if (!isSet && checkLogin()) {

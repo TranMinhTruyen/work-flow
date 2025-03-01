@@ -6,7 +6,7 @@ In the project directory, you can run:
 
 ### `python -m venv .venv`
 
-### `.venv\Scripts\Activate.ps1`
+### `.venv/Scripts/Activate.ps1`
 
 ### `pip install "fastapi[standard]"`
 
@@ -18,7 +18,7 @@ Update pip if warning
 
 ## Run server
 
-### `fastapi dev app\main.py`
+### `fastapi dev app/main.py --reload` or `uvicorn app.main:app --reload`
 
 Once you are done working on your project you can deactivate the virtual environment:
 
