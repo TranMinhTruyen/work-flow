@@ -1,10 +1,3 @@
-import { get } from '@/common/api/apiS3Object';
-import { RESET_ALL } from '@/common/constants/commonConst';
-import { screenUrl } from '@/common/constants/urlConst';
-import useRouter from '@/common/hooks/useRouter';
-import { selectLoginData } from '@/common/store/commonSlice';
-import IconButton from '@/components/button/IconButton';
-import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { Logout, Settings } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Divider from '@mui/material/Divider';
@@ -13,6 +6,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
+
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import IconButton from '@/components/button/IconButton';
+import { selectLoginData } from '@/common/store/commonSlice';
+import useRouter from '@/common/hooks/useRouter';
+import { screenUrl } from '@/common/constants/urlConst';
+import { RESET_ALL } from '@/common/constants/commonConst';
+import { get } from '@/common/api/apiS3Object';
 
 const UserPopover = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);

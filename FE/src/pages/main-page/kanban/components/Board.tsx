@@ -1,5 +1,3 @@
-import { CommonElement } from '@/common/constants/typeConst';
-import { useAppDispatch, useAppSelector } from '@/lib/store';
 import {
   DndContext,
   DragCancelEvent,
@@ -16,6 +14,10 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/system/Stack';
 import { memo, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
+
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import { CommonElement } from '@/common/constants/typeConst';
+
 import { eventDragMoveAction, eventDropAction } from '../action/action';
 import {
   selectActiveCard,

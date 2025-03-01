@@ -1,11 +1,12 @@
+import { useCallback } from 'react';
+import { Control, Controller } from 'react-hook-form';
+
 import { FileData, FormContext } from '@/common/constants/typeConst';
 import useInput from '@/common/hooks/useInput';
 import { isNullOrEmpty } from '@/common/utils/stringUtil';
 import UncontrolledFileInput, {
   FileInputProps as UncontrolledFileInputProps,
 } from '@/components/inputs/FileInput';
-import { useCallback } from 'react';
-import { Control, Controller } from 'react-hook-form';
 
 export type FileInputProps = UncontrolledFileInputProps & {
   name: string;

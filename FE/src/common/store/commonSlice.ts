@@ -1,5 +1,7 @@
-import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
+
 import { RootState } from '../../lib/store';
 
 interface CommonState {

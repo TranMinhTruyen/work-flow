@@ -1,9 +1,11 @@
-import { Type } from '@/common/enums/boardEnum';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { CSSProperties, memo } from 'react';
+
+import { Type } from '@/common/enums/boardEnum';
+
 import { ICard } from '../model/type';
 
 export type CardProps = {

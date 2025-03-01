@@ -1,5 +1,6 @@
 import { ReactNode, Suspense, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+
 import './App.css';
 import routerItemList from './common/constants/routerItemList';
 import { AUTH_PREFIX, MAIN_PREFIX, screenUrl } from './common/constants/urlConst';

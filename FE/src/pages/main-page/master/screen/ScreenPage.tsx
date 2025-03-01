@@ -1,15 +1,17 @@
-import useGridTable from '@/common/hooks/useGridTable';
-import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
-import { IPageRequest } from '@/common/model/pageable';
-import IconButton from '@/components/button/IconButton';
-import SwitchInput from '@/components/inputs/SwitchInput';
-import PageGridTable from '@/components/table/PageGridTable';
 import EditIcon from '@mui/icons-material/Edit';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { cloneDeep } from 'lodash';
 import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import useGridTable from '@/common/hooks/usePageable';
+import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import { IPageRequest } from '@/common/model/pageable';
+import IconButton from '@/components/button/IconButton';
+import SwitchInput from '@/components/inputs/SwitchInput';
+import PageGridTable from '@/components/table/PageGridTable';
+
 import { searchAction } from './action/action';
 import EditModal from './components/EditModal';
 import TestModal from './components/TestModal';
@@ -17,10 +19,10 @@ import { ISearchScreenRequest } from './model/screenRequest';
 import { IScreenTableRow } from './model/table';
 import './screen.css';
 
-const ScreenMaster = () => {
+const ScreenPage = () => {
   const [data, setData] = useState<IScreenTableRow[]>([]);
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
-  const { control, orderList, pageable, setPageable } = useGridTable();
+  const { control, pageable, setPageable } = useGridTable();
 
   const handleSearch = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
@@ -42,7 +44,7 @@ const ScreenMaster = () => {
       ...pageable,
     };
     handleSearch(searchCondition);
-  }, [handleSearch, orderList, pageable]);
+  }, [handleSearch, pageable]);
 
   const handleSwitchActive = useCallback(
     (rowData: IScreenTableRow) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -169,4 +171,4 @@ const styles = {
   },
 };
 
-export default memo(ScreenMaster);
+export default memo(ScreenPage);

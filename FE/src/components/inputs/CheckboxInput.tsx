@@ -1,6 +1,7 @@
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Checkbox, { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox';
+
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 
 export type CheckBoxProps = MuiCheckboxProps & {
   label?: string;

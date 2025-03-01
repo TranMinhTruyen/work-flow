@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { CURRENT_PATH } from '../constants/commonConst';
 
 const useRouter = () => {

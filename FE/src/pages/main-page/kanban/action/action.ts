@@ -1,8 +1,10 @@
-import { Type } from '@/common/enums/boardEnum';
-import store from '@/lib/store';
 import { Active, Over } from '@dnd-kit/core/dist/store/types';
 import { arrayMove } from '@dnd-kit/sortable';
 import { cloneDeep } from 'lodash';
+
+import store from '@/lib/store';
+import { Type } from '@/common/enums/boardEnum';
+
 import {
   addCard,
   addColumn,

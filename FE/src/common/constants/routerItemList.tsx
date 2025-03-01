@@ -1,4 +1,5 @@
 import { lazy, ReactNode } from 'react';
+
 import { screenUrl } from './urlConst';
 
 const LoginPage = lazy(() => import('@/pages/auth-page/login/LoginPage'));

@@ -1,4 +1,5 @@
 import { SelectDataType } from '@/common/constants/typeConst';
+
 import { ICard, IColumn } from '../model/type';
 
 export const issueTypeSelect: SelectDataType[] = [

@@ -2,6 +2,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ChangeEvent, useCallback } from 'react';
+
 import GridTable, { GridTableProps } from './GridTable';
 
 export type PageGridTableProps = GridTableProps & {};

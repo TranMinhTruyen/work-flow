@@ -1,6 +1,7 @@
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
+
 import mockData from '../data/mockData.json';
 import { ISearchScreenRequest } from '../model/screenRequest';
 import { ISearchScreenResponse } from '../model/screenResponse';

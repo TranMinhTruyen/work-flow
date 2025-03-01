@@ -1,7 +1,3 @@
-import { FileData } from '@/common/constants/typeConst';
-import { I18nEnum } from '@/common/enums/i18nEnum';
-import { readFileAsByte } from '@/common/utils/convertUtil';
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -23,6 +19,12 @@ import Typography from '@mui/material/Typography';
 import { ChangeEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
+
+import { capitalizeFirst } from '@/common/utils/stringUtil';
+import { readFileAsByte } from '@/common/utils/convertUtil';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { FileData } from '@/common/constants/typeConst';
+
 import TextInput from './TextInput';
 
 export type FileInputProps = {

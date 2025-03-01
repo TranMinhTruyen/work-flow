@@ -1,3 +1,10 @@
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { ReactNode, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { CURRENT_PATH, languageConst } from '@/common/constants/commonConst';
 import { screenUrl } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/i18nEnum';
@@ -6,12 +13,6 @@ import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';
 import SelectInput from '@/components/inputs/SelectInput';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { ReactNode, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const AuthHeader = () => {
   const { t } = useTranslation(I18nEnum.COMMON_I18N);

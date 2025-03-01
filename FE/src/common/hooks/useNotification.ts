@@ -43,6 +43,7 @@ const useNotification = () => {
       setNotifications(new Map<string, any>());
       setClient(null);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendNotification = useCallback(

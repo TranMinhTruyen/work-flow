@@ -1,9 +1,11 @@
+import forge from 'node-forge';
+
 import { setLoginData } from '@/common/store/commonSlice';
 import { IScreenItem } from '@/components/drawer/ScreenListItem';
 import store from '@/lib/store';
 import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 import { securityService } from '@/services/securityService';
-import forge from 'node-forge';
+
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import { isNullOrEmpty } from './stringUtil';
 

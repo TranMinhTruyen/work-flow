@@ -1,11 +1,12 @@
-import { selectOpenDrawer } from '@/common/store/commonSlice';
-import Drawer from '@/components/drawer/Drawer';
-import MainHeader from '@/components/header/main-header/MainHeader';
-import { useAppSelector } from '@/lib/store';
 import { styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
 import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
+
+import { selectOpenDrawer } from '@/common/store/commonSlice';
+import Drawer from '@/components/drawer/Drawer';
+import MainHeader from '@/components/header/main-header/MainHeader';
+import { useAppSelector } from '@/lib/store';
 
 const DRAWER_WIDTH: number = 200;
 

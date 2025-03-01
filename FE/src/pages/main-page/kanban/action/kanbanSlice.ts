@@ -1,5 +1,7 @@
-import { RootState } from '@/lib/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from '@/lib/store';
+
 import { ICard, IColumn, IData, UpdateCardPayload } from '../model/type';
 
 type BoardSlice = {

@@ -3,6 +3,7 @@ import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
+
 import AuthHeader from '../header/auth-header/AuthHeader';
 
 const AuthLayout = () => {

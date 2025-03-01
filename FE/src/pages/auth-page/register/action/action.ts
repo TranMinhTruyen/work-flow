@@ -2,6 +2,7 @@ import { upload } from '@/common/api/apiS3Object';
 import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 import { userServices } from '@/services/userService';
+
 import { IRegisterForm } from './model/RegisterForm';
 import { IRegisterRequest } from './model/RegisterModel';
 

@@ -1,11 +1,13 @@
-import { Type } from '@/common/enums/boardEnum';
-import { useAppSelector } from '@/lib/store';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { CSSProperties, memo, useMemo } from 'react';
+
+import { useAppSelector } from '@/lib/store';
+import { Type } from '@/common/enums/boardEnum';
+
 import { selectIsColumnDragging } from '../action/kanbanSlice';
 import { ICard, IColumn } from '../model/type';
 import Card from './Card';

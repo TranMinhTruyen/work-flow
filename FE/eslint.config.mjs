@@ -56,6 +56,21 @@ const eslintConfig = [
           varsIgnorePattern: '^_',
         },
       ],
+      'import/order': [
+        'warn',
+        {
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
+          'newlines-between': 'always',
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['internal'],
+        },
+      ],
       'prettier/prettier': [
         'warn',
         {
@@ -73,6 +88,11 @@ const eslintConfig = [
           endOfLine: 'auto',
         },
       ],
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   }),
 ];

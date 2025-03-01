@@ -1,11 +1,13 @@
-import { I18nEnum } from '@/common/enums/i18nEnum';
-import { IBaseResponse } from '@/common/model/baseResponse';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { IBaseResponse } from '@/common/model/baseResponse';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+
 import GridTable from '../table/GridTable';
 
 type ApiErrorDetailProps = {

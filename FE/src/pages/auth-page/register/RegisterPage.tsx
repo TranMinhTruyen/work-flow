@@ -1,13 +1,3 @@
-import { screenUrl } from '@/common/constants/urlConst';
-import { I18nEnum } from '@/common/enums/i18nEnum';
-import { MessageType } from '@/common/enums/messageEnum';
-import useForm from '@/common/hooks/useForm';
-import useNavigate from '@/common/hooks/useRouter';
-import Button from '@/components/button/Button';
-import { openDialogContainer } from '@/components/dialog/DialogContainer';
-import DatePickerInput from '@/components/form/DatePickerInput';
-import ImageInput from '@/components/form/ImageInput';
-import TextInput from '@/components/form/TextInput';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
@@ -21,6 +11,18 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { screenUrl } from '@/common/constants/urlConst';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { MessageType } from '@/common/enums/messageEnum';
+import useForm from '@/common/hooks/useForm';
+import useNavigate from '@/common/hooks/useRouter';
+import Button from '@/components/button/Button';
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import DatePickerInput from '@/components/form/DatePickerInput';
+import ImageInput from '@/components/form/ImageInput';
+import TextInput from '@/components/form/TextInput';
+
 import { handleSubmitRegister } from './action/action';
 import { IRegisterForm } from './model/registerForm';
 

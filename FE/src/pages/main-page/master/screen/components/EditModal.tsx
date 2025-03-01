@@ -1,8 +1,3 @@
-import usePromiseModal, { PromiseModalRef } from '@/common/hooks/usePromiseModal';
-import Button from '@/components/button/Button';
-import SwitchInput from '@/components/form/SwitchInput';
-import TextInput from '@/components/form/TextInput';
-import GridTable from '@/components/table/GridTable';
 import CloseIcon from '@mui/icons-material/Close';
 import { Divider } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -12,6 +7,13 @@ import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, Ref, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+
+import usePromiseModal, { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import Button from '@/components/button/Button';
+import SwitchInput from '@/components/form/SwitchInput';
+import TextInput from '@/components/form/TextInput';
+import GridTable from '@/components/table/GridTable';
+
 import { IEditModalForm } from '../model/editModalForm';
 import { IScreenTableRow } from '../model/table';
 

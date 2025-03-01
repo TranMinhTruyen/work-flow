@@ -5,11 +5,9 @@ import commonEn from './locales/en/common.json';
 import editScreenEn from './locales/en/edit_screen.json';
 import loginEn from './locales/en/login.json';
 import registerEn from './locales/en/register.json';
-
 import commonVn from './locales/vi/common.json';
 import loginVn from './locales/vi/login.json';
 import registerVn from './locales/vi/register.json';
-
 import commonJp from './locales/ja/common.json';
 import loginJp from './locales/ja/login.json';
 import registerJp from './locales/ja/register.json';

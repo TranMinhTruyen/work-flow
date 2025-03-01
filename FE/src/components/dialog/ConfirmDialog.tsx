@@ -1,5 +1,3 @@
-import { I18nEnum } from '@/common/enums/i18nEnum';
-import { MessageType } from '@/common/enums/messageEnum';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -15,6 +13,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { MessageType } from '@/common/enums/messageEnum';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+
 import Button from '../button/Button';
 
 export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {

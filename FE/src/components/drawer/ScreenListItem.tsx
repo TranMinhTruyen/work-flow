@@ -1,10 +1,11 @@
-import { screenUrl } from '@/common/constants/urlConst';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ViewKanbanOutlinedIcon from '@mui/icons-material/ViewKanbanOutlined';
 import { ReactNode } from 'react';
+
+import { screenUrl } from '@/common/constants/urlConst';
 
 // TODO add screen component
 

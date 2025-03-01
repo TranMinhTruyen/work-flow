@@ -1,14 +1,13 @@
-import { IBaseRequest } from '@/common/model/baseRequest';
-import { IBaseResponse } from '@/common/model/baseResponse';
-import { toggleLoading } from '@/common/store/commonSlice';
-import { openDialogContainer } from '@/components/dialog/DialogContainer';
-import ApiErrorDetail from '@/components/error/ApiErrorDetail';
-import store, { useAppDispatch } from '@/lib/store';
-import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import ApiErrorDetail from '@/components/error/ApiErrorDetail';
+import store, { useAppDispatch } from '@/lib/store';
+import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
+
 import { ApiEnum, controller } from '../api/apiUrl';
 import { API_PREFIX } from '../constants/apiPrefixConst';
 import { FULL_DATE_TIME_FORMAT, RESET_ALL, TIME_OUT } from '../constants/commonConst';
@@ -17,6 +16,8 @@ import { screenUrl } from '../constants/urlConst';
 import { I18nEnum } from '../enums/i18nEnum';
 import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
+import { IBaseRequest, IBaseResponse } from '../model/AxiosData';
+import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import { formatString } from '../utils/stringUtil';
 
@@ -81,12 +82,12 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
 
         // Transform request
         if (config.data) {
-          const transformRequest: IBaseRequest<typeof config.data> = {
+          const transformRequest: IBaseRequest = {
             timestamp: dayjs(new Date()).format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,
             payload: { ...config.data },
           };
-          config.data = transformRequest;
+          config.data = { ...transformRequest };
         }
 
         // Set loading

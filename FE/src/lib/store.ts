@@ -1,4 +1,3 @@
-import baseApi from '@/common/api/apiBaseQuery';
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +11,9 @@ import {
   persistReducer,
   persistStore,
 } from 'redux-persist';
+
+import baseApi from '@/common/api/apiBaseQuery';
+
 import { commonTransform, rootReducer, sessionStorage } from './persist';
 
 export type RootState = ReturnType<typeof rootReducer>;

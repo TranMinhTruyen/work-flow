@@ -1,8 +1,9 @@
+import { Control, Controller } from 'react-hook-form';
+
 import { FormContext } from '@/common/constants/typeConst';
 import UncontrolledSwitchInput, {
   SwitchInputProps as UncontrolledSwitchInputProps,
 } from '@/components/inputs/SwitchInput';
-import { Control, Controller } from 'react-hook-form';
 
 export type SwitchInputProps = UncontrolledSwitchInputProps & {
   name: string;

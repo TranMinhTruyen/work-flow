@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
+import { Control, Controller } from 'react-hook-form';
+
 import { FileData, FormContext } from '@/common/constants/typeConst';
 import UncontrolledImageInput, {
   ImageInputProps as UncontrolledImageInputProps,
 } from '@/components/inputs/ImageInput';
-import { useCallback } from 'react';
-import { Control, Controller } from 'react-hook-form';
 
 export type ImageInputProps = UncontrolledImageInputProps & {
   name: string;

@@ -1,6 +1,3 @@
-import { SelectDataType } from '@/common/constants/typeConst';
-import { I18nEnum } from '@/common/enums/i18nEnum';
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
@@ -12,6 +9,10 @@ import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useCallback, useEffect, useState } from 'react';
+
+import { capitalizeFirst } from '@/common/utils/stringUtil';
+import { I18nEnum } from '@/common/enums/i18nEnum';
+import { SelectDataType } from '@/common/constants/typeConst';
 
 export type MultiSelectInputProps = Omit<
   SelectProps,

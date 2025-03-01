@@ -1,9 +1,11 @@
-import { selectOpenDrawer } from '@/common/store/commonSlice';
-import { useAppSelector } from '@/lib/store';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import { DrawerProps } from '@mui/material/Drawer/Drawer';
 import { CSSObject, styled, Theme } from '@mui/material/styles';
+
+import { useAppSelector } from '@/lib/store';
+import { selectOpenDrawer } from '@/common/store/commonSlice';
+
 import DrawerMenu from './DrawerMenu';
 
 type IDrawerProps = {

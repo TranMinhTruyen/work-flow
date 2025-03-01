@@ -1,13 +1,14 @@
-import { IMAGE_FILE_TYPE } from '@/common/constants/commonConst';
-import { FileData } from '@/common/constants/typeConst';
-import { convertToDataURL, readFileAsByte, readFileAsDataURL } from '@/common/utils/convertUtil';
-import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
 import ClearIcon from '@mui/icons-material/Clear';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+
+import { capitalizeFirst, isNullOrEmpty } from '@/common/utils/stringUtil';
+import { convertToDataURL, readFileAsByte, readFileAsDataURL } from '@/common/utils/convertUtil';
+import { FileData } from '@/common/constants/typeConst';
+import { IMAGE_FILE_TYPE } from '@/common/constants/commonConst';
 
 export type ImageInputProps = {
   id?: string;

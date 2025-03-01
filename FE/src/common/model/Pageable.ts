@@ -2,7 +2,7 @@ export interface IPageRequest<T = any> {
   condition?: T;
   page: number;
   size: number;
-  orderList: IPageableOrder[];
+  orderList?: IPageableOrder[];
 }
 
 export interface IPageResponse<T = any> {

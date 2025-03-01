@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
+
 import { CURRENT_PATH } from '@/common/constants/commonConst';
 import useRouter from '@/common/hooks/useRouter';
-import { useEffect } from 'react';
 
 const BackButtonListener = () => {
   const { currentPath } = useRouter();

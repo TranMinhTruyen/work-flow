@@ -1,7 +1,8 @@
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
+
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 
 export type SwitchInputProps = SwitchProps & {
   label?: string;

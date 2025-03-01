@@ -1,6 +1,7 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { ResponseType } from 'axios';
+
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { IBaseResponse } from '../model/baseResponse';
 import { axiosApiEnumFetch } from '../provider/RootProvider';

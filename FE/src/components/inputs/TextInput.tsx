@@ -1,8 +1,9 @@
-import { capitalizeFirst } from '@/common/utils/stringUtil';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { InputAdornment, styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
+
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur' | 'defaultValue'> & {
   label?: string;

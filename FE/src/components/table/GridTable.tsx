@@ -1,8 +1,9 @@
-import { ControlProps } from '@/common/hooks/useGridTable';
 import { styled } from '@mui/material/styles';
 import { SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useCallback, useMemo } from 'react';
+
+import { ControlProps } from '@/common/hooks/usePageable';
 
 export type GridTableProps = AgGridReactProps & {
   height?: number | string;

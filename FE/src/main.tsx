@@ -3,6 +3,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+
 import App from './App.tsx';
 import './i18n.ts';
 import './index.css';
