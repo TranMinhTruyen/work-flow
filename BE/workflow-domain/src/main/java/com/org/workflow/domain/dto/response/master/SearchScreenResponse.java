@@ -1,6 +1,7 @@
 package com.org.workflow.domain.dto.response.master;
 
 import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

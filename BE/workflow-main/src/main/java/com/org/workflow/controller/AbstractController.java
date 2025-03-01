@@ -28,7 +28,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-      @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
+                                                            @Nullable String message, @Nullable MessageTypeEnum messageType, HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageType);
     baseResponse.setMessage(message);
@@ -45,7 +45,7 @@ public abstract class AbstractController {
    * @return BaseResponse
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(HttpStatus httpStatus,
-      @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
+                                                            @Nullable Object body, MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
@@ -63,7 +63,7 @@ public abstract class AbstractController {
    * @return ResponseEntity<BaseResponse>
    */
   protected ResponseEntity<BaseResponse> returnBaseResponse(@Nullable Object body,
-      MessageEnum messageEnum, Object... messageArgs) {
+                                                            MessageEnum messageEnum, Object... messageArgs) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
@@ -88,7 +88,7 @@ public abstract class AbstractController {
   }
 
   protected ResponseEntity<BaseResponse> returnErrorBaseResponse(Throwable exception,
-      HttpStatus httpStatus) {
+                                                                 HttpStatus httpStatus) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());

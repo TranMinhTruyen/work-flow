@@ -1,6 +1,5 @@
 package com.org.workflow.domain.dto.request.user;
 
-import com.org.workflow.domain.annotation.validation.CheckLength;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class LoginRequest implements Serializable {
 
-  @CheckLength(order = 1, maxLength = 10)
   private String userName;
 
   private String password;

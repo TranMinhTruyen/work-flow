@@ -1,14 +1,15 @@
-export interface IPageRequest<T> {
+export interface IPageRequest<T = any> {
   condition?: T;
   page: number;
   size: number;
   orderList: IPageableOrder[];
 }
 
-export interface IPageResponse<T> {
+export interface IPageResponse<T = any> {
   page: number;
   size: number;
   total: number;
+  totalPages: number;
   result?: T;
 }
 

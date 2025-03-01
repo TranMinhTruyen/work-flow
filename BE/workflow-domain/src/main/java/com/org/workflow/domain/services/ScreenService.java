@@ -1,22 +1,23 @@
 package com.org.workflow.domain.services;
 
-import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
-
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
+import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageRequest;
 import com.org.workflow.domain.dto.request.proxy.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
 import com.org.workflow.domain.utils.SearchRequestUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+
+import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
 
 /**
  * @author minh-truyen
@@ -45,13 +46,13 @@ public class ScreenService extends AbstractService {
       searchScreenCondition.setScreenUrl(condition.getScreenUrl());
     }
 
-    Optional<List<Screen>> queryResult = screenRepository.searchByCondition(
+    PageableResult<List<Screen>> queryResult = screenRepository.searchByCondition(
         searchScreenCondition,
         SearchRequestUtil.getPageable(request));
-    PageResponse<List<SearchScreenResponse>> pageResponse = new PageResponse();
+
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
-    if (queryResult.isPresent()) {
-      for (Screen screen : queryResult.get()) {
+    if (!queryResult.getResult().isEmpty()) {
+      for (Screen screen : queryResult.getResult()) {
         SearchScreenResponse searchScreenResponse = new SearchScreenResponse();
         searchScreenResponse.setScreenId(screen.getScreenId());
         searchScreenResponse.setScreenName(screen.getScreenName());
@@ -70,9 +71,12 @@ public class ScreenService extends AbstractService {
       }
     }
 
-    pageResponse.setResult(searchScreenResponses);
+    PageResponse<List<SearchScreenResponse>> pageResponse = new PageResponse<>();
     pageResponse.setPage(request.getPage());
-    pageResponse.setPage(request.getSize());
+    pageResponse.setSize(request.getSize());
+    pageResponse.setTotal(queryResult.getTotal());
+    pageResponse.setTotalPages((long) Math.ceil((double) queryResult.getTotal() / queryResult.getSize()));
+    pageResponse.setResult(searchScreenResponses);
     return pageResponse;
   }
 

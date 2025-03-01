@@ -1,4 +1,4 @@
-import usePageGridTable from '@/common/hooks/useGridTable';
+import useGridTable from '@/common/hooks/useGridTable';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 import { IPageRequest } from '@/common/model/pageable';
 import IconButton from '@/components/button/IconButton';
@@ -20,28 +20,29 @@ import './screen.css';
 const ScreenMaster = () => {
   const [data, setData] = useState<IScreenTableRow[]>([]);
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
-  const { commonProps, orderList } = usePageGridTable();
+  const { control, orderList, pageable, setPageable } = useGridTable();
 
-  const handleSearch = useCallback(async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
-    const result = await searchAction(searchCondition);
-    let tableData: IScreenTableRow[] = [];
-    if (result.result) {
-      tableData = result.result?.map(item => ({
-        ...item,
-      }));
-
-      setData(tableData);
-    }
-  }, []);
+  const handleSearch = useCallback(
+    async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
+      const result = await searchAction(searchCondition);
+      let tableData: IScreenTableRow[] = [];
+      if (result.result) {
+        tableData = result.result?.map(item => ({
+          ...item,
+        }));
+        setPageable({ ...result });
+        setData(tableData);
+      }
+    },
+    [setPageable]
+  );
 
   useEffect(() => {
     const searchCondition: IPageRequest<ISearchScreenRequest> = {
-      orderList: orderList,
-      page: 0,
-      size: 10,
+      ...pageable,
     };
     handleSearch(searchCondition);
-  }, [handleSearch, orderList]);
+  }, [handleSearch, orderList, pageable]);
 
   const handleSwitchActive = useCallback(
     (rowData: IScreenTableRow) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -142,16 +143,18 @@ const ScreenMaster = () => {
   return (
     <Stack spacing={2}>
       <Stack direction={'row'} spacing={2}>
-        <Typography sx={{ alignSelf: 'center', justifySelf: 'center' }}>Screen master</Typography>
+        <Typography>Screen master</Typography>
         <TestModal />
       </Stack>
 
       <Stack>
         <PageGridTable
+          height={'80vh'}
+          maxHeight={'80vh'}
           rowData={data}
           defaultColDef={defaultColDef}
           columnDefs={colDefs}
-          commonProps={commonProps}
+          control={control}
         />
       </Stack>
       <EditModal ref={modalRef} />

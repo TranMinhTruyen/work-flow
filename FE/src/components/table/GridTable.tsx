@@ -1,8 +1,8 @@
-import { CommonProps } from '@/common/hooks/useGridTable';
+import { ControlProps } from '@/common/hooks/useGridTable';
 import { styled } from '@mui/material/styles';
 import { SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 export type GridTableProps = AgGridReactProps & {
   height?: number | string;
@@ -11,19 +11,20 @@ export type GridTableProps = AgGridReactProps & {
   width?: number | string;
   minWidth?: number | string;
   maxWidth?: number | string;
-  commonProps?: CommonProps;
+  control?: ControlProps;
 };
 
 const GridTable = (props: GridTableProps) => {
   const {
     className,
+    height,
     maxHeight = 300,
     width = '100%',
     minWidth = '100%',
     maxWidth = '100%',
     rowHeight = 55,
     rowData = [],
-    commonProps,
+    control,
     ...restProps
   } = props;
 
@@ -33,10 +34,17 @@ const GridTable = (props: GridTableProps) => {
     return Math.min(Math.max(totalHeight, Number(50)), Number(maxHeight));
   }, [maxHeight, rowData, rowHeight]);
 
+  const handleSortChanged = useCallback(
+    (event: SortChangedEvent) => {
+      control?.onSort(event.columns);
+    },
+    [control]
+  );
+
   return (
     <AgGridContainer
       className={className}
-      height={calculateGridHeight}
+      height={height ?? calculateGridHeight}
       maxHeight={maxHeight}
       width={width}
       minWidth={minWidth}
@@ -48,9 +56,7 @@ const GridTable = (props: GridTableProps) => {
         rowData={rowData}
         enableCellTextSelection={true}
         ensureDomOrder={true}
-        onSortChanged={(event: SortChangedEvent) => {
-          commonProps?._onSort(event.columns);
-        }}
+        onSortChanged={handleSortChanged}
         {...restProps}
       />
     </AgGridContainer>

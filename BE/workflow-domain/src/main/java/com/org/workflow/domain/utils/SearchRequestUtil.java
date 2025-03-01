@@ -15,7 +15,7 @@ public class SearchRequestUtil {
 
   public static org.springframework.data.domain.Pageable getPageable(
       PageRequest<?> pageRequest) {
-    int page = pageRequest.getPage();
+    int page = pageRequest.getPage() - 1;
     int size = pageRequest.getSize();
 
     if (!pageRequest.getOrderList().isEmpty()) {

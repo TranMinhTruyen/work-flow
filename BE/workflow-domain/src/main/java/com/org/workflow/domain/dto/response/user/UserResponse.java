@@ -1,9 +1,11 @@
 package com.org.workflow.domain.dto.response.user;
 
 import com.org.workflow.domain.dto.response.proxy.ScreenResponse;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
