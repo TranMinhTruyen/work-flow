@@ -2,8 +2,8 @@ import { Active, Over } from '@dnd-kit/core/dist/store/types';
 import { arrayMove } from '@dnd-kit/sortable';
 import { cloneDeep } from 'lodash';
 
-import store from '@/lib/store';
 import { Type } from '@/common/enums/boardEnum';
+import store from '@/lib/store';
 
 import {
   addCard,
@@ -49,9 +49,21 @@ const updateCardsInStore = (
   store.dispatch(updateCard(updates));
 };
 
+/**
+ * Setting column order base on index.
+ *
+ * @param items
+ * @returns
+ */
 const normalizeColumnOrder = (items: IColumn[]) =>
   items.map((item, index) => ({ ...item, order: index }));
 
+/**
+ * Setting card order base on index.
+ *
+ * @param items
+ * @returns
+ */
 const normalizeCardOrder = (items: ICard[]) =>
   items.map((item, index) => ({ ...item, order: index }));
 //#endregion
@@ -84,7 +96,7 @@ const getDnDContext = (active: Active, over: Over): CardMoveContext | null => {
 //#endregion
 
 /**
- * Active when drag over and drop on column.
+ * Active when drag and drop on same column.
  *
  * @param active
  * @param over
@@ -117,6 +129,7 @@ export const eventDropAction = (active: Active, over: Over | null) => {
     }
     return;
   }
+
   // Handle Card Drag
   else {
     if (activeCardIndex === overCardIndex) return;
@@ -125,6 +138,7 @@ export const eventDropAction = (active: Active, over: Over | null) => {
 
     if (activeCardIndex === -1 || overCardIndex === -1) return;
 
+    // setting order
     const newCards = normalizeCardOrder(arrayMove(cardList, activeCardIndex, overCardIndex));
     updateCardsInStore(activeColumnId, newCards);
 

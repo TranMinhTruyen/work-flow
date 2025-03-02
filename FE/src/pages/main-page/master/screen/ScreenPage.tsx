@@ -7,7 +7,7 @@ import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef, useState } 
 
 import useGridTable from '@/common/hooks/usePageable';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
-import { IPageRequest } from '@/common/model/pageable';
+import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import IconButton from '@/components/button/IconButton';
 import SwitchInput from '@/components/inputs/SwitchInput';
 import PageGridTable from '@/components/table/PageGridTable';
@@ -16,6 +16,7 @@ import { searchAction } from './action/action';
 import EditModal from './components/EditModal';
 import TestModal from './components/TestModal';
 import { ISearchScreenRequest } from './model/screenRequest';
+import { ISearchScreenResponse } from './model/screenResponse';
 import { IScreenTableRow } from './model/table';
 import './screen.css';
 
@@ -26,13 +27,13 @@ const ScreenPage = () => {
 
   const handleSearch = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
-      const result = await searchAction(searchCondition);
+      const response: IPageResponse<ISearchScreenResponse[]> = await searchAction(searchCondition);
       let tableData: IScreenTableRow[] = [];
-      if (result.result) {
-        tableData = result.result?.map(item => ({
+      if (response.result) {
+        tableData = response.result.map(item => ({
           ...item,
         }));
-        setPageable({ ...result });
+        setPageable({ ...response });
         setData(tableData);
       }
     },

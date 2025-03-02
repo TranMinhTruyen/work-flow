@@ -5,17 +5,16 @@ import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.common.PageRequest;
+import com.org.workflow.domain.dto.request.common.PageableRequest;
 import com.org.workflow.domain.dto.request.proxy.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
 import com.org.workflow.domain.utils.SearchRequestUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
 
@@ -28,14 +27,15 @@ public class ScreenService extends AbstractService {
 
   private final ScreenRepository screenRepository;
 
+
   /**
    * @param searchRequest
    * @return
    */
   public PageResponse<List<SearchScreenResponse>> search(
-      BaseRequest<PageRequest<SearchScreenRequest>> searchRequest) {
+      BaseRequest<PageableRequest<SearchScreenRequest>> searchRequest) {
 
-    PageRequest<SearchScreenRequest> request = searchRequest.getPayload();
+    PageableRequest<SearchScreenRequest> request = searchRequest.getPayload();
 
     SearchScreenCondition searchScreenCondition = new SearchScreenCondition();
 
@@ -75,7 +75,7 @@ public class ScreenService extends AbstractService {
     pageResponse.setPage(request.getPage());
     pageResponse.setSize(request.getSize());
     pageResponse.setTotal(queryResult.getTotal());
-    pageResponse.setTotalPages((long) Math.ceil((double) queryResult.getTotal() / queryResult.getSize()));
+    pageResponse.setTotalPages(SearchRequestUtil.getTotalPages(queryResult));
     pageResponse.setResult(searchScreenResponses);
     return pageResponse;
   }

@@ -1,12 +1,11 @@
 package com.org.workflow.domain.dto.request.common;
 
+import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author minh-truyen
@@ -15,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageRequest<T> implements Serializable {
+public class PageableRequest<T> implements Serializable {
 
   private T condition;
 

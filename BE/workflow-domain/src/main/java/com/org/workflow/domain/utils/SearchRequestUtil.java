@@ -1,6 +1,9 @@
 package com.org.workflow.domain.utils;
 
-import com.org.workflow.domain.dto.request.common.PageRequest;
+import com.org.workflow.dao.repository.result.common.PageableResult;
+import com.org.workflow.domain.dto.request.common.PageableRequest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -13,19 +16,24 @@ public class SearchRequestUtil {
   }
 
 
-  public static org.springframework.data.domain.Pageable getPageable(
-      PageRequest<?> pageRequest) {
-    int page = pageRequest.getPage() - 1;
-    int size = pageRequest.getSize();
+  public static Pageable getPageable(
+      PageableRequest<?> pageableRequest) {
+    int page = pageableRequest.getPage() - 1;
+    int size = pageableRequest.getSize();
 
-    if (!pageRequest.getOrderList().isEmpty()) {
-      Sort sort = Sort.by(pageRequest.getOrderList().stream()
+    if (!pageableRequest.getOrderList().isEmpty()) {
+      Sort sort = Sort.by(pageableRequest.getOrderList().stream()
           .map(item -> new Sort.Order(Direction.fromString(item.getDirection()), item.getOrderBy()))
           .toList());
-      return org.springframework.data.domain.PageRequest.of(page, size, sort);
+      return PageRequest.of(page, size, sort);
     }
 
-    return org.springframework.data.domain.PageRequest.of(page, size);
+    return PageRequest.of(page, size);
+  }
+
+
+  public static long getTotalPages(PageableResult<?> pageable) {
+    return (long) Math.ceil((double) pageable.getTotal() / pageable.getSize());
   }
 
 }
