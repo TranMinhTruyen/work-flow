@@ -12,6 +12,12 @@ allprojects {
         maven { url 'https://repo.spring.io/snapshot' }
         gradlePluginPortal()
     }
+
+    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach { enabled = false }
+
+    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach { enabled = false }
+
+    tasks.withType(Test) { enabled = false }
 }
 
 
@@ -46,25 +52,14 @@ subprojects {
         }
     }
 
-    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach { enabled = false }
-    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach { enabled = false }
-
     if (project.name == 'workflow-main') {
         apply plugin: 'war'
 
-        tasks.findByName("bootWar")?.configure {
+        tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach {
             mainClass = 'com.org.workflow.WorkflowApplication'
             archiveFileName = 'work-flow.war'
             enabled = true
             launchScript()
         }
     }
-}
-
-tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach {
-    enabled = false
-}
-
-tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach {
-    enabled = false
 }
