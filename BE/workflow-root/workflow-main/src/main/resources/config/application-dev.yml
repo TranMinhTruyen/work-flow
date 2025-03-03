@@ -1,0 +1,32 @@
+client:
+  url: "http://localhost:3000"
+
+redis:
+  host: localhost
+  port: 6379
+  password: workflow@123
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: work-flow
+      authentication-database: admin
+      username: root
+      password: workflow@123
+
+s3:
+  accessKey: wVxJdDfUf9lzGDY03KKo
+  secretKey: dwhUHHvV2kVTvw3iUj8Gc88aOswaZN7JT9v8Q3xC
+  minio-endpoint: http://localhost:9998
+
+#logging
+logging:
+  file:
+    name: D:/work-flow/work-flow.log
+  pattern:
+    dateformat: dd-MM-yyyy HH:mm:ss
+
+file-utils:
+  image-path: D:/work-flow/image/

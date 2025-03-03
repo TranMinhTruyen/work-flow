@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profiles version="12.0">
+  <profile kind="CodeFormatterProfile" name="Custom Formatter" version="12.0">
+    <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+    <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="2"/>
+    <setting id="org.eclipse.jdt.core.formatter.import_order" value="static,java,javax,org,com,io,lombok"/>
+    <setting id="org.eclipse.jdt.core.formatter.imports_on_demand_threshold" value="9999"/>
+    <setting id="org.eclipse.jdt.core.formatter.imports_single_member_import_threshold" value="9999"/>
+  </profile>
+</profiles>

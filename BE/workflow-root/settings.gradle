@@ -1,6 +1,11 @@
 rootProject.name = 'workflow'
 
-includeFlat 'workflow-main'
-includeFlat 'workflow-core'
-includeFlat 'workflow-dao'
-includeFlat 'workflow-domain'
+include ':workflow-core'
+include ':workflow-dao'
+include ':workflow-domain'
+include ':workflow-main'
+
+project(':workflow-core').projectDir = new File(rootDir, './workflow-core')
+project(':workflow-dao').projectDir = new File(rootDir, './workflow-dao')
+project(':workflow-domain').projectDir = new File(rootDir, './workflow-domain')
+project(':workflow-main').projectDir = new File(rootDir, './workflow-main')

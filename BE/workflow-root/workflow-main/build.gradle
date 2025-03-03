@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':workflow-core')
+    implementation project(':workflow-domain')
+    implementation project(':workflow-dao')
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:3.3.4'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.2.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+configurations.configureEach {
+    exclude group: 'commons-logging', module: 'commons-logging'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+// Build war command: ./gradlew build -x test
+bootWar {
+    mainClass = 'com.org.workflow.WorkflowApplication'
+    archiveFileName = 'work-flow.war'
+    enabled = true
+    launchScript()
+}

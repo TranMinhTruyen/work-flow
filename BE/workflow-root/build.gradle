@@ -1,22 +1,70 @@
 plugins {
-    id 'java'
+    id 'org.springframework.boot' version "${SPRING_BOOT_VERSION}"
+    id 'io.spring.dependency-management' version "${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
     id "com.github.ben-manes.versions" version "${BEN_MANES_VERSION}"
+    id 'java'
 }
 
 allprojects {
     repositories {
         mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        gradlePluginPortal()
     }
 }
 
+
 subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
 
     group = "${GROUP}"
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${SPRING_BOOT_VERSION}"
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 
     tasks.withType(JavaCompile).tap {
         configureEach {
             options.encoding = 'UTF-8'
         }
     }
+
+    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach { enabled = false }
+    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach { enabled = false }
+
+    if (project.name == 'workflow-main') {
+        apply plugin: 'war'
+
+        tasks.findByName("bootWar")?.configure {
+            mainClass = 'com.org.workflow.WorkflowApplication'
+            archiveFileName = 'work-flow.war'
+            enabled = true
+            launchScript()
+        }
+    }
+}
+
+tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach {
+    enabled = false
+}
+
+tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach {
+    enabled = false
 }
