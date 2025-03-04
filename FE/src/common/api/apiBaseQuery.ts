@@ -3,7 +3,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { ResponseType } from 'axios';
 
 import { CustomAxiosConfig } from '../constants/typeConst';
-import { IBaseResponse } from '../model/baseResponse';
+import { IBaseResponse } from '../model/AxiosData';
 import { axiosApiEnumFetch } from '../provider/RootProvider';
 import { ApiEnum } from './apiUrl';
 

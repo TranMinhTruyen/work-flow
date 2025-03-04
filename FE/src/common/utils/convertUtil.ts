@@ -1,4 +1,5 @@
 import { FileType, Obj, SelectDataType } from '../constants/typeConst';
+import { IBaseRequest } from '../model/AxiosData';
 
 /**
  *
@@ -104,4 +105,13 @@ export const blobToBase64 = (blob: Blob): Promise<string | null> => {
     };
     reader.readAsDataURL(blob);
   });
+};
+
+export const isIBaseRequest = (obj: any): obj is IBaseRequest => {
+  return (
+    obj !== null &&
+    typeof obj === 'object' &&
+    typeof obj.method === 'string' &&
+    typeof obj.url === 'string'
+  );
 };

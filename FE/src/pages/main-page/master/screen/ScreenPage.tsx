@@ -3,10 +3,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { cloneDeep } from 'lodash';
-import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
-import useGridTable from '@/common/hooks/usePageable';
 import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import IconButton from '@/components/button/IconButton';
 import SwitchInput from '@/components/inputs/SwitchInput';
@@ -21,23 +21,24 @@ import { IScreenTableRow } from './model/table';
 import './screen.css';
 
 const ScreenPage = () => {
-  const [data, setData] = useState<IScreenTableRow[]>([]);
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
-  const { control, pageable, setPageable } = useGridTable({ defaultValues: { size: 10 } });
+  const { control, pageable, setPageable, data, setData } = useTable<IScreenTableRow>({
+    defaultValues: { size: 10 },
+  });
 
   const handleSearch = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
       const response: IPageResponse<ISearchScreenResponse[]> = await searchAction(searchCondition);
-      let tableData: IScreenTableRow[] = [];
       if (response.result) {
-        tableData = response.result.map(item => ({
-          ...item,
-        }));
         setPageable({ ...response });
-        setData(tableData);
+        setData(
+          response.result.map(item => ({
+            ...item,
+          }))
+        );
       }
     },
-    [setPageable]
+    [setData, setPageable]
   );
 
   useEffect(() => {
@@ -49,16 +50,16 @@ const ScreenPage = () => {
 
   const handleSwitchActive = useCallback(
     (rowData: IScreenTableRow) => (event: ChangeEvent<HTMLInputElement>) => {
-      setData(prev => {
-        return cloneDeep(prev).map(item => {
+      setData(
+        cloneDeep(data ?? []).map(item => {
           if (item.screenId === rowData.screenId) {
             item.active = event.target.checked;
           }
           return item;
-        });
-      });
+        })
+      );
     },
-    []
+    [data, setData]
   );
 
   const handleEdit = useCallback(
@@ -141,13 +142,7 @@ const ScreenPage = () => {
       </Stack>
 
       <Stack>
-        <PageGridTable
-          height={'80vh'}
-          maxHeight={'80vh'}
-          rowData={data}
-          columnDefs={colDefs}
-          control={control}
-        />
+        <PageGridTable height={'80vh'} maxHeight={'80vh'} columnDefs={colDefs} control={control} />
       </Stack>
       <EditModal ref={modalRef} />
     </Stack>

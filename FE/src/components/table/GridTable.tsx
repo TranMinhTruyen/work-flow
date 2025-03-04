@@ -3,11 +3,11 @@ import { ColDef, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useCallback, useMemo } from 'react';
 
-import { ControlProps } from '@/common/hooks/usePageable';
+import { ControlProps } from '@/common/hooks/useTable';
 
 import CustomHeader from './components/CustomHeader';
 
-export type GridTableProps = AgGridReactProps & {
+export type GridTableProps = Omit<AgGridReactProps, 'rowData'> & {
   height?: number | string;
   minHeight?: number | string;
   maxHeight?: number | string;
@@ -26,23 +26,21 @@ const GridTable = (props: GridTableProps) => {
     minWidth = '100%',
     maxWidth = '100%',
     rowHeight = 55,
-    rowData = [],
     control,
     defaultColDef: defaultColDefProp,
     ...restProps
   } = props;
 
   const calculateGridHeight = useMemo(() => {
-    const rowCount = rowData ? rowData.length : 1;
+    const rowCount = control?.data ? control?.data.length : 1;
     const totalHeight = rowCount * rowHeight + 53;
     return Math.min(Math.max(totalHeight, Number(50)), Number(maxHeight));
-  }, [maxHeight, rowData, rowHeight]);
+  }, [control?.data, maxHeight, rowHeight]);
 
   const defaultColDef = useMemo<ColDef>(
     () => ({
       resizable: false,
       autoHeight: true,
-      unSortIcon: true,
       suppressMovable: true,
       headerComponent: CustomHeader,
       ...defaultColDefProp,
@@ -71,7 +69,7 @@ const GridTable = (props: GridTableProps) => {
         defaultColDef={defaultColDef}
         headerHeight={50}
         rowHeight={rowHeight}
-        rowData={rowData}
+        rowData={control?.data ?? []}
         enableCellTextSelection={true}
         ensureDomOrder={true}
         onSortChanged={handleSortChanged}

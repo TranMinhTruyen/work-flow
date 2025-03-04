@@ -19,6 +19,7 @@ import useRouter from '../hooks/useRouter';
 import { IBaseRequest, IBaseResponse } from '../model/AxiosData';
 import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
+import { isIBaseRequest } from '../utils/convertUtil';
 import { formatString } from '../utils/stringUtil';
 
 const URL = import.meta.env.VITE_SERVER_URL;
@@ -28,12 +29,12 @@ export const axiosInstance = axios.create({
   timeout: TIME_OUT,
 });
 
-export const axiosFetch = async (configAxios: CustomAxiosConfig) => {
-  return await axiosInstance(configAxios);
+export const axiosFetch = (configAxios: CustomAxiosConfig) => {
+  return axiosInstance(configAxios);
 };
 
-export const axiosApiEnumFetch = async (api: ApiEnum, configAxios: CustomAxiosConfig) => {
-  return await axiosFetch({
+export const axiosApiEnumFetch = (api: ApiEnum, configAxios: CustomAxiosConfig) => {
+  return axiosInstance({
     ...configAxios,
     url: `${API_PREFIX}${controller[api].url}`,
     method: controller[api].method,
@@ -73,7 +74,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Transform request
-        if (config.data) {
+        if (config.data && typeof config.data === 'object' && !isIBaseRequest(config.data)) {
           const transformRequest: IBaseRequest = {
             timestamp: dayjs(new Date()).format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,

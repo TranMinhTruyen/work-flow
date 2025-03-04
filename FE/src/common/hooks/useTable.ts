@@ -11,7 +11,7 @@ export type Pageable = {
   orderList?: IPageableOrder[];
 };
 
-export type UseGridTableProps = {
+export type UseTableProps = {
   defaultValues?: {
     page?: number;
     size?: number;
@@ -19,24 +19,27 @@ export type UseGridTableProps = {
   };
 };
 
-export type ControlProps = {
+export type ControlProps<T = any> = {
+  data?: T[];
   page?: number;
   size?: number;
   total?: number;
   totalPages?: number;
   orderList: IPageableOrder[];
+  setData: (data: T[]) => void;
   onSort: (columns?: Column[]) => void;
   setPageable: (pageable: Pageable) => void;
   onPageChange: (page: number) => void;
 };
 
-export type UseGridTableReturn = ControlProps & {
-  control: ControlProps;
+export type UseTableReturn<T = any> = ControlProps<T> & {
+  control: ControlProps<T>;
   pageable: Pageable;
 };
 
-const useGridTable = (props: UseGridTableProps = {}): UseGridTableReturn => {
+const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   const { defaultValues } = props;
+  const [data, setData] = useState<T[]>([]);
   const [page, setPage] = useState<number>(defaultValues?.page ?? 1);
   const [size, setSize] = useState<number>(defaultValues?.size ?? 10);
   const [total, setTotal] = useState<number>(0);
@@ -55,15 +58,11 @@ const useGridTable = (props: UseGridTableProps = {}): UseGridTableReturn => {
   useEffect(() => {
     const orderListMap: IPageableOrder[] = [];
     if (sortColumn) {
-      for (const [key, value] of sortColumn.entries()) {
-        if (value) {
-          orderListMap.push({
-            orderBy: key,
-            direction: value,
-          });
-        }
-      }
-      setOrderList(orderListMap);
+      setOrderList(
+        Array.from(sortColumn.entries()).map(([key, value]) => {
+          return { orderBy: key, direction: value };
+        })
+      );
       setPageable(prev => {
         return {
           ...prev,
@@ -111,20 +110,24 @@ const useGridTable = (props: UseGridTableProps = {}): UseGridTableReturn => {
 
   return {
     control: {
+      data,
       page,
       size,
       total,
       totalPages,
       orderList,
+      setData,
       onSort,
       onPageChange,
       setPageable: onSetPageable,
     },
+    data,
     page,
     size,
     total,
     totalPages,
     orderList,
+    setData,
     onSort,
     onPageChange,
     setPageable: onSetPageable,
@@ -132,4 +135,4 @@ const useGridTable = (props: UseGridTableProps = {}): UseGridTableReturn => {
   };
 };
 
-export default useGridTable;
+export default useTable;
