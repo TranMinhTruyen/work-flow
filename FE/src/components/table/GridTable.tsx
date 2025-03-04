@@ -1,9 +1,11 @@
 import { styled } from '@mui/material/styles';
-import { SortChangedEvent } from 'ag-grid-community';
+import { ColDef, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useCallback, useMemo } from 'react';
 
 import { ControlProps } from '@/common/hooks/usePageable';
+
+import CustomHeader from './components/CustomHeader';
 
 export type GridTableProps = AgGridReactProps & {
   height?: number | string;
@@ -26,6 +28,7 @@ const GridTable = (props: GridTableProps) => {
     rowHeight = 55,
     rowData = [],
     control,
+    defaultColDef: defaultColDefProp,
     ...restProps
   } = props;
 
@@ -35,9 +38,22 @@ const GridTable = (props: GridTableProps) => {
     return Math.min(Math.max(totalHeight, Number(50)), Number(maxHeight));
   }, [maxHeight, rowData, rowHeight]);
 
+  const defaultColDef = useMemo<ColDef>(
+    () => ({
+      resizable: false,
+      autoHeight: true,
+      unSortIcon: true,
+      suppressMovable: true,
+      headerComponent: CustomHeader,
+      ...defaultColDefProp,
+    }),
+    [defaultColDefProp]
+  );
+
   const handleSortChanged = useCallback(
     (event: SortChangedEvent) => {
       control?.onSort(event.columns);
+      return;
     },
     [control]
   );
@@ -52,6 +68,7 @@ const GridTable = (props: GridTableProps) => {
       maxWidth={maxWidth}
     >
       <AgGridReact
+        defaultColDef={defaultColDef}
         headerHeight={50}
         rowHeight={rowHeight}
         rowData={rowData}

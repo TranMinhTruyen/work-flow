@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
@@ -51,19 +51,11 @@ const AUTH_WHITE_LIST: string[] = [
 
 const RootProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
-  const firstRef = useRef(true);
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      if (firstRef.current) {
-        firstRef.current = false;
-        return;
-      }
-    }
-
     if (isSet) return;
 
     axiosInstance.interceptors.request.use(config => {

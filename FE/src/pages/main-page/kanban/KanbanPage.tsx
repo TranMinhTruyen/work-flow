@@ -4,9 +4,9 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import { memo, SyntheticEvent, useCallback, useEffect } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@/lib/store';
-import useRouter from '@/common/hooks/useRouter';
 import { CURRENT_PATH } from '@/common/constants/commonConst';
+import useRouter from '@/common/hooks/useRouter';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 
 import { initData } from './action/action';
 import { selectIsColumnDragging, toggleColumnDragging } from './action/kanbanSlice';

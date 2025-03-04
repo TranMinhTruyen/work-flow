@@ -1,23 +1,29 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.bundling.BootWar
+
+buildscript {
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
+        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+        classpath "com.github.ben-manes:gradle-versions-plugin:${BEN_MANES_VERSION}"
+    }
+}
+
 plugins {
-    id 'org.springframework.boot' version "${SPRING_BOOT_VERSION}"
-    id 'io.spring.dependency-management' version "${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
-    id "com.github.ben-manes.versions" version "${BEN_MANES_VERSION}"
     id 'java'
 }
 
 allprojects {
-    repositories {
-        mavenCentral()
-        maven { url 'https://repo.spring.io/milestone' }
-        maven { url 'https://repo.spring.io/snapshot' }
-        gradlePluginPortal()
+    tasks.withType(BootJar).configureEach { enabled = false }
+
+    tasks.withType(BootWar).configureEach { enabled = false }
+
+    tasks.withType(Test).tap { configureEach { enabled = false } }
+
+    if (project == rootProject) {
+        tasks.matching { it.name in ['build', 'assemble', 'check', 'jar', 'bootJar', 'bootWar'] }
+                .configureEach { enabled = false }
     }
-
-    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar).configureEach { enabled = false }
-
-    tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach { enabled = false }
-
-    tasks.withType(Test) { enabled = false }
 }
 
 
@@ -25,6 +31,13 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
+
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        maven { url = 'https://repo.spring.io/milestone' }
+        maven { url = 'https://repo.spring.io/snapshot' }
+    }
 
     group = "${GROUP}"
 
@@ -55,7 +68,7 @@ subprojects {
     if (project.name == 'workflow-main') {
         apply plugin: 'war'
 
-        tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootWar).configureEach {
+        tasks.withType(BootWar).configureEach {
             mainClass = 'com.org.workflow.WorkflowApplication'
             archiveFileName = 'work-flow.war'
             enabled = true

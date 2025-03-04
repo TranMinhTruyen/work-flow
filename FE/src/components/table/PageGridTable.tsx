@@ -21,14 +21,14 @@ const PageGridTable = (props: PageGridTableProps) => {
     <Stack spacing={1}>
       <Stack direction={'row'} spacing={2} sx={{ marginLeft: 'auto !important' }}>
         <Pagination
-          count={10}
+          count={props.control?.totalPages}
           showFirstButton
           showLastButton
           color={'primary'}
           onChange={handlePageChange}
         />
         <Typography>{`Total: ${props.control?.total}`}</Typography>
-        <Typography>{`Total page: ${props.control?.totalPages}`}</Typography>
+        <Typography>{`Page ${props.control?.page} of ${props.control?.totalPages}`}</Typography>
       </Stack>
       <GridTable {...restProps} />
     </Stack>

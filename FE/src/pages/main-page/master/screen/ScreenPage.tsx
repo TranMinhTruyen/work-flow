@@ -23,7 +23,7 @@ import './screen.css';
 const ScreenPage = () => {
   const [data, setData] = useState<IScreenTableRow[]>([]);
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
-  const { control, pageable, setPageable } = useGridTable();
+  const { control, pageable, setPageable } = useGridTable({ defaultValues: { size: 10 } });
 
   const handleSearch = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
@@ -65,16 +65,6 @@ const ScreenPage = () => {
     (rowData: IScreenTableRow) => () => {
       modalRef.current?.open({ inputValue: rowData });
     },
-    []
-  );
-
-  const defaultColDef = useMemo<ColDef<IScreenTableRow>>(
-    () => ({
-      resizable: false,
-      autoHeight: true,
-      unSortIcon: true,
-      comparator: () => 0,
-    }),
     []
   );
 
@@ -155,7 +145,6 @@ const ScreenPage = () => {
           height={'80vh'}
           maxHeight={'80vh'}
           rowData={data}
-          defaultColDef={defaultColDef}
           columnDefs={colDefs}
           control={control}
         />
