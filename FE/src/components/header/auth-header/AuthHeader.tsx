@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CURRENT_PATH, languageConst } from '@/common/constants/commonConst';
+import { languageConst } from '@/common/constants/commonConst';
 import { screenUrl } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
@@ -16,9 +16,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/store';
 
 const AuthHeader = () => {
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
-  const { navigate } = useRouter();
+  const { navigate, currentPath } = useRouter();
 
-  const currentPath = sessionStorage.getItem(CURRENT_PATH);
   const dispatch = useAppDispatch();
   const language = useAppSelector(selectLanguage);
 

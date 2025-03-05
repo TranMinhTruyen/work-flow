@@ -4,11 +4,6 @@ import { IAccessScreenResponse } from '@/common/model/screenMaster';
 
 export const securityService = baseApi.injectEndpoints({
   endpoints: builder => ({
-    tokenCheck: builder.mutation<void, void>({
-      query: () => ({
-        api: ApiEnum.TOKEN_CHECK,
-      }),
-    }),
     getAccessScreen: builder.mutation<IAccessScreenResponse, void>({
       query: () => ({
         api: ApiEnum.GET_ACCESS_SCREEN,
@@ -17,4 +12,4 @@ export const securityService = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAccessScreenMutation, useTokenCheckMutation } = securityService;
+export const { useGetAccessScreenMutation } = securityService;

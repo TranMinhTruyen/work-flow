@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,9 +8,8 @@ import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import store, { useAppDispatch } from '@/lib/store';
 import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 
-import { ApiEnum, controller } from '../api/apiUrl';
-import { API_PREFIX } from '../constants/apiPrefixConst';
-import { FULL_DATE_TIME_FORMAT, RESET_ALL, TIME_OUT } from '../constants/commonConst';
+import { axiosInstance } from '../api/axios';
+import { FULL_DATE_TIME_FORMAT, RESET_ALL } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { screenUrl } from '../constants/urlConst';
 import { I18nEnum } from '../enums/i18nEnum';
@@ -21,25 +20,6 @@ import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import { isIBaseRequest } from '../utils/convertUtil';
 import { formatString } from '../utils/stringUtil';
-
-const URL = import.meta.env.VITE_SERVER_URL;
-
-export const axiosInstance = axios.create({
-  baseURL: URL,
-  timeout: TIME_OUT,
-});
-
-export const axiosFetch = (configAxios: CustomAxiosConfig) => {
-  return axiosInstance(configAxios);
-};
-
-export const axiosApiEnumFetch = (api: ApiEnum, configAxios: CustomAxiosConfig) => {
-  return axiosInstance({
-    ...configAxios,
-    url: `${API_PREFIX}${controller[api].url}`,
-    method: controller[api].method,
-  });
-};
 
 const FILE_API: string[] = ['/api/file/get-upload-url', '/api/file/get-download-url'];
 
@@ -65,7 +45,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
           const loginData: ILoginResponse | undefined = getLoginData();
 
           // If login data is undefined, back to login screen
-          if (loginData === undefined) {
+          if (!loginData) {
             navigate(screenUrl.LOGIN.path, true);
           } else {
             // Set token to header
@@ -76,7 +56,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         // Transform request
         if (config.data && typeof config.data === 'object' && !isIBaseRequest(config.data)) {
           const transformRequest: IBaseRequest = {
-            timestamp: dayjs(new Date()).format(FULL_DATE_TIME_FORMAT),
+            timestamp: dayjs().format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,
             payload: { ...config.data },
           };

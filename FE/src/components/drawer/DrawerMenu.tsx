@@ -15,8 +15,7 @@ import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@/lib/store';
-import { checkAccessScreen, handleCheckToken } from '@/common/utils/authUtil';
+import useRouter from '@/common/hooks/useRouter';
 import {
   removeScreenExpand,
   selectOpenDrawer,
@@ -24,7 +23,8 @@ import {
   setScreenExpand,
   toggleDrawer,
 } from '@/common/store/commonSlice';
-import useRouter from '@/common/hooks/useRouter';
+import { checkAccessScreen } from '@/common/utils/authUtil';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 
 import screenItemList, { IScreenItem } from './ScreenListItem';
 
@@ -120,8 +120,7 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
   const { navigate, currentPath } = useRouter();
 
   const handleOnClickItem = useCallback(
-    (path: string) => async () => {
-      await handleCheckToken();
+    (path: string) => () => {
       navigate(path);
     },
     [navigate]

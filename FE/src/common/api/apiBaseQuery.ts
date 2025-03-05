@@ -4,8 +4,8 @@ import { ResponseType } from 'axios';
 
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { IBaseResponse } from '../model/AxiosData';
-import { axiosApiEnumFetch } from '../provider/RootProvider';
 import { ApiEnum } from './apiUrl';
+import { axiosApiEnumFetch } from './axios';
 
 const apiBaseQuery =
   (): BaseQueryFn<

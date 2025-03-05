@@ -4,9 +4,11 @@ import { setLoginData } from '@/common/store/commonSlice';
 import { IScreenItem } from '@/components/drawer/ScreenListItem';
 import store from '@/lib/store';
 import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
-import { securityService } from '@/services/securityService';
 
+import { ApiEnum } from '../api/apiUrl';
+import { axiosApiEnumFetch } from '../api/axios';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
+import { CustomAxiosConfig } from '../constants/typeConst';
 import { isNullOrEmpty } from './stringUtil';
 
 /**
@@ -100,5 +102,9 @@ export const checkAccessScreen = (screenItem: IScreenItem): boolean => {
 };
 
 export const handleCheckToken = async () => {
-  await store.dispatch(securityService.endpoints.tokenCheck.initiate()).unwrap();
+  await axiosApiEnumFetch(ApiEnum.TOKEN_CHECK, {
+    headers: {
+      Authorization: `Bearer ${getLoginData()?.token}`,
+    },
+  } as CustomAxiosConfig<null>);
 };

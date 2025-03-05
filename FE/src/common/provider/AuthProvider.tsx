@@ -22,7 +22,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const currentPath = sessionStorage.getItem(CURRENT_PATH);
     if (!isNullOrEmpty(currentPath)) {
-      navigate(currentPath);
+      navigate(currentPath === '/' ? screenUrl.LOGIN.path : currentPath);
     }
 
     setIsSet(true);

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { DATE_TIME_STRING_FORMAT } from '../constants/commonConst';
 import { CustomAxiosConfig, FileData } from '../constants/typeConst';
-import { IBaseResponse } from '../model/baseResponse';
+import { IBaseResponse } from '../model/AxiosData';
 import {
   IDownloadFileRequest,
   IDownloadFileResponse,
@@ -11,10 +11,10 @@ import {
   IUploadFileRequest,
   IUploadFileResponse,
 } from '../model/s3Object';
-import { axiosApiEnumFetch, axiosFetch } from '../provider/RootProvider';
 import { blobToBase64 } from '../utils/convertUtil';
 import { randomNumberString } from '../utils/stringUtil';
 import { ApiEnum } from './apiUrl';
+import { axiosApiEnumFetch, axiosFetch } from './axios';
 
 /**
  * Upload file to S3.
