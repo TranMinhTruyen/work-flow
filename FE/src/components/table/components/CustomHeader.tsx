@@ -1,7 +1,7 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SortIcon from '@mui/icons-material/Sort';
-import { SortDirection, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Stack } from '@mui/system';
 import type { CustomHeaderProps as AgCustomHeaderProps } from 'ag-grid-react';
@@ -15,26 +15,27 @@ export type CustomHeaderProps = AgCustomHeaderProps & {
 };
 
 const CustomHeader = (props: CustomHeaderProps) => {
-  const [ascSort, setAscSort] = useState<SortDirection>(false);
-  const [descSort, setDescSort] = useState<SortDirection>(false);
+  const { control, column, displayName } = props;
+  const [ascSort, setAscSort] = useState<'asc' | 'desc' | null>(null);
+  const [descSort, setDescSort] = useState<'asc' | 'desc' | null>(null);
 
   useEffect(() => {
-    const order = props.column.getSort();
-    setAscSort(order === 'asc' ? 'asc' : false);
-    setDescSort(order === 'desc' ? 'desc' : false);
-  }, [props.column]);
+    const order = column.getSort();
+    setAscSort(order === 'asc' ? 'asc' : null);
+    setDescSort(order === 'desc' ? 'desc' : null);
+  }, [column]);
 
   const onSortRequested = useCallback(
-    (order: 'asc' | 'desc' | null) => (event: any) => {
-      setAscSort(order === 'asc' ? 'asc' : false);
-      setDescSort(order === 'desc' ? 'desc' : false);
-      props.control?.onSort(props.column.getColId(), order);
+    (order: 'asc' | 'desc' | null) => (_event: any) => {
+      setAscSort(order === 'asc' ? 'asc' : null);
+      setDescSort(order === 'desc' ? 'desc' : null);
+      control?.onSort(column.getColId(), order);
     },
-    [props]
+    [control, column]
   );
 
   const sortable = useMemo(() => {
-    if (props.column.isSortable()) {
+    if (column.isSortable()) {
       let sortButton: ReactNode = null;
       if (ascSort) {
         sortButton = (
@@ -61,23 +62,23 @@ const CustomHeader = (props: CustomHeaderProps) => {
       return (
         <Stack
           direction={'row'}
-          id={`headerSort${capitalizeFirst(props.column.getColId())}`}
+          id={`headerSort${capitalizeFirst(column.getColId())}`}
           sx={{ marginLeft: 'auto' }}
         >
           {sortButton}
         </Stack>
       );
     }
-  }, [ascSort, descSort, onSortRequested, props.column]);
+  }, [ascSort, column, descSort, onSortRequested]);
 
   return (
     <Stack direction={'row'} sx={{ width: '100%' }}>
       <Stack
         direction={'row'}
-        id={`headerTitle${capitalizeFirst(props.column.getColId())}`}
-        flex={!props.column.isSortable() ? 1 : 0}
+        id={`headerTitle${capitalizeFirst(column.getColId())}`}
+        flex={!column.isSortable() ? 1 : 0}
       >
-        <Typography sx={{ fontWeight: 'bold' }}>{props.displayName}</Typography>
+        <Typography sx={{ fontWeight: 'bold' }}>{displayName}</Typography>
       </Stack>
       {sortable}
     </Stack>

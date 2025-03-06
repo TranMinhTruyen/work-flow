@@ -45,13 +45,13 @@ const GridTable = (props: GridTableProps) => {
       suppressMovable: true,
       wrapText: true,
       headerComponent: CustomHeader,
-      headerComponentParams: {},
-      cellRenderer: (params: { data: any; value: any }) => {
+      headerComponentParams: { control: control },
+      cellRenderer: (params: { value: any }) => {
         return <Typography>{params.value}</Typography>;
       },
       ...defaultColDefProp,
     }),
-    [defaultColDefProp]
+    [control, defaultColDefProp]
   );
 
   return (

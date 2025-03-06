@@ -22,7 +22,7 @@ import './screen.css';
 
 const ScreenPage = () => {
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
-  const { control, pageable, setPageable, data, setData } = useTable<IScreenTableRow>({
+  const { control, pageable, onPageableChange, data, onDataChange } = useTable<IScreenTableRow>({
     defaultValues: { size: 2 },
   });
 
@@ -30,15 +30,15 @@ const ScreenPage = () => {
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
       const response: IPageResponse<ISearchScreenResponse[]> = await searchAction(searchCondition);
       if (response.result) {
-        setPageable({ ...response });
-        setData(
+        onPageableChange({ ...response });
+        onDataChange(
           response.result.map(item => ({
             ...item,
           }))
         );
       }
     },
-    [setData, setPageable]
+    [onDataChange, onPageableChange]
   );
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const ScreenPage = () => {
 
   const handleSwitchActive = useCallback(
     (rowData: IScreenTableRow) => (event: ChangeEvent<HTMLInputElement>) => {
-      setData(
+      onDataChange(
         cloneDeep(data ?? []).map(item => {
           if (item.screenId === rowData.screenId) {
             item.active = event.target.checked;
@@ -59,7 +59,7 @@ const ScreenPage = () => {
         })
       );
     },
-    [data, setData]
+    [data, onDataChange]
   );
 
   const handleEdit = useCallback(

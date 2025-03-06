@@ -29,11 +29,11 @@ export type ControlProps<T = any> = {
   total?: number;
   totalPages?: number;
   orderList: IPageableOrder[];
-  setData: (data: T[]) => void;
+  onDataChange: (data: T[]) => void;
   onSort: (columnId: string, order: 'asc' | 'desc' | null) => void;
-  setPageable: (pageable: Pageable) => void;
   onPageChange: (page: number) => void;
   onSizeChange: (size: number) => void;
+  onPageableChange: (pageable: Pageable) => void;
 };
 
 export type UseTableReturn<T = any> = ControlProps<T> & {
@@ -125,7 +125,7 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   /**
    *
    */
-  const onSetPageable = useCallback((pageable: Pageable) => {
+  const onPageableChange = useCallback((pageable: Pageable) => {
     setPage(pageable.page);
     setSize(pageable.size);
     setFrom(pageable.from);
@@ -144,11 +144,11 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
       total,
       totalPages,
       orderList,
-      setData,
+      onDataChange: setData,
       onSort,
       onPageChange,
       onSizeChange,
-      setPageable: onSetPageable,
+      onPageableChange,
     },
     data,
     page,
@@ -158,11 +158,11 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
     total,
     totalPages,
     orderList,
-    setData,
+    onDataChange: setData,
     onSort,
     onPageChange,
     onSizeChange,
-    setPageable: onSetPageable,
+    onPageableChange,
     pageable,
   };
 };
