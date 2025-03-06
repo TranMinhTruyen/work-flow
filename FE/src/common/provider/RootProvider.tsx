@@ -54,7 +54,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Transform request
-        if (config.data && typeof config.data === 'object' && !isIBaseRequest(config.data)) {
+        if (!isIBaseRequest(config.data)) {
           const transformRequest: IBaseRequest = {
             timestamp: dayjs().format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,

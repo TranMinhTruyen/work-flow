@@ -1,4 +1,3 @@
-import { Column } from 'ag-grid-community';
 import { useCallback, useEffect, useState } from 'react';
 
 import { IPageableOrder } from '../model/pageable';
@@ -6,6 +5,8 @@ import { IPageableOrder } from '../model/pageable';
 export type Pageable = {
   page: number;
   size: number;
+  from: number;
+  to: number;
   total: number;
   totalPages: number;
   orderList?: IPageableOrder[];
@@ -23,13 +24,16 @@ export type ControlProps<T = any> = {
   data?: T[];
   page?: number;
   size?: number;
+  from?: number;
+  to?: number;
   total?: number;
   totalPages?: number;
   orderList: IPageableOrder[];
   setData: (data: T[]) => void;
-  onSort: (columns?: Column[]) => void;
+  onSort: (columnId: string, order: 'asc' | 'desc' | null) => void;
   setPageable: (pageable: Pageable) => void;
   onPageChange: (page: number) => void;
+  onSizeChange: (size: number) => void;
 };
 
 export type UseTableReturn<T = any> = ControlProps<T> & {
@@ -42,14 +46,17 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   const [data, setData] = useState<T[]>([]);
   const [page, setPage] = useState<number>(defaultValues?.page ?? 1);
   const [size, setSize] = useState<number>(defaultValues?.size ?? 10);
+  const [from, setFrom] = useState<number>(0);
+  const [to, setTo] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [orderList, setOrderList] = useState<IPageableOrder[]>(defaultValues?.orderList ?? []);
-
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
   const [pageable, setPageable] = useState<Pageable>({
     page: page,
     size: size,
+    from: from,
+    to: to,
     total: total,
     totalPages: totalPages,
     orderList: orderList,
@@ -58,11 +65,15 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   useEffect(() => {
     const orderListMap: IPageableOrder[] = [];
     if (sortColumn) {
-      setOrderList(
-        Array.from(sortColumn.entries()).map(([key, value]) => {
-          return { orderBy: key, direction: value };
-        })
-      );
+      for (const [key, value] of sortColumn.entries()) {
+        if (value) {
+          orderListMap.push({
+            orderBy: key,
+            direction: value,
+          });
+        }
+      }
+      setOrderList(orderListMap);
       setPageable(prev => {
         return {
           ...prev,
@@ -75,12 +86,10 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   /**
    *
    */
-  const onSort = useCallback((columns?: Column[]) => {
+  const onSort = useCallback((columnId: string, order: 'asc' | 'desc' | null) => {
     setSortColumn(prev => {
       const newOrderList = new Map(prev);
-      columns?.forEach(item => {
-        newOrderList.set(item.getColId(), item.getSort() as string);
-      });
+      newOrderList.set(columnId, order as string);
       return newOrderList;
     });
   }, []);
@@ -101,9 +110,26 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   /**
    *
    */
+  const onSizeChange = useCallback((size: number) => {
+    setPage(1);
+    setSize(size);
+    setPageable(prev => {
+      return {
+        ...prev,
+        page: 1,
+        size: size,
+      };
+    });
+  }, []);
+
+  /**
+   *
+   */
   const onSetPageable = useCallback((pageable: Pageable) => {
     setPage(pageable.page);
     setSize(pageable.size);
+    setFrom(pageable.from);
+    setTo(pageable.to);
     setTotal(pageable.total);
     setTotalPages(pageable.totalPages);
   }, []);
@@ -113,23 +139,29 @@ const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
       data,
       page,
       size,
+      from,
+      to,
       total,
       totalPages,
       orderList,
       setData,
       onSort,
       onPageChange,
+      onSizeChange,
       setPageable: onSetPageable,
     },
     data,
     page,
     size,
+    from,
+    to,
     total,
     totalPages,
     orderList,
     setData,
     onSort,
     onPageChange,
+    onSizeChange,
     setPageable: onSetPageable,
     pageable,
   };

@@ -1,7 +1,8 @@
 import { styled } from '@mui/material/styles';
-import { ColDef, SortChangedEvent } from 'ag-grid-community';
+import Typography from '@mui/material/Typography';
+import { ColDef } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { ControlProps } from '@/common/hooks/useTable';
 
@@ -42,18 +43,15 @@ const GridTable = (props: GridTableProps) => {
       resizable: false,
       autoHeight: true,
       suppressMovable: true,
+      wrapText: true,
       headerComponent: CustomHeader,
+      headerComponentParams: {},
+      cellRenderer: (params: { data: any; value: any }) => {
+        return <Typography>{params.value}</Typography>;
+      },
       ...defaultColDefProp,
     }),
     [defaultColDefProp]
-  );
-
-  const handleSortChanged = useCallback(
-    (event: SortChangedEvent) => {
-      control?.onSort(event.columns);
-      return;
-    },
-    [control]
   );
 
   return (
@@ -72,7 +70,6 @@ const GridTable = (props: GridTableProps) => {
         rowData={control?.data ?? []}
         enableCellTextSelection={true}
         ensureDomOrder={true}
-        onSortChanged={handleSortChanged}
         {...restProps}
       />
     </AgGridContainer>
@@ -109,6 +106,10 @@ const AgGridContainer = styled('div')<GridTableProps>(
 
     '& .ag-cell:last-child': {
       borderRight: 'none !important',
+    },
+
+    '& .ag-cell-edit-wrapper': {
+      padding: '8px',
     },
   })
 );

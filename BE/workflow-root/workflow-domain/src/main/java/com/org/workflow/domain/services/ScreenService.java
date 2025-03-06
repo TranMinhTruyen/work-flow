@@ -34,7 +34,7 @@ public class ScreenService extends AbstractService {
    * @param searchRequest
    * @return
    */
-  public PageResponse<List<SearchScreenResponse>> search(
+  public PageResponse<SearchScreenResponse> search(
       BaseRequest<PageableRequest<SearchScreenRequest>> searchRequest) {
 
     PageableRequest<SearchScreenRequest> request = searchRequest.getPayload();
@@ -48,8 +48,7 @@ public class ScreenService extends AbstractService {
       searchScreenCondition.setScreenUrl(condition.getScreenUrl());
     }
 
-    PageableResult<List<Screen>> queryResult = screenRepository.searchByCondition(
-        searchScreenCondition,
+    PageableResult<Screen> queryResult = screenRepository.searchByCondition(searchScreenCondition,
         PageableUtil.getPageable(request));
 
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
@@ -72,14 +71,8 @@ public class ScreenService extends AbstractService {
         searchScreenResponses.add(searchScreenResponse);
       }
     }
-
-    PageResponse<List<SearchScreenResponse>> pageResponse = new PageResponse<>();
-    pageResponse.setPage(request.getPage());
-    pageResponse.setSize(request.getSize());
-    pageResponse.setTotal(queryResult.getTotal());
-    pageResponse.setTotalPages(PageableUtil.getTotalPages(queryResult));
-    pageResponse.setResult(searchScreenResponses);
-    return pageResponse;
+    
+    return PageableUtil.toPageableResponse(queryResult, searchScreenResponses);
   }
 
 }

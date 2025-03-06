@@ -23,7 +23,7 @@ import './screen.css';
 const ScreenPage = () => {
   const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
   const { control, pageable, setPageable, data, setData } = useTable<IScreenTableRow>({
-    defaultValues: { size: 10 },
+    defaultValues: { size: 2 },
   });
 
   const handleSearch = useCallback(
@@ -83,27 +83,22 @@ const ScreenPage = () => {
         headerName: 'Screen name',
         field: 'screenName',
         flex: 1,
-        wrapText: true,
       },
       {
         headerName: 'Screen URL',
         field: 'screenUrl',
         flex: 1,
-        wrapText: true,
       },
       {
         headerName: 'Created datetime',
         field: 'createdDatetime',
         width: 200,
-        wrapText: true,
       },
       {
         headerName: 'Status',
         field: 'active',
         sortable: false,
-        headerClass: 'active-column',
         width: 150,
-        wrapText: true,
         cellRenderer: (params: { data: IScreenTableRow; value: boolean }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
@@ -115,14 +110,13 @@ const ScreenPage = () => {
       {
         sortable: false,
         width: 80,
-        wrapText: true,
         cellRenderer: (params: { data: IScreenTableRow; value: boolean }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
               <IconButton
+                className={'editButtons'}
                 width={30}
                 height={30}
-                sx={styles.editButton}
                 icon={<EditIcon sx={{ color: 'rgb(0, 0, 0)' }} />}
                 onClick={handleEdit(params.data)}
               />
@@ -147,13 +141,6 @@ const ScreenPage = () => {
       <EditModal ref={modalRef} />
     </Stack>
   );
-};
-
-const styles = {
-  editButton: {
-    borderRadius: '8px',
-    backgroundColor: 'rgba(255, 200, 0, 0.8)',
-  },
 };
 
 export default memo(ScreenPage);

@@ -1,9 +1,15 @@
-.active-column .ag-header-cell-label {
+#headerTitleActive {
   justify-content: center;
 }
 
-#detail-title {
+#editModalTitle {
   margin-top: 8px;
   font-size: 18px !important;
   font-weight: bold;
+  margin-right: auto;
+}
+
+.editButtons {
+  border-radius: 8px;
+  background-color: rgba(255, 200, 0, 0.8);
 }

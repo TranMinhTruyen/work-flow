@@ -2,8 +2,6 @@ package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,11 +37,11 @@ public class ScreenController extends AbstractController {
    * @param searchRequest
    * @return
    */
-  @Operation(security = { @SecurityRequirement(name = "Authorization") })
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/search")
   public ResponseEntity<BaseResponse> searchScreen(
       @RequestBody BaseRequest<PageableRequest<SearchScreenRequest>> searchRequest) {
-    PageResponse<List<SearchScreenResponse>> result = screenService.search(searchRequest);
+    PageResponse<SearchScreenResponse> result = screenService.search(searchRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 

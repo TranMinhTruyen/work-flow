@@ -80,7 +80,7 @@ const EditModal = (props: EditModalProps) => {
         </Stack>
 
         <Divider />
-        <Typography id={'detail-title'}>Detail</Typography>
+        <Typography id={'editModalTitle'}>Detail</Typography>
 
         <form id={'edit-screen-form'}>
           <Stack spacing={3} direction={'row'}>
@@ -106,7 +106,7 @@ const EditModal = (props: EditModalProps) => {
         <Divider />
 
         <Stack sx={{ marginTop: '0px !important' }}>
-          <Typography id={'detail-title'}>User using</Typography>
+          <Typography id={'editModalTitle'}>User using</Typography>
           <GridTable defaultColDef={defaultColDef} columnDefs={colDefs} suppressMovableColumns />
         </Stack>
 

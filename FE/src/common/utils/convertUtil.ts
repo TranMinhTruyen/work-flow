@@ -109,9 +109,14 @@ export const blobToBase64 = (blob: Blob): Promise<string | null> => {
 
 export const isIBaseRequest = (obj: any): obj is IBaseRequest => {
   return (
+    obj !== undefined &&
     obj !== null &&
     typeof obj === 'object' &&
-    typeof obj.method === 'string' &&
-    typeof obj.url === 'string'
+    ('timestamp' in obj || 'language' in obj || 'payload' in obj) &&
+    (obj.timestamp === undefined || typeof obj.timestamp === 'string') &&
+    (obj.language === undefined || typeof obj.language === 'string') &&
+    (obj.payload === undefined ||
+      typeof obj.payload === 'object' ||
+      typeof obj.payload === 'string')
   );
 };

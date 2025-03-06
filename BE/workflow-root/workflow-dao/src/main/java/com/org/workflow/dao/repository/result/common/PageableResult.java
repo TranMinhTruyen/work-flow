@@ -1,11 +1,12 @@
 package com.org.workflow.dao.repository.result.common;
 
+import java.io.Serializable;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * @author minh-truyen
@@ -22,6 +23,6 @@ public class PageableResult<T> implements Serializable {
 
   private long total;
 
-  private T result;
+  private List<T> result;
 
 }
