@@ -5,7 +5,7 @@ import { ColDef } from 'ag-grid-community';
 import { cloneDeep } from 'lodash';
 import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import { ModalRef } from '@/common/hooks/types/useModalTypes';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import IconButton from '@/components/button/IconButton';
@@ -18,10 +18,11 @@ import TestModal from './components/TestModal';
 import { ISearchScreenRequest } from './model/screenRequest';
 import { ISearchScreenResponse } from './model/screenResponse';
 import { IScreenTableRow } from './model/table';
+
 import './screen.css';
 
 const ScreenPage = () => {
-  const modalRef = useRef<PromiseModalRef<null, IScreenTableRow>>(null);
+  const modalRef = useRef<ModalRef<null, IScreenTableRow>>(null);
   const { control, pageable, onPageableChange, data, onDataChange } = useTable<IScreenTableRow>({
     defaultValues: { size: 2 },
   });

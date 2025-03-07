@@ -1,5 +1,5 @@
 import { FileType, Obj, SelectDataType } from '../constants/typeConst';
-import { IBaseRequest } from '../model/AxiosData';
+import { IBaseRequest } from '../model/axiosData';
 
 /**
  *

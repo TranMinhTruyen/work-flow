@@ -36,6 +36,7 @@ export type Authorizer = {
 
 export type CustomAxiosConfig<T = any> = AxiosRequestConfig<T> & {
   isS3Url?: boolean;
+  isLoading?: boolean;
 };
 
 export type FormContext = {

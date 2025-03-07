@@ -12,8 +12,8 @@ import {
 } from 'ag-grid-community';
 import { memo, Ref, useCallback, useEffect, useMemo } from 'react';
 
+import useModal, { PromiseModalRef } from '@/common/hooks/useModal';
 import GridTable from '@/components/table/GridTable';
-import usePromiseModal, { PromiseModalRef } from '@/common/hooks/usePromiseModal';
 
 import Button from '../button/Button';
 
@@ -47,7 +47,7 @@ const DemoModal = (props: DemoModalProps) => {
     items,
     setItems,
     setSelectedItem,
-  } = usePromiseModal<Item, TestInputValue>(props.ref);
+  } = useModal<Item, TestInputValue>(props.ref);
 
   useEffect(() => {
     setItems(data);
