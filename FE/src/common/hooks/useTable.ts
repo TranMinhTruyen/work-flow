@@ -1,45 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { IPageableOrder } from '../model/pageable';
-
-export type Pageable = {
-  page: number;
-  size: number;
-  from: number;
-  to: number;
-  total: number;
-  totalPages: number;
-  orderList?: IPageableOrder[];
-};
-
-export type UseTableProps = {
-  defaultValues?: {
-    page?: number;
-    size?: number;
-    orderList?: IPageableOrder[];
-  };
-};
-
-export type ControlProps<T = any> = {
-  data?: T[];
-  page?: number;
-  size?: number;
-  from?: number;
-  to?: number;
-  total?: number;
-  totalPages?: number;
-  orderList: IPageableOrder[];
-  onDataChange: (data: T[]) => void;
-  onSort: (columnId: string, order: 'asc' | 'desc' | null) => void;
-  onPageChange: (page: number) => void;
-  onSizeChange: (size: number) => void;
-  onPageableChange: (pageable: Pageable) => void;
-};
-
-export type UseTableReturn<T = any> = ControlProps<T> & {
-  control: ControlProps<T>;
-  pageable: Pageable;
-};
+import { Pageable, UseTableProps, UseTableReturn } from './types/useTableTypes';
 
 const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
   const { defaultValues } = props;

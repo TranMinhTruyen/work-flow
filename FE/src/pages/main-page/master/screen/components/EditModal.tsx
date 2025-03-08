@@ -8,7 +8,8 @@ import { ColDef } from 'ag-grid-community';
 import { memo, Ref, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import usePromiseModal, { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import { ModalRef } from '@/common/hooks/types/useModalTypes';
+import useModal from '@/common/hooks/useModal';
 import Button from '@/components/button/Button';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
@@ -18,15 +19,13 @@ import { IEditModalForm } from '../model/editModalForm';
 import { IScreenTableRow } from '../model/table';
 
 type EditModalProps = {
-  ref: Ref<PromiseModalRef<null, IScreenTableRow>>;
+  ref: Ref<ModalRef<null, IScreenTableRow>>;
 };
 
 const EditModal = (props: EditModalProps) => {
   const { ref } = props;
 
-  const { inputValue, handleClose, handleOk, openModal } = usePromiseModal<null, IScreenTableRow>(
-    ref
-  );
+  const { inputValue, handleClose, handleOk, openModal } = useModal<null, IScreenTableRow>(ref);
 
   const { control } = useForm<IEditModalForm>({
     values: { ...inputValue },

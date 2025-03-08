@@ -15,7 +15,7 @@ import { screenUrl } from '../constants/urlConst';
 import { I18nEnum } from '../enums/i18nEnum';
 import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
-import { IBaseRequest, IBaseResponse } from '../model/AxiosData';
+import { IBaseRequest, IBaseResponse } from '../model/axiosData';
 import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import { isIBaseRequest } from '../utils/convertUtil';
@@ -64,7 +64,10 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Set loading
-        if (!FILE_API.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+        if (
+          !FILE_API.some(x => x.toLowerCase() === config.url?.toLowerCase()) ||
+          (config as CustomAxiosConfig).isLoading
+        ) {
           if (!store.getState().commonState.isLoading) {
             dispatch(toggleLoading(true));
             openDialogContainer({

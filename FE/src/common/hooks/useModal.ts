@@ -1,19 +1,8 @@
 import { Ref, useCallback, useImperativeHandle, useRef, useState } from 'react';
 
-type OpenModalProps<P> = {
-  inputValue?: P;
-  isAction?: boolean;
-};
+import { ModalRef } from './types/useModalTypes';
 
-/**
- * T = return type when modal close.
- * P = inputValue type when open modal.
- */
-export type PromiseModalRef<T, P = unknown> = {
-  open: (props?: OpenModalProps<P>) => Promise<T | undefined>;
-};
-
-const usePromiseModal = <T, P = unknown>(ref: Ref<PromiseModalRef<T, P>>) => {
+const useModal = <T, P = unknown>(ref: Ref<ModalRef<T, P>>) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isAction, setIsAction] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<P | undefined>(undefined);
@@ -21,7 +10,16 @@ const usePromiseModal = <T, P = unknown>(ref: Ref<PromiseModalRef<T, P>>) => {
   const [selectedItem, setSelectedItem] = useState<T | undefined>(undefined);
   const resolveRef = useRef<(value: T | undefined) => void>(undefined);
 
+  /**
+   * Use React's useImperativeHandle hook to expose open function to parent components via a ref.
+   */
   useImperativeHandle(ref, () => ({
+    /**
+     * Opens the modal and optionally initializes its state.
+     *
+     * @param props - Optional properties used to set initial state values for the modal.
+     * @returns A promise that resolves with type T or undefined when the modal operation is completed.
+     */
     open: (props): Promise<T | undefined> => {
       if (props && props.inputValue) {
         setInputValue(props.inputValue);
@@ -74,4 +72,4 @@ const usePromiseModal = <T, P = unknown>(ref: Ref<PromiseModalRef<T, P>>) => {
   };
 };
 
-export default usePromiseModal;
+export default useModal;

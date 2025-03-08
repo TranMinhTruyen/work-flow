@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import { memo, useCallback, useMemo, useRef } from 'react';
 
 import { CommonElement } from '@/common/constants/typeConst';
-import { PromiseModalRef } from '@/common/hooks/usePromiseModal';
+import { PromiseModalRef } from '@/common/hooks/useModal';
 import useScreenComponent from '@/common/hooks/useScreenComponent';
 import Button from '@/components/button/Button';
 import DemoModal, { Item, TestInputValue } from '@/components/modal/DemoModal';
