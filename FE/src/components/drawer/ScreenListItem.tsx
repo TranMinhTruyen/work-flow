@@ -11,6 +11,7 @@ import { screenUrl } from '@/common/constants/urlConst';
 
 export type IScreenItem = {
   screenKey: string;
+  screenParentKey: string | null;
   screenIcon: ReactNode;
   screenLabel: string;
   screenPath: string;
@@ -22,6 +23,7 @@ export type IScreenItem = {
 const screenItemList: IScreenItem[] = [
   {
     screenKey: 'SCR00002',
+    screenParentKey: null,
     screenIcon: <HomeOutlinedIcon />,
     screenLabel: 'Home',
     screenPath: screenUrl.HOME.path,
@@ -31,6 +33,7 @@ const screenItemList: IScreenItem[] = [
   },
   {
     screenKey: 'SCR00003',
+    screenParentKey: null,
     screenIcon: <ViewKanbanOutlinedIcon />,
     screenLabel: 'Kanban',
     screenPath: screenUrl.KANBAN.path,
@@ -40,6 +43,7 @@ const screenItemList: IScreenItem[] = [
   },
   {
     screenKey: 'SCREEN_MASTER',
+    screenParentKey: null,
     screenIcon: <DashboardIcon />,
     screenLabel: 'Master',
     screenPath: '',
@@ -48,6 +52,7 @@ const screenItemList: IScreenItem[] = [
     screenChild: [
       {
         screenKey: 'SCR00000',
+        screenParentKey: 'SCREEN_MASTER',
         screenIcon: <ListAltIcon />,
         screenLabel: 'Screen master',
         screenPath: screenUrl.SCREEN_MASTER.path,
@@ -57,6 +62,7 @@ const screenItemList: IScreenItem[] = [
       },
       {
         screenKey: 'SCR00001',
+        screenParentKey: 'SCREEN_MASTER',
         screenIcon: <AccountCircleIcon />,
         screenLabel: 'User master',
         screenPath: screenUrl.USER_MASTER.path,

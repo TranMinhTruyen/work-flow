@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import useRouter from '@/common/hooks/useRouter';
 import {
@@ -36,8 +36,44 @@ export type DrawerMenuItemProps = {
 const itemList = screenItemList;
 
 const DrawerMenu = () => {
+  const { currentPath } = useRouter();
   const dispatch = useAppDispatch();
   const openDrawer = useAppSelector(selectOpenDrawer);
+  const screenExpand = useAppSelector(selectScreenExpand);
+  const screenExpandChain = useRef<string[]>([]);
+
+  const findChain = useCallback(
+    (items: IScreenItem[], chain: string[] = []): boolean => {
+      for (const item of items) {
+        const newChain = [...chain, item.screenKey];
+        if (item.screenPath === currentPath) {
+          screenExpandChain.current = newChain;
+          return true;
+        }
+        if (item.screenChild) {
+          if (findChain(item.screenChild, newChain)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+    [currentPath]
+  );
+
+  useEffect(() => {
+    findChain(itemList);
+    const newScreenExpandChain = screenExpandChain.current.slice(
+      0,
+      screenExpandChain.current.length - 1
+    );
+    for (const item of newScreenExpandChain) {
+      if (!screenExpand.find(x => x === item)) {
+        dispatch(setScreenExpand(item));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPath]);
 
   const handleDrawerOpen = useCallback(() => {
     dispatch(toggleDrawer());
@@ -61,7 +97,7 @@ const DrawerMenu = () => {
     }
 
     for (const screen of itemList) {
-      if (screen.screenChild == null) {
+      if (screen.screenChild === null) {
         if (checkAccessScreen(screen)) {
           returnItem.push(
             <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
@@ -116,8 +152,9 @@ const DrawerMenu = () => {
 
 const DrawerMenuItem = (props: DrawerMenuItemProps) => {
   const { item, childIndex } = props;
-  const openDrawer = useAppSelector(selectOpenDrawer);
   const { navigate, currentPath } = useRouter();
+
+  const openDrawer = useAppSelector(selectOpenDrawer);
 
   const handleOnClickItem = useCallback(
     (path: string) => () => {
@@ -231,7 +268,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     }
 
     for (const childScreen of item.screenChild) {
-      if (childScreen.screenChild == null) {
+      if (childScreen.screenChild === null) {
         if (checkAccessScreen(childScreen)) {
           returnItem.push(
             <DrawerMenuItem
