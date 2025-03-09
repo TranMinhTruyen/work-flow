@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { IPageableOrder } from '../model/pageable';
 import { Pageable, UseTableProps, UseTableReturn } from './types/useTableTypes';
 
-const useTable = <T = any>(props: UseTableProps = {}): UseTableReturn<T> => {
+const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const { defaultValues } = props;
-  const [data, setData] = useState<T[]>([]);
+  const [data, setData] = useState<T[]>(defaultValues?.data ?? []);
   const [page, setPage] = useState<number>(defaultValues?.page ?? 1);
   const [size, setSize] = useState<number>(defaultValues?.size ?? 10);
   const [from, setFrom] = useState<number>(0);

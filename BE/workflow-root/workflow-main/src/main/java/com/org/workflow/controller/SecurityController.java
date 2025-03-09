@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
-import com.org.workflow.domain.dto.response.proxy.AccessScreenResponse;
+import com.org.workflow.domain.dto.response.screen.AccessScreenResponse;
 import com.org.workflow.domain.services.SecurityService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,11 +30,10 @@ public class SecurityController extends AbstractController {
 
   private final SecurityService securityService;
 
-  @Operation(security = { @SecurityRequirement(name = "Authorization") })
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/token-check")
   public ResponseEntity<BaseResponse> tokenCheck() {
-    return this.returnBaseResponse(null, "Token check success", SUCCESS,
-        HttpStatus.OK);
+    return this.returnBaseResponse(null, "Token check success", SUCCESS, HttpStatus.OK);
   }
 
   /**
@@ -42,7 +41,7 @@ public class SecurityController extends AbstractController {
    *
    * @return BaseResponse
    */
-  @Operation(security = { @SecurityRequirement(name = "Authorization") })
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/get-access-screen")
   public ResponseEntity<BaseResponse> getAccessScreen() {
     AccessScreenResponse result = securityService.getAccessScreen();

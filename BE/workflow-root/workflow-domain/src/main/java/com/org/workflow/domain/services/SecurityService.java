@@ -10,8 +10,8 @@ import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.ProxyRepository;
 import com.org.workflow.dao.repository.UserRepository;
-import com.org.workflow.domain.dto.response.proxy.AccessScreenResponse;
-import com.org.workflow.domain.dto.response.proxy.ScreenResponse;
+import com.org.workflow.domain.dto.response.screen.AccessScreenResponse;
+import com.org.workflow.domain.dto.response.screen.ScreenResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,7 @@ public class SecurityService {
 
   private final UserRepository userRepository;
 
-  private static List<ScreenResponse> setScreenMasterResponses(
-      List<Screen> screenList) {
+  private static List<ScreenResponse> setScreenMasterResponses(List<Screen> screenList) {
     List<ScreenResponse> screenResponseList = new ArrayList<>();
     ScreenResponse screenResponse;
     for (Screen screen : screenList) {
@@ -51,12 +50,11 @@ public class SecurityService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     if (result.isPresent()) {
-      Optional<List<Screen>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
-          result.get().getAccessScreenList());
+      Optional<List<Screen>> screenMasterList =
+          proxyRepository.findScreenMasterByListScreenId(result.get().getAccessScreenList());
 
       if (screenMasterList.isPresent()) {
-        List<ScreenResponse> screenResponseList = setScreenMasterResponses(
-            screenMasterList.get());
+        List<ScreenResponse> screenResponseList = setScreenMasterResponses(screenMasterList.get());
         accessScreenResponse.setScreenMasterList(screenResponseList);
       }
     }

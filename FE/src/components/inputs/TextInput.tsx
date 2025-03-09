@@ -1,7 +1,7 @@
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { InputAdornment, styled } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react';
 
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 
@@ -33,15 +33,21 @@ const TextInput = (props: TextInputProps) => {
     setValue(valueProps ?? '');
   }, [valueProps]);
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    onChangeProps?.(event.target.value);
-  };
+  const handleOnChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+      onChangeProps?.(event.target.value);
+    },
+    [onChangeProps]
+  );
 
-  const handleOnBlur = (event: FocusEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    onBlurProps?.(event.target.value);
-  };
+  const handleOnBlur = useCallback(
+    (event: FocusEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+      onBlurProps?.(event.target.value);
+    },
+    [onBlurProps]
+  );
 
   return (
     <StyledTextInput

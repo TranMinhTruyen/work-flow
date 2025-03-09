@@ -2,7 +2,6 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import styled from '@mui/system/styled';
 import {
   ColDef,
   ICellRendererParams,
@@ -10,9 +9,11 @@ import {
   RowSelectionOptions,
   SelectionChangedEvent,
 } from 'ag-grid-community';
-import { memo, Ref, useCallback, useEffect, useMemo } from 'react';
+import { memo, Ref, useCallback, useMemo } from 'react';
 
-import useModal, { PromiseModalRef } from '@/common/hooks/useModal';
+import { ModalRef } from '@/common/hooks/types/useModalTypes';
+import useModal from '@/common/hooks/useModal';
+import useTable from '@/common/hooks/useTable';
 import GridTable from '@/components/table/GridTable';
 
 import Button from '../button/Button';
@@ -22,7 +23,7 @@ export interface Item {
   name: string;
 }
 
-const data: Item[] = [
+const dataMock: Item[] = [
   { id: 1, name: 'admin' },
   { id: 2, name: 'admin2' },
   { id: 3, name: 'admin3' },
@@ -34,24 +35,14 @@ export type TestInputValue = {
 };
 
 type DemoModalProps = {
-  ref: Ref<PromiseModalRef<Item, TestInputValue>>;
+  ref: Ref<ModalRef<Item, TestInputValue>>;
 };
 
 const DemoModal = (props: DemoModalProps) => {
-  const {
-    inputValue,
-    handleClose,
-    handleDoubleClick,
-    handleOk,
-    openModal,
-    items,
-    setItems,
-    setSelectedItem,
-  } = useModal<Item, TestInputValue>(props.ref);
+  const { inputValue, handleClose, handleDoubleClick, handleOk, openModal, setSelectedItem } =
+    useModal<Item, TestInputValue>(props.ref);
 
-  useEffect(() => {
-    setItems(data);
-  }, [setItems]);
+  const { control } = useTable<Item>({ defaultValues: { data: dataMock } });
 
   const colDefs = useMemo<ColDef<Item>[]>(
     () => [
@@ -112,8 +103,8 @@ const DemoModal = (props: DemoModalProps) => {
         <Stack spacing={1}>
           <Typography>{inputValue?.value1}</Typography>
           <Typography>{inputValue?.value2}</Typography>
-          <Table
-            rowData={items}
+          <GridTable
+            control={control}
             columnDefs={colDefs}
             defaultColDef={defaultColDef}
             rowSelection={rowSelection}
@@ -135,13 +126,5 @@ const DemoModal = (props: DemoModalProps) => {
     </Dialog>
   );
 };
-
-const Table = styled(GridTable)({
-  '& .ag-header-cell[col-id="id"]': {
-    '& .ag-header-cell-label': {
-      justifyContent: 'center',
-    },
-  },
-});
 
 export default memo(DemoModal);

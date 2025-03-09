@@ -23,9 +23,7 @@ import './screen.css';
 
 const ScreenPage = () => {
   const modalRef = useRef<ModalRef<null, IScreenTableRow>>(null);
-  const { control, pageable, onPageableChange, data, onDataChange } = useTable<IScreenTableRow>({
-    defaultValues: { size: 2 },
-  });
+  const { control, pageable, onPageableChange, data, onDataChange } = useTable<IScreenTableRow>();
 
   const handleSearch = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {

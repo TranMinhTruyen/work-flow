@@ -1,6 +1,6 @@
-/FastAPI/.venv
-/FastAPI/__pycache__
-/FastAPI/**/__pycache__
+/BE/FastAPI/.venv
+/BE/FastAPI/__pycache__
+/BE/FastAPI/**/__pycache__
 
 **/build/
 **/.gradle/

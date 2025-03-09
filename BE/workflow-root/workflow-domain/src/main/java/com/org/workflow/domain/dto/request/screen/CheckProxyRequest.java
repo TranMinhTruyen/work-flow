@@ -1,4 +1,4 @@
-package com.org.workflow.domain.dto.response.proxy;
+package com.org.workflow.domain.dto.request.screen;
 
 import java.io.Serializable;
 
@@ -14,8 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckProxyResponse implements Serializable {
+public class CheckProxyRequest implements Serializable {
 
-  private String type;
+  private String ipAddress;
+
+  private String macAddress;
 
 }

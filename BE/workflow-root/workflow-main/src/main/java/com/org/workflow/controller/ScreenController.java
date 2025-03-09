@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
-import com.org.workflow.domain.dto.request.proxy.SearchScreenRequest;
+import com.org.workflow.domain.dto.request.screen.GetScreenDetailRequest;
+import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.services.ScreenService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +44,18 @@ public class ScreenController extends AbstractController {
   public ResponseEntity<BaseResponse> searchScreen(
       @RequestBody BaseRequest<PageableRequest<SearchScreenRequest>> searchRequest) {
     PageResponse<SearchScreenResponse> result = screenService.search(searchRequest);
+    return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  }
+
+  /**
+   * @param request
+   * @return
+   */
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @PostMapping(value = "/get-screen-detail")
+  public ResponseEntity<BaseResponse> getScreenDetail(
+      @RequestBody BaseRequest<GetScreenDetailRequest> request) {
+    GetScreenDetailResponse result = screenService.getScreenDetail(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 

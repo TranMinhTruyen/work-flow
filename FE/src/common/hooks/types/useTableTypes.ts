@@ -89,8 +89,9 @@ export type ControlProps<T = any> = {
   onPageableChange: (pageable: Pageable) => void;
 };
 
-export type UseTableProps = {
+export type UseTableProps<T> = {
   defaultValues?: {
+    data?: T[];
     page?: number;
     size?: number;
     orderList?: IPageableOrder[];

@@ -5,6 +5,8 @@ import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PAT
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,12 @@ import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenConditio
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
-import com.org.workflow.domain.dto.request.proxy.SearchScreenRequest;
+import com.org.workflow.domain.dto.request.screen.GetScreenDetailRequest;
+import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
+import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
 import com.org.workflow.domain.utils.PageableUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -71,8 +76,39 @@ public class ScreenService extends AbstractService {
         searchScreenResponses.add(searchScreenResponse);
       }
     }
-    
+
     return PageableUtil.toPageableResponse(queryResult, searchScreenResponses);
+  }
+
+  /**
+   * @param request
+   * @return
+   */
+  public GetScreenDetailResponse getScreenDetail(BaseRequest<GetScreenDetailRequest> request) {
+
+    GetScreenDetailRequest getScreenDetailRequest = request.getPayload();
+
+    Optional<Screen> result = screenRepository.findById(getScreenDetailRequest.getScreenId());
+
+    Screen screen = result.orElse(new Screen());
+
+    GetScreenDetailResponse response = new GetScreenDetailResponse();
+    response.setScreenId(screen.getScreenId());
+    response.setScreenName(screen.getScreenName());
+    response.setScreenUrl(screen.getScreenUrl());
+    response.setActive(screen.isActive());
+    response.setScreenComponentList(screen.getScreenComponentList().stream().map(item -> {
+      ScreenComponentResponse screenComponentResponse = new ScreenComponentResponse();
+      screenComponentResponse.setComponentName(item.getComponentName());
+      screenComponentResponse.setRole(item.getRole());
+      screenComponentResponse.setAuthorities(item.getAuthorities());
+      screenComponentResponse.setLevel(item.getLevel());
+      screenComponentResponse.setAuthorities(item.getAuthorities());
+      return screenComponentResponse;
+    }).collect(Collectors.toList()));
+    response.setUpdateDatetime(screen.getUpdateDatetime());
+
+    return response;
   }
 
 }

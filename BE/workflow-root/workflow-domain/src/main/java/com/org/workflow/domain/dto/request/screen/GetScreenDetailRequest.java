@@ -1,19 +1,21 @@
-package com.org.workflow.domain.dto.response.proxy;
+package com.org.workflow.domain.dto.request.screen;
 
 import java.io.Serializable;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author minh-truyen
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccessScreenResponse implements Serializable {
+public class GetScreenDetailRequest implements Serializable {
 
-  private List<ScreenResponse> screenMasterList;
+  private String screenId;
 
 }

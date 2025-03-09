@@ -1,4 +1,4 @@
-package com.org.workflow.domain.dto.response.proxy;
+package com.org.workflow.domain.dto.response.screen;
 
 import java.io.Serializable;
 
@@ -7,16 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author minh-truyen
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScreenResponse implements Serializable {
+public class CheckProxyResponse implements Serializable {
 
-  private String screenId;
-
-  private String screenName;
-
-  private String screenUrl;
+  private String type;
 
 }

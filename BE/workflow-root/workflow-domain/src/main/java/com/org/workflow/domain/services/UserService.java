@@ -41,7 +41,7 @@ import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
 import com.org.workflow.domain.dto.request.user.CreateUserRequest;
 import com.org.workflow.domain.dto.request.user.LoginRequest;
 import com.org.workflow.domain.dto.request.user.UpdateUserRequest;
-import com.org.workflow.domain.dto.response.proxy.ScreenResponse;
+import com.org.workflow.domain.dto.response.screen.ScreenResponse;
 import com.org.workflow.domain.dto.response.user.CreateUserResponse;
 import com.org.workflow.domain.dto.response.user.LoginResponse;
 import com.org.workflow.domain.dto.response.user.UpdateUserResponse;
@@ -137,8 +137,8 @@ public class UserService extends AbstractService {
 
     CreateUserRequest createUserRequest = baseRequest.getPayload();
 
-    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-        createUserRequest.getUserName());
+    Optional<UserAccount> result =
+        userRepository.findUserAccountByUserNameOrEmail(createUserRequest.getUserName());
     if (result.isPresent()) {
       throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(),
           createUserRequest.getUserName());
@@ -186,8 +186,8 @@ public class UserService extends AbstractService {
       throws WFException {
     CreateUserRequest createUserRequest = baseRequest.getPayload();
 
-    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-        createUserRequest.getUserName());
+    Optional<UserAccount> result =
+        userRepository.findUserAccountByUserNameOrEmail(createUserRequest.getUserName());
     if (result.isPresent()) {
       throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(),
           createUserRequest.getUserName());
@@ -237,8 +237,8 @@ public class UserService extends AbstractService {
     UserAccount userAccount;
     LoginRequest loginRequest = baseRequest.getPayload();
     try {
-      Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-          loginRequest.getUserName());
+      Optional<UserAccount> result =
+          userRepository.findUserAccountByUserNameOrEmail(loginRequest.getUserName());
 
       userAccount = result.orElseThrow(
           () -> exceptionService.getWFException(ACCOUNT_NOT_FOUND, baseRequest.getLanguage(),
@@ -257,8 +257,8 @@ public class UserService extends AbstractService {
 
     String passwordDecrypted = RSAUtil.decryptRSA(loginRequest.getPassword(), privateKey);
 
-    String loginPassword = Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16)
-        .toString();
+    String loginPassword =
+        Hashing.sha512().hashString(passwordDecrypted, StandardCharsets.UTF_16).toString();
 
     if (userAccount.getPassword().equals(loginPassword)) {
       LoginResponse loginResponse = new LoginResponse();
@@ -270,8 +270,8 @@ public class UserService extends AbstractService {
       List<ScreenResponse> screenResponseList = new ArrayList<>();
       if (userAccount.getAccessScreenList() != null && !userAccount.getAccessScreenList()
           .isEmpty()) {
-        Optional<List<Screen>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
-            userAccount.getAccessScreenList());
+        Optional<List<Screen>> screenMasterList =
+            proxyRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
 
         if (screenMasterList.isPresent()) {
           ScreenResponse screenResponse;
@@ -297,8 +297,8 @@ public class UserService extends AbstractService {
         }
       }
       userRepository.save(userAccount);
-      throw exceptionService.getWFException(ACCOUNT_PASSWORD_INVALID,
-          baseRequest.getLanguage(), loginRequest.getUserName());
+      throw exceptionService.getWFException(ACCOUNT_PASSWORD_INVALID, baseRequest.getLanguage(),
+          loginRequest.getUserName());
     }
   }
 
@@ -323,11 +323,10 @@ public class UserService extends AbstractService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(),
-            username));
+        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), username));
 
-    Optional<List<Screen>> screenMasterList = proxyRepository.findScreenMasterByListScreenId(
-        userAccount.getAccessScreenList());
+    Optional<List<Screen>> screenMasterList =
+        proxyRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
 
     List<ScreenResponse> screenResponseList = new ArrayList<>();
     if (screenMasterList.isPresent()) {
@@ -363,8 +362,7 @@ public class UserService extends AbstractService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount oldUserAccount = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(),
-            username));
+        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), username));
 
     if (updateUserRequest.getUpdateDatetime() != null && !updateUserRequest.getUpdateDatetime()
         .equals(oldUserAccount.getUpdateDatetime())) {
@@ -406,8 +404,8 @@ public class UserService extends AbstractService {
     ChangePasswordRequest changePasswordRequest = baseRequest.getPayload();
 
     UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
-    Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(
-        userAccount.getUserName());
+    Optional<UserAccount> result =
+        userRepository.findUserAccountByUserNameOrEmail(userAccount.getUserName());
     UserAccount update = result.orElseThrow(
         () -> exceptionService.getWFException(NOT_FOUND, userAccount.getUserName()));
 

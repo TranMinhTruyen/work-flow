@@ -1,6 +1,7 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
@@ -33,8 +34,6 @@ export type DrawerMenuItemProps = {
   item: IScreenItem;
 };
 
-const itemList = screenItemList;
-
 const DrawerMenu = () => {
   const { currentPath } = useRouter();
   const dispatch = useAppDispatch();
@@ -62,7 +61,7 @@ const DrawerMenu = () => {
   );
 
   useEffect(() => {
-    findChain(itemList);
+    findChain(screenItemList);
     const newScreenExpandChain = screenExpandChain.current.slice(
       0,
       screenExpandChain.current.length - 1
@@ -96,7 +95,7 @@ const DrawerMenu = () => {
       return returnItem;
     }
 
-    for (const screen of itemList) {
+    for (const screen of screenItemList) {
       if (screen.screenChild === null) {
         if (checkAccessScreen(screen)) {
           returnItem.push(
@@ -143,7 +142,10 @@ const DrawerMenu = () => {
       >
         <ListItemButton sx={{ padding: 0 }} onClick={handleDrawerOpen}>
           <ListItemIcon sx={{ justifyContent: 'center' }}>{openDrawerButton}</ListItemIcon>
-          <ListItemText primary={'Collapse sidebar'} />
+          <ListItemText
+            sx={{ marginTop: '2px', marginBottom: 0 }}
+            primary={<Typography>Collapse sidebar</Typography>}
+          />
         </ListItemButton>
       </Grid2>
     </>

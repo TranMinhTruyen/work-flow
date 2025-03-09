@@ -6,7 +6,6 @@ const useModal = <T, P = unknown>(ref: Ref<ModalRef<T, P>>) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isAction, setIsAction] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<P | undefined>(undefined);
-  const [items, setItems] = useState<T[]>([]);
   const [selectedItem, setSelectedItem] = useState<T | undefined>(undefined);
   const resolveRef = useRef<(value: T | undefined) => void>(undefined);
 
@@ -62,8 +61,6 @@ const useModal = <T, P = unknown>(ref: Ref<ModalRef<T, P>>) => {
     inputValue,
     isAction,
     openModal: open,
-    items,
-    setItems,
     selectedItem,
     setSelectedItem,
     handleClose,

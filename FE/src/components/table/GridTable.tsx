@@ -4,7 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useMemo } from 'react';
 
-import { ControlProps } from '@/common/hooks/useTable';
+import { ControlProps } from '@/common/hooks/types/useTableTypes';
 
 import CustomHeader from './components/CustomHeader';
 
@@ -64,10 +64,10 @@ const GridTable = (props: GridTableProps) => {
       maxWidth={maxWidth}
     >
       <AgGridReact
+        rowData={control?.data ?? []}
         defaultColDef={defaultColDef}
         headerHeight={50}
         rowHeight={rowHeight}
-        rowData={control?.data ?? []}
         enableCellTextSelection={true}
         ensureDomOrder={true}
         {...restProps}
