@@ -1,0 +1,15 @@
+#headerTitleActive {
+  justify-content: center;
+}
+
+#editModalTitle {
+  margin-top: 8px;
+  font-size: 18px !important;
+  font-weight: bold;
+  margin-right: auto;
+}
+
+.editButtons {
+  border-radius: 8px;
+  background-color: rgba(255, 200, 0, 0.8);
+}

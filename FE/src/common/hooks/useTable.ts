@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { GridApi } from 'ag-grid-community';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { IPageableOrder } from '../model/pageable';
 import { Pageable, UseTableProps, UseTableReturn } from './types/useTableTypes';
@@ -14,6 +15,7 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [orderList, setOrderList] = useState<IPageableOrder[]>(defaultValues?.orderList ?? []);
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
+  const gridApiRef = useRef<GridApi<T> | null>(null);
   const [pageable, setPageable] = useState<Pageable>({
     page: page,
     size: size,
@@ -106,6 +108,7 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
       total,
       totalPages,
       orderList,
+      gridApiRef,
       onDataChange: setData,
       onSort,
       onPageChange,
@@ -120,6 +123,7 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
     total,
     totalPages,
     orderList,
+    gridApiRef,
     onDataChange: setData,
     onSort,
     onPageChange,

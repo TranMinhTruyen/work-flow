@@ -1,3 +1,6 @@
+import { GridApi } from 'ag-grid-community';
+import { RefObject } from 'react';
+
 import { IPageableOrder } from '@/common/model/pageable';
 
 export type Pageable = {
@@ -51,6 +54,15 @@ export type ControlProps<T = any> = {
    * The list of sortable columns along with their order.
    */
   orderList: IPageableOrder[];
+
+  /**
+   * A React ref object that holds a reference to the Grid API.
+   *
+   * This ref is used to interact with the grid component's API,
+   * allowing for programmatic access to grid methods and properties.
+   * It will be either an instance of GridApi (when initialized) or null.
+   */
+  gridApiRef: RefObject<GridApi<T> | null>;
 
   /**
    * Callback triggered when the table data is updated.

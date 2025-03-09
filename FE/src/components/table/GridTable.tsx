@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { ControlProps } from '@/common/hooks/types/useTableTypes';
 
@@ -54,6 +54,15 @@ const GridTable = (props: GridTableProps) => {
     [control, defaultColDefProp]
   );
 
+  const onGridReady = useCallback(
+    (params: GridReadyEvent) => {
+      if (control?.gridApiRef) {
+        control.gridApiRef.current = params.api;
+      }
+    },
+    [control]
+  );
+
   return (
     <AgGridContainer
       className={className}
@@ -68,6 +77,7 @@ const GridTable = (props: GridTableProps) => {
         defaultColDef={defaultColDef}
         headerHeight={50}
         rowHeight={rowHeight}
+        onGridReady={onGridReady}
         enableCellTextSelection={true}
         ensureDomOrder={true}
         {...restProps}

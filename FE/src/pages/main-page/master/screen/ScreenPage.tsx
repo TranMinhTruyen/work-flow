@@ -19,7 +19,7 @@ import { ISearchScreenRequest } from './model/screenRequest';
 import { ISearchScreenResponse } from './model/screenResponse';
 import { IScreenTableRow } from './model/table';
 
-import './screen.css';
+import './screen.module.css';
 
 const ScreenPage = () => {
   const modalRef = useRef<ModalRef<null, IScreenTableRow>>(null);
