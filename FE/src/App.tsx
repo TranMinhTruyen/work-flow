@@ -9,6 +9,8 @@ import MainProvider from './common/provider/MainProvider';
 import RootProvider from './common/provider/RootProvider';
 import { selectLanguage } from './common/store/commonSlice';
 import DialogContainer from './components/dialog/DialogContainer';
+import LoadingDialog from './components/dialog/LoadingDialog';
+import RightSideDrawer from './components/drawer/RightSideDrawer';
 import AuthLayout from './components/layouts/AuthLayout';
 import MainLayout from './components/layouts/MainLayout';
 import BackButtonListener from './components/loading/BackButtonListener ';
@@ -77,6 +79,8 @@ const App = () => {
         </Routes>
       </RootProvider>
       <DialogContainer />
+      <LoadingDialog />
+      <RightSideDrawer />
       <BackButtonListener />
     </BrowserRouter>
   );

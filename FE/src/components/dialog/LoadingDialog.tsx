@@ -9,7 +9,15 @@ import CircleProgress from '../loading/CircleProgress';
 const LoadingDialog = () => {
   const isLoading: boolean = useAppSelector(selectIsLoading);
   return (
-    <Dialog keepMounted open={isLoading} maxWidth={'xs'}>
+    <Dialog
+      open={isLoading}
+      keepMounted
+      maxWidth={'xs'}
+      disableScrollLock
+      sx={{
+        position: 'absolute',
+      }}
+    >
       <DialogContent sx={{ padding: 3.5 }}>
         <CircleProgress />
       </DialogContent>

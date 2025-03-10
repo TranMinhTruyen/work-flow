@@ -6,7 +6,6 @@ import useDialog, { DialogType } from '@/common/hooks/useDialog';
 import store from '@/lib/store';
 
 import ConfirmDialog from './ConfirmDialog';
-import LoadingDialog from './LoadingDialog';
 
 type DialogProps = {
   type: DialogType;
@@ -65,8 +64,6 @@ const DialogContainer = () => {
           return <ConfirmDialog {...dialogProps} />;
         }
         break;
-      case 'loading':
-        return <LoadingDialog />;
     }
   }, [dialogProps, dialogType, isLoading, isPropsNull]);
 

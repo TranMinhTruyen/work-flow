@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ConfirmDialogProps } from '@/components/dialog/ConfirmDialog';
 
-export type DialogType = 'confirm' | 'loading' | 'message';
+export type DialogType = 'confirm' | 'message';
 
 export type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancelButton'> & {
   type: DialogType;

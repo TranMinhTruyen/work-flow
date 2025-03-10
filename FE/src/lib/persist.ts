@@ -27,6 +27,10 @@ export const rootReducer = (state: any, action: any) => {
       isLogin: false,
       loginData: undefined,
       screenExpand: [],
+      openSideDialog: {
+        open: false,
+        isOnClose: true,
+      },
     };
 
     state = {

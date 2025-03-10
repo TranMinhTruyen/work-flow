@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 
 import { RootState } from '../../lib/store';
+import { IRightSideDrawer } from '../model/RightSideDrawer';
 
 interface CommonState {
   theme: string;
@@ -10,7 +11,7 @@ interface CommonState {
   isOpenDrawer: boolean;
   isLogin: boolean;
   isLoading: boolean;
-  openConfirmDialog: boolean;
+  openSideDialog: IRightSideDrawer;
   loginData?: ILoginResponse;
   proxyType?: string;
   screenExpand: string[];
@@ -22,14 +23,17 @@ const initialState: CommonState = {
   isOpenDrawer: true,
   isLogin: false,
   isLoading: false,
-  openConfirmDialog: false,
+  openSideDialog: {
+    open: false,
+    isOnClose: true,
+  },
   proxyType: '',
   screenExpand: [],
 };
 
 const commonSlice = createSlice({
   name: 'commonState',
-  initialState,
+  initialState: initialState,
   reducers: {
     setLoginData: (state, action: PayloadAction<ILoginResponse>) => {
       const { payload } = action;
@@ -58,11 +62,11 @@ const commonSlice = createSlice({
         isLoading: payload,
       };
     },
-    toggleConfirmDialog: (state, action: PayloadAction<boolean>) => {
+    toggleSideDialog: (state, action: PayloadAction<IRightSideDrawer>) => {
       const { payload } = action;
-      return {
-        ...state,
-        openConfirmDialog: payload,
+      state.openSideDialog = {
+        ...state.openSideDialog,
+        ...payload,
       };
     },
     setLanguage: (state, action: PayloadAction<string>) => {
@@ -101,7 +105,7 @@ export const {
   toggleDrawer,
   toggleLogin,
   toggleLoading,
-  toggleConfirmDialog,
+  toggleSideDialog,
   setLanguage,
   resetCommon,
   setProxyType,
@@ -113,7 +117,7 @@ export const selectLoginData = (state: RootState) => state.commonState.loginData
 export const selectOpenDrawer = (state: RootState) => state.commonState.isOpenDrawer;
 export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
-export const selectOpenConfirmDialog = (state: RootState) => state.commonState.openConfirmDialog;
+export const selectOpenSideDialog = (state: RootState) => state.commonState.openSideDialog;
 export const selectLanguage = (state: RootState) => state.commonState.language;
 export const selectProxyType = (state: RootState) => state.commonState.proxyType;
 export const selectScreenExpand = (state: RootState) => state.commonState.screenExpand;
