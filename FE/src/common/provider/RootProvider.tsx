@@ -54,7 +54,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Transform request
-        if (!isIBaseRequest(config.data)) {
+        if (config.data && !isIBaseRequest(config.data)) {
           const transformRequest: IBaseRequest = {
             timestamp: dayjs().format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,
@@ -70,9 +70,6 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         ) {
           if (!store.getState().commonState.isLoading) {
             dispatch(toggleLoading(true));
-            openDialogContainer({
-              type: 'loading',
-            });
           }
         }
       }

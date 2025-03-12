@@ -112,7 +112,9 @@ export const isIBaseRequest = (obj: any): obj is IBaseRequest => {
     obj !== undefined &&
     obj !== null &&
     typeof obj === 'object' &&
-    ('timestamp' in obj || 'language' in obj || 'payload' in obj) &&
+    'timestamp' in obj &&
+    'language' in obj &&
+    'payload' in obj &&
     (obj.timestamp === undefined || typeof obj.timestamp === 'string') &&
     (obj.language === undefined || typeof obj.language === 'string') &&
     (obj.payload === undefined ||

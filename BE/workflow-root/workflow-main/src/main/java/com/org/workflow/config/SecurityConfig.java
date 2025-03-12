@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -33,22 +32,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private static final String[] WHITE_LIST = {
-      "/swagger-ui/**",
-      "/v3/api-docs/**",
-      "/work-flow/swagger-ui/**",
-      "/work-flow/v3/api-docs/**",
-      "/swagger-ui.html",
-      "/api-docs",
-      "/ws/**",
-      "/api/user-account/login",
-      "/api/user-account/createUser",
-      "/api/proxy/check-proxy",
-      "/api/master-item/get",
-      "/api/master-item/create",
-      "/api/file/**",
-      "/api/screen/search"
-  };
+  private static final String[] WHITE_LIST =
+      {"/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**", "/work-flow/swagger-ui/**",
+          "/work-flow/v3/api-docs/**", "/swagger-ui.html", "/api-docs", "/ws/**",
+          "/api/user-account/login", "/api/user-account/createUser", "/api/proxy/check-proxy",
+          "/api/master-item/get", "/api/master-item/create", "/api/file/**"};
 
   @Value(value = "${client.url}")
   private String clientUrl;
@@ -79,15 +67,12 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .csrf(AbstractHttpConfigurer::disable)
-        .exceptionHandling(
+        .csrf(AbstractHttpConfigurer::disable).exceptionHandling(
             exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-        .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.GET).permitAll()
-            .requestMatchers(WHITE_LIST).permitAll()
-            .anyRequest().authenticated())
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            auth -> auth.requestMatchers(WHITE_LIST).permitAll().anyRequest().authenticated())
         .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }

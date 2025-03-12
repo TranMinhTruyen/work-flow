@@ -16,7 +16,6 @@ import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenConditio
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
-import com.org.workflow.domain.dto.request.screen.GetScreenDetailRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
@@ -81,14 +80,12 @@ public class ScreenService extends AbstractService {
   }
 
   /**
-   * @param request
+   * @param screenId
    * @return
    */
-  public GetScreenDetailResponse getScreenDetail(BaseRequest<GetScreenDetailRequest> request) {
+  public GetScreenDetailResponse getScreenDetail(String screenId) {
 
-    GetScreenDetailRequest getScreenDetailRequest = request.getPayload();
-
-    Optional<Screen> result = screenRepository.findById(getScreenDetailRequest.getScreenId());
+    Optional<Screen> result = screenRepository.findById(screenId);
 
     Screen screen = result.orElse(new Screen());
 

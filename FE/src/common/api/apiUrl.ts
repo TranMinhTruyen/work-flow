@@ -29,6 +29,7 @@ export enum ApiEnum {
 
   // Screen api
   SEARCH_SCREEN,
+  GET_SCREEN_DETAIL,
 }
 
 export const controller: Record<string, ApiType> = {
@@ -86,5 +87,9 @@ export const controller: Record<string, ApiType> = {
   [ApiEnum.SEARCH_SCREEN]: {
     url: `${SCREEN_PREFIX}/search`,
     method: 'POST',
+  },
+  [ApiEnum.GET_SCREEN_DETAIL]: {
+    url: `${SCREEN_PREFIX}/get-screen-detail`,
+    method: 'GET',
   },
 };

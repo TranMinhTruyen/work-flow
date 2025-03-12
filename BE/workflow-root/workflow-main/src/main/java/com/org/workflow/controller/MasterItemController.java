@@ -46,7 +46,7 @@ public class MasterItemController extends AbstractController {
     MasterItem result = itemMasterService.createItemMaster(masterItemRequest);
     return this.returnBaseResponse(result, "Create success", SUCCESS, HttpStatus.OK);
   }
-
+  
   @PostMapping("/get")
   public ResponseEntity<BaseResponse> getItemMaster(@RequestBody BaseRequest<String> request) {
     List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(request);

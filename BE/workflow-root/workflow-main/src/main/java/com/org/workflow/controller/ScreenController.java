@@ -3,15 +3,16 @@ package com.org.workflow.controller;
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
-import com.org.workflow.domain.dto.request.screen.GetScreenDetailRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.common.PageResponse;
@@ -48,14 +49,13 @@ public class ScreenController extends AbstractController {
   }
 
   /**
-   * @param request
+   * @param screenId
    * @return
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
-  @PostMapping(value = "/get-screen-detail")
-  public ResponseEntity<BaseResponse> getScreenDetail(
-      @RequestBody BaseRequest<GetScreenDetailRequest> request) {
-    GetScreenDetailResponse result = screenService.getScreenDetail(request);
+  @GetMapping(value = "/get-screen-detail")
+  public ResponseEntity<BaseResponse> getScreenDetail(@RequestParam String screenId) {
+    GetScreenDetailResponse result = screenService.getScreenDetail(screenId);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
