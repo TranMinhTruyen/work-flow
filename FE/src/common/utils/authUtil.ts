@@ -102,9 +102,5 @@ export const checkAccessScreen = (screenItem: IScreenItem): boolean => {
 };
 
 export const handleCheckToken = async () => {
-  await axiosApiEnumFetch(ApiEnum.TOKEN_CHECK, {
-    headers: {
-      Authorization: `Bearer ${getLoginData()?.token}`,
-    },
-  } as CustomAxiosConfig<null>);
+  await axiosApiEnumFetch(ApiEnum.TOKEN_CHECK, {} as CustomAxiosConfig<null>);
 };

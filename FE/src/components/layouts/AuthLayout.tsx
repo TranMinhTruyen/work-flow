@@ -9,7 +9,7 @@ import AuthHeader from '../header/auth-header/AuthHeader';
 const AuthLayout = () => {
   return (
     <Grid2 container direction={'column'} sx={authStyles.rootContainer}>
-      <Card elevation={5} sx={{ width: 650, maxWidth: 650 }}>
+      <Card elevation={5} sx={{ width: 650, maxWidth: 650, minHeight: 445 }}>
         <AuthHeader />
         <Divider />
         <Outlet />

@@ -27,8 +27,9 @@ import com.org.workflow.domain.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -88,7 +89,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WFException WFException
    */
-  @Operation(security = { @SecurityRequirement(name = "Authorization") })
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/get-profile")
   public ResponseEntity<BaseResponse> getProfile(@RequestBody BaseRequest<?> request)
       throws WFException {
@@ -103,7 +104,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WFException WFException
    */
-  @Operation(security = { @SecurityRequirement(name = "Authorization") })
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/update-user-account")
   public ResponseEntity<BaseResponse> updateUserAccount(
       @RequestBody BaseRequest<UpdateUserRequest> updateUserRequest)
@@ -120,7 +121,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WFException WFException
    */
-  @Operation(security = { @SecurityRequirement(name = "Authorization") })
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping("/change-login-password")
   public ResponseEntity<BaseResponse> changeLoginPassword(
       @RequestBody BaseRequest<ChangePasswordRequest> changePasswordRequest)
