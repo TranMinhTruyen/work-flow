@@ -1,6 +1,4 @@
-import { FileData } from '@/common/constants/typeConst';
-
-export default interface IRegisterForm {
+export default interface IRegisterRequest {
   userName?: string;
   password?: string;
   email?: string;
@@ -8,5 +6,6 @@ export default interface IRegisterForm {
   birthDay?: string;
   role?: string;
   authorities?: string[];
-  image?: FileData;
+  level?: number;
+  image?: string | null;
 }

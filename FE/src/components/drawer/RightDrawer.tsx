@@ -3,14 +3,14 @@ import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
 
-import { useRightDrawer } from '@/common/context/RightDrawerContext';
+import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
 
 const RightDrawer = () => {
   const { isOpen, content, closeDrawer } = useRightDrawer();
 
   const drawerBody = useMemo(
-    () => <Box sx={{ width: content?.width ?? '50vw' }}></Box>,
-    [content?.width]
+    () => <Box sx={{ width: content?.width ?? '50vw' }}>{content?.content}</Box>,
+    [content?.content, content?.width]
   );
 
   return content?.isOnClose ? (

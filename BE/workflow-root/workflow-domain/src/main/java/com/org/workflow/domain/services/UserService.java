@@ -140,7 +140,7 @@ public class UserService extends AbstractService {
     Optional<UserAccount> result =
         userRepository.findUserAccountByUserNameOrEmail(createUserRequest.getUserName());
     if (result.isPresent()) {
-      throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(),
+      throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(), "",
           createUserRequest.getUserName());
     }
     LocalDateTime now = LocalDateTime.now();
@@ -168,7 +168,7 @@ public class UserService extends AbstractService {
     userAccount.setUpdateBy(username);
     userAccount.setUpdateDatetime(now);
     userAccount.setDeleted(false);
-    UserAccount saveUserAccount = userRepository.save(userAccount);
+    UserAccount saveUserAccount = userRepository.saveDocument(userAccount);
 
     this.saveHistory(new UserAccount(), saveUserAccount, ChangeTypeEnum.CREATE);
 
@@ -189,7 +189,7 @@ public class UserService extends AbstractService {
     Optional<UserAccount> result =
         userRepository.findUserAccountByUserNameOrEmail(createUserRequest.getUserName());
     if (result.isPresent()) {
-      throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(),
+      throw exceptionService.getWFException(USER_NAME_EXISTS, baseRequest.getLanguage(), "",
           createUserRequest.getUserName());
     }
     LocalDateTime now = LocalDateTime.now();
@@ -215,11 +215,9 @@ public class UserService extends AbstractService {
     userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
     userAccount.setCreatedBy(createUserRequest.getFullName());
-    userAccount.setCreateDatetime(now);
     userAccount.setUpdateBy(createUserRequest.getFullName());
-    userAccount.setUpdateDatetime(now);
     userAccount.setDeleted(false);
-    UserAccount saveUserAccount = userRepository.save(userAccount);
+    UserAccount saveUserAccount = userRepository.saveDocument(userAccount);
 
     this.saveHistory(new UserAccount(), saveUserAccount, ChangeTypeEnum.CREATE);
 
@@ -241,7 +239,7 @@ public class UserService extends AbstractService {
           userRepository.findUserAccountByUserNameOrEmail(loginRequest.getUserName());
 
       userAccount = result.orElseThrow(
-          () -> exceptionService.getWFException(ACCOUNT_NOT_FOUND, baseRequest.getLanguage(),
+          () -> exceptionService.getWFException(ACCOUNT_NOT_FOUND, baseRequest.getLanguage(), "",
               loginRequest.getUserName()));
     } catch (Exception exception) {
       redisTemplate.opsForValue().set(loginRequest.getUserName(), "Not found");
@@ -251,7 +249,7 @@ public class UserService extends AbstractService {
     redisTemplate.opsForValue().set(loginRequest.getUserName(), loginRequest.getUserName());
 
     if (!userAccount.isActive()) {
-      throw exceptionService.getWFException(ACCOUNT_INACTIVE, baseRequest.getLanguage(),
+      throw exceptionService.getWFException(ACCOUNT_INACTIVE, baseRequest.getLanguage(), "",
           userAccount.getUserName());
     }
 
@@ -296,8 +294,8 @@ public class UserService extends AbstractService {
           userAccount.setActive(false);
         }
       }
-      userRepository.save(userAccount);
-      throw exceptionService.getWFException(ACCOUNT_PASSWORD_INVALID, baseRequest.getLanguage(),
+      userRepository.saveDocument(userAccount);
+      throw exceptionService.getWFException(ACCOUNT_PASSWORD_INVALID, baseRequest.getLanguage(), "",
           loginRequest.getUserName());
     }
   }
@@ -323,7 +321,7 @@ public class UserService extends AbstractService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), username));
+        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), "", username));
 
     Optional<List<Screen>> screenMasterList =
         proxyRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
@@ -362,7 +360,7 @@ public class UserService extends AbstractService {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount oldUserAccount = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), username));
+        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), "", username));
 
     if (updateUserRequest.getUpdateDatetime() != null && !updateUserRequest.getUpdateDatetime()
         .equals(oldUserAccount.getUpdateDatetime())) {
@@ -380,7 +378,7 @@ public class UserService extends AbstractService {
     userAccount.setActive(updateUserRequest.getIsActive());
     userAccount.setUpdateDatetime(now);
     userAccount.setUpdateBy(username);
-    UserAccount userAccountUpdateResult = userRepository.save(userAccount);
+    UserAccount userAccountUpdateResult = userRepository.saveDocument(userAccount);
 
     this.saveHistory(oldUserAccount, userAccountUpdateResult, ChangeTypeEnum.UPDATE);
 
@@ -407,7 +405,8 @@ public class UserService extends AbstractService {
     Optional<UserAccount> result =
         userRepository.findUserAccountByUserNameOrEmail(userAccount.getUserName());
     UserAccount update = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, userAccount.getUserName()));
+        () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), "",
+            userAccount.getUserName()));
 
     UserAccount before = (UserAccount) BeanUtils.cloneBean(update);
 
@@ -419,7 +418,7 @@ public class UserService extends AbstractService {
 
     update.setPassword(
         BCrypt.hashpw(changePasswordRequest.getConfirmNewLoginPassword(), BCrypt.gensalt(16)));
-    UserAccount userAccountUpdateResult = userRepository.save(update);
+    UserAccount userAccountUpdateResult = userRepository.saveDocument(update);
 
     this.saveHistory(before, userAccountUpdateResult, ChangeTypeEnum.UPDATE);
   }

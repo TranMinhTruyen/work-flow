@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.org.workflow.dao.document.Screen;
-import com.org.workflow.dao.repository.common.CommonTemplate;
+import com.org.workflow.dao.repository.common.CommonRepositoryExt;
 import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
 import com.org.workflow.dao.repository.ext.ScreenRepositoryExt;
 import com.org.workflow.dao.repository.result.common.PageableResult;
@@ -15,7 +15,7 @@ import com.org.workflow.dao.repository.result.common.PageableResult;
 /**
  * @author minh-truyen
  */
-public class ScreenRepositoryExtImpl extends CommonTemplate implements ScreenRepositoryExt {
+public class ScreenRepositoryExtImpl extends CommonRepositoryExt implements ScreenRepositoryExt {
 
   public ScreenRepositoryExtImpl(MongoTemplate mongoTemplate) {
     super(mongoTemplate);

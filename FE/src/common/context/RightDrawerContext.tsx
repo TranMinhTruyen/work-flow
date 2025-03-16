@@ -1,21 +1,6 @@
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 
-type RightDrawerContent = {
-  isOnClose: boolean;
-  width?: string | number;
-  content?: ReactNode;
-};
-
-type RightDrawerType = {
-  isOpen: boolean;
-  content?: RightDrawerContent;
-  openDrawer: (content: RightDrawerContent) => void;
-  closeDrawer: () => void;
-};
-
-const Context = createContext<RightDrawerType>({} as RightDrawerType);
-
-export const useRightDrawer = () => useContext(Context);
+import { Context, RightDrawerContent } from './types/rightDrawerTypes';
 
 const RightDrawerContext = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.org.workflow.domain.annotation.IgnoreSecurity;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.file.DownloadFileRequest;
 import com.org.workflow.domain.dto.request.file.UploadFileRequest;
@@ -33,9 +34,9 @@ public class FileController extends AbstractController {
   private final S3Util s3Util;
 
   @PostMapping("/get-upload-url")
+  @IgnoreSecurity
   public ResponseEntity<BaseResponse> getUploadUrl(
-      @RequestBody BaseRequest<UploadFileRequest> uploadFileRequest)
-      throws Exception {
+      @RequestBody BaseRequest<UploadFileRequest> uploadFileRequest) throws Exception {
     String uploadUrl = s3Util.generateUrlUpload(uploadFileRequest.getPayload());
     UploadFileResponse uploadFileResponse = new UploadFileResponse();
     uploadFileResponse.setUploadUrl(uploadUrl);
@@ -43,9 +44,9 @@ public class FileController extends AbstractController {
   }
 
   @PostMapping("/get-download-url")
+  @IgnoreSecurity
   public ResponseEntity<BaseResponse> getDownloadUrl(
-      @RequestBody BaseRequest<DownloadFileRequest> uploadFileRequest)
-      throws Exception {
+      @RequestBody BaseRequest<DownloadFileRequest> uploadFileRequest) throws Exception {
     String uploadUrl = s3Util.generateUrlDownload(uploadFileRequest.getPayload());
     DownloadFileResponse downloadFileResponse = new DownloadFileResponse();
     downloadFileResponse.setDownloadUrl(uploadUrl);

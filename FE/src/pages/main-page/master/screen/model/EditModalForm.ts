@@ -1,8 +1,8 @@
-export interface IEditModalForm {
+export default interface IEditModalForm {
   screenId?: string;
   screenName?: string;
   screenUrl?: string;
-  createDateTime?: string;
-  updateDateTime?: string;
+  createDatetime?: string;
+  updateDatetime?: string;
   active?: boolean;
 }

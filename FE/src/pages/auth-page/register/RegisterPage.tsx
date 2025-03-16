@@ -24,7 +24,7 @@ import ImageInput from '@/components/form/ImageInput';
 import TextInput from '@/components/form/TextInput';
 
 import { handleSubmitRegister } from './action/action';
-import { IRegisterForm } from './model/registerForm';
+import IRegisterForm from './model/RegisterForm';
 
 const RegisterPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

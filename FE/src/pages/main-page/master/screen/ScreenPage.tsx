@@ -3,13 +3,11 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { cloneDeep } from 'lodash';
-import { ChangeEvent, memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { ChangeEvent, memo, useCallback, useEffect, useMemo } from 'react';
 
-import { useRightDrawer } from '@/common/context/RightDrawerContext';
-import { ModalRef } from '@/common/hooks/types/useModalTypes';
+import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
-import Button from '@/components/button/Button';
 import IconButton from '@/components/button/IconButton';
 import SwitchInput from '@/components/inputs/SwitchInput';
 import PageGridTable from '@/components/table/PageGridTable';
@@ -17,14 +15,12 @@ import PageGridTable from '@/components/table/PageGridTable';
 import { searchAction } from './action/action';
 import EditModal from './components/EditModal';
 import TestModal from './components/TestModal';
-import { ISearchScreenRequest } from './model/screenRequest';
-import { ISearchScreenResponse } from './model/screenResponse';
-import { IScreenTableRow } from './model/table';
-
+import ISearchScreenRequest from './model/screenRequest';
+import ISearchScreenResponse from './model/screenResponse';
+import IScreenTableRow from './model/table';
 import './screen.css';
 
 const ScreenPage = () => {
-  const modalRef = useRef<ModalRef<null, IScreenTableRow>>(null);
   const { control, pageable, onPageableChange, data, onDataChange } = useTable<IScreenTableRow>();
   const { openDrawer } = useRightDrawer();
 
@@ -66,9 +62,12 @@ const ScreenPage = () => {
 
   const handleEdit = useCallback(
     (rowData: IScreenTableRow) => () => {
-      modalRef.current?.open({ inputValue: rowData });
+      openDrawer({
+        isOnClose: true,
+        content: <EditModal data={rowData} />,
+      });
     },
-    []
+    [openDrawer]
   );
 
   const colDefs = useMemo<ColDef<IScreenTableRow>[]>(
@@ -93,7 +92,7 @@ const ScreenPage = () => {
       },
       {
         headerName: 'Created datetime',
-        field: 'createdDatetime',
+        field: 'createDatetime',
         width: 200,
       },
       {
@@ -130,24 +129,16 @@ const ScreenPage = () => {
     [handleEdit, handleSwitchActive]
   );
 
-  const handleOpenSideDrawer = useCallback(() => {
-    openDrawer({
-      isOnClose: true,
-    });
-  }, [openDrawer]);
-
   return (
     <Stack spacing={2}>
       <Stack direction={'row'} spacing={2}>
         <Typography>Screen master</Typography>
         <TestModal />
-        <Button label={'Open side dialog'} onClick={handleOpenSideDrawer} />
       </Stack>
 
       <Stack>
         <PageGridTable height={'80vh'} maxHeight={'80vh'} columnDefs={colDefs} control={control} />
       </Stack>
-      <EditModal ref={modalRef} />
     </Stack>
   );
 };

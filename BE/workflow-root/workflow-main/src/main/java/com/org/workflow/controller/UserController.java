@@ -46,6 +46,7 @@ public class UserController extends AbstractController {
    * @return ResponseEntity<BaseResponse>
    * @throws WFException WFException
    */
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/create-user-for-admin")
   public ResponseEntity<BaseResponse> createUserForAdmin(
       @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WFException {

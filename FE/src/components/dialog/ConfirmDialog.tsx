@@ -14,8 +14,8 @@ import Typography from '@mui/material/Typography';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { MessageType } from '@/common/enums/messageEnum';
 import { I18nEnum } from '@/common/enums/i18nEnum';
+import { MessageType } from '@/common/enums/messageEnum';
 
 import Button from '../button/Button';
 
@@ -24,10 +24,14 @@ export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
   messageType?: MessageType;
   cancelText?: string;
   confirmText?: string;
-  isPopup?: boolean;
   showCancelButton?: boolean;
   showCloseButton?: boolean;
   countdown?: number;
+  /**
+   * Close dialog when backdrop click or press esc.
+   * @default true
+   */
+  isPopup?: boolean;
   /**
    * Auto close dialog after timeout
    * @default false

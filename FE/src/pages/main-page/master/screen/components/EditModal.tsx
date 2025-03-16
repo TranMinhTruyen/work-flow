@@ -1,35 +1,42 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Divider } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
-import { memo, Ref, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ModalRef } from '@/common/hooks/types/useModalTypes';
-import useModal from '@/common/hooks/useModal';
+import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
 import Button from '@/components/button/Button';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import GridTable from '@/components/table/GridTable';
 
-import { IEditModalForm } from '../model/editModalForm';
-import { IScreenTableRow } from '../model/table';
+import { getScreenDetail } from '../action/action';
+import IEditModalForm from '../model/EditModalForm';
+import IScreenTableRow from '../model/Table';
 
 type EditModalProps = {
-  ref: Ref<ModalRef<null, IScreenTableRow>>;
+  data: IScreenTableRow;
 };
 
 const EditModal = (props: EditModalProps) => {
-  const { ref } = props;
+  const { data } = props;
 
-  const { inputValue, handleClose, handleOk, openModal } = useModal<null, IScreenTableRow>(ref);
+  const { closeDrawer } = useRightDrawer();
+  const { control, reset } = useForm<IEditModalForm>();
 
-  const { control } = useForm<IEditModalForm>({
-    values: { ...inputValue },
-  });
+  const handleGetScreenDetail = useCallback(async () => {
+    const response = await getScreenDetail(data.screenId);
+    reset({ ...response });
+  }, [data.screenId, reset]);
+
+  useEffect(() => {
+    handleGetScreenDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const defaultColDef = useMemo<ColDef>(
     () => ({
@@ -67,13 +74,13 @@ const EditModal = (props: EditModalProps) => {
   );
 
   return (
-    <Dialog open={openModal} onClose={handleClose} fullWidth maxWidth={'md'}>
+    <Box>
       <Stack spacing={2} sx={{ padding: '16px' }}>
         <Stack sx={styles.header}>
           <Stack spacing={1} alignItems={'center'}>
             <Typography variant={'h4'}>EDIT SCREEN</Typography>
           </Stack>
-          <IconButton onClick={handleClose} sx={{ position: 'absolute', right: 8 }}>
+          <IconButton onClick={closeDrawer} sx={{ position: 'absolute', right: 8 }}>
             <CloseIcon />
           </IconButton>
         </Stack>
@@ -90,13 +97,12 @@ const EditModal = (props: EditModalProps) => {
             </Stack>
 
             <Stack spacing={3}>
-              <TextInput name={'createDateTime'} control={control} disabled />
-
+              <TextInput name={'createDatetime'} control={control} disabled />
               <TextInput name={'screenUrl'} control={control} required />
             </Stack>
 
             <Stack spacing={3}>
-              <TextInput name={'updateDateTime'} control={control} disabled />
+              <TextInput name={'updateDatetime'} control={control} disabled />
               <SwitchInput name={'active'} control={control} label={'Status'} />
             </Stack>
           </Stack>
@@ -106,7 +112,13 @@ const EditModal = (props: EditModalProps) => {
 
         <Stack sx={{ marginTop: '0px !important' }}>
           <Typography id={'editModalTitle'}>User using</Typography>
-          <GridTable defaultColDef={defaultColDef} columnDefs={colDefs} suppressMovableColumns />
+          <GridTable
+            height={'50vh'}
+            maxHeight={'50vh'}
+            defaultColDef={defaultColDef}
+            columnDefs={colDefs}
+            suppressMovableColumns
+          />
         </Stack>
 
         <Divider />
@@ -119,11 +131,11 @@ const EditModal = (props: EditModalProps) => {
                 {'OK'}
               </Typography>
             }
-            onClick={handleOk}
+            onClick={closeDrawer}
           />
         </Stack>
       </Stack>
-    </Dialog>
+    </Box>
   );
 };
 

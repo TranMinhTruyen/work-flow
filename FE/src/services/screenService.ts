@@ -1,8 +1,9 @@
 import baseApi from '@/common/api/apiBaseQuery';
 import { ApiEnum } from '@/common/api/apiUrl';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
-import { ISearchScreenRequest } from '@/pages/main-page/master/screen/model/screenRequest';
-import { ISearchScreenResponse } from '@/pages/main-page/master/screen/model/screenResponse';
+import IGetScreenDetail from '@/pages/main-page/master/screen/model/GetScreenDetail';
+import ISearchScreenRequest from '@/pages/main-page/master/screen/model/screenRequest';
+import ISearchScreenResponse from '@/pages/main-page/master/screen/model/screenResponse';
 
 export const screenService = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -15,7 +16,13 @@ export const screenService = baseApi.injectEndpoints({
         data: request,
       }),
     }),
+    getScreenDetail: builder.query<IGetScreenDetail, { screenId?: string }>({
+      query: params => ({
+        api: ApiEnum.GET_SCREEN_DETAIL,
+        params: params,
+      }),
+    }),
   }),
 });
 
-export const { useSearchScreenMutation } = screenService;
+export const { useSearchScreenMutation, useGetScreenDetailQuery } = screenService;

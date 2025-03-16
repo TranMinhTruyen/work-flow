@@ -3,8 +3,6 @@ package com.org.workflow.controller;
 import static com.org.workflow.core.common.enums.MessageEnum.SERVER_ERROR;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-import java.text.MessageFormat;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +49,6 @@ public abstract class AbstractController {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
-    baseResponse.setMessage(MessageFormat.format(messageEnum.getMessage(), messageArgs));
     baseResponse.setBody(body);
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
@@ -69,24 +66,20 @@ public abstract class AbstractController {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(messageEnum.getMessageType());
     baseResponse.setMessageCode(messageEnum.getMessageCode());
-    baseResponse.setMessage(MessageFormat.format(messageEnum.getMessage(), messageArgs));
     baseResponse.setBody(body);
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
     return new ResponseEntity<>(baseResponse, header, messageEnum.getHttpStatus());
   }
 
-  protected ResponseEntity<BaseResponse> returnErrorBaseResponse(
-      WFException WFException) {
+  protected ResponseEntity<BaseResponse> returnErrorBaseResponse(WFException WFException) {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
-    baseResponse.setMessage(SERVER_ERROR.getMessage());
     baseResponse.setErrorList(WFException.getErrorDetail().getErrorMessageList());
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
-    return new ResponseEntity<>(baseResponse, header,
-        WFException.getErrorDetail().getHttpStatus());
+    return new ResponseEntity<>(baseResponse, header, WFException.getErrorDetail().getHttpStatus());
   }
 
   protected ResponseEntity<BaseResponse> returnErrorBaseResponse(Throwable exception,
@@ -94,7 +87,6 @@ public abstract class AbstractController {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
-    baseResponse.setMessage(SERVER_ERROR.getMessage());
     baseResponse.setErrorList(null);
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);

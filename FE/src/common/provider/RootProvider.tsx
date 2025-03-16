@@ -174,57 +174,92 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        if (responseStatus === 401) {
-          openDialogContainer({
-            type: 'message',
-            maxWidth: 'sm',
-            messageType: responseData.messageType,
-            isPopup: false,
-            showCloseButton: false,
-            autoClose: true,
-            timeout: 15,
-            onConfirm: () => {
-              dispatch({ type: RESET_ALL });
-              localStorage.removeItem('login');
-              sessionStorage.removeItem('login');
-              navigate(screenUrl.LOGIN.path, true);
-            },
-            bodyElement: 'Session time out',
-          });
-        } else if (responseStatus === 500) {
-          openDialogContainer({
-            type: 'message',
-            maxWidth: 'sm',
-            messageType: responseData.messageType,
-            isPopup: false,
-            onConfirm: () => {
-              dispatch({ type: RESET_ALL });
-              localStorage.removeItem('login');
-              sessionStorage.removeItem('login');
-              navigate(screenUrl.LOGIN.path, true);
-            },
-            bodyElement: (
-              <ApiErrorDetail
-                status={responseStatus}
-                message={responseMessage}
-                responseData={responseData}
-              />
-            ),
-          });
-        } else {
-          openDialogContainer({
-            type: 'message',
-            maxWidth: 'sm',
-            messageType: responseData.messageType,
-            isPopup: false,
-            bodyElement: (
-              <ApiErrorDetail
-                status={responseStatus}
-                message={responseMessage}
-                responseData={responseData}
-              />
-            ),
-          });
+        switch (responseStatus) {
+          case 401:
+            if (responseData.messageCode !== 'EA0000') {
+              openDialogContainer({
+                type: 'message',
+                maxWidth: 'sm',
+                messageType: responseData.messageType,
+                isPopup: false,
+                showCloseButton: false,
+                autoClose: true,
+                timeout: 15,
+                onConfirm: () => {
+                  dispatch({ type: RESET_ALL });
+                  localStorage.removeItem('login');
+                  sessionStorage.removeItem('login');
+                  navigate(screenUrl.LOGIN.path, true);
+                },
+                bodyElement: 'Session time out',
+              });
+              break;
+            } else {
+              openDialogContainer({
+                type: 'message',
+                maxWidth: 'sm',
+                messageType: responseData.messageType,
+                isPopup: false,
+                showCloseButton: false,
+                autoClose: true,
+                timeout: 15,
+                onConfirm: () => {
+                  dispatch({ type: RESET_ALL });
+                  localStorage.removeItem('login');
+                  sessionStorage.removeItem('login');
+                  navigate(screenUrl.LOGIN.path, true);
+                },
+                bodyElement: 'Authentication invalid!',
+              });
+              break;
+            }
+          case 500:
+            openDialogContainer({
+              type: 'message',
+              maxWidth: 'sm',
+              messageType: responseData.messageType,
+              isPopup: false,
+              onConfirm: () => {
+                dispatch({ type: RESET_ALL });
+                localStorage.removeItem('login');
+                sessionStorage.removeItem('login');
+                navigate(screenUrl.LOGIN.path, true);
+              },
+              bodyElement: (
+                <ApiErrorDetail
+                  status={responseStatus}
+                  message={responseMessage}
+                  responseData={responseData}
+                />
+              ),
+            });
+            break;
+          case 409:
+            if (responseData.messageCode !== 'E0002') {
+              openDialogContainer({
+                type: 'message',
+                maxWidth: 'sm',
+                messageType: responseData.messageType,
+                isPopup: false,
+                showCloseButton: false,
+                bodyElement: 'Update failed',
+              });
+            }
+            break;
+          default:
+            openDialogContainer({
+              type: 'message',
+              maxWidth: 'sm',
+              messageType: responseData.messageType,
+              isPopup: false,
+              bodyElement: (
+                <ApiErrorDetail
+                  status={responseStatus}
+                  message={responseMessage}
+                  responseData={responseData}
+                />
+              ),
+            });
         }
 
         if (store.getState().commonState.isLoading) {

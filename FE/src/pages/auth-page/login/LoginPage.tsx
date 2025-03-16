@@ -22,7 +22,7 @@ import CheckBoxInput from '@/components/form/CheckBoxInput';
 import TextInput from '@/components/form/TextInput';
 
 import { handleSubmitLogin } from './action/action';
-import { ILoginForm } from './model/loginForm';
+import ILoginForm from './model/loginForm';
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

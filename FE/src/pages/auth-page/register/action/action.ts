@@ -3,8 +3,8 @@ import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 import { userServices } from '@/services/userService';
 
-import { IRegisterForm } from './model/RegisterForm';
-import { IRegisterRequest } from './model/RegisterModel';
+import IRegisterForm from '../model/RegisterForm';
+import IRegisterRequest from '../model/RegisterRequest';
 
 export const handleSubmitRegister = async (formData: IRegisterForm) => {
   const objectId = await upload('workflow', formData.image);

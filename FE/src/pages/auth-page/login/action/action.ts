@@ -3,8 +3,9 @@ import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 import { userServices } from '@/services/userService';
 
-import { ILoginForm } from '../model/loginForm';
-import { ILoginRequest, ILoginResponse } from '../model/loginModel';
+import ILoginForm from '../model/LoginForm';
+import ILoginRequest from '../model/LoginRequest';
+import ILoginResponse from '../model/LoginResponse';
 
 /**
  * Handle click submit button.

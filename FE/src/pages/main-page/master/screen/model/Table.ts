@@ -1,7 +1,7 @@
-export interface IScreenTableRow {
+export default interface IScreenTableRow {
   screenId?: string;
   screenName?: string;
   screenUrl?: string;
-  createdDatetime?: string;
+  createDatetime?: string;
   active?: boolean;
 }

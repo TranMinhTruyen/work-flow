@@ -26,10 +26,10 @@ public class SearchScreenResponse implements Serializable {
 
   private String createdBy;
 
-  private String createdDatetime;
+  private String createDatetime;
 
   private String updatedBy;
 
-  private String updatedDatetime;
+  private String updateDatetime;
 
 }

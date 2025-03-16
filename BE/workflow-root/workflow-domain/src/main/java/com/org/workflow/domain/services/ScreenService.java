@@ -64,13 +64,11 @@ public class ScreenService extends AbstractService {
         searchScreenResponse.setScreenUrl(screen.getScreenUrl());
         searchScreenResponse.setActive(screen.isActive());
         searchScreenResponse.setCreatedBy(screen.getCreatedBy());
-        searchScreenResponse.setCreatedDatetime(
-            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-                .format(screen.getCreateDatetime()));
+        searchScreenResponse.setCreateDatetime(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
+            .format(screen.getCreateDatetime()));
         searchScreenResponse.setUpdatedBy(screen.getUpdateBy());
-        searchScreenResponse.setUpdatedDatetime(
-            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-                .format(screen.getCreateDatetime()));
+        searchScreenResponse.setUpdateDatetime(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
+            .format(screen.getCreateDatetime()));
 
         searchScreenResponses.add(searchScreenResponse);
       }
@@ -85,24 +83,28 @@ public class ScreenService extends AbstractService {
    */
   public GetScreenDetailResponse getScreenDetail(String screenId) {
 
-    Optional<Screen> result = screenRepository.findById(screenId);
+    Optional<Screen> result = screenRepository.findByScreenId(screenId);
 
     Screen screen = result.orElse(new Screen());
 
     GetScreenDetailResponse response = new GetScreenDetailResponse();
+    response.setId(screen.getId());
     response.setScreenId(screen.getScreenId());
     response.setScreenName(screen.getScreenName());
     response.setScreenUrl(screen.getScreenUrl());
     response.setActive(screen.isActive());
-    response.setScreenComponentList(screen.getScreenComponentList().stream().map(item -> {
-      ScreenComponentResponse screenComponentResponse = new ScreenComponentResponse();
-      screenComponentResponse.setComponentName(item.getComponentName());
-      screenComponentResponse.setRole(item.getRole());
-      screenComponentResponse.setAuthorities(item.getAuthorities());
-      screenComponentResponse.setLevel(item.getLevel());
-      screenComponentResponse.setAuthorities(item.getAuthorities());
-      return screenComponentResponse;
-    }).collect(Collectors.toList()));
+    if (screen.getScreenComponentList() != null && !screen.getScreenComponentList().isEmpty()) {
+      response.setScreenComponentList(screen.getScreenComponentList().stream().map(item -> {
+        ScreenComponentResponse screenComponentResponse = new ScreenComponentResponse();
+        screenComponentResponse.setComponentName(item.getComponentName());
+        screenComponentResponse.setRole(item.getRole());
+        screenComponentResponse.setAuthorities(item.getAuthorities());
+        screenComponentResponse.setLevel(item.getLevel());
+        screenComponentResponse.setAuthorities(item.getAuthorities());
+        return screenComponentResponse;
+      }).collect(Collectors.toList()));
+    }
+    response.setCreateDatetime(screen.getCreateDatetime());
     response.setUpdateDatetime(screen.getUpdateDatetime());
 
     return response;

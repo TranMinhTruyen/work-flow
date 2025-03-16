@@ -7,10 +7,17 @@ import lombok.Setter;
 @Getter
 public class WFException extends AbstractException {
 
-  private final ErrorDetail errorDetail;
+  private ErrorDetail errorDetail;
+  
+  private String messageCode;
 
   public WFException(ErrorDetail errorDetail) {
     this.errorDetail = errorDetail;
+  }
+
+  public WFException(ErrorDetail errorDetail, String messageCode) {
+    this.errorDetail = errorDetail;
+    this.messageCode = messageCode;
   }
 
 }

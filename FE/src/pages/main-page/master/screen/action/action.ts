@@ -3,9 +3,10 @@ import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 
 import mockData from '../data/mockData.json';
-import { ISearchScreenRequest } from '../model/screenRequest';
-import { ISearchScreenResponse } from '../model/screenResponse';
-import { IScreenTableRow } from '../model/table';
+import IGetScreenDetail from '../model/GetScreenDetail';
+import IScreenTableRow from '../model/Table';
+import ISearchScreenRequest from '../model/screenRequest';
+import ISearchScreenResponse from '../model/screenResponse';
 
 export const initMockData = () => {
   const data: IScreenTableRow[] = mockData.map(item => ({ ...item }));
@@ -29,5 +30,12 @@ export const searchAction = async (
     .dispatch(screenService.endpoints.searchScreen.initiate(request))
     .unwrap();
 
+  return response;
+};
+
+export const getScreenDetail = async (screenId?: string): Promise<IGetScreenDetail> => {
+  const response: IGetScreenDetail = await store
+    .dispatch(screenService.endpoints.getScreenDetail.initiate({ screenId: screenId }))
+    .unwrap();
   return response;
 };

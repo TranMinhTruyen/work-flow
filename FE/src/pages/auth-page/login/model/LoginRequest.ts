@@ -1,4 +1,4 @@
-export default interface ILoginForm {
+export default interface ILoginRequest {
   userName?: string;
   password?: string;
   isRemember?: boolean;

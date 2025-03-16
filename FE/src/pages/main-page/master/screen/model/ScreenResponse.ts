@@ -1,4 +1,4 @@
-export interface ISearchScreenResponse {
+export default interface ISearchScreenResponse {
   screenId: string;
   screenName: string;
   screenUrl: string;

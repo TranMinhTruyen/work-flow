@@ -6,10 +6,6 @@ import { IPageableOrder } from '@/common/model/pageable';
 export type Pageable = {
   page: number;
   size: number;
-  from: number;
-  to: number;
-  total: number;
-  totalPages: number;
   orderList?: IPageableOrder[];
 };
 
@@ -98,7 +94,12 @@ export type ControlProps<T = any> = {
    *
    * @param pageable - The new pageable configuration.
    */
-  onPageableChange: (pageable: Pageable) => void;
+  onPageableChange: (pageable: {
+    from: number;
+    to: number;
+    total: number;
+    totalPages: number;
+  }) => void;
 };
 
 export type UseTableProps<T> = {

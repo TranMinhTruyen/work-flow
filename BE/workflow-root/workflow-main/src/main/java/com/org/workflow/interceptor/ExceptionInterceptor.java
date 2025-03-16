@@ -13,18 +13,17 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.org.workflow.controller.AbstractController;
+import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.enums.MessageTypeEnum;
 import com.org.workflow.core.common.exception.ErrorMessage;
 import com.org.workflow.core.common.exception.WFException;
@@ -32,7 +31,6 @@ import com.org.workflow.domain.dto.response.common.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
 
-@ControllerAdvice
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionInterceptor extends AbstractController {
@@ -41,12 +39,10 @@ public class ExceptionInterceptor extends AbstractController {
 
   private final MessageSource messageSource;
 
-  private final DefaultErrorAttributes errorAttributes;
-
   @ExceptionHandler(value = WFException.class)
   public ResponseEntity<BaseResponse> handleAppException(WFException WFException) {
-    if (WFException.getStackTrace() != null && Arrays.stream(
-        WFException.getStackTrace()).findAny().isPresent()) {
+    if (WFException.getStackTrace() != null && Arrays.stream(WFException.getStackTrace()).findAny()
+        .isPresent()) {
       for (StackTraceElement item : WFException.getStackTrace()) {
         if (item.getClassName().contains(CLASS_NAME)) {
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
@@ -97,8 +93,7 @@ public class ExceptionInterceptor extends AbstractController {
     Locale locale = Locale.forLanguageTag(language);
 
     BaseResponse baseResponse = new BaseResponse();
-    List<ErrorMessage> errorList = bindingResult.getAllErrors().stream()
-        .map(error -> {
+    List<ErrorMessage> errorList = bindingResult.getAllErrors().stream().map(error -> {
           FieldError fieldError = (FieldError) error;
           ErrorMessage errorItem = new ErrorMessage();
 
@@ -112,8 +107,8 @@ public class ExceptionInterceptor extends AbstractController {
           Map<String, Object> attr = getAttributes(fieldError);
 
           // format message
-          String errorMessage = formatValidateMessage(fieldName, messageId, attr, messageSource,
-              locale);
+          String errorMessage =
+              formatValidateMessage(fieldName, messageId, attr, messageSource, locale);
 
           errorItem.setErrorOrder(attr.get("order").toString());
           errorItem.setErrorCode(error.getDefaultMessage());
@@ -123,7 +118,7 @@ public class ExceptionInterceptor extends AbstractController {
         .toList();
 
     baseResponse.setMessageType(MessageTypeEnum.ERROR);
-    baseResponse.setMessage("Validation failed");
+    baseResponse.setMessageCode(MessageEnum.VALIDATION_FAILED.getMessageCode());
     baseResponse.setErrorList(errorList);
     return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
   }

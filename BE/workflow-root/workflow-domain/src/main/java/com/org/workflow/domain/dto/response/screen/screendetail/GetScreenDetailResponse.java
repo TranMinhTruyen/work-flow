@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetScreenDetailResponse implements Serializable {
 
+  private String id;
+
   private String screenId;
 
   private String screenName;
@@ -27,6 +29,8 @@ public class GetScreenDetailResponse implements Serializable {
   private List<ScreenComponentResponse> screenComponentList;
 
   private boolean isActive;
+
+  private LocalDateTime createDatetime;
 
   private LocalDateTime updateDatetime;
 

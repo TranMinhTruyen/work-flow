@@ -9,20 +9,16 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const [data, setData] = useState<T[]>(defaultValues?.data ?? []);
   const [page, setPage] = useState<number>(defaultValues?.page ?? 1);
   const [size, setSize] = useState<number>(defaultValues?.size ?? 10);
-  const [from, setFrom] = useState<number>(0);
-  const [to, setTo] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [from, setFrom] = useState<number | undefined>(0);
+  const [to, setTo] = useState<number | undefined>(0);
+  const [total, setTotal] = useState<number | undefined>(0);
+  const [totalPages, setTotalPages] = useState<number | undefined>(0);
   const [orderList, setOrderList] = useState<IPageableOrder[]>(defaultValues?.orderList ?? []);
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
   const gridApiRef = useRef<GridApi<T> | null>(null);
   const [pageable, setPageable] = useState<Pageable>({
     page: page,
     size: size,
-    from: from,
-    to: to,
-    total: total,
-    totalPages: totalPages,
     orderList: orderList,
   });
 
@@ -89,14 +85,15 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   /**
    *
    */
-  const onPageableChange = useCallback((pageable: Pageable) => {
-    setPage(pageable.page);
-    setSize(pageable.size);
-    setFrom(pageable.from);
-    setTo(pageable.to);
-    setTotal(pageable.total);
-    setTotalPages(pageable.totalPages);
-  }, []);
+  const onPageableChange = useCallback(
+    (pageable: { from: number; to: number; total: number; totalPages: number }) => {
+      setFrom(pageable.from);
+      setTo(pageable.to);
+      setTotal(pageable.total);
+      setTotalPages(pageable.totalPages);
+    },
+    []
+  );
 
   return {
     control: {

@@ -24,7 +24,7 @@ import {
   setScreenExpand,
   toggleDrawer,
 } from '@/common/store/commonSlice';
-import { checkAccessScreen } from '@/common/utils/authUtil';
+import { checkAccessScreen, handleCheckToken } from '@/common/utils/authUtil';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 
 import screenItemList, { IScreenItem } from './ScreenListItem';
@@ -160,6 +160,7 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
 
   const handleOnClickItem = useCallback(
     (path: string) => () => {
+      handleCheckToken();
       navigate(path);
     },
     [navigate]
