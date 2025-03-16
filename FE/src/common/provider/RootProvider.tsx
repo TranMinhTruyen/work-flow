@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import store, { useAppDispatch } from '@/lib/store';
-import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
+import ILoginResponse from '@/pages/auth-page/login/model/LoginResponse';
 
 import { axiosInstance } from '../api/axios';
 import { FULL_DATE_TIME_FORMAT, RESET_ALL } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { screenUrl } from '../constants/urlConst';
+import { useRightDrawer } from '../context/types/rightDrawerTypes';
 import { I18nEnum } from '../enums/i18nEnum';
 import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
@@ -35,6 +36,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
+  const { closeDrawer } = useRightDrawer();
 
   useEffect(() => {
     if (isSet) return;
@@ -187,6 +189,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
                 timeout: 15,
                 onConfirm: () => {
                   dispatch({ type: RESET_ALL });
+                  closeDrawer();
                   localStorage.removeItem('login');
                   sessionStorage.removeItem('login');
                   navigate(screenUrl.LOGIN.path, true);
@@ -205,6 +208,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
                 timeout: 15,
                 onConfirm: () => {
                   dispatch({ type: RESET_ALL });
+                  closeDrawer();
                   localStorage.removeItem('login');
                   sessionStorage.removeItem('login');
                   navigate(screenUrl.LOGIN.path, true);
@@ -221,6 +225,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
               isPopup: false,
               onConfirm: () => {
                 dispatch({ type: RESET_ALL });
+                closeDrawer();
                 localStorage.removeItem('login');
                 sessionStorage.removeItem('login');
                 navigate(screenUrl.LOGIN.path, true);
@@ -271,7 +276,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setIsSet(true);
-  }, [dispatch, isSet, navigate, t]);
+  }, [closeDrawer, dispatch, isSet, navigate, t]);
 
   return <>{isSet && children}</>;
 };
