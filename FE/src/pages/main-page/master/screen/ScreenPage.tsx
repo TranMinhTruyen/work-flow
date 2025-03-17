@@ -28,7 +28,6 @@ const ScreenPage = () => {
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
       const response: IPageResponse<ISearchScreenResponse[]> = await searchAction(searchCondition);
       if (response.result) {
-        onPageableChange({ ...response });
         onDataChange(
           response.result.map(item => ({
             ...item,

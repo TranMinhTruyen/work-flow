@@ -7,19 +7,16 @@ import { Pageable, UseTableProps, UseTableReturn } from './types/useTableTypes';
 const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const { defaultValues } = props;
   const [data, setData] = useState<T[]>(defaultValues?.data ?? []);
-  const [page, setPage] = useState<number>(defaultValues?.page ?? 1);
-  const [size, setSize] = useState<number>(defaultValues?.size ?? 10);
-  const [from, setFrom] = useState<number | undefined>(0);
-  const [to, setTo] = useState<number | undefined>(0);
-  const [total, setTotal] = useState<number | undefined>(0);
-  const [totalPages, setTotalPages] = useState<number | undefined>(0);
-  const [orderList, setOrderList] = useState<IPageableOrder[]>(defaultValues?.orderList ?? []);
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
   const gridApiRef = useRef<GridApi<T> | null>(null);
   const [pageable, setPageable] = useState<Pageable>({
-    page: page,
-    size: size,
-    orderList: orderList,
+    page: 1,
+    size: 10,
+    from: 0,
+    to: 0,
+    total: 0,
+    totalPages: 0,
+    orderList: [],
   });
 
   useEffect(() => {
@@ -33,7 +30,6 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
           });
         }
       }
-      setOrderList(orderListMap);
       setPageable(prev => {
         return {
           ...prev,
@@ -58,7 +54,6 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
    *
    */
   const onPageChange = useCallback((page: number) => {
-    setPage(page);
     setPageable(prev => {
       return {
         ...prev,
@@ -71,12 +66,9 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
    *
    */
   const onSizeChange = useCallback((size: number) => {
-    setPage(1);
-    setSize(size);
     setPageable(prev => {
       return {
         ...prev,
-        page: 1,
         size: size,
       };
     });
@@ -85,26 +77,14 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   /**
    *
    */
-  const onPageableChange = useCallback(
-    (pageable: { from: number; to: number; total: number; totalPages: number }) => {
-      setFrom(pageable.from);
-      setTo(pageable.to);
-      setTotal(pageable.total);
-      setTotalPages(pageable.totalPages);
-    },
-    []
-  );
+  const onPageableChange = useCallback((pageable: Pageable) => {
+    setPageable(pageable);
+  }, []);
 
   return {
     control: {
       data,
-      page,
-      size,
-      from,
-      to,
-      total,
-      totalPages,
-      orderList,
+      pageable,
       gridApiRef,
       onDataChange: setData,
       onSort,
@@ -113,20 +93,13 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
       onPageableChange,
     },
     data,
-    page,
-    size,
-    from,
-    to,
-    total,
-    totalPages,
-    orderList,
+    pageable,
     gridApiRef,
     onDataChange: setData,
     onSort,
     onPageChange,
     onSizeChange,
     onPageableChange,
-    pageable,
   };
 };
 

@@ -17,39 +17,10 @@ export type ControlProps<T = any> = {
   data?: T[];
 
   /**
-   * The current page number.
+   * Optional pagination settings. This property holds pagination configuration details.
+   * (such as current page, page size, etc.) if pagination is applied.
    */
-  page?: number;
-
-  /**
-   * The number of rows per page.
-   */
-  size?: number;
-
-  /**
-   * The starting index of the current page.
-   */
-  from?: number;
-
-  /**
-   * The ending index of the current page.
-   */
-  to?: number;
-
-  /**
-   * The total number of records available.
-   */
-  total?: number;
-
-  /**
-   * The total number of pages available.
-   */
-  totalPages?: number;
-
-  /**
-   * The list of sortable columns along with their order.
-   */
-  orderList: IPageableOrder[];
+  pageable: Pageable;
 
   /**
    * A React ref object that holds a reference to the Grid API.
@@ -94,12 +65,7 @@ export type ControlProps<T = any> = {
    *
    * @param pageable - The new pageable configuration.
    */
-  onPageableChange: (pageable: {
-    from: number;
-    to: number;
-    total: number;
-    totalPages: number;
-  }) => void;
+  onPageableChange: (pageable: Pageable) => void;
 };
 
 export type UseTableProps<T> = {
@@ -113,5 +79,4 @@ export type UseTableProps<T> = {
 
 export type UseTableReturn<T = any> = ControlProps<T> & {
   control: ControlProps<T>;
-  pageable: Pageable;
 };

@@ -7,7 +7,7 @@ import { Stack } from '@mui/system';
 import type { CustomHeaderProps as AgCustomHeaderProps } from 'ag-grid-react';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ControlProps } from '@/common/hooks/useTable';
+import { ControlProps } from '@/common/hooks/types/useTableTypes';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
 
 export type CustomHeaderProps = AgCustomHeaderProps & {
@@ -16,8 +16,8 @@ export type CustomHeaderProps = AgCustomHeaderProps & {
 
 const CustomHeader = (props: CustomHeaderProps) => {
   const { control, column, displayName } = props;
-  const [ascSort, setAscSort] = useState<'asc' | 'desc' | null>(null);
-  const [descSort, setDescSort] = useState<'asc' | 'desc' | null>(null);
+  const [ascSort, setAscSort] = useState<'asc' | null>(null);
+  const [descSort, setDescSort] = useState<'desc' | null>(null);
 
   useEffect(() => {
     const order = column.getSort();
