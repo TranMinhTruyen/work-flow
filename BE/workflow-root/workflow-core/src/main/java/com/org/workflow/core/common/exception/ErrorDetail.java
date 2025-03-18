@@ -1,6 +1,7 @@
 package com.org.workflow.core.common.exception;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class ErrorDetail implements Serializable {
   public ErrorDetail(MessageEnum messageEnum) {
     ErrorMessage errorMessage = new ErrorMessage();
     errorMessage.setErrorCode(messageEnum.getMessageCode());
+    this.errorMessageList = new ArrayList<>();
     this.errorMessageList.add(errorMessage);
     this.httpStatus = messageEnum.getHttpStatus();
   }

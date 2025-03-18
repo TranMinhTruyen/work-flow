@@ -1,21 +1,23 @@
 import { GridApi } from 'ag-grid-community';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { IPageableOrder } from '../model/pageable';
-import { Pageable, UseTableProps, UseTableReturn } from './types/useTableTypes';
+import { IPageableOrder, IPageResponse } from '../model/pageable';
+import { Pageable, PaginationInfo, UseTableProps, UseTableReturn } from './types/useTableTypes';
 
 const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const { defaultValues } = props;
   const [data, setData] = useState<T[]>(defaultValues?.data ?? []);
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
   const gridApiRef = useRef<GridApi<T> | null>(null);
-  const [pageable, setPageable] = useState<Pageable>({
-    page: 1,
-    size: 10,
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
     from: 0,
     to: 0,
     total: 0,
     totalPages: 0,
+  });
+  const [pageable, setPageable] = useState<Pageable>({
+    page: 1,
+    size: 10,
     orderList: [],
   });
 
@@ -74,32 +76,32 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
     });
   }, []);
 
-  /**
-   *
-   */
-  const onPageableChange = useCallback((pageable: Pageable) => {
-    setPageable(pageable);
+  const onDataChange = useCallback((data: T[], pageResponse?: IPageResponse) => {
+    setData(data);
+    if (pageResponse) {
+      setPaginationInfo({ ...pageResponse });
+    }
   }, []);
 
   return {
     control: {
       data,
       pageable,
+      paginationInfo,
       gridApiRef,
-      onDataChange: setData,
+      onDataChange,
       onSort,
       onPageChange,
       onSizeChange,
-      onPageableChange,
     },
     data,
     pageable,
+    paginationInfo,
     gridApiRef,
-    onDataChange: setData,
+    onDataChange,
     onSort,
     onPageChange,
     onSizeChange,
-    onPageableChange,
   };
 };
 

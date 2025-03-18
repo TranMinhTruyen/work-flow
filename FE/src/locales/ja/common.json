@@ -49,5 +49,12 @@
   "screenTitle": {
     "login": "ログイン",
     "register": "登録"
+  },
+  "drawerTitle": {
+    "home": "ホーム",
+    "kanban": "カンバンボード",
+    "generalSettings": "一般設定",
+    "screenSetting": "画面設定",
+    "userSetting": "ユーザー設定"
   }
 }

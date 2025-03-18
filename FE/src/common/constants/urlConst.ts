@@ -15,7 +15,6 @@ export const screenUrl: Record<
   REGISTER: { prefix: AUTH_PREFIX, path: '/register' },
   HOME: { prefix: MAIN_PREFIX, path: '/home' },
   KANBAN: { prefix: MAIN_PREFIX, path: '/kanban' },
-  KANBAN_V2: { prefix: MAIN_PREFIX, path: '/kanban-v2' },
-  SCREEN_MASTER: { prefix: MAIN_PREFIX, path: '/screen-master' },
-  USER_MASTER: { prefix: MAIN_PREFIX, path: '/user-master' },
+  SCREEN_MASTER: { prefix: MAIN_PREFIX, path: '/screen-setting' },
+  USER_MASTER: { prefix: MAIN_PREFIX, path: '/user-setting' },
 };

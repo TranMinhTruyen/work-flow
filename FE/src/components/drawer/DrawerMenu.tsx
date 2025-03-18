@@ -15,7 +15,9 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
 import {
   removeScreenExpand,
@@ -155,6 +157,7 @@ const DrawerMenu = () => {
 const DrawerMenuItem = (props: DrawerMenuItemProps) => {
   const { item, childIndex } = props;
   const { navigate, currentPath } = useRouter();
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const openDrawer = useAppSelector(selectOpenDrawer);
 
@@ -200,7 +203,7 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
               {itemCustomListItemIcon}
             </CustomListItemIcon>
             <ListItemText
-              primary={item.screenLabel}
+              primary={t(item.screenLabel)}
               style={customListItemIconAndTextSx}
               sx={listItemTextSx}
             />
@@ -213,6 +216,7 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
 
 const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
   const { item } = props;
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const [openChild, setOpenChild] = useState<boolean>(false);
   const [hoverItem, setHoverItem] = useState<boolean>(false);
 
@@ -314,7 +318,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
                 onMouseLeave={() => setHoverItem(false)}
               >
                 <CustomListItemIcon>{openDrawerButton}</CustomListItemIcon>
-                <ListItemText primary={item.screenLabel} sx={listItemTextSx} />
+                <ListItemText primary={t(item.screenLabel)} sx={listItemTextSx} />
                 {expandButton}
               </CustomListItemButton>
             </CustomListItem>
@@ -345,6 +349,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     openChild,
     openDrawer,
     openDrawerButton,
+    t,
   ]);
 
   return <Box>{childItemCollapse}</Box>;
@@ -360,6 +365,9 @@ export const CustomListItemButton = styled(ListItemButton)({
   padding: 0,
   justifyContent: 'center',
   borderRadius: 25,
+  '& .MuiListItemIcon-root': {
+    minWidth: '40px',
+  },
   '&:hover': {
     backgroundColor: 'rgba(217, 216, 216, 1)',
   },

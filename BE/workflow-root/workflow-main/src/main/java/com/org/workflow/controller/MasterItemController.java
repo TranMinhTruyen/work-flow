@@ -19,7 +19,6 @@ import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.MasterItem;
 import com.org.workflow.domain.annotation.Authentication;
-import com.org.workflow.domain.annotation.IgnoreSecurity;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.master.MasterItemRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
@@ -49,7 +48,6 @@ public class MasterItemController extends AbstractController {
   }
 
   @PostMapping("/get")
-  @IgnoreSecurity
   public ResponseEntity<BaseResponse> getItemMaster(@RequestBody BaseRequest<String> request) {
     List<MasterItemResponse> masterItemResponseList = itemMasterService.getItemMaster(request);
     return this.returnBaseResponse(masterItemResponseList, MessageEnum.GET_SUCCESS, "item master");

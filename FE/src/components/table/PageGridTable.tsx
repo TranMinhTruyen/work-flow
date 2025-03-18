@@ -30,10 +30,12 @@ const PageGridTable = (props: PageGridTableProps) => {
   return (
     <Stack spacing={1}>
       <Stack direction={'row'} spacing={2} sx={{ marginLeft: 'auto !important' }}>
-        <Typography>{`Showing ${props.control?.pageable.from} to ${props.control?.pageable.to} of ${props.control?.pageable.total} entries`}</Typography>
+        <Typography>
+          {`Showing ${props.control?.paginationInfo?.from} to ${props.control?.paginationInfo?.to} of ${props.control?.paginationInfo?.total} entries`}
+        </Typography>
         <Pagination
           page={props.control?.pageable.page}
-          count={props.control?.pageable.totalPages}
+          count={props.control?.paginationInfo?.totalPages}
           showFirstButton
           showLastButton
           color={'primary'}
@@ -51,7 +53,7 @@ const PageGridTable = (props: PageGridTableProps) => {
             <MenuItem value={100}>100</MenuItem>
           </Select>
         </FormControl>
-        <Typography>{`Page ${props.control?.pageable.page} of ${props.control?.pageable.totalPages}`}</Typography>
+        <Typography>{`Page ${props.control?.pageable.page} of ${props.control?.paginationInfo?.totalPages}`}</Typography>
       </Stack>
       <GridTable {...restProps} />
     </Stack>

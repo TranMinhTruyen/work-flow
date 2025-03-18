@@ -49,5 +49,12 @@
   "screenTitle": {
     "login": "Đăng nhập",
     "register": "Đăng kí"
+  },
+  "drawerTitle": {
+    "home": "Trang chủ",
+    "kanban": "Bảng kanban",
+    "generalSettings": "Cài đặt chung",
+    "screenSetting": "Cài đặt màn hình",
+    "userSetting": "Cài đặt user"
   }
 }

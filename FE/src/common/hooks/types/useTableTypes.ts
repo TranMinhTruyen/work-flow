@@ -1,12 +1,19 @@
 import { GridApi } from 'ag-grid-community';
 import { RefObject } from 'react';
 
-import { IPageableOrder } from '@/common/model/pageable';
+import { IPageableOrder, IPageResponse } from '@/common/model/pageable';
 
 export type Pageable = {
   page: number;
   size: number;
   orderList?: IPageableOrder[];
+};
+
+export type PaginationInfo = {
+  from?: number;
+  to?: number;
+  total?: number;
+  totalPages?: number;
 };
 
 export type ControlProps<T = any> = {
@@ -23,6 +30,17 @@ export type ControlProps<T = any> = {
   pageable: Pageable;
 
   /**
+   * This object represents the pagination details.
+   *
+   * Properties:
+   * - from: The starting index of the current page.
+   * - to: The ending index of the current page.
+   * - total: The total number of records available.
+   * - totalPages: The total number of pages available.
+   */
+  paginationInfo?: PaginationInfo;
+
+  /**
    * A React ref object that holds a reference to the Grid API.
    *
    * This ref is used to interact with the grid component's API,
@@ -36,7 +54,7 @@ export type ControlProps<T = any> = {
    *
    * @param data - The new set of table data.
    */
-  onDataChange: (data: T[]) => void;
+  onDataChange: (data: T[], pageResponse?: IPageResponse) => void;
 
   /**
    * Callback triggered when a column's sort order is changed.
@@ -59,13 +77,6 @@ export type ControlProps<T = any> = {
    * @param size - The new page size.
    */
   onSizeChange: (size: number) => void;
-
-  /**
-   * Callback triggered when any pageable parameter (page, size, etc.) is updated.
-   *
-   * @param pageable - The new pageable configuration.
-   */
-  onPageableChange: (pageable: Pageable) => void;
 };
 
 export type UseTableProps<T> = {

@@ -49,5 +49,12 @@
   "screenTitle": {
     "login": "Login",
     "register": "Register"
+  },
+  "drawerTitle": {
+    "home": "Home",
+    "kanban": "Kanban board",
+    "generalSettings": "General settings",
+    "screenSetting": "Screen setting",
+    "userSetting": "User setting"
   }
 }

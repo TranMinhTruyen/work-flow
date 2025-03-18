@@ -21,7 +21,7 @@ import IScreenTableRow from './model/table';
 import './screen.css';
 
 const ScreenPage = () => {
-  const { control, pageable, onPageableChange, data, onDataChange } = useTable<IScreenTableRow>();
+  const { control, pageable, data, onDataChange } = useTable<IScreenTableRow>();
   const { openDrawer } = useRightDrawer();
 
   const handleSearch = useCallback(
@@ -31,11 +31,12 @@ const ScreenPage = () => {
         onDataChange(
           response.result.map(item => ({
             ...item,
-          }))
+          })),
+          response
         );
       }
     },
-    [onDataChange, onPageableChange]
+    [onDataChange]
   );
 
   useEffect(() => {
