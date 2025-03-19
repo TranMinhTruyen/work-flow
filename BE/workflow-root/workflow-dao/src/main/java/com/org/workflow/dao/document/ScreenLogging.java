@@ -1,11 +1,12 @@
 package com.org.workflow.dao.document;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author minh-truyen

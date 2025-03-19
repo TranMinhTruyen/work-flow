@@ -178,7 +178,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
 
         switch (responseStatus) {
           case 401:
-            if (responseData.messageCode !== 'EA0000') {
+            if (responseData.messageCode === 'EA0008') {
               openDialogContainer({
                 type: 'message',
                 maxWidth: 'sm',

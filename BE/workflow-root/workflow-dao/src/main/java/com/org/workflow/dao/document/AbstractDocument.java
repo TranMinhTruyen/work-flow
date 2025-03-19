@@ -1,12 +1,14 @@
 package com.org.workflow.dao.document;
 
-import jakarta.persistence.Id;
-import lombok.Data;
+import java.time.LocalDateTime;
+
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
-import java.time.LocalDateTime;
+import lombok.Data;
+
+import jakarta.persistence.Id;
 
 @Data
 public abstract class AbstractDocument {

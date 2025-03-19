@@ -1,12 +1,13 @@
 package com.org.workflow.domain.dto.request.common;
 
-import jakarta.validation.Valid;
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import jakarta.validation.Valid;
 
 /**
  * @author minh-truyen

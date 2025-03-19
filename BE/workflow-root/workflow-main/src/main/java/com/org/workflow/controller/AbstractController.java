@@ -76,10 +76,10 @@ public abstract class AbstractController {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
-    baseResponse.setErrorList(WFException.getErrorDetail().getErrorMessageList());
+    baseResponse.setErrorList(WFException.getErrorDetail());
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);
-    return new ResponseEntity<>(baseResponse, header, WFException.getErrorDetail().getHttpStatus());
+    return new ResponseEntity<>(baseResponse, header, WFException.getHttpStatus());
   }
 
   protected ResponseEntity<BaseResponse> returnErrorBaseResponse(Throwable exception,

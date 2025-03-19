@@ -2,6 +2,7 @@ package com.org.workflow.domain.dto.request.common;
 
 import java.io.Serializable;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

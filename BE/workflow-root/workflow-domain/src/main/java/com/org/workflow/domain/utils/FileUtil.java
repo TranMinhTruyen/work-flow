@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.org.workflow.core.common.exception.ErrorDetail;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.common.FileData;
 
@@ -64,7 +63,7 @@ public class FileUtil {
         LOGGER.info("Read file finish, file name: {}", file.getName());
         return outputFile;
       } catch (IOException e) {
-        throw new WFException(new ErrorDetail(READ_FILE_ERROR));
+        throw new WFException(READ_FILE_ERROR);
       }
     } else {
       return null;

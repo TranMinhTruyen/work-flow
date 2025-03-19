@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.org.workflow.core.common.cnst.CommonConst;
-import com.org.workflow.core.common.exception.ErrorDetail;
+import com.org.workflow.core.common.exception.ErrorMessage;
 import com.org.workflow.core.common.exception.WFException;
 
 @Aspect
@@ -31,10 +31,13 @@ public class ServiceAop {
       value = joinPoint.proceed();
       LOGGER.info("Service name: [{}], run method: [{}] do commit.", serviceName, methodName);
     } catch (WFException error) {
-      LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
-          methodName, error.getErrorDetail().getErrorMessageList());
-      ErrorDetail errorDetail = error.getErrorDetail();
-      throw new WFException(errorDetail);
+      if (error.getErrorDetail() != null && !error.getErrorDetail().isEmpty()) {
+        for (ErrorMessage errorMessage : error.getErrorDetail()) {
+          LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
+              methodName, errorMessage);
+        }
+      }
+      throw error;
     } catch (RuntimeException error) {
       LOGGER.error("Service name: [{}], method: [{}] has error: [{}] do rollback", serviceName,
           methodName, error.getMessage());

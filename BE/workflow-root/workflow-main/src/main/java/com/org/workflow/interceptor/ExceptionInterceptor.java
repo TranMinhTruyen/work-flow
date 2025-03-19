@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.org.workflow.controller.AbstractController;
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.enums.MessageTypeEnum;
+import com.org.workflow.core.common.enums.ValidateEnum;
 import com.org.workflow.core.common.exception.ErrorMessage;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
@@ -47,7 +48,7 @@ public class ExceptionInterceptor extends AbstractController {
         if (item.getClassName().contains(CLASS_NAME)) {
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
               item.getClassName(), item.getMethodName(), item.getLineNumber(),
-              WFException.getErrorDetail().getErrorMessageList());
+              WFException.getErrorDetail());
         }
       }
     }
@@ -108,7 +109,8 @@ public class ExceptionInterceptor extends AbstractController {
 
           // format message
           String errorMessage =
-              formatValidateMessage(fieldName, messageId, attr, messageSource, locale);
+              formatValidateMessage(fieldName, ValidateEnum.fromMessageCode(messageId), attr,
+                  messageSource, locale);
 
           errorItem.setErrorOrder(attr.get("order").toString());
           errorItem.setErrorCode(error.getDefaultMessage());

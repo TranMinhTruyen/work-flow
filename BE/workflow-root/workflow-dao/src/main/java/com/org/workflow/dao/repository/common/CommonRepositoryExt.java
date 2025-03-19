@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.org.workflow.core.common.exception.ErrorDetail;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.AbstractDocument;
 import com.org.workflow.dao.repository.result.common.PageableResult;
@@ -37,7 +36,7 @@ public class CommonRepositoryExt {
 
       if (findResult == null || !findResult.getUpdateDatetime()
           .equals(document.getUpdateDatetime())) {
-        throw new WFException(new ErrorDetail(UPDATE_FAILED));
+        throw new WFException(UPDATE_FAILED);
       }
 
       document.setUpdateDatetime(now);

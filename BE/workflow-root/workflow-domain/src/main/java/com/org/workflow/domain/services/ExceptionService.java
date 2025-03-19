@@ -9,11 +9,9 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.org.workflow.core.common.enums.MessageEnum;
-import com.org.workflow.core.common.exception.ErrorDetail;
 import com.org.workflow.core.common.exception.ErrorMessage;
 import com.org.workflow.core.common.exception.WFException;
 
@@ -50,14 +48,10 @@ public class ExceptionService {
     error.setErrorCode(messageEnum.getMessageCode());
     error.setErrorMessage(value);
 
-    List<ErrorMessage> errorMessageList = new ArrayList<>();
-    errorMessageList.add(error);
+    List<ErrorMessage> errorDetail = new ArrayList<>();
+    errorDetail.add(error);
 
-    ErrorDetail errorDetail = new ErrorDetail();
-    errorDetail.setErrorMessageList(errorMessageList);
-    errorDetail.setHttpStatus(messageEnum.getHttpStatus());
-
-    return new WFException(errorDetail);
+    return new WFException(errorDetail, messageEnum);
   }
 
   /**
@@ -66,26 +60,22 @@ public class ExceptionService {
    * @param messageList Map<MessageEnum, List<String>> key: MessageEnum, value: List<String> args of
    *                    MessageEnum
    * @param language    String
-   * @param httpStatus  HttpStatus
+   * @param messageEnum MessageEnum
    * @return WorkFlowException
    */
   public WFException getWFException(Map<MessageEnum, List<String>> messageList, String language,
-      HttpStatus httpStatus) {
-    List<ErrorMessage> errorMessageList = new ArrayList<>();
+      MessageEnum messageEnum) {
+    List<ErrorMessage> errorDetail = new ArrayList<>();
 
     for (Entry<MessageEnum, List<String>> entry : messageList.entrySet()) {
       String value = getMessage(entry.getKey(), language, entry.getValue());
       ErrorMessage error = new ErrorMessage();
       error.setErrorCode(entry.getKey().getMessageCode());
       error.setErrorMessage(value);
-      errorMessageList.add(error);
+      errorDetail.add(error);
     }
 
-    ErrorDetail errorDetail = new ErrorDetail();
-    errorDetail.setErrorMessageList(errorMessageList);
-    errorDetail.setHttpStatus(httpStatus);
-
-    return new WFException(errorDetail);
+    return new WFException(errorDetail, messageEnum);
   }
 
   public WFException getWFException(MessageEnum messageEnum, String language, String prefix,
@@ -101,14 +91,10 @@ public class ExceptionService {
     error.setErrorCode(messageEnum.getMessageCode());
     error.setErrorMessage(value);
 
-    List<ErrorMessage> errorMessageList = new ArrayList<>();
-    errorMessageList.add(error);
+    List<ErrorMessage> errorDetail = new ArrayList<>();
+    errorDetail.add(error);
 
-    ErrorDetail errorDetail = new ErrorDetail();
-    errorDetail.setErrorMessageList(errorMessageList);
-    errorDetail.setHttpStatus(messageEnum.getHttpStatus());
-
-    return new WFException(errorDetail);
+    return new WFException(errorDetail, messageEnum);
   }
 
 }

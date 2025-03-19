@@ -1,13 +1,15 @@
 package com.org.workflow.dao.document;
 
-import com.org.workflow.dao.document.sub.ChangeValue;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
 
-import java.io.Serializable;
+import com.org.workflow.dao.document.sub.ChangeValue;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

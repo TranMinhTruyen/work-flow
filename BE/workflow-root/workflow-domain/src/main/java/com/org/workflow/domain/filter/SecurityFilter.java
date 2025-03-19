@@ -1,6 +1,7 @@
 package com.org.workflow.domain.filter;
 
 import static com.org.workflow.core.common.enums.MessageEnum.ACCESS_DENIED;
+import static com.org.workflow.core.common.enums.MessageEnum.SESSION_TIME_OUT;
 
 import java.io.IOException;
 
@@ -12,14 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import com.org.workflow.core.common.exception.ErrorDetail;
+import com.org.workflow.core.common.exception.WFAuthenticationException;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.UserAccount;
-import com.org.workflow.domain.annotation.IgnoreSecurity;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
 import com.org.workflow.domain.services.UserService;
 import com.org.workflow.domain.utils.JwtUtil;
@@ -41,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
   private UserService userService;
 
   @Autowired
-  private RequestMappingHandlerMapping handlerMapping;
+  private CustomAuthenticationEntryPoint authenticationEntryPoint;
 
   /**
    * Filter when request.
@@ -56,17 +53,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     String token = getJwtFromRequest(request);
 
     try {
-      // Ignore security filter when using IgnoreSecurity annotation
-      HandlerExecutionChain handler = handlerMapping.getHandler(request);
-      if (handler != null && handler.getHandler() instanceof HandlerMethod handlerMethod) {
-        boolean isIgnored = handlerMethod.getMethod().isAnnotationPresent(IgnoreSecurity.class)
-            || handlerMethod.getBeanType().isAnnotationPresent(IgnoreSecurity.class);
-        if (isIgnored) {
-          filterChain.doFilter(request, response);
-          return;
-        }
-      }
-
       if (!StringUtils.isBlank(token)) {
         if (JwtUtil.validateToken(token)) {
           Claims claims = JwtUtil.extractClaims(token).getPayload();
@@ -79,14 +65,16 @@ public class SecurityFilter extends OncePerRequestFilter {
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
           } else {
-            throw new WFException(new ErrorDetail(ACCESS_DENIED));
+            throw new WFException(ACCESS_DENIED);
           }
         } else {
-          throw new WFException(new ErrorDetail(ACCESS_DENIED));
+          throw new WFException(SESSION_TIME_OUT);
         }
       }
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    } catch (WFException e) {
+      authenticationEntryPoint.commence(request, response,
+          new WFAuthenticationException(e.getMessageCode(), e));
+      return;
     }
     filterChain.doFilter(request, response);
   }
