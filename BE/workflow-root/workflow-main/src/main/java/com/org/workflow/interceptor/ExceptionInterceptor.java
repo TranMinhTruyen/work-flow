@@ -99,7 +99,7 @@ public class ExceptionInterceptor extends AbstractController {
           ErrorMessage errorItem = new ErrorMessage();
 
           // Get field name
-          String fieldName = fieldError.getField();
+          String fieldName = fieldError.getField().replace("payload", "");
 
           // Get messageId from annotation
           String messageId = fieldError.getDefaultMessage();

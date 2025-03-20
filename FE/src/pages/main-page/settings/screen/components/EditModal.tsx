@@ -14,9 +14,9 @@ import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import GridTable from '@/components/table/GridTable';
 
-import { getScreenDetail } from '../action/action';
+import { getScreenDetail, saveAction } from '../action/action';
 import IEditModalForm from '../model/EditModalForm';
-import IScreenTableRow from '../model/Table';
+import IScreenTableRow from '../model/ScreenTableRow';
 
 type EditModalProps = {
   data: IScreenTableRow;
@@ -26,7 +26,7 @@ const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
   const { closeDrawer } = useRightDrawer();
-  const { control, reset } = useForm<IEditModalForm>();
+  const { control, reset, getValues } = useForm<IEditModalForm>();
 
   const handleGetScreenDetail = useCallback(async () => {
     const response = await getScreenDetail(data.screenId);
@@ -37,6 +37,13 @@ const EditModal = (props: EditModalProps) => {
     handleGetScreenDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSaveAction = useCallback(async () => {
+    const formValue = getValues();
+    const saveResponse = await saveAction({ ...formValue });
+    const response = await getScreenDetail(saveResponse.screenId);
+    reset({ ...response });
+  }, [getValues, reset]);
 
   const defaultColDef = useMemo<ColDef>(
     () => ({
@@ -128,10 +135,10 @@ const EditModal = (props: EditModalProps) => {
             sx={styles.okButton}
             label={
               <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {'OK'}
+                {'Save'}
               </Typography>
             }
-            onClick={closeDrawer}
+            onClick={handleSaveAction}
           />
         </Stack>
       </Stack>

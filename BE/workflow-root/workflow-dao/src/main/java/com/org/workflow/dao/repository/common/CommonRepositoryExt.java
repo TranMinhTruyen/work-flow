@@ -2,9 +2,11 @@ package com.org.workflow.dao.repository.common;
 
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -25,7 +27,7 @@ public class CommonRepositoryExt {
   protected final MongoTemplate mongoTemplate;
 
   protected <T extends AbstractDocument> T saveDocument(T document, Class<T> documentClass)
-      throws WFException {
+      throws WFException, InvocationTargetException, IllegalAccessException {
     LocalDateTime now = LocalDateTime.now();
 
     if (StringUtils.isBlank(document.getId())) {
@@ -38,6 +40,8 @@ public class CommonRepositoryExt {
           .equals(document.getUpdateDatetime())) {
         throw new WFException(UPDATE_FAILED);
       }
+
+      BeanUtils.copyProperties(document, findResult);
 
       document.setUpdateDatetime(now);
     }

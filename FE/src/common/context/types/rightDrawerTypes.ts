@@ -4,6 +4,7 @@ export type RightDrawerContent = {
   isOnClose: boolean;
   width?: string | number;
   content?: ReactNode;
+  onCloseAction?: () => void;
 };
 
 export type RightDrawerType = {

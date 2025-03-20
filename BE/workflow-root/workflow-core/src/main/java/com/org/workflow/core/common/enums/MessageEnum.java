@@ -25,6 +25,8 @@ public enum MessageEnum {
   REQUEST_SUCCESS(SUCCESS, "S00001", HttpStatus.OK),
   CREATE_SUCCESS(SUCCESS, "S00002" , HttpStatus.OK),
   GET_SUCCESS(SUCCESS, "S00003", HttpStatus.OK),
+  SAVE_SUCCESS(SUCCESS, "S00004", HttpStatus.OK),
+  DELETE_SUCCESS(SUCCESS, "S00005", HttpStatus.OK),
   //endregion
 
   //region COMMON_ERROR

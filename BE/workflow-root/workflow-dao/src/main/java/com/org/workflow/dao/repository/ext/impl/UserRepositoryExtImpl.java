@@ -2,6 +2,7 @@ package com.org.workflow.dao.repository.ext.impl;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -33,7 +34,8 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
   }
 
   @Override
-  public UserAccount saveDocument(UserAccount userAccount) throws WFException {
+  public UserAccount saveDocument(UserAccount userAccount)
+      throws WFException, InvocationTargetException, IllegalAccessException {
     return saveDocument(userAccount, UserAccount.class);
   }
 

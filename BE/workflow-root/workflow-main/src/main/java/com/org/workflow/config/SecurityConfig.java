@@ -23,6 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.org.workflow.domain.filter.CustomAuthenticationEntryPoint;
+import com.org.workflow.domain.filter.IgnoreSecurityCollector;
 import com.org.workflow.domain.filter.SecurityFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -32,11 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private static final String[] WHITE_LIST =
-      {"/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**", "/work-flow/swagger-ui/**",
-          "/work-flow/v3/api-docs/**", "/swagger-ui.html", "/api-docs", "/ws/**",
-          "/api/user-account/login", "/api/user-account/create-user", "/api/master-item/get",
-          "/api/master-item/create", "/api/file/**"};
+  private final IgnoreSecurityCollector ignoreSecurityCollector;
 
   @Value(value = "${client.url}")
   private String clientUrl;
@@ -72,8 +69,8 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
-            auth -> auth.requestMatchers(WHITE_LIST).permitAll().requestMatchers(HttpMethod.GET)
-                .permitAll().anyRequest().authenticated())
+            auth -> auth.requestMatchers(ignoreSecurityCollector.getExcludedUrls()).permitAll()
+                .requestMatchers(HttpMethod.GET).permitAll().anyRequest().authenticated())
         .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }

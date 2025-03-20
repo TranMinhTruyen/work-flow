@@ -1,7 +1,9 @@
 package com.org.workflow.domain.services;
 
 import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +12,21 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
+import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
+import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.PageableUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -107,6 +113,51 @@ public class ScreenService extends AbstractService {
     response.setCreateDatetime(screen.getCreateDatetime());
     response.setUpdateDatetime(screen.getUpdateDatetime());
 
+    return response;
+  }
+
+  public SaveScreenResponse saveScreen(BaseRequest<SaveScreenRequest> request) throws WFException {
+    SaveScreenRequest payload = request.getPayload();
+    String username = AuthUtil.getAuthentication().getUsername();
+    LocalDateTime now = LocalDateTime.now();
+
+    Optional<Screen> result = screenRepository.findScreenById(payload.getId());
+
+    Screen saveResult = null;
+
+    if (result.isPresent()) {
+      Screen screen = result.get();
+      if (!screen.getUpdateDatetime().isEqual(payload.getUpdateDatetime())) {
+        throw new WFException(UPDATE_FAILED);
+      }
+      screen.setScreenName(payload.getScreenName());
+      screen.setScreenUrl(payload.getScreenUrl());
+      screen.setActive(payload.isActive());
+      screen.setUpdateDatetime(now);
+      screen.setUpdateBy(username);
+      saveResult = screenRepository.save(screen);
+    } else {
+      Screen screen = new Screen();
+      screen.setScreenId(payload.getScreenId());
+      screen.setScreenName(payload.getScreenName());
+      screen.setScreenUrl(payload.getScreenUrl());
+      screen.setActive(payload.isActive());
+      screen.setCreateDatetime(now);
+      screen.setCreatedBy(username);
+      screen.setUpdateDatetime(now);
+      screen.setUpdateBy(username);
+      screen.setDeleted(false);
+      saveResult = screenRepository.save(screen);
+    }
+
+    SaveScreenResponse response = new SaveScreenResponse();
+    response.setId(saveResult.getId());
+    response.setScreenId(saveResult.getScreenId());
+    response.setScreenName(saveResult.getScreenName());
+    response.setScreenUrl(saveResult.getScreenUrl());
+    response.setActive(saveResult.isActive());
+    response.setCreateDatetime(saveResult.getCreateDatetime());
+    response.setUpdateDatetime(saveResult.getUpdateDatetime());
     return response;
   }
 

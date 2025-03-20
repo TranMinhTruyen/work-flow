@@ -24,4 +24,17 @@ public interface ScreenRepository extends MongoRepository<Screen, String>, Scree
       """)
   Optional<Screen> findByScreenId(String screenId);
 
+
+  @Query(value = """ 
+      {
+        $and: [
+          { _id: ?0 },
+          { is_deleted: false },
+          { delete_by: null },
+          { delete_date_time: null }
+        ]
+      }
+      """)
+  Optional<Screen> findScreenById(String id);
+
 }

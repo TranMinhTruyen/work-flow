@@ -25,7 +25,10 @@ public @interface Validate {
   String message() default "";
 
 
-  ValidateEnum errorCode();
+  ValidateEnum errorCode() default ValidateEnum.REQUIRED_VALIDATE;
+
+
+  boolean required() default false;
 
 
   int order() default 0;
@@ -35,6 +38,9 @@ public @interface Validate {
 
 
   int maxLength() default Integer.MAX_VALUE;
+
+
+  int numberMax() default Integer.MAX_VALUE;
 
 
   int decimalPartNumber() default 0;

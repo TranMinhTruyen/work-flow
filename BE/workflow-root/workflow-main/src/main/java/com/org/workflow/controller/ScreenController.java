@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.org.workflow.core.common.enums.MessageEnum;
+import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
+import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.services.ScreenService;
 
@@ -57,6 +60,14 @@ public class ScreenController extends AbstractController {
   public ResponseEntity<BaseResponse> getScreenDetail(@RequestParam String screenId) {
     GetScreenDetailResponse result = screenService.getScreenDetail(screenId);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  }
+
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @PostMapping(value = "/save-screen")
+  public ResponseEntity<BaseResponse> saveScreen(
+      @RequestBody BaseRequest<SaveScreenRequest> request) throws WFException {
+    SaveScreenResponse response = screenService.saveScreen(request);
+    return this.returnBaseResponse(response, MessageEnum.SAVE_SUCCESS);
   }
 
 }

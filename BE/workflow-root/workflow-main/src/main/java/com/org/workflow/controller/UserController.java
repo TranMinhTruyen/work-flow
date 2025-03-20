@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.exception.WFException;
+import com.org.workflow.domain.annotation.IgnoreSecurity;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
 import com.org.workflow.domain.dto.request.user.CreateUserRequest;
@@ -49,7 +50,8 @@ public class UserController extends AbstractController {
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/create-user-for-admin")
   public ResponseEntity<BaseResponse> createUserForAdmin(
-      @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WFException {
+      @RequestBody BaseRequest<CreateUserRequest> createUserRequest)
+      throws WFException, InvocationTargetException, IllegalAccessException {
     CreateUserResponse result = userService.createUserForAdmin(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
         result.getUserName());
@@ -63,8 +65,10 @@ public class UserController extends AbstractController {
    * @throws WFException WFException
    */
   @PostMapping(value = "/create-user")
+  @IgnoreSecurity
   public ResponseEntity<BaseResponse> createUser(
-      @RequestBody BaseRequest<CreateUserRequest> createUserRequest) throws WFException {
+      @RequestBody BaseRequest<CreateUserRequest> createUserRequest)
+      throws WFException, InvocationTargetException, IllegalAccessException {
     CreateUserResponse result = userService.createUser(createUserRequest);
     return this.returnBaseResponse(result, MessageEnum.CREATE_USER_ACCOUNT_SUCCESS,
         result.getUserName());
@@ -78,8 +82,10 @@ public class UserController extends AbstractController {
    * @throws WFException WFException
    */
   @PostMapping("/login")
+  @IgnoreSecurity
   public ResponseEntity<BaseResponse> loginUserAccount(
-      @Valid @RequestBody BaseRequest<LoginRequest> loginRequest) throws WFException {
+      @Valid @RequestBody BaseRequest<LoginRequest> loginRequest)
+      throws WFException, InvocationTargetException, IllegalAccessException {
     LoginResponse result = userService.login(loginRequest);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }

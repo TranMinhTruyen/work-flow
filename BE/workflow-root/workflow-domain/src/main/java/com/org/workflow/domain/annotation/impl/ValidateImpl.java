@@ -1,6 +1,10 @@
 package com.org.workflow.domain.annotation.impl;
 
 
+import java.math.BigDecimal;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.org.workflow.core.common.enums.ValidateEnum;
 import com.org.workflow.domain.annotation.Validate;
 
@@ -14,46 +18,82 @@ public class ValidateImpl implements ConstraintValidator<Validate, String> {
 
   private ValidateEnum errorCode;
 
-  private int maxLength;
+  private boolean required;
 
   private int minLength;
 
+  private int maxLength;
+
+  private int numberMax;
+
   private int decimalPartNumber;
 
-  private static boolean isValidNumber(String value) {
-    return value.matches("[-+]?\\d*\\.?\\d+");
-  }
-
   public static boolean isValidDecimal(String input, int decimalPartNumber) {
-    if (input == null || input.isEmpty() || decimalPartNumber < 1) {
+    if (input == null || input.isEmpty()) {
       return false;
+    }
+    if (decimalPartNumber < 1) {
+      return input.matches("^[+-]?\\d+$");
     }
     String regex = "^[+-]?\\d+(\\.\\d{" + decimalPartNumber + "})?$";
     return input.matches(regex);
   }
 
+  public static boolean isValidDecimalMax(String input, int decimalPartNumber, int numberMax) {
+    if (input == null || input.isEmpty()) {
+      return false;
+    }
+
+    String regex;
+    if (decimalPartNumber < 1) {
+      regex = "^[+-]?\\d+$";
+    } else {
+      regex = "^[+-]?\\d+\\.\\d{" + decimalPartNumber + "}$";
+    }
+
+    if (!input.matches(regex)) {
+      return false;
+    }
+
+    try {
+      BigDecimal value = new BigDecimal(input);
+      BigDecimal max = BigDecimal.valueOf(numberMax);
+      return value.compareTo(max) <= 0;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
   @Override
   public void initialize(Validate constraintAnnotation) {
-    this.maxLength = constraintAnnotation.maxLength();
-    this.minLength = constraintAnnotation.minLength();
-    this.decimalPartNumber = constraintAnnotation.decimalPartNumber();
     this.errorCode = constraintAnnotation.errorCode();
+    this.required = constraintAnnotation.required();
+    this.minLength = constraintAnnotation.minLength();
+    this.maxLength = constraintAnnotation.maxLength();
+    this.numberMax = constraintAnnotation.numberMax();
+    this.decimalPartNumber = constraintAnnotation.decimalPartNumber();
   }
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
-    if (value == null || value.isEmpty()) {
-      return false;
-    }
+    context.disableDefaultConstraintViolation();
 
     boolean valid = switch (errorCode) {
-      case MIN_MAX_VALIDATE -> value.length() >= minLength && value.length() <= maxLength;
-      case NUMBER_VALIDATE -> isValidNumber(value);
-      case DECIMAL_VALIDATE -> isValidDecimal(value, decimalPartNumber);
+      case REQUIRED_VALIDATE -> {
+        if (required) {
+          yield !StringUtils.isEmpty(value);
+        } else {
+          yield true;
+        }
+      }
+      case MIN_MAX_VALIDATE -> value.length() >= this.minLength && value.length() <= this.maxLength;
+      case NUMBER_VALIDATE -> isValidDecimal(value, 0);
+      case DECIMAL_VALIDATE -> isValidDecimal(value, this.decimalPartNumber);
+      case MAX_NUMBER_VALIDATE -> isValidDecimalMax(value, 0, this.numberMax);
+      case MAX_DECIMAL_VALIDATE -> isValidDecimalMax(value, this.decimalPartNumber, this.numberMax);
     };
 
     if (!valid) {
-      context.disableDefaultConstraintViolation();
       context.buildConstraintViolationWithTemplate(errorCode.getMessageCode())
           .addConstraintViolation();
     }

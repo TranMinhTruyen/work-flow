@@ -15,9 +15,9 @@ import PageGridTable from '@/components/table/PageGridTable';
 import { searchAction } from './action/action';
 import EditModal from './components/EditModal';
 import TestModal from './components/TestModal';
-import ISearchScreenRequest from './model/screenRequest';
-import ISearchScreenResponse from './model/screenResponse';
-import IScreenTableRow from './model/table';
+import IScreenTableRow from './model/ScreenTableRow';
+import ISearchScreenRequest from './model/SearchScreenRequest';
+import ISearchScreenResponse from './model/SearchScreenResponse';
 import './screen.css';
 
 const ScreenPage = () => {
@@ -64,10 +64,13 @@ const ScreenPage = () => {
     (rowData: IScreenTableRow) => () => {
       openDrawer({
         isOnClose: true,
+        onCloseAction: () => {
+          handleSearch({ ...pageable });
+        },
         content: <EditModal data={rowData} />,
       });
     },
-    [openDrawer]
+    [handleSearch, openDrawer, pageable]
   );
 
   const colDefs = useMemo<ColDef<IScreenTableRow>[]>(

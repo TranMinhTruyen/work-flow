@@ -132,7 +132,7 @@ public class UserService extends AbstractService {
    * @throws WFException AppException
    */
   public CreateUserResponse createUserForAdmin(BaseRequest<CreateUserRequest> baseRequest)
-      throws WFException {
+      throws WFException, InvocationTargetException, IllegalAccessException {
     String username = AuthUtil.getAuthentication().getUsername();
 
     CreateUserRequest createUserRequest = baseRequest.getPayload();
@@ -183,7 +183,7 @@ public class UserService extends AbstractService {
    * @throws WFException AppException
    */
   public CreateUserResponse createUser(BaseRequest<CreateUserRequest> baseRequest)
-      throws WFException {
+      throws WFException, InvocationTargetException, IllegalAccessException {
     CreateUserRequest createUserRequest = baseRequest.getPayload();
 
     Optional<UserAccount> result =
@@ -231,7 +231,8 @@ public class UserService extends AbstractService {
    * @return LoginResponse
    * @throws WFException AppException
    */
-  public LoginResponse login(BaseRequest<LoginRequest> baseRequest) throws WFException {
+  public LoginResponse login(BaseRequest<LoginRequest> baseRequest)
+      throws WFException, InvocationTargetException, IllegalAccessException {
     UserAccount userAccount;
     LoginRequest loginRequest = baseRequest.getPayload();
     try {

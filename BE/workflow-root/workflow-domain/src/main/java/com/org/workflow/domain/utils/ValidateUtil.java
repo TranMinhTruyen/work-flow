@@ -34,16 +34,26 @@ public class ValidateUtil {
     }
 
     // Format message from messageId and return
-    switch (messageId) {
-      // Check length validate
+
+    return switch (messageId) {
+      case REQUIRED_VALIDATE:
+        yield messageSource.getMessage(ValidateEnum.REQUIRED_VALIDATE.getMessageCode(),
+            new Object[] {fieldName}, locale);
       case ValidateEnum.MIN_MAX_VALIDATE:
         String minLength = errorAttributes.get("minLength").toString();
         String maxLength = errorAttributes.get("maxLength").toString();
-        return messageSource.getMessage(ValidateEnum.MIN_MAX_VALIDATE.getMessageCode(),
+        yield messageSource.getMessage(ValidateEnum.MIN_MAX_VALIDATE.getMessageCode(),
             new Object[] {fieldName, minLength, maxLength}, locale);
-      default:
-        return "";
-    }
+      case ValidateEnum.NUMBER_VALIDATE:
+        yield messageSource.getMessage(ValidateEnum.NUMBER_VALIDATE.getMessageCode(),
+            new Object[] {fieldName}, locale);
+      case DECIMAL_VALIDATE:
+        yield null;
+      case MAX_NUMBER_VALIDATE:
+        yield null;
+      case MAX_DECIMAL_VALIDATE:
+        yield null;
+    };
   }
 
 }

@@ -6,8 +6,8 @@ const LoginPage = lazy(() => import('@/pages/auth-page/login/LoginPage'));
 const RegisterPage = lazy(() => import('@/pages/auth-page/register/RegisterPage'));
 const HomePage = lazy(() => import('@/pages/main-page/home/HomePage'));
 const KanbanPage = lazy(() => import('@/pages/main-page/kanban/KanbanPage'));
-const ScreenPage = lazy(() => import('@/pages/main-page/master/screen/ScreenPage'));
-const UserPage = lazy(() => import('@/pages/main-page/master/user/UserPage'));
+const ScreenPage = lazy(() => import('@/pages/main-page/settings/screen/ScreenPage'));
+const UserPage = lazy(() => import('@/pages/main-page/settings/user/UserPage'));
 
 export interface IRouterItem {
   screen: ReactNode;

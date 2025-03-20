@@ -4,9 +4,11 @@ import { screenService } from '@/services/screenService';
 
 import mockData from '../data/mockData.json';
 import IGetScreenDetail from '../model/GetScreenDetail';
-import IScreenTableRow from '../model/Table';
-import ISearchScreenRequest from '../model/screenRequest';
-import ISearchScreenResponse from '../model/screenResponse';
+import ISaveScreenRequest from '../model/SaveScreenRequest';
+import ISaveScreenResponse from '../model/SaveScreenResponse';
+import IScreenTableRow from '../model/ScreenTableRow';
+import ISearchScreenRequest from '../model/SearchScreenRequest';
+import ISearchScreenResponse from '../model/SearchScreenResponse';
 
 export const initMockData = () => {
   const data: IScreenTableRow[] = mockData.map(item => ({ ...item }));
@@ -36,6 +38,15 @@ export const searchAction = async (
 export const getScreenDetail = async (screenId?: string): Promise<IGetScreenDetail> => {
   const response: IGetScreenDetail = await store
     .dispatch(screenService.endpoints.getScreenDetail.initiate({ screenId: screenId }))
+    .unwrap();
+  return response;
+};
+
+export const saveAction = async (
+  saveScreenRequest: ISaveScreenRequest
+): Promise<ISaveScreenResponse> => {
+  const response: ISaveScreenResponse = await store
+    .dispatch(screenService.endpoints.saveScreen.initiate(saveScreenRequest))
     .unwrap();
   return response;
 };
