@@ -15,7 +15,11 @@
     "ok": "OK",
     "save": "Save",
     "back": "Back",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "submit": "Submit"
+  },
+  "buttonMessage": {
+    "submit": "Are you want to do submit action?"
   },
   "ERROR": "Error",
   "SUCCESS": "Success",

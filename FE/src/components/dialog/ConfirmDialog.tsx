@@ -210,7 +210,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         <Divider />
 
         <DialogActions sx={{ justifyContent: 'center', alignItems: 'center', padding: '10px' }}>
-          <Stack direction={'row'} alignItems={'center'} spacing={10}>
+          <Stack direction={'row'} alignItems={'center'} spacing={7}>
             <Button
               label={
                 <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>

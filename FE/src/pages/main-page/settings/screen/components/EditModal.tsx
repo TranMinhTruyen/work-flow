@@ -9,7 +9,7 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
-import Button from '@/components/button/Button';
+import SubmitButton from '@/components/button/SubmitButton';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import GridTable from '@/components/table/GridTable';
@@ -26,7 +26,12 @@ const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
   const { closeDrawer } = useRightDrawer();
-  const { control, reset, getValues } = useForm<IEditModalForm>();
+  const {
+    control,
+    reset,
+    getValues,
+    formState: { isDirty },
+  } = useForm<IEditModalForm>();
 
   const handleGetScreenDetail = useCallback(async () => {
     const response = await getScreenDetail(data.screenId);
@@ -96,20 +101,19 @@ const EditModal = (props: EditModalProps) => {
         <Typography id={'editModalTitle'}>Detail</Typography>
 
         <form id={'edit-screen-form'}>
-          <Stack spacing={3} direction={'row'}>
+          <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
             <Stack spacing={3}>
-              <TextInput name={'screenId'} control={control} disabled />
-
-              <TextInput name={'screenName'} control={control} required />
+              <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
+              <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
             </Stack>
 
             <Stack spacing={3}>
-              <TextInput name={'createDatetime'} control={control} disabled />
-              <TextInput name={'screenUrl'} control={control} required />
+              <TextInput name={'createDatetime'} control={control} sx={styles.textInput} disabled />
+              <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
             </Stack>
 
             <Stack spacing={3}>
-              <TextInput name={'updateDatetime'} control={control} disabled />
+              <TextInput name={'updateDatetime'} control={control} sx={styles.textInput} disabled />
               <SwitchInput name={'active'} control={control} label={'Status'} />
             </Stack>
           </Stack>
@@ -131,15 +135,7 @@ const EditModal = (props: EditModalProps) => {
         <Divider />
 
         <Stack>
-          <Button
-            sx={styles.okButton}
-            label={
-              <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                {'Save'}
-              </Typography>
-            }
-            onClick={handleSaveAction}
-          />
+          <SubmitButton onSubmit={handleSaveAction} />
         </Stack>
       </Stack>
     </Box>
@@ -154,9 +150,9 @@ const styles = {
     position: 'relative',
   },
 
-  okButton: {
-    marginLeft: 'auto',
-    backgroundColor: 'rgba(0, 170, 255, 0.8)',
+  textInput: {
+    width: 290,
+    maxWidth: 290,
   },
 };
 

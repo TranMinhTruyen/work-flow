@@ -15,7 +15,11 @@
     "ok": "OK",
     "save": "Lưu",
     "back": "Quay lại",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "submit": "Gửi"
+  },
+  "buttonMessage": {
+    "submit": "Bạn có muốn thực hiện hành động gửi không?"
   },
   "ERROR": "Lỗi",
   "SUCCESS": "Thành công",

@@ -3,5 +3,8 @@ export default interface IScreenTableRow {
   screenName?: string;
   screenUrl?: string;
   createDatetime?: string;
+  createdBy?: string;
+  updateDatetime?: string;
+  updatedBy?: string;
   active?: boolean;
 }

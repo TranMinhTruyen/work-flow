@@ -1,11 +1,11 @@
 import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useCallback, useMemo } from 'react';
 
 import { ControlProps } from '@/common/hooks/types/useTableTypes';
 
+import CustomCell from './components/CustomCell';
 import CustomHeader from './components/CustomHeader';
 
 export type GridTableProps = Omit<AgGridReactProps, 'rowData'> & {
@@ -43,12 +43,10 @@ const GridTable = (props: GridTableProps) => {
       resizable: false,
       autoHeight: true,
       suppressMovable: true,
-      wrapText: true,
+      wrapText: false,
       headerComponent: CustomHeader,
       headerComponentParams: { control: control },
-      cellRenderer: (params: { value: any }) => {
-        return <Typography>{params.value}</Typography>;
-      },
+      cellRenderer: CustomCell,
       ...defaultColDefProp,
     }),
     [control, defaultColDefProp]

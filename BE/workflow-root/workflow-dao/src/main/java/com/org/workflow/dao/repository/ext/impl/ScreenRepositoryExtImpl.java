@@ -1,11 +1,14 @@
 package com.org.workflow.dao.repository.ext.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.repository.common.CommonRepositoryExt;
 import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
@@ -37,6 +40,12 @@ public class ScreenRepositoryExtImpl extends CommonRepositoryExt implements Scre
     }
 
     return pageableFind(new Query(criteria), pageable, Screen.class);
+  }
+
+  @Override
+  public Screen saveDocument(Screen screen)
+      throws WFException, InvocationTargetException, IllegalAccessException {
+    return saveDocument(screen, Screen.class);
   }
 
 }

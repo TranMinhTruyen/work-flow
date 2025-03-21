@@ -15,7 +15,11 @@
     "ok": "OK",
     "save": "保存",
     "back": "戻る",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "submit": "送信"
+  },
+  "buttonMessage": {
+    "submit": "送信アクションを実行しますか?"
   },
   "ERROR": "エラー",
   "SUCCESS": "成功",

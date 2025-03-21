@@ -74,7 +74,7 @@ public class ScreenService extends AbstractService {
             .format(screen.getCreateDatetime()));
         searchScreenResponse.setUpdatedBy(screen.getUpdateBy());
         searchScreenResponse.setUpdateDatetime(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-            .format(screen.getCreateDatetime()));
+            .format(screen.getUpdateDatetime()));
 
         searchScreenResponses.add(searchScreenResponse);
       }
@@ -123,10 +123,9 @@ public class ScreenService extends AbstractService {
 
     Optional<Screen> result = screenRepository.findScreenById(payload.getId());
 
-    Screen saveResult = null;
-
+    Screen screen;
     if (result.isPresent()) {
-      Screen screen = result.get();
+      screen = result.get();
       if (!screen.getUpdateDatetime().isEqual(payload.getUpdateDatetime())) {
         throw new WFException(UPDATE_FAILED);
       }
@@ -135,9 +134,8 @@ public class ScreenService extends AbstractService {
       screen.setActive(payload.isActive());
       screen.setUpdateDatetime(now);
       screen.setUpdateBy(username);
-      saveResult = screenRepository.save(screen);
     } else {
-      Screen screen = new Screen();
+      screen = new Screen();
       screen.setScreenId(payload.getScreenId());
       screen.setScreenName(payload.getScreenName());
       screen.setScreenUrl(payload.getScreenUrl());
@@ -147,8 +145,8 @@ public class ScreenService extends AbstractService {
       screen.setUpdateDatetime(now);
       screen.setUpdateBy(username);
       screen.setDeleted(false);
-      saveResult = screenRepository.save(screen);
     }
+    Screen saveResult = screenRepository.save(screen);
 
     SaveScreenResponse response = new SaveScreenResponse();
     response.setId(saveResult.getId());

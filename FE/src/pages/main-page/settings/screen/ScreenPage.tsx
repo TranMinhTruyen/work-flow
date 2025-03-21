@@ -2,14 +2,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
-import { cloneDeep } from 'lodash';
-import { ChangeEvent, memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import IconButton from '@/components/button/IconButton';
-import SwitchInput from '@/components/inputs/SwitchInput';
 import PageGridTable from '@/components/table/PageGridTable';
 
 import { searchAction } from './action/action';
@@ -21,7 +19,7 @@ import ISearchScreenResponse from './model/SearchScreenResponse';
 import './screen.css';
 
 const ScreenPage = () => {
-  const { control, pageable, data, onDataChange } = useTable<IScreenTableRow>();
+  const { control, pageable, onDataChange } = useTable<IScreenTableRow>();
   const { openDrawer } = useRightDrawer();
 
   const handleSearch = useCallback(
@@ -45,20 +43,6 @@ const ScreenPage = () => {
     };
     handleSearch(searchCondition);
   }, [handleSearch, pageable]);
-
-  const handleSwitchActive = useCallback(
-    (rowData: IScreenTableRow) => (event: ChangeEvent<HTMLInputElement>) => {
-      onDataChange(
-        cloneDeep(data ?? []).map(item => {
-          if (item.screenId === rowData.screenId) {
-            item.active = event.target.checked;
-          }
-          return item;
-        })
-      );
-    },
-    [data, onDataChange]
-  );
 
   const handleEdit = useCallback(
     (rowData: IScreenTableRow) => () => {
@@ -99,6 +83,21 @@ const ScreenPage = () => {
         width: 200,
       },
       {
+        headerName: 'Created by',
+        field: 'createdBy',
+        width: 150,
+      },
+      {
+        headerName: 'Updated datetime',
+        field: 'updateDatetime',
+        width: 200,
+      },
+      {
+        headerName: 'Updated by',
+        field: 'updatedBy',
+        width: 150,
+      },
+      {
         headerName: 'Status',
         field: 'active',
         sortable: false,
@@ -106,7 +105,15 @@ const ScreenPage = () => {
         cellRenderer: (params: { data: IScreenTableRow; value: boolean }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
-              <SwitchInput checked={params.value} onChange={handleSwitchActive(params.data)} />
+              <Typography
+                sx={{
+                  color: params.value ? 'rgba(0, 225, 0, 1)' : 'rgba(255, 0, 0, 1)',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {params.value ? 'Active' : 'Deactive'}
+              </Typography>
             </Stack>
           );
         },
@@ -129,7 +136,7 @@ const ScreenPage = () => {
         },
       },
     ],
-    [handleEdit, handleSwitchActive]
+    [handleEdit]
   );
 
   return (
