@@ -60,3 +60,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 /BE/workflow-main/src/main/resources/config/application-dev.yml
+BE/workflow-root/workflow-main/src/main/resources/config/application-dev.yml
