@@ -5,9 +5,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, useCallback, useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
+import useForm from '@/common/hooks/useForm';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
 import Button from '@/components/button/Button';
@@ -22,6 +22,7 @@ import IScreenTableRow from './model/ScreenTableRow';
 import ISearchScreenForm from './model/SearchScreenForm';
 import ISearchScreenRequest from './model/SearchScreenRequest';
 import ISearchScreenResponse from './model/SearchScreenResponse';
+
 import './screen.css';
 
 const ScreenPage = () => {
