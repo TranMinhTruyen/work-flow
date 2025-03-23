@@ -99,21 +99,21 @@ const AgGridContainer = styled('div')<GridTableProps>(
     },
 
     '& .ag-header-cell': {
-      borderRight: '1px solid #ccc',
+      borderRight: '1px solid rgba(204, 204, 204, 1)',
     },
 
     '& .ag-header-cell:last-child': {
-      borderRight: 'none',
+      borderRight: '1px solid rgba(255, 255, 255, 1) !important',
     },
 
     '& .ag-cell': {
       alignContent: 'center !important',
-      borderRight: '1px solid #ccc !important',
+      borderRight: '1px solid rgba(204, 204, 204, 1) !important',
       lineHeight: '1.8 !important',
     },
 
     '& .ag-cell:last-child': {
-      borderRight: 'none !important',
+      borderRight: '1px solid rgba(255, 255, 255, 1) !important',
     },
 
     '& .ag-cell-edit-wrapper': {

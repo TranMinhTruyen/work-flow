@@ -101,7 +101,7 @@ const StyledTextInput = styled(TextField)({
     minHeight: '40px !important',
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
-      borderRadius: 50,
+      borderRadius: '50px',
     },
     '&:hover fieldset': {
       borderColor: '#00b2ff',

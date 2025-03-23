@@ -9,7 +9,7 @@ import { openDialogContainer } from '../dialog/DialogContainer';
 import Button, { ButtonProps } from './Button';
 
 export type SubmitButtonProps = ButtonProps & {
-  onSubmit: () => void;
+  onSubmit?: () => void;
 };
 
 const SubmitButton = (props: SubmitButtonProps) => {

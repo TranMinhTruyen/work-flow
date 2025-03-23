@@ -42,9 +42,9 @@ const LoginPage = () => {
 
   // Handle submit login
   const handleLogin = useCallback(
-    async (data: ILoginForm) => {
+    async (formData: ILoginForm) => {
       await trigger();
-      const result = await handleSubmitLogin(data);
+      const result = await handleSubmitLogin(formData);
       if (result) {
         navigate(screenUrl.LOGIN.path, true);
       }

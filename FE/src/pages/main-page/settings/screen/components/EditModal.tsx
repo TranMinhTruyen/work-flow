@@ -1,14 +1,13 @@
 import CloseIcon from '@mui/icons-material/Close';
-import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, useCallback, useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
+import useForm from '@/common/hooks/useForm';
+import IconButton from '@/components/button/IconButton';
 import SubmitButton from '@/components/button/SubmitButton';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
@@ -26,12 +25,7 @@ const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
   const { closeDrawer } = useRightDrawer();
-  const {
-    control,
-    reset,
-    getValues,
-    formState: { isDirty },
-  } = useForm<IEditModalForm>();
+  const { control, reset, getValues } = useForm<IEditModalForm>();
 
   const handleGetScreenDetail = useCallback(async () => {
     const response = await getScreenDetail(data.screenId);
@@ -86,38 +80,41 @@ const EditModal = (props: EditModalProps) => {
   );
 
   return (
-    <Box>
-      <Stack spacing={2} sx={{ padding: '16px' }}>
-        <Stack sx={styles.header}>
-          <Stack spacing={1} alignItems={'center'}>
-            <Typography variant={'h4'}>EDIT SCREEN</Typography>
-          </Stack>
-          <IconButton onClick={closeDrawer} sx={{ position: 'absolute', right: 8 }}>
-            <CloseIcon />
-          </IconButton>
+    <Stack spacing={2} sx={{ padding: '16px' }}>
+      <Stack sx={styles.header} direction={'row'}>
+        <Stack sx={{ flex: 1, marginLeft: '30px' }}>
+          <Typography variant={'h4'}>EDIT SCREEN</Typography>
         </Stack>
+        <Stack>
+          <IconButton
+            width={30}
+            height={30}
+            onClick={closeDrawer}
+            icon={<CloseIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+          />
+        </Stack>
+      </Stack>
 
-        <Divider />
-        <Typography id={'editModalTitle'}>Detail</Typography>
+      <Divider />
+      <Typography id={'editModalTitle'}>Detail</Typography>
 
-        <form id={'edit-screen-form'}>
-          <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
-            <Stack spacing={3}>
-              <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
-              <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
-            </Stack>
-
-            <Stack spacing={3}>
-              <TextInput name={'createDatetime'} control={control} sx={styles.textInput} disabled />
-              <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
-            </Stack>
-
-            <Stack spacing={3}>
-              <TextInput name={'updateDatetime'} control={control} sx={styles.textInput} disabled />
-              <SwitchInput name={'active'} control={control} label={'Status'} />
-            </Stack>
+      <form id={'edit-screen-form'}>
+        <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
+          <Stack spacing={3}>
+            <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
+            <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
           </Stack>
-        </form>
+
+          <Stack spacing={3}>
+            <TextInput name={'createDatetime'} control={control} sx={styles.textInput} disabled />
+            <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
+          </Stack>
+
+          <Stack spacing={3}>
+            <TextInput name={'updateDatetime'} control={control} sx={styles.textInput} disabled />
+            <SwitchInput name={'active'} control={control} label={'Status'} />
+          </Stack>
+        </Stack>
 
         <Divider />
 
@@ -137,17 +134,14 @@ const EditModal = (props: EditModalProps) => {
         <Stack>
           <SubmitButton onSubmit={handleSaveAction} />
         </Stack>
-      </Stack>
-    </Box>
+      </form>
+    </Stack>
   );
 };
 
 const styles = {
   header: {
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
   },
 
   textInput: {
