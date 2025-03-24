@@ -5,8 +5,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/pageable';
@@ -28,7 +30,12 @@ import './screen.css';
 const ScreenPage = () => {
   const { control, pageable, onDataChange } = useTable<IScreenTableRow>();
   const { openDrawer } = useRightDrawer();
-  const { control: formControl, handleSubmit } = useForm<ISearchScreenForm>();
+  const { control: formControl, handleSubmit } = useForm<ISearchScreenForm>({
+    context: {
+      language: I18nEnum.SCREEN_I18N,
+    },
+  });
+  const { t } = useTranslation(I18nEnum.SCREEN_I18N);
 
   const onSearchAction = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
@@ -176,9 +183,10 @@ const ScreenPage = () => {
     <Stack spacing={2}>
       {/* Screen header */}
       <Stack direction={'row'} spacing={2}>
-        <Typography variant={'h6'}>Screen master</Typography>
+        <Typography sx={styles.title}>{t('title')}</Typography>
       </Stack>
 
+      {/* Search form */}
       <form id={'search-screen-form'} onSubmit={handleSubmit(handleClickSearch)}>
         <Stack direction={'row'} spacing={2}>
           <TextInput name={'screenId'} control={formControl} sx={styles.textInput} />
@@ -187,23 +195,15 @@ const ScreenPage = () => {
 
           <Stack direction={'row'} spacing={2} sx={{ alignSelf: 'center' }}>
             <Button
-              label={
-                <Stack direction={'row'} spacing={0.5}>
-                  <SearchIcon />
-                  <Typography sx={styles.buttonLabel}>Search</Typography>
-                </Stack>
-              }
+              label={<Typography sx={styles.buttonLabel}>{t('button.search')}</Typography>}
+              startIcon={<SearchIcon />}
               sx={styles.button}
               form={'search-screen-form'}
               type={'submit'}
             />
 
             <Button
-              label={
-                <Stack direction={'row'} spacing={0.5}>
-                  <Typography sx={styles.buttonLabel}>Clear</Typography>
-                </Stack>
-              }
+              label={<Typography sx={styles.buttonLabel}>{t('button.clear')}</Typography>}
               sx={styles.button}
             />
           </Stack>
@@ -212,7 +212,7 @@ const ScreenPage = () => {
 
       {/* List screen table */}
       <Stack>
-        <PageGridTable height={'80vh'} maxHeight={'80vh'} columnDefs={colDefs} control={control} />
+        <PageGridTable height={'75vh'} maxHeight={'75vh'} columnDefs={colDefs} control={control} />
       </Stack>
     </Stack>
   );
@@ -233,13 +233,19 @@ const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
 };
 
 const styles = {
+  title: {
+    fontSize: '16px !important',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+
   textInput: {
     width: '290px',
     maxWidth: '290px',
   },
 
   button: {
-    width: '150px',
+    minWidth: '110px',
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
     height: '30px',
   },

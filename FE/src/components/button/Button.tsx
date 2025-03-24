@@ -19,7 +19,7 @@ const Button = (props: ButtonProps) => {
     label,
     isLoading = false,
     width = 100,
-    height = 30,
+    height = 35,
     startIcon,
     endIcon,
     badgeContent,

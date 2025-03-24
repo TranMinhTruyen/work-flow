@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext } from 'react';
 export type RightDrawerContent = {
   isOnClose: boolean;
   width?: string | number;
+  title?: ReactNode;
   content?: ReactNode;
   onCloseAction?: () => void;
 };

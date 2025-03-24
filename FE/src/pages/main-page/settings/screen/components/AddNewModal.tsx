@@ -23,7 +23,7 @@ const AddNewModal = () => {
 
   return (
     <form id={'add-new-screen-form'} onSubmit={handleSubmit(handleSaveAction)}>
-      <Stack spacing={2} sx={{ width: '500px', padding: '16px' }}>
+      <Stack spacing={2} sx={{ height: '100vh !important', padding: '16px' }}>
         <Stack sx={styles.header} direction={'row'}>
           <Stack sx={{ flex: 1, marginLeft: '30px' }}>
             <Typography variant={'h4'}>ADD NEW SCREEN</Typography>
@@ -40,7 +40,7 @@ const AddNewModal = () => {
 
         <Divider />
 
-        <Stack spacing={3} sx={{ justifySelf: 'center' }}>
+        <Stack spacing={3} sx={{ marginLeft: 'auto !important', marginRight: 'auto !important' }}>
           <TextInput name={'screenId'} control={control} sx={styles.textInput} required />
           <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
           <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />

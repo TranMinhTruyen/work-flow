@@ -1,0 +1,10 @@
+{
+  "title": "Cập nhật màn hình",
+  "label": {
+    "screenId": "ID màn hình",
+    "screenName": "Tên màn hình",
+    "screenUrl": "URL màn hình",
+    "createDatetime": "Ngày tạo",
+    "updateDatetime": "Ngày cập nhật"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "title": "編集画面",
+  "label": {
+    "screenId": "画面ID",
+    "screenName": "画面名",
+    "screenUrl": "画面URL",
+    "createDatetime": "作成日時",
+    "updateDatetime": "更新日時"
+  }
+}

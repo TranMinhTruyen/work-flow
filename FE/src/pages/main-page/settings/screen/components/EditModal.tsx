@@ -4,8 +4,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import IconButton from '@/components/button/IconButton';
 import SubmitButton from '@/components/button/SubmitButton';
@@ -25,7 +27,12 @@ const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
   const { closeDrawer } = useRightDrawer();
-  const { control, reset, getValues } = useForm<IEditModalForm>();
+  const { control, reset, getValues } = useForm<IEditModalForm>({
+    context: {
+      language: I18nEnum.EDIT_SCREEN_I18N,
+    },
+  });
+  const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
 
   const handleGetScreenDetail = useCallback(async () => {
     const response = await getScreenDetail(data.screenId);
@@ -72,6 +79,7 @@ const EditModal = (props: EditModalProps) => {
       },
       {
         headerName: '',
+        sortable: false,
         width: 80,
         cellRenderer: () => {},
       },
@@ -80,25 +88,25 @@ const EditModal = (props: EditModalProps) => {
   );
 
   return (
-    <Stack spacing={2} sx={{ padding: '16px' }}>
-      <Stack sx={styles.header} direction={'row'}>
-        <Stack sx={{ flex: 1, marginLeft: '30px' }}>
-          <Typography variant={'h4'}>EDIT SCREEN</Typography>
+    <form id={'edit-screen-form'}>
+      <Stack spacing={2} sx={{ padding: '16px' }}>
+        <Stack sx={styles.header} direction={'row'}>
+          <Stack sx={{ flex: 1, marginLeft: '30px' }}>
+            <Typography variant={'h5'}>{t('title')}</Typography>
+          </Stack>
+          <Stack>
+            <IconButton
+              width={30}
+              height={30}
+              onClick={closeDrawer}
+              icon={<CloseIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+            />
+          </Stack>
         </Stack>
-        <Stack>
-          <IconButton
-            width={30}
-            height={30}
-            onClick={closeDrawer}
-            icon={<CloseIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-          />
-        </Stack>
-      </Stack>
 
-      <Divider />
-      <Typography id={'editModalTitle'}>Detail</Typography>
+        <Divider />
+        <Typography id={'editModalTitle'}>Detail</Typography>
 
-      <form id={'edit-screen-form'}>
         <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
           <Stack spacing={3}>
             <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
@@ -134,8 +142,8 @@ const EditModal = (props: EditModalProps) => {
         <Stack>
           <SubmitButton onSubmit={handleSaveAction} />
         </Stack>
-      </form>
-    </Stack>
+      </Stack>
+    </form>
   );
 };
 
@@ -147,6 +155,12 @@ const styles = {
   textInput: {
     width: 290,
     maxWidth: 290,
+  },
+
+  button: {
+    width: '145px',
+    backgroundColor: 'rgba(0, 170, 255, 0.8)',
+    height: '40px',
   },
 };
 

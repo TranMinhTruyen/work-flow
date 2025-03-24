@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
 import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -17,7 +17,9 @@ const MainLayout = () => {
     <ScreenLayout open={openDrawer}>
       <MainHeader drawerWidth={DRAWER_WIDTH} />
       <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
-      <Outlet />
+      <Box sx={{ padding: '10px', flex: 1, overflow: 'auto' }}>
+        <Outlet />
+      </Box>
     </ScreenLayout>
   );
 };
@@ -30,9 +32,11 @@ type ScreenLayoutProps = {
 
 const ScreenLayout = styled(Grid2)<ScreenLayoutProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  marginTop: 75,
-  paddingLeft: 10,
-  paddingRight: 10,
+  marginTop: 55,
+  height: 'calc(100vh - 55px)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,

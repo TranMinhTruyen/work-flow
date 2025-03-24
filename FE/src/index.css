@@ -41,11 +41,3 @@ a {
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
-
-.MuiTypography-root {
-  align-self: center;
-}
-
-.MuiTypography-body1 {
-  font-size: 15px !important;
-}

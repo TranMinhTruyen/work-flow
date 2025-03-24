@@ -1,9 +1,10 @@
 {
+  "title": "Edit screen",
   "label": {
     "screenId": "Screen ID",
     "screenName": "Screen name",
     "screenUrl": "Screen URL",
-    "createDateTime": "Create datetime",
-    "updateDateTime": "Update dateTime"
+    "createDatetime": "Create Datetime",
+    "updateDatetime": "Update Datetime"
   }
 }
