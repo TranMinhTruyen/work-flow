@@ -18,8 +18,8 @@ import TextInput from '@/components/form/TextInput';
 import PageGridTable from '@/components/table/PageGridTable';
 
 import { searchAction } from './action/action';
-import AddNewModal from './components/AddNewModal';
-import EditModal from './components/EditModal';
+import AddNewModal from './components/add-new-modal/AddNewModal';
+import EditModal from './components/edit-modal/EditModal';
 import IScreenTableRow from './model/ScreenTableRow';
 import ISearchScreenForm from './model/SearchScreenForm';
 import ISearchScreenRequest from './model/SearchScreenRequest';
@@ -35,7 +35,7 @@ const ScreenPage = () => {
       language: I18nEnum.SCREEN_I18N,
     },
   });
-  const { t } = useTranslation(I18nEnum.SCREEN_I18N);
+  const { t } = useTranslation([I18nEnum.SCREEN_I18N, I18nEnum.EDIT_SCREEN_I18N]);
 
   const onSearchAction = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
@@ -74,19 +74,21 @@ const ScreenPage = () => {
     (rowData: IScreenTableRow) => () => {
       openDrawer({
         isOnClose: true,
+        title: <Typography variant={'h5'}>{t(`${I18nEnum.EDIT_SCREEN_I18N}:title`)}</Typography>,
         onCloseAction: () => {
           onSearchAction({ ...pageable });
         },
         content: <EditModal data={rowData} />,
       });
     },
-    [onSearchAction, openDrawer, pageable]
+    [onSearchAction, openDrawer, pageable, t]
   );
 
   const handleAddNew = useCallback(() => {
     openDrawer({
       isOnClose: true,
       width: '500px',
+      title: <Typography variant={'h5'}>Add new screen</Typography>,
       onCloseAction: () => {
         onSearchAction({ ...pageable });
       },

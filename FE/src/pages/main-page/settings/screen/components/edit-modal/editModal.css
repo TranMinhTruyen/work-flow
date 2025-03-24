@@ -1,0 +1,19 @@
+#editModalTitle {
+  font-size: 18px !important;
+  font-weight: bold;
+  margin-right: auto;
+}
+
+#switchFormGroup {
+  height: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#switchLabel {
+  height: 40px;
+}
+
+#switchFormGroup .MuiSwitch-root {
+  height: 40px;
+}
