@@ -31,7 +31,9 @@
     "noPermission": "You don't have any permission!"
   },
   "table": {
-    "noData": "No data"
+    "noData": "No data",
+    "showTotalData": "Showing {0} to {1} of {2} entries",
+    "pageInfo": "Page {0} of {1}"
   },
   "network": {
     "interrupted": "The connection was interrupted.",

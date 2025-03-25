@@ -20,7 +20,7 @@ import { useAppSelector } from '@/lib/store';
 
 export type DatePickerProps = Omit<
   TextFieldProps,
-  'value' | 'onChange' | 'onBlur' | 'onFocus' | 'onClose' | 'defaultValue'
+  'value' | 'onChange' | 'onBlur' | 'onFocus' | 'onClose' | 'onError' | 'defaultValue'
 > & {
   height?: number;
   width?: number;
@@ -53,6 +53,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     helperText,
     className,
     slotProps,
+    ...restProps
   } = props;
   const [selectedDate, setSelectedDate] = useState<DateType>(null);
   const language: string = useAppSelector(selectLanguage);
@@ -134,6 +135,7 @@ const DatePickerInput = (props: DatePickerProps) => {
           },
           ...slotProps,
         }}
+        {...restProps}
       />
     </LocalizationProvider>
   );

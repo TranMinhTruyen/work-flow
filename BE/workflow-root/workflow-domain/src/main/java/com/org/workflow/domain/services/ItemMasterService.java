@@ -3,6 +3,17 @@ package com.org.workflow.domain.services;
 import static com.org.workflow.core.common.enums.MessageEnum.ITEM_MASTER_EXISTS;
 import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.MasterItem;
@@ -15,16 +26,8 @@ import com.org.workflow.domain.dto.request.master.MasterItemRequest;
 import com.org.workflow.domain.dto.response.master.MasterItemResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.HistoryUtil;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +39,11 @@ public class ItemMasterService extends AbstractService {
 
   private final ExceptionService exceptionService;
 
-  public MasterItem createItemMaster(BaseRequest<MasterItemRequest> request)
-      throws WFException {
+  public MasterItem createItemMaster(BaseRequest<MasterItemRequest> request) throws WFException {
     MasterItemRequest payload = request.getPayload();
 
-    Optional<MasterItem> findResult = itemMasterRepository.getByCodeAndValue(
-        payload.getMasterCode(), payload.getMasterValue());
+    Optional<MasterItem> findResult =
+        itemMasterRepository.getByCodeAndValue(payload.getMasterCode(), payload.getMasterValue());
 
     if (findResult.isPresent()) {
       throw exceptionService.getWFException(ITEM_MASTER_EXISTS, request.getLanguage());
@@ -67,8 +69,8 @@ public class ItemMasterService extends AbstractService {
     LocalDateTime now = LocalDateTime.now();
     create.setCreatedBy(username);
     create.setCreateDatetime(now);
-    create.setUpdateBy(username);
-    create.setUpdateDatetime(now);
+    create.setUpdatedBy(username);
+    create.setUpdatedDatetime(now);
 
     MasterItem result = itemMasterRepository.save(create);
 
@@ -83,8 +85,7 @@ public class ItemMasterService extends AbstractService {
     // TODO demo paging in mongoDB
     Pageable pageable = PageRequest.of(0, 10, Sort.by("display_order").ascending());
 
-    Page<MasterItem> result = itemMasterRepository.getByCode(
-        payload, pageable);
+    Page<MasterItem> result = itemMasterRepository.getByCode(payload, pageable);
     List<MasterItemResponse> returnValue = new ArrayList<>();
     if (result.hasContent()) {
       MasterItemResponse masterItemResponse;
@@ -110,14 +111,14 @@ public class ItemMasterService extends AbstractService {
     return returnValue;
   }
 
-  public MasterItem updateItemMaster(BaseRequest<MasterItemRequest> request)
-      throws WFException {
+  public MasterItem updateItemMaster(BaseRequest<MasterItemRequest> request) throws WFException {
     MasterItemRequest payload = request.getPayload();
 
-    Optional<MasterItem> result = itemMasterRepository.getItemMasterByIdAndMasterCode(
-        payload.getId(), payload.getMasterCode());
-    MasterItem resultValue = result.orElseThrow(
-        () -> exceptionService.getWFException(NOT_FOUND, request.getLanguage()));
+    Optional<MasterItem> result =
+        itemMasterRepository.getItemMasterByIdAndMasterCode(payload.getId(),
+            payload.getMasterCode());
+    MasterItem resultValue =
+        result.orElseThrow(() -> exceptionService.getWFException(NOT_FOUND, request.getLanguage()));
 
     MasterItem update = new MasterItem();
     update.setId(resultValue.getId());
@@ -139,8 +140,8 @@ public class ItemMasterService extends AbstractService {
     LocalDateTime now = LocalDateTime.now();
     update.setCreatedBy(username);
     update.setCreateDatetime(now);
-    update.setUpdateBy(username);
-    update.setUpdateDatetime(now);
+    update.setUpdatedBy(username);
+    update.setUpdatedDatetime(now);
 
     MasterItem updateResult = itemMasterRepository.save(update);
 
@@ -253,8 +254,8 @@ public class ItemMasterService extends AbstractService {
     LocalDateTime now = LocalDateTime.now();
     masterItemHistory.setCreatedBy(username);
     masterItemHistory.setCreateDatetime(now);
-    masterItemHistory.setUpdateBy(username);
-    masterItemHistory.setUpdateDatetime(now);
+    masterItemHistory.setUpdatedBy(username);
+    masterItemHistory.setUpdatedDatetime(now);
 
     itemMasterHistoryRepository.save(masterItemHistory);
   }

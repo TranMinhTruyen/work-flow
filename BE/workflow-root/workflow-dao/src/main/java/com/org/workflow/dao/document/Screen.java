@@ -32,6 +32,9 @@ public class Screen extends AbstractDocument implements Serializable {
   @Field(name = "screen_components", write = Field.Write.ALWAYS)
   private List<ScreenComponent> screenComponentList;
 
+  @Field(name = "note", write = Field.Write.ALWAYS)
+  private String note;
+
   @Field(name = "is_active", write = Write.ALWAYS)
   private boolean isActive;
 

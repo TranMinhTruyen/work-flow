@@ -1,0 +1,22 @@
+{
+  "title": "Screen setting",
+  "label": {
+    "screenId": "Screen ID",
+    "screenName": "Screen name",
+    "screenUrl": "Screen URL"
+  },
+  "button": {
+    "search": "Search",
+    "clear": "Clear"
+  },
+  "table": {
+    "screenId": "Screen ID",
+    "screenName": "Screen name",
+    "screenUrl": "Screen URL",
+    "createdDatetime": "Create datetime",
+    "createdBy": "Create by",
+    "updatedDatetime": "Update datetime",
+    "updatedBy": "Update by",
+    "status": "Status"
+  }
+}

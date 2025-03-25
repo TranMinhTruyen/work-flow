@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.org.workflow.core.common.exception.WFException;
@@ -62,7 +63,7 @@ public class ScreenService extends AbstractService {
         PageableUtil.getPageable(request));
 
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
-    if (!queryResult.getResult().isEmpty()) {
+    if (!CollectionUtils.isEmpty(queryResult.getResult())) {
       for (Screen screen : queryResult.getResult()) {
         SearchScreenResponse searchScreenResponse = new SearchScreenResponse();
         searchScreenResponse.setScreenId(screen.getScreenId());
@@ -70,11 +71,13 @@ public class ScreenService extends AbstractService {
         searchScreenResponse.setScreenUrl(screen.getScreenUrl());
         searchScreenResponse.setActive(screen.isActive());
         searchScreenResponse.setCreatedBy(screen.getCreatedBy());
-        searchScreenResponse.setCreateDatetime(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-            .format(screen.getCreateDatetime()));
-        searchScreenResponse.setUpdatedBy(screen.getUpdateBy());
-        searchScreenResponse.setUpdateDatetime(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-            .format(screen.getUpdateDatetime()));
+        searchScreenResponse.setCreatedDatetime(
+            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
+                .format(screen.getCreateDatetime()));
+        searchScreenResponse.setUpdatedBy(screen.getUpdatedBy());
+        searchScreenResponse.setUpdatedDatetime(
+            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
+                .format(screen.getUpdatedDatetime()));
 
         searchScreenResponses.add(searchScreenResponse);
       }
@@ -110,8 +113,8 @@ public class ScreenService extends AbstractService {
         return screenComponentResponse;
       }).collect(Collectors.toList()));
     }
-    response.setCreateDatetime(screen.getCreateDatetime());
-    response.setUpdateDatetime(screen.getUpdateDatetime());
+    response.setCreatedDatetime(screen.getCreateDatetime());
+    response.setUpdatedDatetime(screen.getUpdatedDatetime());
 
     return response;
   }
@@ -126,14 +129,14 @@ public class ScreenService extends AbstractService {
     Screen screen;
     if (result.isPresent()) {
       screen = result.get();
-      if (!screen.getUpdateDatetime().isEqual(payload.getUpdateDatetime())) {
+      if (!screen.getUpdatedDatetime().isEqual(payload.getUpdatedDatetime())) {
         throw new WFException(UPDATE_FAILED);
       }
       screen.setScreenName(payload.getScreenName());
       screen.setScreenUrl(payload.getScreenUrl());
       screen.setActive(payload.isActive());
-      screen.setUpdateDatetime(now);
-      screen.setUpdateBy(username);
+      screen.setUpdatedDatetime(now);
+      screen.setUpdatedBy(username);
     } else {
       screen = new Screen();
       screen.setScreenId(payload.getScreenId());
@@ -142,8 +145,8 @@ public class ScreenService extends AbstractService {
       screen.setActive(payload.isActive());
       screen.setCreateDatetime(now);
       screen.setCreatedBy(username);
-      screen.setUpdateDatetime(now);
-      screen.setUpdateBy(username);
+      screen.setUpdatedDatetime(now);
+      screen.setUpdatedBy(username);
       screen.setDeleted(false);
     }
     Screen saveResult = screenRepository.save(screen);
@@ -154,8 +157,8 @@ public class ScreenService extends AbstractService {
     response.setScreenName(saveResult.getScreenName());
     response.setScreenUrl(saveResult.getScreenUrl());
     response.setActive(saveResult.isActive());
-    response.setCreateDatetime(saveResult.getCreateDatetime());
-    response.setUpdateDatetime(saveResult.getUpdateDatetime());
+    response.setCreatedDatetime(saveResult.getCreateDatetime());
+    response.setUpdatedDatetime(saveResult.getUpdatedDatetime());
     return response;
   }
 

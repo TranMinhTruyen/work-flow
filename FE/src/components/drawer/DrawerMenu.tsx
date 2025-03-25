@@ -191,7 +191,7 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
   );
 
   return (
-    <Tooltip title={!openDrawer ? item.screenLabel : ''} placement={'right'} arrow>
+    <Tooltip title={!openDrawer ? t(item.screenLabel) : ''} placement={'right'} arrow>
       <Box>
         <CustomListItem
           style={customListItemSx}
@@ -310,7 +310,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
 
       return (
         <>
-          <Tooltip title={!openDrawer ? item.screenLabel : ''} placement={'right'} arrow>
+          <Tooltip title={!openDrawer ? t(item.screenLabel) : ''} placement={'right'} arrow>
             <CustomListItem onClick={handleExpand} disablePadding>
               <CustomListItemButton
                 sx={customListItemButtonSx}

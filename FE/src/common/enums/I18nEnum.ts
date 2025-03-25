@@ -5,4 +5,5 @@ export enum I18nEnum {
   REGISTER_I18N = 'register',
   SCREEN_I18N = 'screen',
   EDIT_SCREEN_I18N = 'editScreen',
+  ADD_NEW_SCREEN_I18N = 'addNewScreen',
 }

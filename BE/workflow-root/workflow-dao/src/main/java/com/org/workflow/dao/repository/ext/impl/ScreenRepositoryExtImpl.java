@@ -1,6 +1,10 @@
 package com.org.workflow.dao.repository.ext.impl;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -35,11 +39,28 @@ public class ScreenRepositoryExtImpl extends CommonRepositoryExt implements Scre
     if (!StringUtils.isBlank(condition.getScreenName())) {
       criteria.and("screen_name").is(condition.getScreenName());
     }
+    if (!StringUtils.isBlank(condition.getScreenUrl())) {
+      criteria.and("screen_url").is(condition.getScreenUrl());
+    }
     if (!StringUtils.isBlank(condition.getIsActive())) {
       criteria.and("is_active").is(Boolean.parseBoolean(condition.getIsActive()));
     }
 
     return pageableFind(new Query(criteria), pageable, Screen.class);
+  }
+
+  @Override
+  public Optional<List<Screen>> findScreenMasterByListScreenId(List<String> listScreenId) {
+    Criteria criteria = new Criteria().andOperator(where("screen_id").in(listScreenId),
+        new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)),
+        where("delete_by").isNull(), where("delete_date_time").isNull());
+
+    List<Screen> result = mongoTemplate.find(new Query(criteria), Screen.class);
+
+    if (result.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(result);
   }
 
   @Override

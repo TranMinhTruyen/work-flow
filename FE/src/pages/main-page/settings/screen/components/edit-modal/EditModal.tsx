@@ -6,6 +6,7 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import SubmitButton from '@/components/button/SubmitButton';
+import DatePickerInput from '@/components/form/DatePickerInput';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import GridTable from '@/components/table/GridTable';
@@ -23,7 +24,7 @@ type EditModalProps = {
 const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
-  const { control, reset, getValues, handleSubmit } = useForm<IEditModalForm>({
+  const { control, reset, getValues } = useForm<IEditModalForm>({
     context: {
       language: I18nEnum.EDIT_SCREEN_I18N,
     },
@@ -83,7 +84,7 @@ const EditModal = (props: EditModalProps) => {
   );
 
   return (
-    <form id={'edit-screen-form'} onSubmit={handleSubmit(handleSaveAction)}>
+    <form id={'edit-screen-form'}>
       <Stack spacing={2}>
         <Typography id={'editModalTitle'}>Screen detail</Typography>
 
@@ -94,12 +95,24 @@ const EditModal = (props: EditModalProps) => {
           </Stack>
 
           <Stack spacing={3}>
-            <TextInput name={'createDatetime'} control={control} sx={styles.textInput} disabled />
+            <DatePickerInput
+              inputFormat={'YYYY-MM-DD HH:mm:ss'}
+              name={'createdDatetime'}
+              control={control}
+              width={290}
+              disabled
+            />
             <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
           </Stack>
 
           <Stack spacing={3}>
-            <TextInput name={'updateDatetime'} control={control} sx={styles.textInput} disabled />
+            <DatePickerInput
+              inputFormat={'YYYY-MM-DD HH:mm:ss'}
+              name={'updatedDatetime'}
+              control={control}
+              width={290}
+              disabled
+            />
             <SwitchInput name={'active'} control={control} label={'Status'} />
           </Stack>
         </Stack>
@@ -113,7 +126,7 @@ const EditModal = (props: EditModalProps) => {
           suppressMovableColumns
         />
 
-        <SubmitButton form={'edit-screen-form'} type={'submit'} />
+        <SubmitButton onSubmit={handleSaveAction} />
       </Stack>
     </form>
   );

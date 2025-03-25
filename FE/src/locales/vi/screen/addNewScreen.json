@@ -1,0 +1,9 @@
+{
+  "title": "Thêm màn hình mới",
+  "label": {
+    "screenId": "ID màn hình",
+    "screenName": "Tên màn hình",
+    "screenUrl": "URL màn hình",
+    "note": "Ghi chú"
+  }
+}

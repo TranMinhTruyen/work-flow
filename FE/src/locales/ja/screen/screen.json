@@ -1,0 +1,22 @@
+{
+  "title": "画面設定",
+  "label": {
+    "screenId": "画面ID",
+    "screenName": "画面名",
+    "screenUrl": "画面URL"
+  },
+  "button": {
+    "search": "検索",
+    "clear": "クリア"
+  },
+  "table": {
+    "screenId": "画面ID",
+    "screenName": "画面名",
+    "screenUrl": "画面URL",
+    "createdDatetime": "作成日時",
+    "createdBy": "作成者",
+    "updatedDatetime": "更新日時",
+    "updatedBy": "更新者",
+    "status": "ステータス"
+  }
+}

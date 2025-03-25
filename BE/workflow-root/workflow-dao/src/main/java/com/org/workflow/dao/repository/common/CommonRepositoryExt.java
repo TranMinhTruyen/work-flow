@@ -30,17 +30,17 @@ public class CommonRepositoryExt {
 
     if (StringUtils.isBlank(document.getId())) {
       document.setCreateDatetime(now);
-      document.setUpdateDatetime(now);
+      document.setUpdatedDatetime(now);
       return mongoTemplate.save(document);
     } else {
       T findResult = mongoTemplate.findById(document.getId(), documentClass);
 
-      if (findResult == null || !findResult.getUpdateDatetime()
-          .equals(document.getUpdateDatetime())) {
+      if (findResult == null || !findResult.getUpdatedDatetime()
+          .equals(document.getUpdatedDatetime())) {
         throw new WFException(UPDATE_FAILED);
       }
 
-      findResult.setUpdateDatetime(now);
+      findResult.setUpdatedDatetime(now);
       return mongoTemplate.save(findResult);
     }
   }

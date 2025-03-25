@@ -4,7 +4,7 @@
     "screenId": "ID màn hình",
     "screenName": "Tên màn hình",
     "screenUrl": "URL màn hình",
-    "createDatetime": "Ngày tạo",
-    "updateDatetime": "Ngày cập nhật"
+    "createdDatetime": "Ngày tạo",
+    "updatedDatetime": "Ngày cập nhật"
   }
 }

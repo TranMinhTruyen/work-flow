@@ -1,6 +1,8 @@
 package com.org.workflow.dao.repository.ext;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +17,9 @@ import com.org.workflow.dao.repository.result.common.PageableResult;
 public interface ScreenRepositoryExt {
 
   PageableResult<Screen> searchByCondition(SearchScreenCondition condition, Pageable pageable);
+
+
+  Optional<List<Screen>> findScreenMasterByListScreenId(List<String> listScreenId);
 
 
   Screen saveDocument(Screen screen)

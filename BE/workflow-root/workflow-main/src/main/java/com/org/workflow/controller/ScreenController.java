@@ -2,8 +2,6 @@ package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,8 +65,7 @@ public class ScreenController extends AbstractController {
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/save-screen")
   public ResponseEntity<BaseResponse> saveScreen(
-      @RequestBody BaseRequest<SaveScreenRequest> request)
-      throws WFException, InvocationTargetException, IllegalAccessException {
+      @RequestBody BaseRequest<SaveScreenRequest> request) throws WFException {
     SaveScreenResponse response = screenService.saveScreen(request);
     return this.returnBaseResponse(response, MessageEnum.SAVE_SUCCESS);
   }

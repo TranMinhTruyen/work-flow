@@ -2,9 +2,9 @@ export default interface IScreenTableRow {
   screenId?: string;
   screenName?: string;
   screenUrl?: string;
-  createDatetime?: string;
+  createdDatetime?: string;
   createdBy?: string;
-  updateDatetime?: string;
+  updatedDatetime?: string;
   updatedBy?: string;
   active?: boolean;
 }

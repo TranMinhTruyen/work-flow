@@ -30,12 +30,12 @@ import './screen.css';
 const ScreenPage = () => {
   const { control, pageable, onDataChange } = useTable<IScreenTableRow>();
   const { openDrawer } = useRightDrawer();
+  const { t } = useTranslation(I18nEnum.SCREEN_I18N);
   const { control: formControl, handleSubmit } = useForm<ISearchScreenForm>({
     context: {
       language: I18nEnum.SCREEN_I18N,
     },
   });
-  const { t } = useTranslation([I18nEnum.SCREEN_I18N, I18nEnum.EDIT_SCREEN_I18N]);
 
   const onSearchAction = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
@@ -88,18 +88,18 @@ const ScreenPage = () => {
     openDrawer({
       isOnClose: true,
       width: '500px',
-      title: <Typography variant={'h5'}>Add new screen</Typography>,
+      title: <Typography variant={'h5'}>{t(`${I18nEnum.ADD_NEW_SCREEN_I18N}:title`)}</Typography>,
       onCloseAction: () => {
         onSearchAction({ ...pageable });
       },
       content: <AddNewModal />,
     });
-  }, [onSearchAction, openDrawer, pageable]);
+  }, [onSearchAction, openDrawer, pageable, t]);
 
   const colDefs = useMemo<ColDef<IScreenTableRow>[]>(
     () => [
       {
-        headerName: 'Screen ID',
+        headerName: t('table.screenId'),
         field: 'screenId',
         width: 180,
         cellRenderer: (params: { value: string }) => {
@@ -107,53 +107,62 @@ const ScreenPage = () => {
         },
       },
       {
-        headerName: 'Screen name',
+        headerName: t('table.screenName'),
         field: 'screenName',
+        minWidth: 250,
         flex: 1,
       },
       {
-        headerName: 'Screen URL',
+        headerName: t('table.screenUrl'),
         field: 'screenUrl',
+        minWidth: 250,
         flex: 1,
       },
       {
-        headerName: 'Created datetime',
-        field: 'createDatetime',
+        headerName: t('table.createdDatetime'),
+        field: 'createdDatetime',
         width: 200,
       },
       {
-        headerName: 'Created by',
+        headerName: t('table.createdBy'),
         field: 'createdBy',
-        width: 150,
+        minWidth: 175,
+        flex: 1,
+        cellRenderer: (params: { value: string }) => {
+          return <Typography sx={{ justifySelf: 'center' }}>{params.value}</Typography>;
+        },
       },
       {
-        headerName: 'Updated datetime',
-        field: 'updateDatetime',
+        headerName: t('table.updatedDatetime'),
+        field: 'updatedDatetime',
         width: 200,
       },
       {
-        headerName: 'Updated by',
+        headerName: t('table.updatedBy'),
         field: 'updatedBy',
-        width: 150,
+        minWidth: 175,
+        flex: 1,
+        cellRenderer: (params: { value: string }) => {
+          return <Typography sx={{ justifySelf: 'center' }}>{params.value}</Typography>;
+        },
       },
       {
-        headerName: 'Status',
+        headerName: t('table.status'),
         field: 'active',
         sortable: false,
         width: 150,
         cellRenderer: (params: { data: IScreenTableRow; value: boolean }) => {
           return (
-            <Stack sx={{ justifySelf: 'center' }}>
-              <Typography
-                sx={{
-                  color: params.value ? 'rgba(0, 225, 0, 1)' : 'rgba(255, 0, 0, 1)',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {params.value ? 'Active' : 'Deactive'}
-              </Typography>
-            </Stack>
+            <Typography
+              sx={{
+                color: params.value ? 'rgba(0, 225, 0, 1)' : 'rgba(255, 0, 0, 1)',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                justifySelf: 'center',
+              }}
+            >
+              {params.value ? 'Active' : 'Deactive'}
+            </Typography>
           );
         },
       },
@@ -247,7 +256,7 @@ const styles = {
   },
 
   button: {
-    minWidth: '110px',
+    minWidth: '125px',
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
     height: '30px',
   },

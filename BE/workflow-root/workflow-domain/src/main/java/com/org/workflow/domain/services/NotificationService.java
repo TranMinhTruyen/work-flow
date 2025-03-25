@@ -24,8 +24,8 @@ public class NotificationService extends AbstractService {
    */
   public List<NotificationResponse> findResponseIsNotRead() {
 
-    Optional<List<Notification>> result = notificationRepository
-        .findAllByIsReadIsFalseAndDeletedIsFalse();
+    Optional<List<Notification>> result =
+        notificationRepository.findAllByIsReadIsFalseAndDeletedIsFalse();
 
     List<NotificationResponse> notificationResponseList = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class NotificationService extends AbstractService {
         notificationResponse.setCreatedBy(notification.getCreatedBy());
         notificationResponse.setCreateDatetime(notification.getCreateDatetime());
         notificationResponse.setUpdateBy(notification.getCreatedBy());
-        notificationResponse.setUpdateDatetime(notification.getUpdateDatetime());
+        notificationResponse.setUpdateDatetime(notification.getUpdatedDatetime());
         notificationResponseList.add(notificationResponse);
       }
     }

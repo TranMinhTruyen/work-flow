@@ -2,13 +2,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SortIcon from '@mui/icons-material/Sort';
 import { Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import { Stack } from '@mui/system';
 import type { CustomHeaderProps as AgCustomHeaderProps } from 'ag-grid-react';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ControlProps } from '@/common/hooks/types/useTableTypes';
 import { capitalizeFirst } from '@/common/utils/stringUtil';
+import IconButton from '@/components/button/IconButton';
 
 export type CustomHeaderProps = AgCustomHeaderProps & {
   control?: ControlProps;
@@ -39,23 +39,35 @@ const CustomHeader = (props: CustomHeaderProps) => {
       let sortButton: ReactNode = null;
       if (ascSort) {
         sortButton = (
-          <IconButton onClick={onSortRequested('desc')}>
-            <KeyboardArrowUpIcon />
-          </IconButton>
+          <IconButton
+            width={30}
+            height={30}
+            onClick={onSortRequested('desc')}
+            sx={{ backgroundColor: 'inherit' }}
+            icon={<KeyboardArrowUpIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+          />
         );
       }
       if (descSort) {
         sortButton = (
-          <IconButton onClick={onSortRequested(null)}>
-            <KeyboardArrowDownIcon />
-          </IconButton>
+          <IconButton
+            width={30}
+            height={30}
+            onClick={onSortRequested(null)}
+            sx={{ backgroundColor: 'inherit' }}
+            icon={<KeyboardArrowDownIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+          />
         );
       }
       if (!ascSort && !descSort) {
         sortButton = (
-          <IconButton onClick={onSortRequested('asc')}>
-            <SortIcon fontSize={'small'} />
-          </IconButton>
+          <IconButton
+            width={30}
+            height={30}
+            onClick={onSortRequested('asc')}
+            sx={{ backgroundColor: 'inherit' }}
+            icon={<SortIcon fontSize={'small'} sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+          />
         );
       }
 

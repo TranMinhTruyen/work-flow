@@ -31,7 +31,9 @@
     "noPermission": "あなたには権限がありません!"
   },
   "table": {
-    "noData": "データなし"
+    "noData": "データなし",
+    "showTotalData": "全{2}件中、{0}～{1}件を表示",
+    "pageInfo": "ページ {0} / {1}"
   },
   "network": {
     "interrupted": "接続が中断されました。",

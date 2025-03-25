@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack';
 import { memo, useCallback } from 'react';
 
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import SubmitButton from '@/components/button/SubmitButton';
 import TextInput from '@/components/form/TextInput';
@@ -11,14 +12,19 @@ import IAddNewModalForm from '../../model/AddNewModalForm';
 import './addNewModal.css';
 
 const AddNewModal = () => {
-  const { control, handleSubmit } = useForm<IAddNewModalForm>();
+  const { control, getValues } = useForm<IAddNewModalForm>({
+    context: {
+      language: I18nEnum.ADD_NEW_SCREEN_I18N,
+    },
+  });
 
-  const handleSaveAction = useCallback(async (formData: IAddNewModalForm) => {
-    await saveAction({ ...formData });
-  }, []);
+  const handleSaveAction = useCallback(async () => {
+    const formValue = getValues();
+    await saveAction({ ...formValue });
+  }, [getValues]);
 
   return (
-    <form id={'add-new-screen-form'} onSubmit={handleSubmit(handleSaveAction)}>
+    <form id={'add-new-screen-form'}>
       <Stack spacing={2} sx={{ paddingTop: '8px' }}>
         <Stack spacing={3} sx={{ marginLeft: 'auto !important', marginRight: 'auto !important' }}>
           <TextInput name={'screenId'} control={control} sx={styles.textInput} required />
@@ -41,7 +47,7 @@ const AddNewModal = () => {
           />
         </Stack>
 
-        <SubmitButton form={'add-new-screen-form'} type={'submit'} />
+        <SubmitButton onSubmit={handleSaveAction} />
       </Stack>
     </form>
   );

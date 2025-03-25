@@ -35,6 +35,6 @@ public class SaveScreenRequest implements Serializable {
   @Validate(required = true)
   private boolean isActive;
 
-  private LocalDateTime updateDatetime;
+  private LocalDateTime updatedDatetime;
 
 }

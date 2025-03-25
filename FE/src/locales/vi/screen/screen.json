@@ -1,0 +1,22 @@
+{
+  "title": "Cài đặt màn hình",
+  "label": {
+    "screenId": "ID màn hình",
+    "screenName": "Tên màn hình",
+    "screenUrl": "URL màn hình"
+  },
+  "button": {
+    "search": "Tìm kiếm",
+    "clear": "Xóa"
+  },
+  "table": {
+    "screenId": "ID màn hình",
+    "screenName": "Tên màn hình",
+    "screenUrl": "URL màn hình",
+    "createdDatetime": "Ngày tạo",
+    "createdBy": "Người tạo",
+    "updatedDatetime": "Ngày cập nhật",
+    "updatedBy": "Người cập nhật",
+    "status": "Trạng thái"
+  }
+}

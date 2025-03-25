@@ -30,8 +30,8 @@ public class GetScreenDetailResponse implements Serializable {
 
   private boolean isActive;
 
-  private LocalDateTime createDatetime;
+  private LocalDateTime createdDatetime;
 
-  private LocalDateTime updateDatetime;
+  private LocalDateTime updatedDatetime;
 
 }

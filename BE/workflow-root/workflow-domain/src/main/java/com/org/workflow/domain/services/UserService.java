@@ -99,8 +99,8 @@ public class UserService extends AbstractService {
     createUserResponse.setImagePath(saveUserAccount.getImageObject());
     createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
     createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
-    createUserResponse.setUpdateDatetime(saveUserAccount.getUpdateDatetime());
-    createUserResponse.setUpdateBy(saveUserAccount.getUpdateBy());
+    createUserResponse.setUpdateDatetime(saveUserAccount.getUpdatedDatetime());
+    createUserResponse.setUpdateBy(saveUserAccount.getUpdatedBy());
     return createUserResponse;
   }
 
@@ -120,7 +120,7 @@ public class UserService extends AbstractService {
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
     userResponse.setIsActive(userAccount.isActive());
     userResponse.setCreateDatetime(userAccount.getCreateDatetime());
-    userResponse.setUpdateDatetime(userAccount.getUpdateDatetime());
+    userResponse.setUpdateDatetime(userAccount.getUpdatedDatetime());
     return userResponse;
   }
 
@@ -165,8 +165,8 @@ public class UserService extends AbstractService {
     userAccount.setLoginFailCount(0);
     userAccount.setCreatedBy(username);
     userAccount.setCreateDatetime(now);
-    userAccount.setUpdateBy(username);
-    userAccount.setUpdateDatetime(now);
+    userAccount.setUpdatedBy(username);
+    userAccount.setUpdatedDatetime(now);
     userAccount.setDeleted(false);
     UserAccount saveUserAccount = userRepository.saveDocument(userAccount);
 
@@ -215,7 +215,7 @@ public class UserService extends AbstractService {
     userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
     userAccount.setCreatedBy(createUserRequest.getFullName());
-    userAccount.setUpdateBy(createUserRequest.getFullName());
+    userAccount.setUpdatedBy(createUserRequest.getFullName());
     userAccount.setDeleted(false);
     UserAccount saveUserAccount = userRepository.saveDocument(userAccount);
 
@@ -364,7 +364,7 @@ public class UserService extends AbstractService {
         () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), "", username));
 
     if (updateUserRequest.getUpdateDatetime() != null && !updateUserRequest.getUpdateDatetime()
-        .equals(oldUserAccount.getUpdateDatetime())) {
+        .equals(oldUserAccount.getUpdatedDatetime())) {
       throw exceptionService.getWFException(UPDATE_FAILED, baseRequest.getLanguage());
     }
 
@@ -377,8 +377,8 @@ public class UserService extends AbstractService {
     userAccount.setRole(updateUserRequest.getRole());
     userAccount.setAuthorities(updateUserRequest.getAuthorities());
     userAccount.setActive(updateUserRequest.getIsActive());
-    userAccount.setUpdateDatetime(now);
-    userAccount.setUpdateBy(username);
+    userAccount.setUpdatedDatetime(now);
+    userAccount.setUpdatedBy(username);
     UserAccount userAccountUpdateResult = userRepository.saveDocument(userAccount);
 
     this.saveHistory(oldUserAccount, userAccountUpdateResult, ChangeTypeEnum.UPDATE);
@@ -386,7 +386,7 @@ public class UserService extends AbstractService {
     UpdateUserResponse response = new UpdateUserResponse();
     response.setFullName(userAccountUpdateResult.getFullName());
     response.setRole(userAccountUpdateResult.getRole());
-    response.setUpdateDatetime(userAccountUpdateResult.getUpdateDatetime());
+    response.setUpdateDatetime(userAccountUpdateResult.getUpdatedDatetime());
 
     return response;
   }
@@ -520,8 +520,8 @@ public class UserService extends AbstractService {
     LocalDateTime now = LocalDateTime.now();
     userHistory.setCreatedBy(after.getCreatedBy());
     userHistory.setCreateDatetime(now);
-    userHistory.setUpdateBy(after.getUpdateBy());
-    userHistory.setUpdateDatetime(now);
+    userHistory.setUpdatedBy(after.getUpdatedBy());
+    userHistory.setUpdatedDatetime(now);
 
     userHistoryRepository.save(userHistory);
   }

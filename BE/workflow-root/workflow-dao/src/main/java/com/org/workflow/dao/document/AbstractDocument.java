@@ -25,16 +25,16 @@ public abstract class AbstractDocument {
   @Field(name = "created_by", write = Write.ALWAYS)
   private String createdBy;
 
-  @Field(name = "update_date_time", write = Write.ALWAYS, targetType = FieldType.DATE_TIME)
-  private LocalDateTime updateDatetime;
+  @Field(name = "updated_date_time", write = Write.ALWAYS, targetType = FieldType.DATE_TIME)
+  private LocalDateTime updatedDatetime;
 
-  @Field(name = "update_by", write = Write.ALWAYS)
-  private String updateBy;
+  @Field(name = "updated_by", write = Write.ALWAYS)
+  private String updatedBy;
 
-  @Field(name = "delete_date_time", write = Write.ALWAYS, targetType = FieldType.DATE_TIME)
-  private LocalDateTime deleteDatetime;
+  @Field(name = "deleted_date_time", write = Write.ALWAYS, targetType = FieldType.DATE_TIME)
+  private LocalDateTime deletedDatetime;
 
-  @Field(name = "delete_by", write = Write.ALWAYS)
-  private String deleteBy;
+  @Field(name = "deleted_by", write = Write.ALWAYS)
+  private String deletedBy;
 
 }

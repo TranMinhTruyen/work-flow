@@ -4,6 +4,6 @@ export default interface ISaveScreenResponse {
   screenName?: string;
   screenUrl?: string;
   isActive?: boolean;
-  createDatetime?: string;
-  updateDatetime?: string;
+  createdDatetime?: string;
+  updatedDatetime?: string;
 }

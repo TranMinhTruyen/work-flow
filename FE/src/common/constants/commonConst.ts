@@ -3,7 +3,7 @@ import { Accept } from 'react-dropzone';
 import { SelectDataType } from './typeConst';
 
 //#region Axios config
-export const TIME_OUT: number = 60000;
+export const TIME_OUT: number = 180000;
 //#endregion
 
 //#region File upload type

@@ -1,10 +1,9 @@
 {
-  "title": "Edit screen",
+  "title": "Add new screen",
   "label": {
     "screenId": "Screen ID",
     "screenName": "Screen name",
     "screenUrl": "Screen URL",
-    "createDatetime": "Create Datetime",
-    "updateDatetime": "Update Datetime"
+    "note": "Note"
   }
 }

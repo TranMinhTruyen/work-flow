@@ -31,7 +31,9 @@
     "noPermission": "Bạn không có quyền!"
   },
   "table": {
-    "noData": "Không có dữ liệu"
+    "noData": "Không có dữ liệu",
+    "showTotalData": "Hiển thị {0} đến {1} của {2} mục",
+    "pageInfo": "Trang {0} của {1}"
   },
   "network": {
     "interrupted": "Kết nối đã bị gián đoạn.",

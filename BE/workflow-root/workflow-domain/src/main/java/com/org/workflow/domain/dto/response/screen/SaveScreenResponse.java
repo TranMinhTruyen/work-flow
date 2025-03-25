@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaveScreenResponse {
-  
+
   private String id;
 
   private String screenId;
@@ -26,8 +26,8 @@ public class SaveScreenResponse {
 
   private boolean isActive;
 
-  private LocalDateTime createDatetime;
+  private LocalDateTime createdDatetime;
 
-  private LocalDateTime updateDatetime;
+  private LocalDateTime updatedDatetime;
 
 }

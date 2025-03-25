@@ -4,5 +4,5 @@ export default interface ISaveScreenRequest {
   screenName?: string;
   screenUrl?: string;
   isActive?: boolean;
-  updateDatetime?: string;
+  updatedDatetime?: string;
 }
