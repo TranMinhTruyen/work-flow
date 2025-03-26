@@ -30,6 +30,9 @@
   "message": {
     "noPermission": "あなたには権限がありません!"
   },
+  "clientError": {
+    "404": "404 - ページが見つかりません"
+  },
   "table": {
     "noData": "データなし",
     "showTotalData": "全{2}件中、{0}～{1}件を表示",

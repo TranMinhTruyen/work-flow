@@ -7,7 +7,7 @@ export interface IScreenMaster {
   screenName: string;
   screenUrl: string;
   screenComponentList: ScreenComponent[];
-  isActive: boolean;
+  active: boolean;
 }
 
 export interface ScreenComponent {

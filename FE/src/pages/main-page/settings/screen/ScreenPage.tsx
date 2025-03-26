@@ -11,7 +11,7 @@ import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import useTable from '@/common/hooks/useTable';
-import { IPageRequest, IPageResponse } from '@/common/model/pageable';
+import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import Button from '@/components/button/Button';
 import IconButton from '@/components/button/IconButton';
 import TextInput from '@/components/form/TextInput';
@@ -187,7 +187,7 @@ const ScreenPage = () => {
         },
       },
     ],
-    [handleAddNew, handleEdit]
+    [handleAddNew, handleEdit, t]
   );
 
   return (

@@ -1,17 +1,50 @@
 import { Box, styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
-import { memo } from 'react';
-import { Outlet } from 'react-router-dom';
+import { memo, useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 
-import { selectOpenDrawer } from '@/common/store/commonSlice';
+import useWebSocket from '@/common/hooks/useWebSocket';
+import {
+  selectOpenDrawer,
+  selectScreenMaster,
+  updateScreenStatus,
+} from '@/common/store/commonSlice';
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
-import { useAppSelector } from '@/lib/store';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
 
 const DRAWER_WIDTH: number = 200;
 
 const MainLayout = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const screenMasterList = useAppSelector(selectScreenMaster);
+  const { receiveData } = useWebSocket<ISaveScreenResponse>({
+    receiveUrl: '/screen-master/change',
+  });
+
+  // Check status screen via websocket.
+  useEffect(() => {
+    if (receiveData) {
+      dispatch(
+        updateScreenStatus({
+          screenId: receiveData.screenId,
+          active: receiveData.active,
+        })
+      );
+    }
+  }, [dispatch, receiveData]);
+
+  // Check screen is active to render.
+  useEffect(() => {
+    const screen = screenMasterList?.find(screen => screen.screenUrl === location.pathname);
+
+    if (screen && !screen.active) {
+      throw new Error('404');
+    }
+  }, [location.pathname, screenMasterList]);
 
   return (
     <ScreenLayout open={openDrawer}>

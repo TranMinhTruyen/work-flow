@@ -3,12 +3,13 @@ import forge from 'node-forge';
 import { setLoginData } from '@/common/store/commonSlice';
 import { IScreenItem } from '@/components/drawer/ScreenListItem';
 import store from '@/lib/store';
-import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
 
 import { ApiEnum } from '../api/apiUrl';
 import { axiosApiEnumFetch } from '../api/axios';
 import { PUBLIC_RSA_KEY } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
+import { IScreenMaster } from '../model/ScreenMaster';
+import { IUserData } from '../model/user';
 import { isNullOrEmpty } from './stringUtil';
 
 /**
@@ -28,8 +29,8 @@ export const checkLogin = () => {
   }
 
   if (!isNullOrEmpty(login)) {
-    const data: ILoginResponse = JSON.parse(login);
-    store.dispatch(setLoginData(data));
+    const loginData: IUserData = JSON.parse(login);
+    store.dispatch(setLoginData(loginData));
     return true;
   }
 
@@ -41,7 +42,7 @@ export const checkLogin = () => {
  *
  * @returns ILoginResponse
  */
-export const getLoginData = (): ILoginResponse | undefined => {
+export const getLoginData = (): IUserData | undefined => {
   let login = localStorage.getItem('login');
 
   if (isNullOrEmpty(login)) {
@@ -49,7 +50,7 @@ export const getLoginData = (): ILoginResponse | undefined => {
   }
 
   if (!isNullOrEmpty(login)) {
-    const data: ILoginResponse = JSON.parse(login);
+    const data: IUserData = JSON.parse(login);
     return data;
   }
 
@@ -76,23 +77,29 @@ export const encryptWithRSA = (data?: string) => {
  * @param screenItem
  * @returns
  */
-export const checkAccessScreen = (screenItem: IScreenItem): boolean => {
-  const userData = store.getState().commonState.loginData?.userResponse;
-
+export const checkAccessScreen = (
+  screenItem: IScreenItem,
+  loginData?: IUserData,
+  screenMasterList?: IScreenMaster[]
+): boolean => {
   let isAccess = true;
 
-  if (!userData?.role || !screenItem.screenRole?.includes(userData?.role)) {
+  if (!loginData?.role || !screenItem.screenRole?.includes(loginData?.role)) {
     isAccess = false;
   }
 
-  if (!userData?.level || userData?.level < screenItem.screenLevel) {
+  if (!loginData?.level || loginData?.level < screenItem.screenLevel) {
     isAccess = false;
   }
 
   if (isNullOrEmpty(screenItem.screenPath) || screenItem.screenChild === null) {
+    if (!screenMasterList?.find(item => item.screenId === screenItem.screenKey)?.active) {
+      return false;
+    }
+
     if (
-      !userData?.screenMasterList ||
-      !userData?.screenMasterList?.map(item => item.screenId).includes(screenItem.screenKey)
+      !screenMasterList ||
+      !screenMasterList?.map(item => item.screenId).includes(screenItem.screenKey)
     ) {
       isAccess = false;
     }

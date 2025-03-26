@@ -30,6 +30,9 @@
   "message": {
     "noPermission": "You don't have any permission!"
   },
+  "clientError": {
+    "404": "404 - Page not found"
+  },
   "table": {
     "noData": "No data",
     "showTotalData": "Showing {0} to {1} of {2} entries",

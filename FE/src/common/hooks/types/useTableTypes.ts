@@ -1,7 +1,7 @@
 import { GridApi } from 'ag-grid-community';
 import { RefObject } from 'react';
 
-import { IPageableOrder, IPageResponse } from '@/common/model/pageable';
+import { IPageableOrder, IPageResponse } from '@/common/model/Pageable';
 
 export type Pageable = {
   page: number;

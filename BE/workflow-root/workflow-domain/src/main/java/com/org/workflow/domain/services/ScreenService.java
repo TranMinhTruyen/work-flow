@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.org.workflow.core.common.exception.WFException;
@@ -40,6 +41,8 @@ import lombok.RequiredArgsConstructor;
 public class ScreenService extends AbstractService {
 
   private final ScreenRepository screenRepository;
+
+  private final SimpMessagingTemplate messagingTemplate;
 
   /**
    * @param searchRequest
@@ -159,6 +162,9 @@ public class ScreenService extends AbstractService {
     response.setActive(saveResult.isActive());
     response.setCreatedDatetime(saveResult.getCreateDatetime());
     response.setUpdatedDatetime(saveResult.getUpdatedDatetime());
+
+    messagingTemplate.convertAndSend("/screen-master/change", response);
+
     return response;
   }
 

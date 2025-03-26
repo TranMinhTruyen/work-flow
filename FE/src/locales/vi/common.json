@@ -30,6 +30,9 @@
   "message": {
     "noPermission": "Bạn không có quyền!"
   },
+  "clientError": {
+    "404": "404 - Không tìm thấy trang"
+  },
   "table": {
     "noData": "Không có dữ liệu",
     "showTotalData": "Hiển thị {0} đến {1} của {2} mục",

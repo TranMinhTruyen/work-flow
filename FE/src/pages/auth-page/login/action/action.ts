@@ -1,4 +1,5 @@
-import { setLoginData, toggleLogin } from '@/common/store/commonSlice';
+import { IUserData } from '@/common/model/user';
+import { setLoginData, setScreenMaster, toggleLogin } from '@/common/store/commonSlice';
 import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 import { userServices } from '@/services/userService';
@@ -36,12 +37,22 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
  * @param isRemember
  */
 const setToken = async (loginResponse: ILoginResponse, isRemember: boolean = false) => {
+  const loginData: IUserData = {
+    token: loginResponse.token,
+    role: loginResponse.userResponse?.role,
+    loginFailCount: loginResponse.userResponse?.loginFailCount,
+    authorities: loginResponse.userResponse?.authorities,
+    level: loginResponse.userResponse?.level,
+    image: loginResponse.userResponse?.image,
+  };
+
   if (!isRemember) {
-    sessionStorage.setItem('login', JSON.stringify(loginResponse) ?? '');
+    sessionStorage.setItem('login', JSON.stringify(loginData) ?? '');
   } else {
-    localStorage.setItem('login', JSON.stringify(loginResponse) ?? '');
+    localStorage.setItem('login', JSON.stringify(loginData) ?? '');
   }
 
-  store.dispatch(setLoginData(loginResponse));
+  store.dispatch(setLoginData(loginData));
+  store.dispatch(setScreenMaster(loginResponse.userResponse?.screenMasterList ?? []));
   store.dispatch(toggleLogin(true));
 };

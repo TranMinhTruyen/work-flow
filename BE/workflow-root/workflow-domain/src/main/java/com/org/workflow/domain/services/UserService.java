@@ -279,6 +279,7 @@ public class UserService extends AbstractService {
             screenResponse.setScreenId(screen.getScreenId());
             screenResponse.setScreenName(screen.getScreenName());
             screenResponse.setScreenUrl(screen.getScreenUrl());
+            screenResponse.setActive(screen.isActive());
             screenResponseList.add(screenResponse);
           }
         }

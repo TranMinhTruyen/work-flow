@@ -19,4 +19,6 @@ public class ScreenResponse implements Serializable {
 
   private String screenUrl;
 
+  private boolean isActive;
+
 }

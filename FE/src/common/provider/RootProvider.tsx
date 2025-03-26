@@ -16,7 +16,7 @@ import { useRightDrawer } from '../context/types/rightDrawerTypes';
 import { I18nEnum } from '../enums/i18nEnum';
 import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
-import { IBaseRequest, IBaseResponse } from '../model/axiosData';
+import { IBaseRequest, IBaseResponse } from '../model/AxiosData';
 import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import { isIBaseRequest } from '../utils/convertUtil';

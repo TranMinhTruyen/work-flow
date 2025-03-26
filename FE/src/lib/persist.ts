@@ -27,6 +27,7 @@ export const rootReducer = (state: any, action: any) => {
       isLogin: false,
       loginData: undefined,
       screenExpand: [],
+      screenMasterList: [],
     };
 
     state = {
@@ -45,6 +46,7 @@ export const commonTransform: Transform<any, any> = {
       isOpenDrawer: inboundState.isOpenDrawer,
       isLogin: inboundState.isLogin,
       screenExpand: inboundState.screenExpand,
+      screenMasterList: inboundState.screenMasterList,
     };
   },
   out: (outboundState: any) => {

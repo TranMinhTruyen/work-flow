@@ -1,6 +1,6 @@
 import baseApi from '@/common/api/apiBaseQuery';
 import { ApiEnum } from '@/common/api/apiUrl';
-import { IPageRequest, IPageResponse } from '@/common/model/pageable';
+import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import IGetScreenDetail from '@/pages/main-page/settings/screen/model/GetScreenDetail';
 import ISaveScreenRequest from '@/pages/main-page/settings/screen/model/SaveScreenRequest';
 import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';

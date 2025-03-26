@@ -1,7 +1,10 @@
 import { ReactNode, Suspense, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-
 import './App.css';
+
+import { I18nextProvider } from 'react-i18next';
+
 import routerItemList from './common/constants/routerItemList';
 import { AUTH_PREFIX, MAIN_PREFIX, screenUrl } from './common/constants/urlConst';
 import RightDrawerContext from './common/context/RightDrawerContext';
@@ -12,6 +15,7 @@ import { selectLanguage } from './common/store/commonSlice';
 import DialogContainer from './components/dialog/DialogContainer';
 import LoadingDialog from './components/dialog/LoadingDialog';
 import RightDrawer from './components/drawer/RightDrawer';
+import ErrorFallback from './components/error/ErrorFallback';
 import AuthLayout from './components/layouts/AuthLayout';
 import MainLayout from './components/layouts/MainLayout';
 import BackButtonListener from './components/loading/BackButtonListener ';
@@ -31,61 +35,70 @@ const App = () => {
   }, [language]);
 
   return (
-    <BrowserRouter>
-      <RightDrawerContext>
-        <RootProvider>
-          <Routes>
-            <Route path={'/'} element={<Navigate to={screenUrl.LOGIN.path} replace />} />
-            <Route
-              path={'/'}
-              element={
-                <BackgroundLoading>
-                  <AuthProvider>
-                    <AuthLayout />
-                  </AuthProvider>
-                </BackgroundLoading>
-              }
-            >
-              {routerItemList
-                .filter(item => item.screenPrefix === AUTH_PREFIX)
-                .map((item, index) => (
-                  <Route
-                    key={index}
-                    path={item.screenPath}
-                    element={<BackgroundLoading>{item.screen}</BackgroundLoading>}
-                  />
-                ))}
-            </Route>
+    <I18nextProvider i18n={i18n}>
+      <BrowserRouter>
+        <ErrorBoundary
+          fallbackRender={props => <ErrorFallback {...props} />}
+          onReset={() => {
+            window.location.replace(screenUrl.HOME.path);
+          }}
+        >
+          <RightDrawerContext>
+            <RootProvider>
+              <Routes>
+                <Route index element={<Navigate to={screenUrl.LOGIN.path} replace />} />
+                <Route
+                  path={'/'}
+                  element={
+                    <BackgroundLoading>
+                      <AuthProvider>
+                        <AuthLayout />
+                      </AuthProvider>
+                    </BackgroundLoading>
+                  }
+                >
+                  {routerItemList
+                    .filter(item => item.screenPrefix === AUTH_PREFIX)
+                    .map((item, index) => (
+                      <Route
+                        key={index}
+                        path={item.screenPath}
+                        element={<BackgroundLoading>{item.screen}</BackgroundLoading>}
+                      />
+                    ))}
+                </Route>
 
-            <Route
-              path={'/'}
-              element={
-                <BackgroundLoading>
-                  <MainProvider>
-                    <MainLayout />
-                  </MainProvider>
-                </BackgroundLoading>
-              }
-            >
-              {routerItemList
-                .filter(item => item.screenPrefix === MAIN_PREFIX)
-                .map((item, index) => (
-                  <Route
-                    key={index}
-                    index={item.screenPath === screenUrl.LOGIN.path ? true : false}
-                    path={item.screenPath}
-                    element={<BackgroundLoading>{item.screen}</BackgroundLoading>}
-                  />
-                ))}
-            </Route>
-          </Routes>
-        </RootProvider>
-        <RightDrawer />
-      </RightDrawerContext>
-      <DialogContainer />
-      <LoadingDialog />
-      <BackButtonListener />
-    </BrowserRouter>
+                <Route
+                  path={'/'}
+                  element={
+                    <BackgroundLoading>
+                      <MainProvider>
+                        <MainLayout />
+                      </MainProvider>
+                    </BackgroundLoading>
+                  }
+                >
+                  {routerItemList
+                    .filter(item => item.screenPrefix === MAIN_PREFIX)
+                    .map((item, index) => (
+                      <Route
+                        key={index}
+                        index={item.screenPath === screenUrl.LOGIN.path ? true : false}
+                        path={item.screenPath}
+                        element={<BackgroundLoading>{item.screen}</BackgroundLoading>}
+                      />
+                    ))}
+                </Route>
+              </Routes>
+            </RootProvider>
+            <RightDrawer />
+          </RightDrawerContext>
+          <DialogContainer />
+          <LoadingDialog />
+          <BackButtonListener />
+        </ErrorBoundary>
+      </BrowserRouter>
+    </I18nextProvider>
   );
 };
 

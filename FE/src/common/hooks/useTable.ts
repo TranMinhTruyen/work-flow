@@ -1,7 +1,7 @@
 import { GridApi } from 'ag-grid-community';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { IPageableOrder, IPageResponse } from '../model/pageable';
+import { IPageableOrder, IPageResponse } from '../model/Pageable';
 import { Pageable, PaginationInfo, UseTableProps, UseTableReturn } from './types/useTableTypes';
 
 const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {

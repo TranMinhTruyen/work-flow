@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ILoginResponse } from '@/pages/auth-page/login/model/loginModel';
-
 import { RootState } from '../../lib/store';
+import { IScreenMaster } from '../model/ScreenMaster';
+import { IUserData } from '../model/user';
 
 interface CommonState {
   theme: string;
@@ -10,7 +10,8 @@ interface CommonState {
   isOpenDrawer: boolean;
   isLogin: boolean;
   isLoading: boolean;
-  loginData?: ILoginResponse;
+  loginData?: IUserData;
+  screenMasterList?: IScreenMaster[];
   proxyType?: string;
   screenExpand: string[];
 }
@@ -23,18 +24,30 @@ const initialState: CommonState = {
   isLoading: false,
   proxyType: '',
   screenExpand: [],
+  screenMasterList: [],
 };
 
 const commonSlice = createSlice({
   name: 'commonState',
   initialState: initialState,
   reducers: {
-    setLoginData: (state, action: PayloadAction<ILoginResponse>) => {
+    setLoginData: (state, action: PayloadAction<IUserData>) => {
       const { payload } = action;
       return {
         ...state,
         loginData: payload,
       };
+    },
+    setScreenMaster: (state, action: PayloadAction<IScreenMaster[]>) => {
+      const { payload } = action;
+      state.screenMasterList = payload;
+    },
+    updateScreenStatus: (state, action: PayloadAction<{ screenId?: string; active: boolean }>) => {
+      const { payload } = action;
+      const screen = state.screenMasterList?.find(screen => screen.screenId === payload.screenId);
+      if (screen) {
+        screen.active = payload.active;
+      }
     },
     toggleDrawer: state => {
       return {
@@ -89,6 +102,8 @@ const commonSlice = createSlice({
 
 export const {
   setLoginData,
+  setScreenMaster,
+  updateScreenStatus,
   toggleDrawer,
   toggleLogin,
   toggleLoading,
@@ -100,6 +115,7 @@ export const {
 } = commonSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.commonState.loginData;
+export const selectScreenMaster = (state: RootState) => state.commonState.screenMasterList;
 export const selectOpenDrawer = (state: RootState) => state.commonState.isOpenDrawer;
 export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;

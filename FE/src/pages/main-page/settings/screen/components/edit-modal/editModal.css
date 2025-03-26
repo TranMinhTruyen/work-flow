@@ -5,15 +5,10 @@
 }
 
 #switchFormGroup {
-  height: 40px;
   margin-left: auto;
   margin-right: auto;
 }
 
 #switchLabel {
-  height: 40px;
-}
-
-#switchFormGroup .MuiSwitch-root {
   height: 40px;
 }

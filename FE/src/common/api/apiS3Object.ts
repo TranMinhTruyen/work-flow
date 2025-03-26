@@ -3,14 +3,14 @@ import dayjs from 'dayjs';
 
 import { DATE_TIME_STRING_FORMAT } from '../constants/commonConst';
 import { CustomAxiosConfig, FileData } from '../constants/typeConst';
-import { IBaseResponse } from '../model/axiosData';
+import { IBaseResponse } from '../model/AxiosData';
 import {
   IDownloadFileRequest,
   IDownloadFileResponse,
   IS3FileData,
   IUploadFileRequest,
   IUploadFileResponse,
-} from '../model/s3Object';
+} from '../model/S3Object';
 import { blobToBase64 } from '../utils/convertUtil';
 import { randomNumberString } from '../utils/stringUtil';
 import { ApiEnum } from './apiUrl';

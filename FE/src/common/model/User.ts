@@ -1,18 +1,8 @@
-import { IScreenMaster } from './screenMaster';
-
-export interface IUserResponse {
-  userId?: string;
-  email?: string;
-  username?: string;
-  fullName?: string;
-  birthDay?: string;
+export interface IUserData {
+  token?: string;
   role?: string;
   loginFailCount?: string;
-  isActive?: boolean;
   authorities?: string[];
   level?: number;
-  screenMasterList?: IScreenMaster[];
   image?: string;
-  createDatetime?: string;
-  updateDatetime?: string;
 }

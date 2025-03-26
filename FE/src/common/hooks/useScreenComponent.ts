@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { Authorizer, CommonElement } from '../constants/typeConst';
-import { ScreenComponent } from '../model/screenMaster';
+import { ScreenComponent } from '../model/ScreenMaster';
 import { getLoginData } from '../utils/authUtil';
 
 const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
@@ -12,23 +12,21 @@ const useScreenComponent = (screenComponentList: ScreenComponent[] = []) => {
 
     if (!loginData) return false;
 
-    const userAuthorizer = loginData.userResponse;
+    if (!loginData) return false;
 
-    if (!userAuthorizer) return false;
-
-    if (authorizer.role && userAuthorizer.role && authorizer.role === userAuthorizer.role) {
+    if (authorizer.role && loginData.role && authorizer.role === loginData.role) {
       return true;
     }
 
     if (
       authorizer.authorities &&
-      userAuthorizer.authorities &&
-      authorizer.authorities.some(item => userAuthorizer.authorities?.includes(item))
+      loginData.authorities &&
+      authorizer.authorities.some(item => loginData.authorities?.includes(item))
     ) {
       return true;
     }
 
-    if (authorizer.level && userAuthorizer.level && authorizer.level === userAuthorizer.level) {
+    if (authorizer.level && loginData.level && authorizer.level === loginData.level) {
       return true;
     }
 

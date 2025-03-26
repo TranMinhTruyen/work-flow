@@ -1,4 +1,4 @@
-import { IPageRequest, IPageResponse } from '@/common/model/pageable';
+import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 

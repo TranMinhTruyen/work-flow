@@ -15,7 +15,7 @@ const useNotification = () => {
 
   useEffect(() => {
     const stompClient = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'), // Websocket url
+      webSocketFactory: () => new SockJS('http://localhost:8085/ws'), // Websocket url
       onConnect: () => {
         // Receive message from server
         stompClient.subscribe('/user/00001/check-notification', msg => {
