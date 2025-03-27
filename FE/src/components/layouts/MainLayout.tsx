@@ -1,18 +1,22 @@
 import { Box, styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
-import { memo, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import useWebSocket from '@/common/hooks/useWebSocket';
 import {
   selectOpenDrawer,
   selectScreenMaster,
+  setScreenMaster,
   updateScreenStatus,
 } from '@/common/store/commonSlice';
+import { handleCheckToken } from '@/common/utils/authUtil';
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
+import { IUserResponse } from '@/pages/auth-page/login/model/LoginResponse';
 import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
+import { userServices } from '@/services/userService';
 
 const DRAWER_WIDTH: number = 200;
 
@@ -45,6 +49,19 @@ const MainLayout = () => {
       throw new Error('404');
     }
   }, [location.pathname, screenMasterList]);
+
+  const getUserProfile = useCallback(async () => {
+    const response: IUserResponse = await dispatch(
+      userServices.endpoints.getUserProfile.initiate()
+    ).unwrap();
+    dispatch(setScreenMaster(response.screenMasterList ?? []));
+  }, [dispatch]);
+
+  useEffect(() => {
+    getUserProfile();
+    handleCheckToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScreenLayout open={openDrawer}>

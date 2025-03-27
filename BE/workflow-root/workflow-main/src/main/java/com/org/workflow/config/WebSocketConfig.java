@@ -16,12 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+  private static final String[] WEBSOCKET_BROKER = {"/screen-master", "/notification"};
+
   @Value(value = "${client.url}")
   private String clientUrl;
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/screen-master");
+    config.enableSimpleBroker(WEBSOCKET_BROKER);
     config.setApplicationDestinationPrefixes("/work-flow");
   }
 

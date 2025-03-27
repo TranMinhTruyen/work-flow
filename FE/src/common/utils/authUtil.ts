@@ -54,7 +54,7 @@ export const getLoginData = (): IUserData | undefined => {
     return data;
   }
 
-  return undefined;
+  return store.getState().commonState.loginData;
 };
 
 /**

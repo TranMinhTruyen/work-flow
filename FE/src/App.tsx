@@ -1,9 +1,8 @@
 import { ReactNode, Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-
-import { I18nextProvider } from 'react-i18next';
 
 import routerItemList from './common/constants/routerItemList';
 import { AUTH_PREFIX, MAIN_PREFIX, screenUrl } from './common/constants/urlConst';
@@ -20,6 +19,7 @@ import AuthLayout from './components/layouts/AuthLayout';
 import MainLayout from './components/layouts/MainLayout';
 import BackButtonListener from './components/loading/BackButtonListener ';
 import BackdropLoading from './components/loading/BackdropLoading';
+import SnackBarContainer from './components/snackbar/SnackBarContainer';
 import i18n from './i18n';
 import { useAppSelector } from './lib/store';
 
@@ -94,6 +94,7 @@ const App = () => {
             <RightDrawer />
           </RightDrawerContext>
           <DialogContainer />
+          <SnackBarContainer />
           <LoadingDialog />
           <BackButtonListener />
         </ErrorBoundary>

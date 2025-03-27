@@ -97,10 +97,10 @@ public class UserController extends AbstractController {
    * @throws WFException WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
-  @PostMapping("/get-profile")
-  public ResponseEntity<BaseResponse> getProfile(@RequestBody BaseRequest<?> request)
+  @PostMapping("/get-user-profile")
+  public ResponseEntity<BaseResponse> getUserProfile(@RequestBody BaseRequest<?> request)
       throws WFException {
-    UserResponse result = userService.getProfile(request);
+    UserResponse result = userService.getUserProfile(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 

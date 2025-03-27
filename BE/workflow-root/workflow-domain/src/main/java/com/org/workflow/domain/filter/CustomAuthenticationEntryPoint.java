@@ -24,9 +24,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     ObjectMapper objectMapper = new ObjectMapper();
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(MessageTypeEnum.ERROR);
-    baseResponse.setMessageCode(cause.getMessageCode());
-    baseResponse.setMessage(cause.getMessage());
-    baseResponse.setErrorList(cause.getErrorDetail());
+    if (cause != null) {
+      baseResponse.setMessageCode(cause.getMessageCode());
+      baseResponse.setMessage(cause.getMessage());
+      baseResponse.setErrorList(cause.getErrorDetail());
+    }
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     response.setStatus(MessageEnum.ACCESS_DENIED.getHttpStatus().value());
     response.getWriter().write(objectMapper.writeValueAsString(baseResponse));

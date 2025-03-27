@@ -4,19 +4,18 @@ import SockJS from 'sockjs-client';
 
 const URL = import.meta.env.VITE_SERVER_URL;
 
-export type UseWebSocketProps = {
+export type UseWebSocketProps<T> = {
   receiveUrl: string;
   sendUrl?: string;
+  onSubscribe: (data: T) => void;
 };
 
-export type UseWebSocketReturn<T, P> = {
-  receiveData?: T;
+export type UseWebSocketReturn<P> = {
   sendMessage: (message: P) => void;
 };
 
-const useWebSocket = <T = any, P = any>(props: UseWebSocketProps): UseWebSocketReturn<T, P> => {
-  const { receiveUrl, sendUrl } = props;
-  const [receiveData, setReceiveData] = useState<T | undefined>();
+const useWebSocket = <T = any, P = any>(props: UseWebSocketProps<T>): UseWebSocketReturn<P> => {
+  const { receiveUrl, sendUrl, onSubscribe } = props;
   const [client, setClient] = useState<Client | null>(null);
 
   useEffect(() => {
@@ -25,8 +24,8 @@ const useWebSocket = <T = any, P = any>(props: UseWebSocketProps): UseWebSocketR
       onConnect: () => {
         // Receive message from server
         stompClient.subscribe(receiveUrl, message => {
-          const receive = JSON.parse(message.body);
-          setReceiveData(receive);
+          const receive: T = JSON.parse(message.body);
+          onSubscribe(receive);
         });
       },
       reconnectDelay: 5000,
@@ -43,7 +42,8 @@ const useWebSocket = <T = any, P = any>(props: UseWebSocketProps): UseWebSocketR
       stompClient.deactivate();
       setClient(null);
     };
-  }, [receiveUrl]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const sendMessage = useCallback(
     (message: P) => {
@@ -60,7 +60,6 @@ const useWebSocket = <T = any, P = any>(props: UseWebSocketProps): UseWebSocketR
   );
 
   return {
-    receiveData,
     sendMessage,
   };
 };

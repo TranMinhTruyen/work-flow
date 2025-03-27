@@ -3,6 +3,7 @@ package com.org.workflow.domain.services;
 import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
@@ -163,7 +165,17 @@ public class ScreenService extends AbstractService {
     response.setCreatedDatetime(saveResult.getCreateDatetime());
     response.setUpdatedDatetime(saveResult.getUpdatedDatetime());
 
+
+    NotificationResponse notificationResponse = new NotificationResponse();
+    notificationResponse.setTitle("Screen updated");
+    notificationResponse.setMessage(
+        MessageFormat.format("Screen [{0}] has been updated by [{1}]", response.getScreenName(),
+            username));
+    notificationResponse.setSendBy(username);
+    notificationResponse.setSendDatetime(now);
+
     messagingTemplate.convertAndSend("/screen-master/change", response);
+    messagingTemplate.convertAndSend("/notification/receive", notificationResponse);
 
     return response;
   }

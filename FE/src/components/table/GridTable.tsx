@@ -2,7 +2,9 @@ import { styled } from '@mui/material/styles';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import { ControlProps } from '@/common/hooks/types/useTableTypes';
 
 import CustomCell from './components/CustomCell';
@@ -31,6 +33,8 @@ const GridTable = (props: GridTableProps) => {
     defaultColDef: defaultColDefProp,
     ...restProps
   } = props;
+
+  const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const calculateGridHeight = useMemo(() => {
     const rowCount = control?.data ? control?.data.length : 1;
@@ -71,6 +75,11 @@ const GridTable = (props: GridTableProps) => {
       maxWidth={maxWidth}
     >
       <AgGridReact
+        gridOptions={{
+          localeText: {
+            noRowsToShow: t('table.noData'),
+          },
+        }}
         rowData={control?.data ?? []}
         defaultColDef={defaultColDef}
         headerHeight={50}

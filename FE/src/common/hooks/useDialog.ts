@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ConfirmDialogProps } from '@/components/dialog/ConfirmDialog';
-
-export type DialogType = 'confirm' | 'message';
+import { DialogType } from '@/components/dialog/type';
 
 export type DialogContainerProps = Omit<ConfirmDialogProps, 'open' | 'showCancelButton'> & {
   type: DialogType;
 };
 
-type UseDialogProps = { open: boolean; dialogState?: DialogContainerProps };
+type UseDialogProps = { open: boolean; dialogState: DialogContainerProps };
 
 const useDialog = () => {
   const [state, setState] = useState<UseDialogProps>({
     open: false,
+    dialogState: {
+      type: 'confirm',
+    },
   });
   const [countdown, setCountdown] = useState<number>(0);
 

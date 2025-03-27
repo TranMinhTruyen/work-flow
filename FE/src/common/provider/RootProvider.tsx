@@ -1,12 +1,11 @@
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import ApiErrorDetail from '@/components/error/ApiErrorDetail';
 import store, { useAppDispatch } from '@/lib/store';
-import ILoginResponse from '@/pages/auth-page/login/model/LoginResponse';
 
 import { axiosInstance } from '../api/axios';
 import { FULL_DATE_TIME_FORMAT, RESET_ALL } from '../constants/commonConst';
@@ -17,6 +16,7 @@ import { I18nEnum } from '../enums/i18nEnum';
 import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
 import { IBaseRequest, IBaseResponse } from '../model/AxiosData';
+import { IUserData } from '../model/user';
 import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import { isIBaseRequest } from '../utils/convertUtil';
@@ -32,19 +32,16 @@ const AUTH_WHITE_LIST: string[] = [
 ];
 
 const RootProvider = ({ children }: { children: ReactNode }) => {
-  const [isSet, setIsSet] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const { closeDrawer } = useRightDrawer();
 
   useEffect(() => {
-    if (isSet) return;
-
     axiosInstance.interceptors.request.use(config => {
       if (!(config as CustomAxiosConfig).isS3Url) {
         if (!AUTH_WHITE_LIST.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
-          const loginData: ILoginResponse | undefined = getLoginData();
+          const loginData: IUserData | undefined = getLoginData();
 
           // If login data is undefined, back to login screen
           if (!loginData) {
@@ -56,7 +53,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Transform request
-        if (config.data && !isIBaseRequest(config.data)) {
+        if (!isIBaseRequest(config.data)) {
           const transformRequest: IBaseRequest = {
             timestamp: dayjs().format(FULL_DATE_TIME_FORMAT),
             language: store.getState().commonState.language,
@@ -274,11 +271,9 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         return Promise.reject(error);
       }
     );
+  }, [closeDrawer, dispatch, navigate, t]);
 
-    setIsSet(true);
-  }, [closeDrawer, dispatch, isSet, navigate, t]);
-
-  return <>{isSet && children}</>;
+  return <>{children}</>;
 };
 
 export default RootProvider;

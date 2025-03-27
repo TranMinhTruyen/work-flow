@@ -1,4 +1,3 @@
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { SvgIcon } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
@@ -14,10 +13,10 @@ import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
 import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';
-import IconButton from '@/components/button/IconButton';
 import SelectInput from '@/components/inputs/SelectInput';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 
+import NotificationPopover from './NotificationPopover';
 import UserPopover from './UserPopover';
 
 type HeaderProps = {
@@ -93,7 +92,7 @@ const MainHeader = (props: HeaderProps) => {
             onChange={handleChangeLanguage}
           />
 
-          <IconButton icon={<NotificationsIcon fontSize={'small'} />} />
+          <NotificationPopover />
 
           <UserPopover />
         </Stack>
@@ -144,6 +143,12 @@ const LanguageSelect = styled(SelectInput)({
     },
     '&.Mui-focused fieldset': {
       borderColor: 'rgba(0, 0, 0, 1)',
+    },
+  },
+
+  '& #selectLanguage': {
+    '& .MuiBox-root': {
+      display: 'inline-block',
     },
   },
 });

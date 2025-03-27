@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { CURRENT_PATH } from '../constants/commonConst';
 import { screenUrl } from '../constants/urlConst';
 import useRouter from '../hooks/useRouter';
-import { checkLogin, handleCheckToken } from '../utils/authUtil';
+import { checkLogin } from '../utils/authUtil';
 import { isNullOrEmpty } from '../utils/stringUtil';
 
 const MainProvider = ({ children }: { children: ReactNode }) => {
@@ -14,10 +14,6 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
     if (!checkLogin()) {
       navigate(screenUrl.LOGIN.path, true);
       return;
-    }
-
-    if (!isSet && checkLogin()) {
-      handleCheckToken();
     }
 
     if (isSet) {

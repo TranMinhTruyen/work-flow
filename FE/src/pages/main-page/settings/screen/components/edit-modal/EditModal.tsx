@@ -9,6 +9,7 @@ import SubmitButton from '@/components/button/SubmitButton';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
+import { openSnackBarContainer } from '@/components/snackbar/SnackBarContainer';
 import GridTable from '@/components/table/GridTable';
 
 import { getScreenDetail, saveAction } from '../../action/action';
@@ -43,8 +44,14 @@ const EditModal = (props: EditModalProps) => {
   const handleSaveAction = useCallback(async () => {
     const formValue = getValues();
     const saveResponse = await saveAction({ ...formValue });
-    const response = await getScreenDetail(saveResponse.screenId);
-    reset({ ...response });
+    if (saveResponse) {
+      openSnackBarContainer({
+        severity: 'success',
+        message: 'Save screen success',
+      });
+      const response = await getScreenDetail(saveResponse.screenId);
+      reset({ ...response });
+    }
   }, [getValues, reset]);
 
   const defaultColDef = useMemo<ColDef>(

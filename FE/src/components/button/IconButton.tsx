@@ -39,7 +39,7 @@ const IconButton = (props: IconButtonProps) => {
         badgeContent={badgeContent}
         max={99}
         color={'error'}
-        sx={{ transform: icon ? 'translate(30px, -20px)' : 'translate(18px, -20px)' }}
+        sx={{ transform: icon ? 'translate(28px, -16px)' : 'translate(18px, -20px)' }}
       />
       {loadingComponent}
     </StyleIconButton>

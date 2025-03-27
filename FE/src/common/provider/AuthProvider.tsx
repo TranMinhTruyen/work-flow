@@ -12,7 +12,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isLogin = checkLogin();
 
   useEffect(() => {
-    if (isLogin) {
+    if (checkLogin()) {
       navigate(screenUrl.HOME.path, true);
     }
 

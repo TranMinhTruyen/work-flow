@@ -26,10 +26,10 @@ const UserPopover = () => {
 
   useEffect(() => {
     const getImage = async () => {
-      if (loginData && loginData.userResponse && loginData.userResponse.image) {
+      if (loginData && loginData.image) {
         const imageFile = await get({
           bucketName: 'workflow',
-          objectId: loginData.userResponse.image,
+          objectId: loginData.image,
         });
         if (imageFile) {
           setImageBase64(imageFile.base64);
@@ -44,7 +44,7 @@ const UserPopover = () => {
     setAnchorEl(event.currentTarget);
   }, []);
 
-  const handleClose = useCallback(async () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
 
@@ -83,9 +83,9 @@ const UserPopover = () => {
                 display: 'block',
                 position: 'absolute',
                 top: 0,
-                right: 15,
-                width: 10,
-                height: 10,
+                right: 9,
+                width: 12,
+                height: 12,
                 backgroundColor: 'inherit',
                 transform: 'translateY(-50%) rotate(45deg)',
               },

@@ -23,7 +23,7 @@ const BackdropLoading = () => {
 };
 
 const BackdropDialog = styled(Dialog)<DialogProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.tooltip + 1,
 }));
 
 export default BackdropLoading;

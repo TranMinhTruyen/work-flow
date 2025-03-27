@@ -4,52 +4,23 @@ import ErrorIcon from '@mui/icons-material/Error';
 import InfoIcon from '@mui/icons-material/Info';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
+import Dialog, { DialogProps as MUIDialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { ReactNode, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import { MessageType } from '@/common/enums/messageEnum';
 
 import Button from '../button/Button';
+import { DialogProps } from './type';
 
-export type ConfirmDialogProps = Omit<DialogProps, 'title'> & {
-  bodyElement?: ReactNode;
-  messageType?: MessageType;
-  cancelText?: string;
-  confirmText?: string;
-  showCancelButton?: boolean;
-  showCloseButton?: boolean;
-  countdown?: number;
-  /**
-   * Close dialog when backdrop click or press esc.
-   * @default true
-   */
-  isPopup?: boolean;
-  /**
-   * Auto close dialog after timeout
-   * @default false
-   */
-  autoClose?: boolean;
-  /**
-   * Show countdown time
-   * @default true
-   */
-  showCountdown?: boolean;
-  /**
-   * Countdown time
-   * @default 10 second
-   */
-  timeout?: number;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-};
+export type ConfirmDialogProps = MUIDialogProps & Omit<DialogProps, 'title'> & {};
 
 const ConfirmDialog = (props: ConfirmDialogProps) => {
   const {

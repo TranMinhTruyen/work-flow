@@ -319,7 +319,7 @@ public class UserService extends AbstractService {
    * @return UserAccountResponse
    * @throws WFException AppException
    */
-  public UserResponse getProfile(BaseRequest<?> baseRequest) throws WFException {
+  public UserResponse getUserProfile(BaseRequest<?> baseRequest) throws WFException {
     String username = AuthUtil.getAuthentication().getUsername();
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     UserAccount userAccount = result.orElseThrow(
@@ -336,6 +336,7 @@ public class UserService extends AbstractService {
         screenResponse.setScreenId(screen.getScreenId());
         screenResponse.setScreenName(screen.getScreenName());
         screenResponse.setScreenUrl(screen.getScreenUrl());
+        screenResponse.setActive(screen.isActive());
         screenResponseList.add(screenResponse);
       }
     }

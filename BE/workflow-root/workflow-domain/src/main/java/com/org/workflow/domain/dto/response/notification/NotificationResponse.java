@@ -1,11 +1,11 @@
 package com.org.workflow.domain.dto.response.notification;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -13,22 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NotificationResponse {
 
-  private String userId;
-
-  private Long id;
-
   private String title;
 
   private String message;
 
-  private Boolean isRead;
+  private LocalDateTime sendDatetime;
 
-  private LocalDateTime createDatetime;
-
-  private String createdBy;
-
-  private LocalDateTime updateDatetime;
-
-  private String updateBy;
+  private String sendBy;
 
 }
