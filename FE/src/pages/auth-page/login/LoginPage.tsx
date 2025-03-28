@@ -46,7 +46,7 @@ const LoginPage = () => {
       await trigger();
       const result = await handleSubmitLogin(formData);
       if (result) {
-        navigate(screenUrl.LOGIN.path, true);
+        navigate(screenUrl.HOME.path, true);
       }
     },
     [navigate, trigger]

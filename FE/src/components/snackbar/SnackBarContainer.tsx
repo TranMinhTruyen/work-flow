@@ -22,7 +22,7 @@ const SnackBarContainer = () => {
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={5000}
       onClose={closeSnackBar}
     >
       <Alert severity={severity} variant={'filled'} sx={{ width: '100%' }} onClose={closeSnackBar}>

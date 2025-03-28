@@ -1,67 +1,68 @@
 import { Box, styled } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
-import { memo, useCallback, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { memo, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 
+import { screenUrl } from '@/common/constants/urlConst';
+import { MessageType } from '@/common/enums/messageEnum';
+import useRouter from '@/common/hooks/useRouter';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import {
   selectOpenDrawer,
   selectScreenMaster,
-  setScreenMaster,
   updateScreenStatus,
 } from '@/common/store/commonSlice';
-import { handleCheckToken } from '@/common/utils/authUtil';
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
-import { IUserResponse } from '@/pages/auth-page/login/model/LoginResponse';
 import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
-import { userServices } from '@/services/userService';
+
+import { openDialogContainer } from '../dialog/DialogContainer';
 
 const DRAWER_WIDTH: number = 200;
 
 const MainLayout = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
   const dispatch = useAppDispatch();
-  const location = useLocation();
   const screenMasterList = useAppSelector(selectScreenMaster);
-  const { receiveData } = useWebSocket<ISaveScreenResponse>({
-    receiveUrl: '/screen-master/change',
-  });
+  const { navigate, currentPath } = useRouter();
 
   // Check status screen via websocket.
-  useEffect(() => {
-    if (receiveData) {
-      dispatch(
-        updateScreenStatus({
-          screenId: receiveData.screenId,
-          active: receiveData.active,
-        })
-      );
-    }
-  }, [dispatch, receiveData]);
+  useWebSocket<ISaveScreenResponse>({
+    receiveUrl: '/screen-master/change',
+    onSubscribe: (data: ISaveScreenResponse) => {
+      if (data) {
+        dispatch(
+          updateScreenStatus({
+            screenId: data.screenId,
+            active: data.active,
+          })
+        );
+      }
+    },
+  });
 
   // Check screen is active to render.
   useEffect(() => {
-    const screen = screenMasterList?.find(screen => screen.screenUrl === location.pathname);
+    const screen = screenMasterList?.find(screen => screen.screenUrl === currentPath);
 
     if (screen && !screen.active) {
-      throw new Error('404');
+      openDialogContainer({
+        type: 'message',
+        maxWidth: 'sm',
+        messageType: MessageType.WARN,
+        isPopup: false,
+        showCloseButton: false,
+        autoClose: true,
+        timeout: 15,
+        onConfirm: () => {
+          navigate(screenUrl.HOME.path, true);
+        },
+        bodyElement: `${screen.screenName} is deactive!`,
+      });
     }
-  }, [location.pathname, screenMasterList]);
-
-  const getUserProfile = useCallback(async () => {
-    const response: IUserResponse = await dispatch(
-      userServices.endpoints.getUserProfile.initiate()
-    ).unwrap();
-    dispatch(setScreenMaster(response.screenMasterList ?? []));
-  }, [dispatch]);
-
-  useEffect(() => {
-    getUserProfile();
-    handleCheckToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [screenMasterList]);
 
   return (
     <ScreenLayout open={openDrawer}>

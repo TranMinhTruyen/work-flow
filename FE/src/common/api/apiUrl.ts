@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {
   FILE_PREFIX,
+  NOTIFICATION_PREFIX,
   SCREEN_PREFIX,
   SECURITY_PREFIX,
   USER_PREFIX,
@@ -26,6 +27,10 @@ export enum ApiEnum {
   // File api
   UPLOAD_FILE,
   DOWNLOAD_FILE,
+
+  // Notification api
+  CREATE_NOTIFICATION,
+  GET_NOTIFICATION,
 
   // Screen api
   SEARCH_SCREEN,
@@ -81,6 +86,16 @@ export const controller: Record<string, ApiType> = {
   },
   [ApiEnum.DOWNLOAD_FILE]: {
     url: `${FILE_PREFIX}/get-download-url`,
+    method: 'POST',
+  },
+
+  // Notification api
+  [ApiEnum.CREATE_NOTIFICATION]: {
+    url: `${NOTIFICATION_PREFIX}/create-notification`,
+    method: 'POST',
+  },
+  [ApiEnum.GET_NOTIFICATION]: {
+    url: `${NOTIFICATION_PREFIX}/get-notification`,
     method: 'POST',
   },
 

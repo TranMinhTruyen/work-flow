@@ -4,6 +4,10 @@ import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
+import useWebSocket from '@/common/hooks/useWebSocket';
+import { updateScreenStatus } from '@/common/store/commonSlice';
+import { useAppDispatch } from '@/lib/store';
+import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
 
 import Button from '../button/Button';
 
@@ -15,6 +19,22 @@ type ErrorFallbackProps = {
 const ErrorFallback = (props: ErrorFallbackProps) => {
   const { error, resetErrorBoundary } = props;
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
+  const dispatch = useAppDispatch();
+
+  // Check status screen via websocket.
+  useWebSocket<ISaveScreenResponse>({
+    receiveUrl: '/screen-master/change',
+    onSubscribe: (data: ISaveScreenResponse) => {
+      if (data) {
+        dispatch(
+          updateScreenStatus({
+            screenId: data.screenId,
+            active: data.active,
+          })
+        );
+      }
+    },
+  });
 
   return (
     <Container

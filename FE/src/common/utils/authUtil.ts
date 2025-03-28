@@ -1,8 +1,10 @@
 import forge from 'node-forge';
 
-import { setLoginData } from '@/common/store/commonSlice';
+import { setLoginData, setScreenMaster } from '@/common/store/commonSlice';
 import { IScreenItem } from '@/components/drawer/ScreenListItem';
 import store from '@/lib/store';
+import { IUserResponse } from '@/pages/auth-page/login/model/LoginResponse';
+import { userServices } from '@/services/userService';
 
 import { ApiEnum } from '../api/apiUrl';
 import { axiosApiEnumFetch } from '../api/axios';
@@ -110,4 +112,11 @@ export const checkAccessScreen = (
 
 export const handleCheckToken = async () => {
   await axiosApiEnumFetch(ApiEnum.TOKEN_CHECK, {} as CustomAxiosConfig<null>);
+};
+
+export const handleGetUserProfile = async () => {
+  const response: IUserResponse = await store
+    .dispatch(userServices.endpoints.getUserProfile.initiate())
+    .unwrap();
+  store.dispatch(setScreenMaster(response.screenMasterList ?? []));
 };

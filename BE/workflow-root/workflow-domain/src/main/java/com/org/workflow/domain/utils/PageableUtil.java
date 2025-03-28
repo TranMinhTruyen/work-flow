@@ -37,6 +37,14 @@ public class PageableUtil {
     return (long) Math.ceil((double) pageable.getTotal() / pageable.getSize());
   }
 
+  /**
+   * Convert pageable result to PageResponse, include page, size, total...
+   *
+   * @param pageableResult PageableResult
+   * @param result         List
+   * @param <T>
+   * @return PageResponse
+   */
   public static <T> PageResponse<T> toPageableResponse(PageableResult<?> pageableResult,
       List<T> result) {
     PageResponse<T> pageResponse = new PageResponse<>();

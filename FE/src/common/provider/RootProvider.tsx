@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
@@ -36,8 +36,11 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
   const { navigate } = useRouter();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
   const { closeDrawer } = useRightDrawer();
+  const [isSet, setIsSet] = useState<boolean>(false);
 
   useEffect(() => {
+    if (isSet) return;
+
     axiosInstance.interceptors.request.use(config => {
       if (!(config as CustomAxiosConfig).isS3Url) {
         if (!AUTH_WHITE_LIST.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
@@ -271,9 +274,11 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         return Promise.reject(error);
       }
     );
-  }, [closeDrawer, dispatch, navigate, t]);
 
-  return <>{children}</>;
+    setIsSet(true);
+  }, [closeDrawer, dispatch, isSet, navigate, t]);
+
+  return <>{isSet && children}</>;
 };
 
 export default RootProvider;

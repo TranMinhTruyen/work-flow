@@ -21,4 +21,6 @@ public class NotificationResponse {
 
   private String sendBy;
 
+  private boolean isRead;
+
 }
