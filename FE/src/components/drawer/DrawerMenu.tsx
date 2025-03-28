@@ -1,11 +1,10 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
-import Grid2 from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -14,6 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -105,16 +105,16 @@ const DrawerMenu = () => {
       if (screen.screenChild === null) {
         if (checkAccessScreen(screen, loginData, screenMasterList)) {
           returnItem.push(
-            <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
+            <Grid key={screen.screenKey} size={{ xs: 12 }}>
               <DrawerMenuItem item={screen} />
-            </Grid2>
+            </Grid>
           );
         }
       } else {
         returnItem.push(
-          <Grid2 key={screen.screenKey} size={{ xs: 12 }}>
+          <Grid key={screen.screenKey} size={{ xs: 12 }}>
             <DrawerMenuItemWithChild item={screen} />
-          </Grid2>
+          </Grid>
         );
       }
     }
@@ -123,7 +123,7 @@ const DrawerMenu = () => {
 
   return (
     <>
-      <Grid2
+      <Grid
         key={'drawer-menu'}
         container
         sx={{
@@ -138,8 +138,8 @@ const DrawerMenu = () => {
         spacing={1}
       >
         {drawerItemList}
-      </Grid2>
-      <Grid2
+      </Grid>
+      <Grid
         container
         sx={{
           height: '40px',
@@ -153,7 +153,7 @@ const DrawerMenu = () => {
             primary={<Typography>Collapse sidebar</Typography>}
           />
         </ListItemButton>
-      </Grid2>
+      </Grid>
     </>
   );
 };

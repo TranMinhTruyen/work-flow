@@ -1,5 +1,4 @@
-import { Box, styled } from '@mui/material';
-import Grid2 from '@mui/material/Grid2';
+import { Box, Grid, styled } from '@mui/material';
 import { memo, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -81,7 +80,7 @@ type ScreenLayoutProps = {
   open: boolean;
 };
 
-const ScreenLayout = styled(Grid2)<ScreenLayoutProps>(({ theme, open }) => ({
+const ScreenLayout = styled(Grid)<ScreenLayoutProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   marginTop: 55,
   height: 'calc(100vh - 55px)',

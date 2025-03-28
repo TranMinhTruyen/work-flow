@@ -16,8 +16,9 @@ export const notificationService = baseApi.injectEndpoints({
       }),
     }),
     getNotification: builder.mutation<IAllNotificationResponse, IPageRequest>({
-      query: () => ({
+      query: request => ({
         api: ApiEnum.GET_NOTIFICATION,
+        data: request,
       }),
     }),
   }),

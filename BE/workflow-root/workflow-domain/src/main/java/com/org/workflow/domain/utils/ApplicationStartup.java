@@ -61,6 +61,35 @@ public class ApplicationStartup {
 
       userRepository.save(userAccount);
     }
+
+    result = userRepository.findUserAccountByUserName("admin2");
+    if (result.isEmpty()) {
+      LocalDateTime now = LocalDateTime.now();
+      UserAccount userAccount = new UserAccount();
+
+      String userId = "WF".concat(now.format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss")));
+      userAccount.setUserId(userId);
+      userAccount.setUserName("admin2");
+
+      userAccount.setPassword(
+          Hashing.sha512().hashString("123", StandardCharsets.UTF_16).toString());
+      userAccount.setFullName("Administrator2");
+      userAccount.setBirthDay("14-10-1999");
+      userAccount.setEmail("admin@admin.com");
+      userAccount.setRole(RoleEnums.ROLE_ADMIN.getRole());
+      userAccount.setAuthorities(List.of("CREATE", "GET", "UPDATE", "DELETE"));
+      userAccount.setLevel(LevelEnums.HIGH_LEVEL.getLevel());
+      userAccount.setActive(true);
+      userAccount.setLoginFailCount(0);
+      userAccount.setAccessScreenList(List.of("SCR00000", "SCR00001", "SCR00002", "SCR00003"));
+      userAccount.setCreatedBy(SYSTEM);
+      userAccount.setCreateDatetime(now);
+      userAccount.setUpdatedBy(SYSTEM);
+      userAccount.setUpdatedDatetime(now);
+      userAccount.setDeleted(false);
+
+      userRepository.save(userAccount);
+    }
   }
 
 

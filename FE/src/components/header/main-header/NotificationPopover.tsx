@@ -11,12 +11,24 @@ import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { FULL_DATE_TIME_FORMAT } from '@/common/constants/commonConst';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import { INotificationResponse } from '@/common/model/Notification';
+import { IPageRequest } from '@/common/model/Pageable';
 import IconButton from '@/components/button/IconButton';
 import { useAppDispatch } from '@/lib/store';
 import { notificationService } from '@/services/notificationService';
 
 const NotificationPopover = () => {
   const [notificationList, setNotificationList] = useState<INotificationResponse[]>([]);
+  const [notificationPageable, setNotificationPageable] = useState<IPageRequest>({
+    page: 1,
+    size: 10,
+    orderList: [
+      {
+        orderBy: 'send_date_time',
+        direction: 'desc',
+      },
+    ],
+  });
+  const [totalNotRead, setTotalNotRead] = useState<number>(0);
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const dispatch = useAppDispatch();
 
@@ -40,12 +52,17 @@ const NotificationPopover = () => {
 
   const getNotification = useCallback(async () => {
     const response = await dispatch(
-      notificationService.endpoints.getNotification.initiate()
+      notificationService.endpoints.getNotification.initiate(notificationPageable)
     ).unwrap();
     if (response) {
-      setNotificationList(response);
+      if (response.notification) {
+        setNotificationList(response.notification?.result ?? []);
+      }
+      if (response.totalNotRead) {
+        setTotalNotRead(response.totalNotRead);
+      }
     }
-  }, [dispatch]);
+  }, [dispatch, notificationPageable]);
 
   useEffect(() => {
     getNotification();
@@ -70,7 +87,7 @@ const NotificationPopover = () => {
       <IconButton
         onClick={handleClick}
         icon={<NotificationsIcon fontSize={'small'} />}
-        badgeContent={notificationList.filter(item => !item.read).length}
+        badgeContent={totalNotRead}
       />
       <StyledMenu
         anchorEl={anchorEl as unknown as Element}

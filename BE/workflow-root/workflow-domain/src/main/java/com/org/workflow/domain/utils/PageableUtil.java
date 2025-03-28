@@ -2,6 +2,7 @@ package com.org.workflow.domain.utils;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,7 +24,7 @@ public class PageableUtil {
     int page = pageableRequest.getPage() - 1;
     int size = pageableRequest.getSize();
 
-    if (!pageableRequest.getOrderList().isEmpty()) {
+    if (CollectionUtils.isNotEmpty(pageableRequest.getOrderList())) {
       Sort sort = Sort.by(pageableRequest.getOrderList().stream()
           .map(item -> new Sort.Order(Direction.fromString(item.getDirection()), item.getOrderBy()))
           .toList());
