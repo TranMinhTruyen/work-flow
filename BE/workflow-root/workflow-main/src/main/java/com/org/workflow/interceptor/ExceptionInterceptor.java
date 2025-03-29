@@ -1,6 +1,7 @@
 package com.org.workflow.interceptor;
 
 import static com.org.workflow.core.common.cnst.CommonConst.CLASS_NAME;
+import static com.org.workflow.core.common.enums.MessageTypeEnum.WARN;
 import static com.org.workflow.domain.utils.CommonUtil.getAttributes;
 import static com.org.workflow.domain.utils.CommonUtil.getLanguageFromRequest;
 import static com.org.workflow.domain.utils.ValidateUtil.formatValidateMessage;
@@ -42,6 +43,16 @@ public class ExceptionInterceptor extends AbstractController {
 
   @ExceptionHandler(value = WFException.class)
   public ResponseEntity<BaseResponse> handleAppException(WFException WFException) {
+    if (WFException.getMessageEnum().getMessageType().equals(WARN)) {
+      for (StackTraceElement item : WFException.getStackTrace()) {
+        if (item.getClassName().contains(CLASS_NAME)) {
+          LOGGER.warn("Class name {}, method {}, line {} has error: {} do rollback",
+              item.getClassName(), item.getMethodName(), item.getLineNumber(),
+              WFException.getErrorDetail());
+        }
+      }
+      return returnWarnBaseResponse(WFException);
+    }
     if (WFException.getStackTrace() != null && Arrays.stream(WFException.getStackTrace()).findAny()
         .isPresent()) {
       for (StackTraceElement item : WFException.getStackTrace()) {

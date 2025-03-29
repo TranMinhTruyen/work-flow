@@ -19,6 +19,13 @@ export const notificationService = baseApi.injectEndpoints({
       query: request => ({
         api: ApiEnum.GET_NOTIFICATION,
         data: request,
+        isLoading: false,
+      }),
+    }),
+    setIsRead: builder.mutation<INotificationResponse, { id: string }>({
+      query: params => ({
+        api: ApiEnum.SET_IS_READ,
+        params: params,
       }),
     }),
   }),

@@ -3,6 +3,7 @@ package com.org.workflow.core.common.enums;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.ERROR;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.INFO;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.SUCCESS;
+import static com.org.workflow.core.common.enums.MessageTypeEnum.WARN;
 
 import org.springframework.http.HttpStatus;
 
@@ -40,6 +41,7 @@ public enum MessageEnum {
   VALIDATION_FAILED(ERROR, "E00008", HttpStatus.BAD_REQUEST),
   WRITE_FILE_ERROR(ERROR, "E10000", HttpStatus.INTERNAL_SERVER_ERROR),
   READ_FILE_ERROR(ERROR, "E10001", HttpStatus.INTERNAL_SERVER_ERROR),
+  WARNING_ERROR(ERROR, "E99998", HttpStatus.OK),
   SERVER_ERROR(ERROR, "E99999", HttpStatus.INTERNAL_SERVER_ERROR),
   //endregion
 
@@ -57,6 +59,10 @@ public enum MessageEnum {
   ACCOUNT_PASSWORD_INVALID(ERROR, "EA0006", HttpStatus.UNAUTHORIZED),
   ACCOUNT_INACTIVE(ERROR, "EA0007", HttpStatus.UNAUTHORIZED),
   SESSION_TIME_OUT(ERROR, "EA0008", HttpStatus.UNAUTHORIZED),
+  //endregion
+
+  //region Notification
+  NOT_FOUND_NOTIFICATION(WARN, "WN0001", HttpStatus.OK),
   //endregion
 
   //@formatter:on

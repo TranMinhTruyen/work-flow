@@ -1,5 +1,7 @@
 package com.org.workflow.dao.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,5 +25,19 @@ public interface NotificationRepository
       }
       """, count = true)
   long countAllByReadIsFalse(String userId);
+
+
+  @Query(value = """ 
+      {
+        $and: [
+          { _id: ?0 },
+          { user_id: ?1 },
+          { is_deleted: false },
+          { delete_by: null },
+          { delete_date_time: null }
+        ]
+      }
+      """)
+  Optional<Notification> findByIdAndUserId(String id, String userId);
 
 }

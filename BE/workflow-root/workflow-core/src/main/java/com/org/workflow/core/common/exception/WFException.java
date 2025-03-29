@@ -19,15 +19,19 @@ public class WFException extends AbstractException {
 
   private String messageCode;
 
+  private MessageEnum messageEnum;
+
   public WFException(MessageEnum messageEnum) {
     this.messageCode = messageEnum.getMessageCode();
     this.httpStatus = messageEnum.getHttpStatus();
+    this.messageEnum = messageEnum;
   }
 
   public WFException(List<ErrorMessage> errorDetail, MessageEnum messageEnum) {
     this.errorDetail = errorDetail;
     this.messageCode = messageEnum.getMessageCode();
     this.httpStatus = messageEnum.getHttpStatus();
+    this.messageEnum = messageEnum;
   }
 
 }

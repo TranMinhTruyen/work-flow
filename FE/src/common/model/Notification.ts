@@ -1,6 +1,7 @@
 import { IPageResponse } from './Pageable';
 
 export interface INotificationResponse {
+  id?: string;
   title?: string;
   message?: string;
   sendDatetime?: string;

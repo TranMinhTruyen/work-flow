@@ -1,6 +1,7 @@
 package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.enums.MessageEnum.SERVER_ERROR;
+import static com.org.workflow.core.common.enums.MessageEnum.WARNING_ERROR;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import org.springframework.http.HttpHeaders;
@@ -76,6 +77,16 @@ public abstract class AbstractController {
     BaseResponse baseResponse = new BaseResponse();
     baseResponse.setMessageType(SERVER_ERROR.getMessageType());
     baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
+    baseResponse.setErrorList(WFException.getErrorDetail());
+    HttpHeaders header = new HttpHeaders();
+    header.setContentType(APPLICATION_JSON);
+    return new ResponseEntity<>(baseResponse, header, WFException.getHttpStatus());
+  }
+
+  protected ResponseEntity<BaseResponse> returnWarnBaseResponse(WFException WFException) {
+    BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setMessageType(WARNING_ERROR.getMessageType());
+    baseResponse.setMessageCode(WARNING_ERROR.getMessageCode());
     baseResponse.setErrorList(WFException.getErrorDetail());
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);

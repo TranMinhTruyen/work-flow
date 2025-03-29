@@ -6,15 +6,19 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
+import { memo, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { FULL_DATE_TIME_FORMAT } from '@/common/constants/commonConst';
+import { ModalRef } from '@/common/hooks/types/useModalTypes';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import { INotificationResponse } from '@/common/model/Notification';
 import { IPageRequest } from '@/common/model/Pageable';
 import IconButton from '@/components/button/IconButton';
+import CircleProgress from '@/components/loading/CircleProgress';
 import { useAppDispatch } from '@/lib/store';
 import { notificationService } from '@/services/notificationService';
+
+import NotificationDetail from './NotificationDetail';
 
 const NotificationPopover = () => {
   const [notificationList, setNotificationList] = useState<INotificationResponse[]>([]);
@@ -29,7 +33,11 @@ const NotificationPopover = () => {
     ],
   });
   const [totalNotRead, setTotalNotRead] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
+
+  const modalRef = useRef<ModalRef<null, INotificationResponse>>(null);
   const dispatch = useAppDispatch();
 
   const open = Boolean(anchorEl);
@@ -42,32 +50,35 @@ const NotificationPopover = () => {
           notificationService.endpoints.createNotification.initiate({ ...data, read: false })
         ).unwrap();
         setNotificationList(prev => {
-          const newList = prev.slice();
-          newList.push(response);
-          return newList;
+          return [response, ...prev];
         });
+        setTotalNotRead(prev => prev + 1);
       }
     },
   });
 
   const getNotification = useCallback(async () => {
+    setLoading(true);
     const response = await dispatch(
       notificationService.endpoints.getNotification.initiate(notificationPageable)
     ).unwrap();
     if (response) {
       if (response.notification) {
-        setNotificationList(response.notification?.result ?? []);
+        setHasMore(response.notification.page !== response.notification.totalPages);
+        setNotificationList(prev => {
+          return [...prev, ...(response.notification?.result || [])];
+        });
       }
       if (response.totalNotRead) {
         setTotalNotRead(response.totalNotRead);
       }
+      setLoading(false);
     }
   }, [dispatch, notificationPageable]);
 
   useEffect(() => {
     getNotification();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getNotification, notificationPageable]);
 
   const handleClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -81,6 +92,23 @@ const NotificationPopover = () => {
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+
+  const handleNotificateDetail = useCallback(
+    (id?: string) => async () => {
+      if (modalRef.current && id) {
+        const response = await dispatch(
+          notificationService.endpoints.setIsRead.initiate({ id: id })
+        ).unwrap();
+        await modalRef.current.open({
+          inputValue: {
+            title: response?.title,
+            message: response?.message,
+          },
+        });
+      }
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -117,12 +145,25 @@ const NotificationPopover = () => {
           },
         }}
       >
-        <Stack sx={{ maxHeight: '500px', overflow: 'auto' }}>
+        <Stack
+          onScroll={(event: { currentTarget: any }) => {
+            const current = event.currentTarget;
+            if (current.scrollTop + current.clientHeight >= current.scrollHeight && hasMore) {
+              setNotificationPageable(prev => ({
+                ...prev,
+                page: prev.page + 1,
+              }));
+            }
+          }}
+          sx={{ maxHeight: '500px', overflow: 'auto' }}
+        >
           {notificationList.map((item, index) => {
             return (
               <Stack key={`notification-item-${index}`}>
                 <MenuItem
-                  onClick={handleClose}
+                  key={index}
+                  value={item.id}
+                  onClick={handleNotificateDetail(item.id)}
                   sx={{
                     backgroundColor: item.read
                       ? 'rgba(255, 255, 255, 1)'
@@ -160,7 +201,9 @@ const NotificationPopover = () => {
             );
           })}
         </Stack>
+        {loading ? <CircleProgress /> : null}
       </StyledMenu>
+      <NotificationDetail ref={modalRef} />
     </>
   );
 };

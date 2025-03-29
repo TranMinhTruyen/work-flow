@@ -16,8 +16,8 @@ import { toSelectData } from '@/common/utils/convertUtil';
 import SelectInput from '@/components/inputs/SelectInput';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
 
-import NotificationPopover from './NotificationPopover';
-import UserPopover from './UserPopover';
+import NotificationPopover from './components/NotificationPopover';
+import UserPopover from './components/UserPopover';
 
 type HeaderProps = {
   drawerWidth: number;

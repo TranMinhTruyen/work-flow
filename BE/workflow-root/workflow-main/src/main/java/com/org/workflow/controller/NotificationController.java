@@ -4,11 +4,14 @@ import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.org.workflow.core.common.enums.MessageEnum;
+import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
 import com.org.workflow.domain.dto.request.notification.NotificationCreateRequest;
@@ -43,6 +46,13 @@ public class NotificationController extends AbstractController {
   public ResponseEntity<BaseResponse> getNotification(
       @RequestBody BaseRequest<PageableRequest<?>> request) {
     AllNotificationResponse response = notificationService.getNotification(request);
+    return this.returnBaseResponse(response, MessageEnum.REQUEST_SUCCESS);
+  }
+
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @PutMapping("/set-is-read")
+  public ResponseEntity<BaseResponse> setIsRead(@RequestParam String id) throws WFException {
+    NotificationResponse response = notificationService.setIsRead(id);
     return this.returnBaseResponse(response, MessageEnum.REQUEST_SUCCESS);
   }
 

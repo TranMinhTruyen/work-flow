@@ -66,11 +66,8 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Set loading
-        if (
-          !FILE_API.some(x => x.toLowerCase() === config.url?.toLowerCase()) ||
-          (config as CustomAxiosConfig).isLoading
-        ) {
-          if (!store.getState().commonState.isLoading) {
+        if (!FILE_API.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
+          if (!store.getState().commonState.isLoading && (config as CustomAxiosConfig).isLoading) {
             dispatch(toggleLoading(true));
           }
         }

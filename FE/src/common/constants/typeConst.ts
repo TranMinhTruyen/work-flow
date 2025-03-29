@@ -13,7 +13,7 @@ export type Obj<V = any> = { [key: string]: V };
 
 export type ApiType = {
   url: string;
-  method: 'POST' | 'GET' | 'UPDATE' | 'DELETE';
+  method: 'POST' | 'GET' | 'PUT' | 'DELETE';
 };
 
 export type FileType = Uint8Array | number[];

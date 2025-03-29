@@ -31,6 +31,7 @@ export enum ApiEnum {
   // Notification api
   CREATE_NOTIFICATION,
   GET_NOTIFICATION,
+  SET_IS_READ,
 
   // Screen api
   SEARCH_SCREEN,
@@ -97,6 +98,10 @@ export const controller: Record<string, ApiType> = {
   [ApiEnum.GET_NOTIFICATION]: {
     url: `${NOTIFICATION_PREFIX}/get-notification`,
     method: 'POST',
+  },
+  [ApiEnum.SET_IS_READ]: {
+    url: `${NOTIFICATION_PREFIX}/set-is-read`,
+    method: 'PUT',
   },
 
   // Screen api

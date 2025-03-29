@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
@@ -139,7 +138,6 @@ module.exports = (env, argv) => {
         test: /\.(css|js)$/,
         algorithm: 'brotliCompress',
       }),
-      new CleanWebpackPlugin(),
     ];
 
     if (isAnalyze) {

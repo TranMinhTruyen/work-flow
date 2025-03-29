@@ -124,6 +124,11 @@ public class ScreenService extends AbstractService {
     return response;
   }
 
+  /**
+   * @param request
+   * @return
+   * @throws WFException
+   */
   public SaveScreenResponse saveScreen(BaseRequest<SaveScreenRequest> request) throws WFException {
     SaveScreenRequest payload = request.getPayload();
     String username = AuthUtil.getAuthentication().getUsername();

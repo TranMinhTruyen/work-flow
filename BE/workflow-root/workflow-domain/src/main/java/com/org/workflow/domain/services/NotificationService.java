@@ -1,12 +1,16 @@
 package com.org.workflow.domain.services;
 
+import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND_NOTIFICATION;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.NotificationRepository;
@@ -27,6 +31,10 @@ public class NotificationService extends AbstractService {
 
   private final NotificationRepository notificationRepository;
 
+  /**
+   * @param request
+   * @return
+   */
   public NotificationResponse createNotification(BaseRequest<NotificationCreateRequest> request) {
 
     NotificationCreateRequest payload = request.getPayload();
@@ -49,6 +57,7 @@ public class NotificationService extends AbstractService {
     Notification result = notificationRepository.save(notification);
 
     NotificationResponse response = new NotificationResponse();
+    response.setId(result.getId());
     response.setTitle(result.getTitle());
     response.setMessage(result.getMessage());
     response.setSendDatetime(now);
@@ -58,6 +67,10 @@ public class NotificationService extends AbstractService {
     return response;
   }
 
+  /**
+   * @param request
+   * @return
+   */
   public AllNotificationResponse getNotification(BaseRequest<PageableRequest<?>> request) {
     PageableRequest<?> pageable = request.getPayload();
 
@@ -76,6 +89,7 @@ public class NotificationService extends AbstractService {
     if (CollectionUtils.isNotEmpty(queryResult.getResult())) {
       for (Notification notification : queryResult.getResult()) {
         NotificationResponse notificationResponse = new NotificationResponse();
+        notificationResponse.setId(notification.getId());
         notificationResponse.setTitle(notification.getTitle());
         notificationResponse.setMessage(notification.getMessage());
         notificationResponse.setSendDatetime(notification.getCreateDatetime());
@@ -89,6 +103,37 @@ public class NotificationService extends AbstractService {
     response.setTotalNotRead(totalNotRead);
 
     return response;
+  }
+
+  /**
+   * @param id
+   * @return
+   * @throws WFException
+   */
+  public NotificationResponse setIsRead(String id) throws WFException {
+    UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
+
+    Optional<Notification> result =
+        notificationRepository.findByIdAndUserId(id, userAccount.getUserId());
+    if (result.isPresent()) {
+      Notification notification = result.get();
+      notification.setRead(true);
+      notification.setUpdatedDatetime(LocalDateTime.now());
+      notification.setUpdatedBy(userAccount.getUserId());
+      Notification saveResult = notificationRepository.save(notification);
+
+      NotificationResponse response = new NotificationResponse();
+      response.setId(saveResult.getId());
+      response.setTitle(saveResult.getTitle());
+      response.setMessage(saveResult.getMessage());
+      response.setSendDatetime(saveResult.getSendDatetime());
+      response.setSendBy(saveResult.getSendBy());
+      response.setRead(saveResult.isRead());
+
+      return response;
+    } else {
+      throw new WFException(NOT_FOUND_NOTIFICATION);
+    }
   }
 
 }
