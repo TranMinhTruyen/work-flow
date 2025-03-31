@@ -44,6 +44,9 @@ const NotificationPopover = () => {
 
   const open = Boolean(anchorEl);
 
+  /**
+   * Get notificaiton via websocket.
+   */
   useWebSocket<INotificationResponse>({
     receiveUrl: '/notification/receive',
     onSubscribe: async (data: INotificationResponse) => {
