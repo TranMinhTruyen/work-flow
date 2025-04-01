@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:webpack": "webpack --mode production --config webpack.config.cjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky"
@@ -62,7 +61,6 @@
     "@eslint/compat": "^1.2.7",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.23.0",
-    "@svgr/webpack": "^8.1.0",
     "@testing-library/dom": "^10.4.0",
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.14",
@@ -74,10 +72,6 @@
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "compression-webpack-plugin": "^11.1.0",
-    "css-loader": "^7.1.2",
-    "css-minimizer-webpack-plugin": "^7.0.2",
-    "dotenv-webpack": "^8.1.0",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
@@ -86,21 +80,11 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^16.0.0",
-    "html-webpack-plugin": "^5.6.0",
-    "mini-css-extract-plugin": "^2.9.1",
     "prettier": "^3.5.3",
-    "sass": "^1.86.0",
-    "sass-loader": "^16.0.1",
-    "terser-webpack-plugin": "^5.3.14",
-    "ts-loader": "^9.5.1",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
-    "vite-plugin-svgr": "^4.3.0",
-    "webpack": "^5.98.0",
-    "webpack-bundle-analyzer": "^4.10.2",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.1"
+    "vite-plugin-svgr": "^4.3.0"
   },
   "browserslist": {
     "production": [
