@@ -1,6 +1,8 @@
 package com.org.workflow.domain.services;
 
 import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
+import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 
 import java.text.MessageFormat;
@@ -179,8 +181,8 @@ public class ScreenService extends AbstractService {
     notificationResponse.setSendBy(username);
     notificationResponse.setSendDatetime(now);
 
-    messagingTemplate.convertAndSend("/screen-master/change", response);
-    messagingTemplate.convertAndSend("/notification/receive", notificationResponse);
+    messagingTemplate.convertAndSend(SCREEN_MASTER_CHANGE, response);
+    messagingTemplate.convertAndSend(NOTIFICATION_RECEIVE, notificationResponse);
 
     return response;
   }

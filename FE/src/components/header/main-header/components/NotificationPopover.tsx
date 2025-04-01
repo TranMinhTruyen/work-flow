@@ -20,18 +20,20 @@ import { notificationService } from '@/services/notificationService';
 
 import NotificationDetail from './NotificationDetail';
 
+const defaultPageable: IPageRequest = {
+  page: 1,
+  size: 10,
+  orderList: [
+    {
+      orderBy: 'send_date_time',
+      direction: 'desc',
+    },
+  ],
+};
+
 const NotificationPopover = () => {
   const [notificationList, setNotificationList] = useState<INotificationResponse[]>([]);
-  const [notificationPageable, setNotificationPageable] = useState<IPageRequest>({
-    page: 1,
-    size: 10,
-    orderList: [
-      {
-        orderBy: 'send_date_time',
-        direction: 'desc',
-      },
-    ],
-  });
+  const [notificationPageable, setNotificationPageable] = useState<IPageRequest>(defaultPageable);
   const [totalNotRead, setTotalNotRead] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,6 +44,9 @@ const NotificationPopover = () => {
 
   const open = Boolean(anchorEl);
 
+  /**
+   * Get notificaiton via websocket.
+   */
   useWebSocket<INotificationResponse>({
     receiveUrl: '/notification/receive',
     onSubscribe: async (data: INotificationResponse) => {
@@ -57,6 +62,9 @@ const NotificationPopover = () => {
     },
   });
 
+  /**
+   * Get notification from server.
+   */
   const getNotification = useCallback(async () => {
     setLoading(true);
     const response = await dispatch(
@@ -80,6 +88,9 @@ const NotificationPopover = () => {
     getNotification();
   }, [getNotification, notificationPageable]);
 
+  /**
+   * Open notification list.
+   */
   const handleClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       if (notificationList.length > 0) {
@@ -89,25 +100,47 @@ const NotificationPopover = () => {
     [notificationList]
   );
 
+  /**
+   * Close notification.
+   */
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
 
+  /**
+   * Open notification detail modal.
+   */
   const handleNotificateDetail = useCallback(
     (id?: string) => async () => {
       if (modalRef.current && id) {
         const response = await dispatch(
           notificationService.endpoints.setIsRead.initiate({ id: id })
         ).unwrap();
-        await modalRef.current.open({
-          inputValue: {
-            title: response?.title,
-            message: response?.message,
-          },
-        });
+        if (response) {
+          setNotificationList(prev =>
+            prev.map(item => (item.id === response.id ? { ...item, read: true } : item))
+          );
+          setTotalNotRead(prev => prev - 1);
+          await modalRef.current.open({
+            inputValue: response,
+          });
+        }
       }
     },
     [dispatch]
+  );
+
+  const handleOnScroll = useCallback(
+    (event: { currentTarget: any }) => {
+      const current = event.currentTarget;
+      if (current.scrollTop + current.clientHeight >= current.scrollHeight && hasMore) {
+        setNotificationPageable(prev => ({
+          ...prev,
+          page: prev.page + 1,
+        }));
+      }
+    },
+    [hasMore]
   );
 
   return (
@@ -145,18 +178,7 @@ const NotificationPopover = () => {
           },
         }}
       >
-        <Stack
-          onScroll={(event: { currentTarget: any }) => {
-            const current = event.currentTarget;
-            if (current.scrollTop + current.clientHeight >= current.scrollHeight && hasMore) {
-              setNotificationPageable(prev => ({
-                ...prev,
-                page: prev.page + 1,
-              }));
-            }
-          }}
-          sx={{ maxHeight: '500px', overflow: 'auto' }}
-        >
+        <Stack onScroll={handleOnScroll} sx={{ maxHeight: '500px', overflow: 'auto' }}>
           {notificationList.map((item, index) => {
             return (
               <Stack key={`notification-item-${index}`}>
