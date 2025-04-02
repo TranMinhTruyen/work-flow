@@ -9,7 +9,7 @@ export default interface ILoginResponse {
 export interface IUserResponse {
   userId?: string;
   email?: string;
-  username?: string;
+  userName?: string;
   fullName?: string;
   birthDay?: string;
   role?: string;

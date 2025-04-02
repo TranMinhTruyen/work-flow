@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -19,17 +18,22 @@ import org.springframework.stereotype.Service;
 
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
+import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.ScreenRepository;
-import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
+import com.org.workflow.dao.repository.UserRepository;
+import com.org.workflow.dao.repository.condition.screen.SearchCondition;
+import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
 import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
+import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
 import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
+import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
 import com.org.workflow.domain.utils.AuthUtil;
@@ -46,28 +50,30 @@ public class ScreenService extends AbstractService {
 
   private final ScreenRepository screenRepository;
 
+  private final UserRepository userRepository;
+
   private final SimpMessagingTemplate messagingTemplate;
 
   /**
-   * @param searchRequest
+   * @param request
    * @return
    */
   public PageResponse<SearchScreenResponse> search(
-      BaseRequest<PageableRequest<SearchScreenRequest>> searchRequest) {
+      BaseRequest<PageableRequest<SearchScreenRequest>> request) {
 
-    PageableRequest<SearchScreenRequest> request = searchRequest.getPayload();
+    PageableRequest<SearchScreenRequest> pageableRequest = request.getPayload();
 
-    SearchScreenCondition searchScreenCondition = new SearchScreenCondition();
+    SearchCondition searchCondition = new SearchCondition();
 
-    if (request.getCondition() != null) {
-      SearchScreenRequest condition = request.getCondition();
-      searchScreenCondition.setScreenId(condition.getScreenId());
-      searchScreenCondition.setScreenName(condition.getScreenName());
-      searchScreenCondition.setScreenUrl(condition.getScreenUrl());
+    if (pageableRequest.getCondition() != null) {
+      SearchScreenRequest condition = pageableRequest.getCondition();
+      searchCondition.setScreenId(condition.getScreenId());
+      searchCondition.setScreenName(condition.getScreenName());
+      searchCondition.setScreenUrl(condition.getScreenUrl());
     }
 
-    PageableResult<Screen> queryResult = screenRepository.searchByCondition(searchScreenCondition,
-        PageableUtil.getPageable(request));
+    PageableResult<Screen> queryResult = screenRepository.searchByCondition(searchCondition,
+        PageableUtil.getPageable(pageableRequest));
 
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
     if (!CollectionUtils.isEmpty(queryResult.getResult())) {
@@ -118,12 +124,45 @@ public class ScreenService extends AbstractService {
         screenComponentResponse.setLevel(item.getLevel());
         screenComponentResponse.setAuthorities(item.getAuthorities());
         return screenComponentResponse;
-      }).collect(Collectors.toList()));
+      }).toList());
     }
     response.setCreatedDatetime(screen.getCreateDatetime());
     response.setUpdatedDatetime(screen.getUpdatedDatetime());
 
     return response;
+  }
+
+  /**
+   * @param request
+   * @return
+   */
+  public PageResponse<ScreenUserResponse> getScreenUsers(
+      BaseRequest<PageableRequest<ScreenUserRequest>> request) {
+    PageableRequest<ScreenUserRequest> pageableRequest = request.getPayload();
+
+    SearchByScreenIdCondition condition = new SearchByScreenIdCondition();
+
+    if (pageableRequest.getCondition() != null) {
+      condition.setScreenId(pageableRequest.getCondition().getScreenId());
+      condition.setKeyword(pageableRequest.getCondition().getKeyword());
+    }
+
+    PageableResult<UserAccount> queryResult = userRepository.findUserAccountByScreenId(condition,
+        PageableUtil.getPageable(pageableRequest));
+
+    List<ScreenUserResponse> screenUserResponses = new ArrayList<>();
+    if (!CollectionUtils.isEmpty(queryResult.getResult())) {
+      for (UserAccount userAccount : queryResult.getResult()) {
+        ScreenUserResponse item = new ScreenUserResponse();
+        item.setUserId(userAccount.getUserId());
+        item.setUserName(userAccount.getUserName());
+        item.setEmail(userAccount.getEmail());
+        item.setFullName(userAccount.getFullName());
+        screenUserResponses.add(item);
+      }
+    }
+
+    return PageableUtil.toPageableResponse(queryResult, screenUserResponses);
   }
 
   /**

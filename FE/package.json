@@ -50,7 +50,6 @@
     "react-router-dom": "^7.4.1",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "request-ip": "^3.3.0",
     "rimraf": "^6.0.1",
     "serve": "^14.2.3",
     "sockjs-client": "^1.6.1",

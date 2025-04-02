@@ -12,7 +12,7 @@ export interface IPageResponse<T = any> {
   to: number;
   total: number;
   totalPages: number;
-  result?: T;
+  result?: T[];
 }
 
 export interface IPageableOrder {

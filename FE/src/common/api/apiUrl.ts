@@ -36,6 +36,7 @@ export enum ApiEnum {
   // Screen api
   SEARCH_SCREEN,
   GET_SCREEN_DETAIL,
+  GET_SCREEN_USERS,
   SAVE_SCREEN,
 }
 
@@ -112,6 +113,10 @@ export const controller: Record<string, ApiType> = {
   [ApiEnum.GET_SCREEN_DETAIL]: {
     url: `${SCREEN_PREFIX}/get-screen-detail`,
     method: 'GET',
+  },
+  [ApiEnum.GET_SCREEN_USERS]: {
+    url: `${SCREEN_PREFIX}/get-screen-users`,
+    method: 'POST',
   },
   [ApiEnum.SAVE_SCREEN]: {
     url: `${SCREEN_PREFIX}/save-screen`,

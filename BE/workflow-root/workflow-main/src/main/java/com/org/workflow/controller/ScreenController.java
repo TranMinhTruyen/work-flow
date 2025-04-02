@@ -15,11 +15,13 @@ import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
 import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
+import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
+import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.services.ScreenService;
 
@@ -40,14 +42,14 @@ public class ScreenController extends AbstractController {
   private final ScreenService screenService;
 
   /**
-   * @param searchRequest
+   * @param request
    * @return
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/search")
   public ResponseEntity<BaseResponse> searchScreen(
-      @RequestBody BaseRequest<PageableRequest<SearchScreenRequest>> searchRequest) {
-    PageResponse<SearchScreenResponse> result = screenService.search(searchRequest);
+      @RequestBody BaseRequest<PageableRequest<SearchScreenRequest>> request) {
+    PageResponse<SearchScreenResponse> result = screenService.search(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
@@ -62,6 +64,23 @@ public class ScreenController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
+  /**
+   * @param request
+   * @return
+   */
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @PostMapping(value = "/get-screen-users")
+  public ResponseEntity<BaseResponse> getScreenUsers(
+      @RequestBody BaseRequest<PageableRequest<ScreenUserRequest>> request) {
+    PageResponse<ScreenUserResponse> result = screenService.getScreenUsers(request);
+    return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  }
+
+  /**
+   * @param request
+   * @return
+   * @throws WFException
+   */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/save-screen")
   public ResponseEntity<BaseResponse> saveScreen(

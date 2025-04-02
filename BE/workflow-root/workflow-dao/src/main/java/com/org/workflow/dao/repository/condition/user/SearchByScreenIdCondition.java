@@ -1,4 +1,4 @@
-package com.org.workflow.dao.repository.condition.ItemMaster;
+package com.org.workflow.dao.repository.condition.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +12,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchScreenCondition {
+public class SearchByScreenIdCondition {
 
   private String screenId;
 
-  private String screenName;
-
-  private String screenUrl;
-
-  private String isActive;
+  private String keyword;
 
 }

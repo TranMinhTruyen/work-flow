@@ -109,7 +109,7 @@ public class UserService extends AbstractService {
     UserResponse userResponse = new UserResponse();
     userResponse.setUserId(userAccount.getUserId());
     userResponse.setEmail(userAccount.getEmail());
-    userResponse.setUsername(userAccount.getUserName());
+    userResponse.setUserName(userAccount.getUserName());
     userResponse.setFullName(userAccount.getFullName());
     userResponse.setBirthDay(userAccount.getBirthDay());
     userResponse.setRole(userAccount.getRole());

@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.repository.common.CommonRepositoryExt;
-import com.org.workflow.dao.repository.condition.ItemMaster.SearchScreenCondition;
+import com.org.workflow.dao.repository.condition.screen.SearchCondition;
 import com.org.workflow.dao.repository.ext.ScreenRepositoryExt;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 
@@ -29,8 +29,7 @@ public class ScreenRepositoryExtImpl extends CommonRepositoryExt implements Scre
   }
 
   @Override
-  public PageableResult<Screen> searchByCondition(SearchScreenCondition condition,
-      Pageable pageable) {
+  public PageableResult<Screen> searchByCondition(SearchCondition condition, Pageable pageable) {
     Criteria criteria = new Criteria();
 
     if (!StringUtils.isBlank(condition.getScreenId())) {

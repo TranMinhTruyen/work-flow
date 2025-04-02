@@ -1,11 +1,16 @@
 package com.org.workflow.dao.document.sub;
 
-import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(value = "change_value")
 public class ChangeValue {
 

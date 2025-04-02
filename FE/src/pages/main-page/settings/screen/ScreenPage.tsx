@@ -37,21 +37,22 @@ const ScreenPage = () => {
     },
   });
 
+  /**
+   *  Call api search and set data for result.
+   */
   const onSearchAction = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
-      const response: IPageResponse<ISearchScreenResponse[]> = await searchAction(searchCondition);
-      if (response.result) {
-        onDataChange(
-          response.result.map(item => ({
-            ...item,
-          })),
-          response
-        );
+      const response: IPageResponse<ISearchScreenResponse> = await searchAction(searchCondition);
+      if (response.result && response.result.length > 0) {
+        onDataChange(response.result, response);
       }
     },
     [onDataChange]
   );
 
+  /**
+   * Init action.
+   */
   useEffect(() => {
     const searchCondition: IPageRequest<ISearchScreenRequest> = {
       ...pageable,
@@ -59,8 +60,11 @@ const ScreenPage = () => {
     onSearchAction(searchCondition);
   }, [onSearchAction, pageable]);
 
+  /**
+   * Handle click button search.
+   */
   const handleClickSearch = useCallback(
-    (formData: ISearchScreenForm) => {
+    (formData?: ISearchScreenForm) => {
       const searchCondition: IPageRequest<ISearchScreenRequest> = {
         condition: { ...formData },
         ...pageable,
@@ -70,7 +74,10 @@ const ScreenPage = () => {
     [onSearchAction, pageable]
   );
 
-  const handleEdit = useCallback(
+  /**
+   * Handle click edit screen button.
+   */
+  const handleEditScreen = useCallback(
     (rowData: IScreenTableRow) => () => {
       openDrawer({
         isOnClose: true,
@@ -84,7 +91,10 @@ const ScreenPage = () => {
     [onSearchAction, openDrawer, pageable, t]
   );
 
-  const handleAddNew = useCallback(() => {
+  /**
+   * Handle click add new screen button.
+   */
+  const handleAddNewScreen = useCallback(() => {
     openDrawer({
       isOnClose: true,
       width: '500px',
@@ -96,6 +106,7 @@ const ScreenPage = () => {
     });
   }, [onSearchAction, openDrawer, pageable, t]);
 
+  // Configuration column for search result table.
   const colDefs = useMemo<ColDef<IScreenTableRow>[]>(
     () => [
       {
@@ -171,7 +182,7 @@ const ScreenPage = () => {
         sortable: false,
         width: 80,
         headerComponent: AddNewHeader,
-        headerComponentParams: { onClick: handleAddNew },
+        headerComponentParams: { onClick: handleAddNewScreen },
         cellRenderer: (params: { data: IScreenTableRow; value: boolean }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
@@ -180,14 +191,14 @@ const ScreenPage = () => {
                 width={30}
                 height={30}
                 icon={<EditIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-                onClick={handleEdit(params.data)}
+                onClick={handleEditScreen(params.data)}
               />
             </Stack>
           );
         },
       },
     ],
-    [handleAddNew, handleEdit, t]
+    [handleAddNewScreen, handleEditScreen, t]
   );
 
   return (

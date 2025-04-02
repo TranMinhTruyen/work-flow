@@ -5,16 +5,18 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
+import useTable from '@/common/hooks/useTable';
 import SubmitButton from '@/components/button/SubmitButton';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import { openSnackBarContainer } from '@/components/snackbar/SnackBarContainer';
-import GridTable from '@/components/table/GridTable';
+import PageGridTable from '@/components/table/PageGridTable';
 
 import { getScreenDetail, saveAction } from '../../action/action';
 import IEditModalForm from '../../model/EditModalForm';
 import IScreenTableRow from '../../model/ScreenTableRow';
+import IScreenUserTableRow from '../../model/ScreenUserTableRow';
 
 import './editModal.css';
 
@@ -25,7 +27,12 @@ type EditModalProps = {
 const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
-  const { control, reset, getValues } = useForm<IEditModalForm>({
+  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
+  const {
+    control: formControl,
+    reset,
+    getValues,
+  } = useForm<IEditModalForm>({
     context: {
       language: I18nEnum.EDIT_SCREEN_I18N,
     },
@@ -54,15 +61,7 @@ const EditModal = (props: EditModalProps) => {
     }
   }, [getValues, reset]);
 
-  const defaultColDef = useMemo<ColDef>(
-    () => ({
-      resizable: false,
-      autoHeight: true,
-    }),
-    []
-  );
-
-  const colDefs = useMemo<ColDef[]>(
+  const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
     () => [
       {
         headerName: 'User ID',
@@ -97,41 +96,36 @@ const EditModal = (props: EditModalProps) => {
 
         <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
           <Stack spacing={3}>
-            <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
-            <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
+            <TextInput name={'screenId'} control={formControl} sx={styles.textInput} disabled />
+            <TextInput name={'screenName'} control={formControl} sx={styles.textInput} required />
           </Stack>
 
           <Stack spacing={3}>
             <DatePickerInput
               inputFormat={'YYYY-MM-DD HH:mm:ss'}
               name={'createdDatetime'}
-              control={control}
+              control={formControl}
               width={290}
               disabled
             />
-            <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
+            <TextInput name={'screenUrl'} control={formControl} sx={styles.textInput} required />
           </Stack>
 
           <Stack spacing={3}>
             <DatePickerInput
               inputFormat={'YYYY-MM-DD HH:mm:ss'}
               name={'updatedDatetime'}
-              control={control}
+              control={formControl}
               width={290}
               disabled
             />
-            <SwitchInput name={'active'} control={control} label={'Status'} />
+            <SwitchInput name={'active'} control={formControl} label={'Status'} />
           </Stack>
         </Stack>
 
         <Typography id={'editModalTitle'}>User using</Typography>
-        <GridTable
-          height={'50vh'}
-          maxHeight={'50vh'}
-          defaultColDef={defaultColDef}
-          columnDefs={colDefs}
-          suppressMovableColumns
-        />
+
+        <PageGridTable height={'50vh'} maxHeight={'50vh'} columnDefs={colDefs} control={control} />
 
         <SubmitButton onSubmit={handleSaveAction} />
       </Stack>

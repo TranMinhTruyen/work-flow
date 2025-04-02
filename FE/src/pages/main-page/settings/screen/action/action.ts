@@ -7,6 +7,8 @@ import IGetScreenDetail from '../model/GetScreenDetail';
 import ISaveScreenRequest from '../model/SaveScreenRequest';
 import ISaveScreenResponse from '../model/SaveScreenResponse';
 import IScreenTableRow from '../model/ScreenTableRow';
+import IScreenUserRequest from '../model/ScreenUserRequest';
+import IScreenUserResponse from '../model/ScreenUserResponse';
 import ISearchScreenRequest from '../model/SearchScreenRequest';
 import ISearchScreenResponse from '../model/SearchScreenResponse';
 
@@ -17,7 +19,7 @@ export const initMockData = () => {
 
 export const searchAction = async (
   searchCondition?: IPageRequest<ISearchScreenRequest>
-): Promise<IPageResponse<ISearchScreenResponse[]>> => {
+): Promise<IPageResponse<ISearchScreenResponse>> => {
   let request: IPageRequest<ISearchScreenRequest> = {
     page: 0,
     size: 10,
@@ -28,7 +30,7 @@ export const searchAction = async (
     request = searchCondition;
   }
 
-  const response: IPageResponse<ISearchScreenResponse[]> = await store
+  const response: IPageResponse<ISearchScreenResponse> = await store
     .dispatch(screenService.endpoints.searchScreen.initiate(request))
     .unwrap();
 
@@ -39,6 +41,26 @@ export const getScreenDetail = async (screenId?: string): Promise<IGetScreenDeta
   const response: IGetScreenDetail = await store
     .dispatch(screenService.endpoints.getScreenDetail.initiate({ screenId: screenId }))
     .unwrap();
+  return response;
+};
+
+export const getScreenUsers = async (
+  searchCondition?: IPageResponse<IScreenUserRequest>
+): Promise<IPageResponse<IScreenUserResponse>> => {
+  let request: IPageRequest<IScreenUserRequest> = {
+    page: 0,
+    size: 10,
+    orderList: [],
+  };
+
+  if (searchCondition) {
+    request = searchCondition;
+  }
+
+  const response: IPageResponse<IScreenUserResponse> = await store
+    .dispatch(screenService.endpoints.getScreenUsers.initiate(request))
+    .unwrap();
+
   return response;
 };
 

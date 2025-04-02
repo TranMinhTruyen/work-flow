@@ -1,15 +1,20 @@
 package com.org.workflow.dao.document.sub;
 
-import lombok.Data;
+import java.util.List;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author minh-truyen
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(value = "screen_component")
 public class ScreenComponent {
 

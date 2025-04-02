@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 public abstract class AbstractDocument {
 
   @Id
+  @Field(name = "id", write = Write.ALWAYS, targetType = FieldType.OBJECT_ID)
   private String id;
 
   @Field(name = "is_deleted", write = Write.ALWAYS, targetType = FieldType.BOOLEAN)

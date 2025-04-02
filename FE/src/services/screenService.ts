@@ -4,13 +4,15 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import IGetScreenDetail from '@/pages/main-page/settings/screen/model/GetScreenDetail';
 import ISaveScreenRequest from '@/pages/main-page/settings/screen/model/SaveScreenRequest';
 import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
+import IScreenUserRequest from '@/pages/main-page/settings/screen/model/ScreenUserRequest';
+import IScreenUserResponse from '@/pages/main-page/settings/screen/model/ScreenUserResponse';
 import ISearchScreenRequest from '@/pages/main-page/settings/screen/model/SearchScreenRequest';
 import ISearchScreenResponse from '@/pages/main-page/settings/screen/model/SearchScreenResponse';
 
 export const screenService = baseApi.injectEndpoints({
   endpoints: builder => ({
     searchScreen: builder.mutation<
-      IPageResponse<ISearchScreenResponse[]>,
+      IPageResponse<ISearchScreenResponse>,
       IPageRequest<ISearchScreenRequest>
     >({
       query: request => ({
@@ -22,6 +24,15 @@ export const screenService = baseApi.injectEndpoints({
       query: params => ({
         api: ApiEnum.GET_SCREEN_DETAIL,
         params: params,
+      }),
+    }),
+    getScreenUsers: builder.query<
+      IPageResponse<IScreenUserResponse>,
+      IPageRequest<IScreenUserRequest>
+    >({
+      query: request => ({
+        api: ApiEnum.GET_SCREEN_USERS,
+        data: request,
       }),
     }),
     saveScreen: builder.query<ISaveScreenResponse, ISaveScreenRequest>({
