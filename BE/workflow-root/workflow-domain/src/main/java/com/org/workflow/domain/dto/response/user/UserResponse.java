@@ -1,9 +1,13 @@
 package com.org.workflow.domain.dto.response.user;
 
+import static com.org.workflow.core.common.cnst.CommonConst.FULL_DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.cnst.CommonConst.ZONE_ID;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.org.workflow.domain.dto.response.screen.ScreenResponse;
 
 import lombok.AllArgsConstructor;
@@ -41,8 +45,10 @@ public class UserResponse implements Serializable {
 
   private String image;
 
+  @JsonFormat(pattern = FULL_DATE_TIME_FORMAT_PATTERN, timezone = ZONE_ID)
   private LocalDateTime createDatetime;
 
+  @JsonFormat(pattern = FULL_DATE_TIME_FORMAT_PATTERN, timezone = ZONE_ID)
   private LocalDateTime updateDatetime;
 
 }

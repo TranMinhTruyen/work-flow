@@ -9,9 +9,9 @@ import { FormContext } from '../constants/typeConst';
 
 const useForm = <
   TFieldValues extends FieldValues = FieldValues,
-  TTransformedValues extends FieldValues | undefined = undefined,
+  TTransformedValues extends FieldValues = TFieldValues,
 >(
-  props?: UseFormProps<TFieldValues, FormContext>
+  props?: UseFormProps<TFieldValues, FormContext, TTransformedValues>
 ): UseFormReturn<TFieldValues, FormContext, TTransformedValues> => {
   return reactHookForm(props);
 };

@@ -6,9 +6,8 @@ import useForm from '@/common/hooks/useForm';
 import SubmitButton from '@/components/button/SubmitButton';
 import TextInput from '@/components/form/TextInput';
 
-import { saveAction } from '../../action/action';
 import IAddNewModalForm from '../../model/AddNewModalForm';
-
+import { saveAction } from './action';
 import './addNewModal.css';
 
 const AddNewModal = () => {

@@ -6,6 +6,8 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import useTable from '@/common/hooks/useTable';
+import useWebSocket from '@/common/hooks/useWebSocket';
+import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import SubmitButton from '@/components/button/SubmitButton';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import SwitchInput from '@/components/form/SwitchInput';
@@ -13,10 +15,14 @@ import TextInput from '@/components/form/TextInput';
 import { openSnackBarContainer } from '@/components/snackbar/SnackBarContainer';
 import PageGridTable from '@/components/table/PageGridTable';
 
-import { getScreenDetail, saveAction } from '../../action/action';
 import IEditModalForm from '../../model/EditModalForm';
+import ISaveScreenResponse from '../../model/SaveScreenResponse';
 import IScreenTableRow from '../../model/ScreenTableRow';
+import IScreenUserRequest from '../../model/ScreenUserRequest';
+import IScreenUserResponse from '../../model/ScreenUserResponse';
 import IScreenUserTableRow from '../../model/ScreenUserTableRow';
+import ISearchScreenRequest from '../../model/SearchScreenRequest';
+import { getScreenDetail, getScreenUsers, saveAction } from './action';
 
 import './editModal.css';
 
@@ -27,7 +33,7 @@ type EditModalProps = {
 const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
-  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
+  const { control, pageable, onDataChange } = useTable<IScreenUserTableRow>();
   const {
     control: formControl,
     reset,
@@ -38,15 +44,53 @@ const EditModal = (props: EditModalProps) => {
     },
   });
 
+  // Check status screen via websocket.
+  useWebSocket<ISaveScreenResponse>({
+    receiveUrl: '/screen-master/change',
+    onSubscribe: (data: ISaveScreenResponse) => {
+      if (data.updatedDatetime !== getValues('updatedDatetime')) {
+        openSnackBarContainer({
+          severity: 'warning',
+          message: 'Please reload screen!',
+        });
+      }
+    },
+  });
+
+  const onGetScreenUser = useCallback(
+    async (searchCondition?: IPageRequest<IScreenUserRequest>) => {
+      const userResponse: IPageResponse<IScreenUserResponse> =
+        await getScreenUsers(searchCondition);
+      if (userResponse.result && userResponse.result.length > 0) {
+        onDataChange(userResponse.result, userResponse);
+      }
+    },
+    [onDataChange]
+  );
+
   const handleGetScreenDetail = useCallback(async () => {
-    const response = await getScreenDetail(data.screenId);
-    reset({ ...response });
+    const screenResponse = await getScreenDetail(data.screenId);
+    reset({ ...screenResponse });
   }, [data.screenId, reset]);
 
+  /**
+   * Init action get screen detail.
+   */
   useEffect(() => {
     handleGetScreenDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /**
+   * Init action for user table and call search when change sort.
+   */
+  useEffect(() => {
+    const searchCondition: IPageRequest<ISearchScreenRequest> = {
+      condition: { screenId: data.screenId },
+      ...pageable,
+    };
+    onGetScreenUser(searchCondition);
+  }, [data, onGetScreenUser, pageable]);
 
   const handleSaveAction = useCallback(async () => {
     const formValue = getValues();
@@ -66,21 +110,28 @@ const EditModal = (props: EditModalProps) => {
       {
         headerName: 'User ID',
         field: 'userId',
-        width: 250,
+        width: 200,
         cellRenderer: (params: { value: string }) => {
           return <Typography sx={{ color: 'rgba(255, 0, 0, 1)' }}>{params.value}</Typography>;
         },
+      },
+      {
+        headerName: 'Email',
+        field: 'email',
+        width: 200,
       },
       {
         headerName: 'Username',
         field: 'userName',
-        flex: 1,
-        cellRenderer: (params: { value: string }) => {
-          return <Typography sx={{ color: 'rgba(255, 0, 0, 1)' }}>{params.value}</Typography>;
-        },
+        width: 200,
       },
       {
-        headerName: '',
+        headerName: 'Fullname',
+        field: 'fullName',
+        flex: 1,
+      },
+      {
+        colId: 'addNew',
         sortable: false,
         width: 80,
         cellRenderer: () => {},

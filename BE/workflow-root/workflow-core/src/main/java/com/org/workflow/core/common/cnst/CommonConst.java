@@ -10,6 +10,8 @@ public class CommonConst {
 
   public static final String DATE_TIME_FORMAT_PATTERN = "dd-MM-yyyy HH:mm:ss";
 
+  public static final String FULL_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+
   public static final String DATE_FORMAT_PATTERN = "dd-MM-yyyy";
 
   public static final String ZONE_ID = "UTC+7";

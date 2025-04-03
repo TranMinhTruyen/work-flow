@@ -103,7 +103,7 @@ const LoginPage = () => {
           />
         </Stack>
 
-        <Stack alignItems={'end'} sx={loginStyles.checkBox}>
+        <Stack direction={'row'} sx={loginStyles.checkBox}>
           <CheckBoxInput name={'isRemember'} control={control} />
         </Stack>
 
@@ -149,7 +149,8 @@ const loginStyles = {
   },
 
   checkBox: {
-    marginRight: '125px',
+    marginRight: '100px',
+    justifyContent: 'end',
   },
 
   button: {

@@ -210,7 +210,13 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
                   sessionStorage.removeItem('login');
                   navigate(screenUrl.LOGIN.path, true);
                 },
-                bodyElement: 'Authentication invalid!',
+                bodyElement: (
+                  <ApiErrorDetail
+                    status={responseStatus}
+                    message={responseMessage}
+                    responseData={responseData}
+                  />
+                ),
               });
               break;
             }

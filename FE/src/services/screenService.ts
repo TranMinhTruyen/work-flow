@@ -33,6 +33,7 @@ export const screenService = baseApi.injectEndpoints({
       query: request => ({
         api: ApiEnum.GET_SCREEN_USERS,
         data: request,
+        isLoading: false,
       }),
     }),
     saveScreen: builder.query<ISaveScreenResponse, ISaveScreenRequest>({

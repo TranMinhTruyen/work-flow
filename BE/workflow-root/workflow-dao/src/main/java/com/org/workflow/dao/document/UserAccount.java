@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,7 +45,7 @@ public class UserAccount extends AbstractDocument implements Serializable {
   @Field(name = "level", write = Write.ALWAYS)
   private Integer level;
 
-  @Field(name = "access_screen_list", write = Write.ALWAYS, targetType = FieldType.ARRAY)
+  @Field(name = "access_screen_list", write = Write.ALWAYS)
   private List<String> accessScreenList;
 
   @Field(name = "login_fail_count", write = Write.ALWAYS)

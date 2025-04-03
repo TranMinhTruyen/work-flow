@@ -17,7 +17,7 @@ import IconButton from '@/components/button/IconButton';
 import TextInput from '@/components/form/TextInput';
 import PageGridTable from '@/components/table/PageGridTable';
 
-import { searchAction } from './action/action';
+import { searchAction } from './action';
 import AddNewModal from './components/add-new-modal/AddNewModal';
 import EditModal from './components/edit-modal/EditModal';
 import IScreenTableRow from './model/ScreenTableRow';
@@ -51,7 +51,7 @@ const ScreenPage = () => {
   );
 
   /**
-   * Init action.
+   * Init action and call search when change sort.
    */
   useEffect(() => {
     const searchCondition: IPageRequest<ISearchScreenRequest> = {

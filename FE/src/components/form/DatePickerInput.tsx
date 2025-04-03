@@ -18,7 +18,6 @@ const DatePickerInput = (props: DatePickerInputProps) => {
     name,
     control,
     required,
-    inputFormat = 'DD/MM/YYYY',
     value: valueProps,
     onChange: onChangeProps,
     onBlur: onBlurProps,
@@ -58,7 +57,6 @@ const DatePickerInput = (props: DatePickerInputProps) => {
         <UncontrolledDatePickerInput
           label={translateLabel()}
           value={value ?? ''}
-          inputFormat={inputFormat}
           onChange={handleOnChange(onChange)}
           onBlur={handleOnBlur}
           onClose={handleOnBlur}
