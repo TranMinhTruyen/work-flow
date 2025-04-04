@@ -9,6 +9,7 @@ import { ControlProps } from '@/common/hooks/types/useTableTypes';
 
 import CustomCell from './components/CustomCell';
 import CustomHeader from './components/CustomHeader';
+import CustomLoading from './components/CustomLoading';
 
 export type GridTableProps = Omit<AgGridReactProps, 'rowData'> & {
   height?: number | string;
@@ -87,6 +88,7 @@ const GridTable = (props: GridTableProps) => {
         onGridReady={onGridReady}
         enableCellTextSelection={true}
         ensureDomOrder={true}
+        loadingOverlayComponent={CustomLoading}
         {...restProps}
       />
     </AgGridContainer>

@@ -33,7 +33,7 @@ type EditModalProps = {
 const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
-  const { control, pageable, onDataChange } = useTable<IScreenUserTableRow>();
+  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
   const {
     control: formControl,
     reset,
@@ -59,13 +59,15 @@ const EditModal = (props: EditModalProps) => {
 
   const onGetScreenUser = useCallback(
     async (searchCondition?: IPageRequest<IScreenUserRequest>) => {
+      gridApiRef.current?.setGridOption('loading', true);
       const userResponse: IPageResponse<IScreenUserResponse> =
         await getScreenUsers(searchCondition);
       if (userResponse.result && userResponse.result.length > 0) {
         onDataChange(userResponse.result, userResponse);
       }
+      gridApiRef.current?.setGridOption('loading', false);
     },
-    [onDataChange]
+    [gridApiRef, onDataChange]
   );
 
   const handleGetScreenDetail = useCallback(async () => {
