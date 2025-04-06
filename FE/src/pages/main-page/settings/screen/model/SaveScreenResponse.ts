@@ -6,4 +6,5 @@ export default interface ISaveScreenResponse {
   active: boolean;
   createdDatetime?: string;
   updatedDatetime?: string;
+  updatedBy?: string;
 }

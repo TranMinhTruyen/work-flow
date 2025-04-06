@@ -1,19 +1,23 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef } from 'ag-grid-community';
 import { memo, useCallback, useEffect, useMemo } from 'react';
+import { toast } from 'react-toastify';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import useTable from '@/common/hooks/useTable';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
+import { selectLoginData } from '@/common/store/commonSlice';
+import IconButton from '@/components/button/IconButton';
 import SubmitButton from '@/components/button/SubmitButton';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
-import { openSnackBarContainer } from '@/components/snackbar/SnackBarContainer';
 import PageGridTable from '@/components/table/PageGridTable';
+import { useAppSelector } from '@/lib/store';
 
 import IEditModalForm from '../../model/EditModalForm';
 import ISaveScreenResponse from '../../model/SaveScreenResponse';
@@ -43,20 +47,21 @@ const EditModal = (props: EditModalProps) => {
       language: I18nEnum.EDIT_SCREEN_I18N,
     },
   });
+  const loginData = useAppSelector(selectLoginData);
 
   // Check status screen via websocket.
   useWebSocket<ISaveScreenResponse>({
     receiveUrl: '/screen-master/change',
     onSubscribe: (data: ISaveScreenResponse) => {
-      if (data.updatedDatetime !== getValues('updatedDatetime')) {
-        openSnackBarContainer({
-          severity: 'warning',
-          message: 'Please reload screen!',
-        });
+      if (data.updatedBy !== loginData?.userName) {
+        toast.warning(<Typography>Please reload screen!</Typography>);
       }
     },
   });
 
+  /**
+   * Get screen user.
+   */
   const onGetScreenUser = useCallback(
     async (searchCondition?: IPageRequest<IScreenUserRequest>) => {
       gridApiRef.current?.setGridOption('loading', true);
@@ -70,7 +75,7 @@ const EditModal = (props: EditModalProps) => {
     [gridApiRef, onDataChange]
   );
 
-  const handleGetScreenDetail = useCallback(async () => {
+  const onGetScreenDetail = useCallback(async () => {
     const screenResponse = await getScreenDetail(data.screenId);
     reset({ ...screenResponse });
   }, [data.screenId, reset]);
@@ -79,7 +84,7 @@ const EditModal = (props: EditModalProps) => {
    * Init action get screen detail.
    */
   useEffect(() => {
-    handleGetScreenDetail();
+    onGetScreenDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -94,14 +99,14 @@ const EditModal = (props: EditModalProps) => {
     onGetScreenUser(searchCondition);
   }, [data, onGetScreenUser, pageable]);
 
+  /**
+   * Save screen action.
+   */
   const handleSaveAction = useCallback(async () => {
     const formValue = getValues();
     const saveResponse = await saveAction({ ...formValue });
     if (saveResponse) {
-      openSnackBarContainer({
-        severity: 'success',
-        message: 'Save screen success',
-      });
+      toast.success(<Typography>Save success</Typography>);
       const response = await getScreenDetail(saveResponse.screenId);
       reset({ ...response });
     }
@@ -133,10 +138,21 @@ const EditModal = (props: EditModalProps) => {
         flex: 1,
       },
       {
-        colId: 'addNew',
+        colId: 'delete',
         sortable: false,
         width: 80,
-        cellRenderer: () => {},
+        cellRenderer: () => {
+          return (
+            <Stack sx={{ justifySelf: 'center' }}>
+              <IconButton
+                className={'deleteButton'}
+                width={30}
+                height={30}
+                icon={<DeleteIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+              />
+            </Stack>
+          );
+        },
       },
     ],
     []

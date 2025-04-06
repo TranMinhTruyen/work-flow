@@ -12,3 +12,8 @@
 #switchLabel {
   height: 40px;
 }
+
+.deleteButton {
+  border-radius: 8px;
+  background-color: rgba(255, 0, 0, 0.8);
+}

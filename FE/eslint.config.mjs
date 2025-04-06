@@ -7,7 +7,10 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  { ignores: ['**/*.config.cjs', 'vite.config.ts'], files: ['**/*.ts', '**/*.tsx'] },
+  {
+    ignores: ['**/*.config.cjs', 'vite.config.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
+  },
   ...compat.config({
     env: {
       browser: true,

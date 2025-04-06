@@ -38,6 +38,7 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
  */
 const setToken = async (loginResponse: ILoginResponse, isRemember: boolean = false) => {
   const loginData: IUserData = {
+    userName: loginResponse.userResponse?.userName,
     token: loginResponse.token,
     role: loginResponse.userResponse?.role,
     loginFailCount: loginResponse.userResponse?.loginFailCount,

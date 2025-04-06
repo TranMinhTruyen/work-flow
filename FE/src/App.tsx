@@ -2,7 +2,7 @@ import { ReactNode, Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
+import { Flip, ToastContainer } from 'react-toastify';
 
 import routerItemList from './common/constants/routerItemList';
 import { AUTH_PREFIX, MAIN_PREFIX, screenUrl } from './common/constants/urlConst';
@@ -19,9 +19,10 @@ import AuthLayout from './components/layouts/AuthLayout';
 import MainLayout from './components/layouts/MainLayout';
 import BackButtonListener from './components/loading/BackButtonListener ';
 import BackdropLoading from './components/loading/BackdropLoading';
-import SnackBarContainer from './components/snackbar/SnackBarContainer';
 import i18n from './i18n';
 import { useAppSelector } from './lib/store';
+
+import './App.css';
 
 const BackgroundLoading = ({ children }: { children: ReactNode }) => {
   return <Suspense fallback={<BackdropLoading />}>{children}</Suspense>;
@@ -94,9 +95,18 @@ const App = () => {
             <RightDrawer />
           </RightDrawerContext>
           <DialogContainer />
-          <SnackBarContainer />
           <LoadingDialog />
           <BackButtonListener />
+          <ToastContainer
+            autoClose={5000}
+            hideProgressBar
+            position={'top-center'}
+            limit={5}
+            newestOnTop
+            closeOnClick
+            theme={'colored'}
+            transition={Flip}
+          />
         </ErrorBoundary>
       </BrowserRouter>
     </I18nextProvider>

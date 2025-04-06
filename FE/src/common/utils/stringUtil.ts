@@ -37,7 +37,7 @@ export const formatString = (template: string, ...args: (string | number)[]): st
   });
 };
 
-export const randomNumberString = (): string => {
+export const randomNumberString = (pad?: number): string => {
   const randomNum = Math.floor(Math.random() * 1000000);
-  return randomNum.toString().padStart(6, '0');
+  return randomNum.toString().padStart(pad ?? 6, '0');
 };

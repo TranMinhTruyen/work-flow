@@ -83,14 +83,14 @@ const ScreenPage = () => {
     (rowData: IScreenTableRow) => () => {
       openDrawer({
         isOnClose: true,
-        title: <Typography variant={'h5'}>{t(`${I18nEnum.EDIT_SCREEN_I18N}:title`)}</Typography>,
+        title: `${I18nEnum.EDIT_SCREEN_I18N}:title`,
         onCloseAction: () => {
           onSearchAction({ ...pageable });
         },
         content: <EditModal data={rowData} />,
       });
     },
-    [onSearchAction, openDrawer, pageable, t]
+    [onSearchAction, openDrawer, pageable]
   );
 
   /**
@@ -100,13 +100,13 @@ const ScreenPage = () => {
     openDrawer({
       isOnClose: true,
       width: '500px',
-      title: <Typography variant={'h5'}>{t(`${I18nEnum.ADD_NEW_SCREEN_I18N}:title`)}</Typography>,
+      title: `${I18nEnum.ADD_NEW_SCREEN_I18N}:title`,
       onCloseAction: () => {
         onSearchAction({ ...pageable });
       },
       content: <AddNewModal />,
     });
-  }, [onSearchAction, openDrawer, pageable, t]);
+  }, [onSearchAction, openDrawer, pageable]);
 
   // Configuration column for search result table.
   const colDefs = useMemo<ColDef<IScreenTableRow>[]>(
@@ -185,7 +185,7 @@ const ScreenPage = () => {
         width: 80,
         headerComponent: AddNewHeader,
         headerComponentParams: { onClick: handleAddNewScreen },
-        cellRenderer: (params: { data: IScreenTableRow; value: boolean }) => {
+        cellRenderer: (params: { data: IScreenTableRow }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
               <IconButton

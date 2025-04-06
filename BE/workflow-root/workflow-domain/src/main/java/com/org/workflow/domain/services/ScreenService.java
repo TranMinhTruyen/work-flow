@@ -1,21 +1,5 @@
 package com.org.workflow.domain.services;
 
-import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
-import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
-import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
-import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
-
-import java.text.MessageFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
-
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
@@ -38,8 +22,22 @@ import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailR
 import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.PageableUtil;
-
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
+import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
+import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 
 /**
  * @author minh-truyen
@@ -172,7 +170,7 @@ public class ScreenService extends AbstractService {
    */
   public SaveScreenResponse saveScreen(BaseRequest<SaveScreenRequest> request) throws WFException {
     SaveScreenRequest payload = request.getPayload();
-    String username = AuthUtil.getAuthentication().getUsername();
+    String userName = AuthUtil.getAuthentication().getUserAccount().getUserName();
     LocalDateTime now = LocalDateTime.now();
 
     Optional<Screen> result = screenRepository.findScreenById(payload.getId());
@@ -187,7 +185,7 @@ public class ScreenService extends AbstractService {
       screen.setScreenUrl(payload.getScreenUrl());
       screen.setActive(payload.isActive());
       screen.setUpdatedDatetime(now);
-      screen.setUpdatedBy(username);
+      screen.setUpdatedBy(userName);
     } else {
       screen = new Screen();
       screen.setScreenId(payload.getScreenId());
@@ -195,9 +193,9 @@ public class ScreenService extends AbstractService {
       screen.setScreenUrl(payload.getScreenUrl());
       screen.setActive(payload.isActive());
       screen.setCreateDatetime(now);
-      screen.setCreatedBy(username);
+      screen.setCreatedBy(userName);
       screen.setUpdatedDatetime(now);
-      screen.setUpdatedBy(username);
+      screen.setUpdatedBy(userName);
       screen.setDeleted(false);
     }
     Screen saveResult = screenRepository.save(screen);
@@ -210,14 +208,15 @@ public class ScreenService extends AbstractService {
     response.setActive(saveResult.isActive());
     response.setCreatedDatetime(saveResult.getCreateDatetime());
     response.setUpdatedDatetime(saveResult.getUpdatedDatetime());
+    response.setUpdatedBy(saveResult.getUpdatedBy());
 
 
     NotificationResponse notificationResponse = new NotificationResponse();
     notificationResponse.setTitle("Screen updated");
     notificationResponse.setMessage(
         MessageFormat.format("Screen [{0}] has been updated by [{1}]", response.getScreenName(),
-            username));
-    notificationResponse.setSendBy(username);
+            userName));
+    notificationResponse.setSendBy(userName);
     notificationResponse.setSendDatetime(now);
 
     messagingTemplate.convertAndSend(SCREEN_MASTER_CHANGE, response);
