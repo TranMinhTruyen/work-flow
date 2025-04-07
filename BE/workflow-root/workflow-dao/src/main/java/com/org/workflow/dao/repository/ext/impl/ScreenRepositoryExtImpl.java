@@ -11,10 +11,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
+import com.mongodb.client.result.UpdateResult;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
+import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.common.CommonRepositoryExt;
+import com.org.workflow.dao.repository.condition.screen.RemoveUserCondition;
 import com.org.workflow.dao.repository.condition.screen.SearchCondition;
 import com.org.workflow.dao.repository.ext.ScreenRepositoryExt;
 import com.org.workflow.dao.repository.result.common.PageableResult;
@@ -60,6 +64,22 @@ public class ScreenRepositoryExtImpl extends CommonRepositoryExt implements Scre
       return Optional.empty();
     }
     return Optional.of(result);
+  }
+
+  /**
+   * @param condition
+   * @return
+   */
+  @Override
+  public long removeUserFromScreen(RemoveUserCondition condition) {
+
+    Query query = new Query(Criteria.where("user_id").in(condition.getListUserId()));
+
+    Update update = new Update().pull("access_screen_list", condition.getScreenId());
+
+    UpdateResult updateResult = mongoTemplate.updateMulti(query, update, UserAccount.class);
+
+    return updateResult.getModifiedCount();
   }
 
   @Override

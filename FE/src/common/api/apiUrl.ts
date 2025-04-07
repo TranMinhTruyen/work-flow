@@ -37,6 +37,7 @@ export enum ApiEnum {
   SEARCH_SCREEN,
   GET_SCREEN_DETAIL,
   GET_SCREEN_USERS,
+  REMOVE_USER,
   SAVE_SCREEN,
 }
 
@@ -116,6 +117,10 @@ export const controller: Record<string, ApiType> = {
   },
   [ApiEnum.GET_SCREEN_USERS]: {
     url: `${SCREEN_PREFIX}/get-screen-users`,
+    method: 'POST',
+  },
+  [ApiEnum.REMOVE_USER]: {
+    url: `${SCREEN_PREFIX}/remove-user-from-screen`,
     method: 'POST',
   },
   [ApiEnum.SAVE_SCREEN]: {

@@ -2,6 +2,8 @@ import baseApi from '@/common/api/apiBaseQuery';
 import { ApiEnum } from '@/common/api/apiUrl';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import IGetScreenDetail from '@/pages/main-page/settings/screen/model/GetScreenDetail';
+import IRemoveUserRequest from '@/pages/main-page/settings/screen/model/RemoveUserRequest';
+import IRemoveUserResponse from '@/pages/main-page/settings/screen/model/RemoveUserResponse';
 import ISaveScreenRequest from '@/pages/main-page/settings/screen/model/SaveScreenRequest';
 import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
 import IScreenUserRequest from '@/pages/main-page/settings/screen/model/ScreenUserRequest';
@@ -20,12 +22,14 @@ export const screenService = baseApi.injectEndpoints({
         data: request,
       }),
     }),
+
     getScreenDetail: builder.query<IGetScreenDetail, { screenId?: string }>({
       query: params => ({
         api: ApiEnum.GET_SCREEN_DETAIL,
         params: params,
       }),
     }),
+
     getScreenUsers: builder.query<
       IPageResponse<IScreenUserResponse>,
       IPageRequest<IScreenUserRequest>
@@ -36,6 +40,15 @@ export const screenService = baseApi.injectEndpoints({
         isLoading: false,
       }),
     }),
+
+    removeUser: builder.query<IRemoveUserResponse, IRemoveUserRequest>({
+      query: request => ({
+        api: ApiEnum.REMOVE_USER,
+        data: request,
+        isLoading: false,
+      }),
+    }),
+
     saveScreen: builder.query<ISaveScreenResponse, ISaveScreenRequest>({
       query: request => ({
         api: ApiEnum.SAVE_SCREEN,

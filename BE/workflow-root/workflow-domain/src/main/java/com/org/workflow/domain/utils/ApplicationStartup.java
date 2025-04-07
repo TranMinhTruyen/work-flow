@@ -38,7 +38,8 @@ public class ApplicationStartup {
       LocalDateTime now = LocalDateTime.now();
       UserAccount userAccount = new UserAccount();
 
-      String userId = "WF".concat(now.format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss")));
+      String userId =
+          "WF".concat(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")));
       userAccount.setUserId(userId);
       userAccount.setUserName("admin");
 
@@ -67,7 +68,8 @@ public class ApplicationStartup {
       LocalDateTime now = LocalDateTime.now();
       UserAccount userAccount = new UserAccount();
 
-      String userId = "WF".concat(now.format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss")));
+      String userId =
+          "WF".concat(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")));
       userAccount.setUserId(userId);
       userAccount.setUserName("admin2");
 

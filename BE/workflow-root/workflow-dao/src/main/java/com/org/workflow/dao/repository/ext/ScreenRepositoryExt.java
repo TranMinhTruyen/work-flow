@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
+import com.org.workflow.dao.repository.condition.screen.RemoveUserCondition;
 import com.org.workflow.dao.repository.condition.screen.SearchCondition;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 
@@ -20,6 +21,9 @@ public interface ScreenRepositoryExt {
 
 
   Optional<List<Screen>> findScreenMasterByListScreenId(List<String> listScreenId);
+
+
+  long removeUserFromScreen(RemoveUserCondition condition);
 
 
   Screen saveDocument(Screen screen)

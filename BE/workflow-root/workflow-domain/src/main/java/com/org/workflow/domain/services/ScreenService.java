@@ -1,31 +1,9 @@
 package com.org.workflow.domain.services;
 
-import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.Screen;
-import com.org.workflow.dao.document.UserAccount;
-import com.org.workflow.dao.repository.ScreenRepository;
-import com.org.workflow.dao.repository.UserRepository;
-import com.org.workflow.dao.repository.condition.screen.SearchCondition;
-import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
-import com.org.workflow.dao.repository.result.common.PageableResult;
-import com.org.workflow.domain.dto.request.common.BaseRequest;
-import com.org.workflow.domain.dto.request.common.PageableRequest;
-import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
-import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
-import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
-import com.org.workflow.domain.dto.response.common.PageResponse;
-import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
-import com.org.workflow.domain.dto.response.notification.NotificationResponse;
-import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
-import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
-import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
-import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
-import com.org.workflow.domain.utils.AuthUtil;
-import com.org.workflow.domain.utils.PageableUtil;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
+import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
+import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
+import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -34,10 +12,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
-import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
-import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
-import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+
+import com.org.workflow.core.common.exception.WFException;
+import com.org.workflow.dao.document.Screen;
+import com.org.workflow.dao.document.UserAccount;
+import com.org.workflow.dao.repository.ScreenRepository;
+import com.org.workflow.dao.repository.UserRepository;
+import com.org.workflow.dao.repository.condition.screen.RemoveUserCondition;
+import com.org.workflow.dao.repository.condition.screen.SearchCondition;
+import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
+import com.org.workflow.dao.repository.result.common.PageableResult;
+import com.org.workflow.domain.dto.request.common.BaseRequest;
+import com.org.workflow.domain.dto.request.common.PageableRequest;
+import com.org.workflow.domain.dto.request.screen.RemoveUserRequest;
+import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
+import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
+import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
+import com.org.workflow.domain.dto.response.common.PageResponse;
+import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.notification.NotificationResponse;
+import com.org.workflow.domain.dto.response.screen.RemoveUserResponse;
+import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
+import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
+import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
+import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
+import com.org.workflow.domain.utils.AuthUtil;
+import com.org.workflow.domain.utils.PageableUtil;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author minh-truyen
@@ -223,6 +228,21 @@ public class ScreenService extends AbstractService {
     messagingTemplate.convertAndSend(NOTIFICATION_RECEIVE, notificationResponse);
 
     return response;
+  }
+
+  /**
+   * @param request
+   */
+  public RemoveUserResponse removeUserFromScreen(BaseRequest<RemoveUserRequest> request) {
+    RemoveUserRequest payload = request.getPayload();
+
+    RemoveUserCondition condition = new RemoveUserCondition();
+    condition.setScreenId(payload.getScreenId());
+    condition.setListUserId(payload.getListUserId());
+
+    long count = screenRepository.removeUserFromScreen(condition);
+
+    return new RemoveUserResponse(count);
   }
 
 }

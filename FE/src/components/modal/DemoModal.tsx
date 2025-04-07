@@ -110,7 +110,6 @@ const DemoModal = (props: DemoModalProps) => {
             rowSelection={rowSelection}
             onSelectionChanged={onSelectionChanged}
             onRowDoubleClicked={onRowDoubleClicked}
-            suppressMovableColumns
           />
         </Stack>
         <Button

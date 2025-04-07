@@ -14,12 +14,14 @@ import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
+import com.org.workflow.domain.dto.request.screen.RemoveUserRequest;
 import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
 import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
+import com.org.workflow.domain.dto.response.screen.RemoveUserResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
@@ -86,6 +88,19 @@ public class ScreenController extends AbstractController {
   public ResponseEntity<BaseResponse> saveScreen(
       @RequestBody BaseRequest<SaveScreenRequest> request) throws WFException {
     SaveScreenResponse response = screenService.saveScreen(request);
+    return this.returnBaseResponse(response, MessageEnum.SAVE_SUCCESS);
+  }
+
+  /**
+   * @param request
+   * @return
+   * @throws WFException
+   */
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @PostMapping(value = "/remove-user-from-screen")
+  public ResponseEntity<BaseResponse> removeUserFromScreen(
+      @RequestBody BaseRequest<RemoveUserRequest> request) {
+    RemoveUserResponse response = screenService.removeUserFromScreen(request);
     return this.returnBaseResponse(response, MessageEnum.SAVE_SUCCESS);
   }
 

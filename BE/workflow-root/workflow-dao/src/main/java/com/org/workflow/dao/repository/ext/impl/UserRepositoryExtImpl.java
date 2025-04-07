@@ -27,6 +27,10 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
     super(mongoTemplate);
   }
 
+  /**
+   * @param param
+   * @return
+   */
   @Override
   public Optional<UserAccount> findUserAccountByUserNameOrEmail(String param) {
     Criteria criteria = new Criteria().andOperator(
@@ -37,6 +41,11 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
     return Optional.ofNullable(mongoTemplate.findOne(new Query(criteria), UserAccount.class));
   }
 
+  /**
+   * @param condition
+   * @param pageable
+   * @return
+   */
   @Override
   public PageableResult<UserAccount> findUserAccountByScreenId(SearchByScreenIdCondition condition,
       Pageable pageable) {
@@ -54,6 +63,13 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
     return pageableFind(new Query(criteria), pageable, UserAccount.class);
   }
 
+  /**
+   * @param userAccount
+   * @return
+   * @throws WFException
+   * @throws InvocationTargetException
+   * @throws IllegalAccessException
+   */
   @Override
   public UserAccount saveDocument(UserAccount userAccount)
       throws WFException, InvocationTargetException, IllegalAccessException {

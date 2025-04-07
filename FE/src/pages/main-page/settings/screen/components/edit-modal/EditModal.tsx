@@ -1,32 +1,23 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { ColDef } from 'ag-grid-community';
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
-import useTable from '@/common/hooks/useTable';
 import useWebSocket from '@/common/hooks/useWebSocket';
-import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import { selectLoginData } from '@/common/store/commonSlice';
-import IconButton from '@/components/button/IconButton';
 import SubmitButton from '@/components/button/SubmitButton';
 import DatePickerInput from '@/components/form/DatePickerInput';
 import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
-import PageGridTable from '@/components/table/PageGridTable';
 import { useAppSelector } from '@/lib/store';
 
 import IEditModalForm from '../../model/EditModalForm';
 import ISaveScreenResponse from '../../model/SaveScreenResponse';
 import IScreenTableRow from '../../model/ScreenTableRow';
-import IScreenUserRequest from '../../model/ScreenUserRequest';
-import IScreenUserResponse from '../../model/ScreenUserResponse';
-import IScreenUserTableRow from '../../model/ScreenUserTableRow';
-import ISearchScreenRequest from '../../model/SearchScreenRequest';
-import { getScreenDetail, getScreenUsers, saveAction } from './action';
+import { getScreenDetail, saveAction } from './action';
+import UserTable from './UserTable';
 
 import './editModal.css';
 
@@ -37,12 +28,7 @@ type EditModalProps = {
 const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
-  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
-  const {
-    control: formControl,
-    reset,
-    getValues,
-  } = useForm<IEditModalForm>({
+  const { control, reset, getValues } = useForm<IEditModalForm>({
     context: {
       language: I18nEnum.EDIT_SCREEN_I18N,
     },
@@ -59,22 +45,6 @@ const EditModal = (props: EditModalProps) => {
     },
   });
 
-  /**
-   * Get screen user.
-   */
-  const onGetScreenUser = useCallback(
-    async (searchCondition?: IPageRequest<IScreenUserRequest>) => {
-      gridApiRef.current?.setGridOption('loading', true);
-      const userResponse: IPageResponse<IScreenUserResponse> =
-        await getScreenUsers(searchCondition);
-      if (userResponse.result && userResponse.result.length > 0) {
-        onDataChange(userResponse.result, userResponse);
-      }
-      gridApiRef.current?.setGridOption('loading', false);
-    },
-    [gridApiRef, onDataChange]
-  );
-
   const onGetScreenDetail = useCallback(async () => {
     const screenResponse = await getScreenDetail(data.screenId);
     reset({ ...screenResponse });
@@ -89,17 +59,6 @@ const EditModal = (props: EditModalProps) => {
   }, []);
 
   /**
-   * Init action for user table and call search when change sort.
-   */
-  useEffect(() => {
-    const searchCondition: IPageRequest<ISearchScreenRequest> = {
-      condition: { screenId: data.screenId },
-      ...pageable,
-    };
-    onGetScreenUser(searchCondition);
-  }, [data, onGetScreenUser, pageable]);
-
-  /**
    * Save screen action.
    */
   const handleSaveAction = useCallback(async () => {
@@ -112,52 +71,6 @@ const EditModal = (props: EditModalProps) => {
     }
   }, [getValues, reset]);
 
-  const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
-    () => [
-      {
-        headerName: 'User ID',
-        field: 'userId',
-        width: 200,
-        cellRenderer: (params: { value: string }) => {
-          return <Typography sx={{ color: 'rgba(255, 0, 0, 1)' }}>{params.value}</Typography>;
-        },
-      },
-      {
-        headerName: 'Email',
-        field: 'email',
-        width: 200,
-      },
-      {
-        headerName: 'Username',
-        field: 'userName',
-        width: 200,
-      },
-      {
-        headerName: 'Fullname',
-        field: 'fullName',
-        flex: 1,
-      },
-      {
-        colId: 'delete',
-        sortable: false,
-        width: 80,
-        cellRenderer: () => {
-          return (
-            <Stack sx={{ justifySelf: 'center' }}>
-              <IconButton
-                className={'deleteButton'}
-                width={30}
-                height={30}
-                icon={<DeleteIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-              />
-            </Stack>
-          );
-        },
-      },
-    ],
-    []
-  );
-
   return (
     <form id={'edit-screen-form'}>
       <Stack spacing={2}>
@@ -165,36 +78,34 @@ const EditModal = (props: EditModalProps) => {
 
         <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
           <Stack spacing={3}>
-            <TextInput name={'screenId'} control={formControl} sx={styles.textInput} disabled />
-            <TextInput name={'screenName'} control={formControl} sx={styles.textInput} required />
+            <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
+            <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
           </Stack>
 
           <Stack spacing={3}>
             <DatePickerInput
               inputFormat={'YYYY-MM-DD HH:mm:ss'}
               name={'createdDatetime'}
-              control={formControl}
+              control={control}
               width={290}
               disabled
             />
-            <TextInput name={'screenUrl'} control={formControl} sx={styles.textInput} required />
+            <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
           </Stack>
 
           <Stack spacing={3}>
             <DatePickerInput
               inputFormat={'YYYY-MM-DD HH:mm:ss'}
               name={'updatedDatetime'}
-              control={formControl}
+              control={control}
               width={290}
               disabled
             />
-            <SwitchInput name={'active'} control={formControl} label={'Status'} />
+            <SwitchInput name={'active'} control={control} label={'Status'} />
           </Stack>
         </Stack>
 
-        <Typography id={'editModalTitle'}>User using</Typography>
-
-        <PageGridTable height={'50vh'} maxHeight={'50vh'} columnDefs={colDefs} control={control} />
+        <UserTable screenId={data.screenId} />
 
         <SubmitButton onSubmit={handleSaveAction} />
       </Stack>

@@ -24,6 +24,13 @@ public class CommonRepositoryExt {
 
   protected final MongoTemplate mongoTemplate;
 
+  /**
+   * @param document
+   * @param documentClass
+   * @param <T>
+   * @return
+   * @throws WFException
+   */
   protected <T extends AbstractDocument> T saveDocument(T document, Class<T> documentClass)
       throws WFException {
     LocalDateTime now = LocalDateTime.now();
@@ -45,6 +52,13 @@ public class CommonRepositoryExt {
     }
   }
 
+  /**
+   * @param query
+   * @param pageable
+   * @param entityClass
+   * @param <T>
+   * @return
+   */
   protected <T> PageableResult<T> pageableFind(Query query, Pageable pageable,
       Class<T> entityClass) {
 

@@ -60,7 +60,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService extends AbstractService {
 
-  private static final String ID_FULL_TIME = "ddMMyyyyHHmmss";
+  private static final String ID_FULL_TIME = "yyyyMMddHHmmssSSS";
 
   private static final String BEARER = "Bearer";
 

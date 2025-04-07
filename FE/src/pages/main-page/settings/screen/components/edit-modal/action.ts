@@ -3,6 +3,8 @@ import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 
 import IGetScreenDetail from '../../model/GetScreenDetail';
+import IRemoveUserRequest from '../../model/RemoveUserRequest';
+import IRemoveUserResponse from '../../model/RemoveUserResponse';
 import ISaveScreenRequest from '../../model/SaveScreenRequest';
 import ISaveScreenResponse from '../../model/SaveScreenResponse';
 import IScreenUserRequest from '../../model/ScreenUserRequest';
@@ -41,5 +43,21 @@ export const saveAction = async (
   const response: ISaveScreenResponse = await store
     .dispatch(screenService.endpoints.saveScreen.initiate(saveScreenRequest))
     .unwrap();
+  return response;
+};
+
+export const removeUserAction = async (
+  screenId?: string,
+  listUserId?: string[]
+): Promise<IRemoveUserResponse> => {
+  const request: IRemoveUserRequest = {
+    screenId: screenId,
+    listUserId: listUserId,
+  };
+
+  const response: IRemoveUserResponse = await store
+    .dispatch(screenService.endpoints.removeUser.initiate(request))
+    .unwrap();
+
   return response;
 };

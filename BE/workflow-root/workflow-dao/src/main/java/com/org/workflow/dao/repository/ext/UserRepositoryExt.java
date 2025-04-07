@@ -20,7 +20,7 @@ public interface UserRepositoryExt {
 
   PageableResult<UserAccount> findUserAccountByScreenId(SearchByScreenIdCondition condition,
       Pageable pageable);
-
+  
 
   UserAccount saveDocument(UserAccount userAccount)
       throws WFException, InvocationTargetException, IllegalAccessException;
