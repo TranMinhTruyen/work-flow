@@ -4,7 +4,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { I18nEnum } from '@/common/enums/i18nEnum';
 import { MessageType } from '@/common/enums/messageEnum';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
@@ -19,16 +21,16 @@ import IScreenUserTableRow from '../../model/ScreenUserTableRow';
 import ISearchScreenRequest from '../../model/SearchScreenRequest';
 import { getScreenUsers, removeUserAction } from './action';
 
-type UserTableProps = {
+type ScreenUserProps = {
   screenId?: string;
 };
 
-const UserTable = (props: UserTableProps) => {
+const ScreenUserTable = (props: ScreenUserProps) => {
   const { screenId } = props;
 
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
-
   const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
+  const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
 
   /**
    * Get screen user.
@@ -58,7 +60,7 @@ const UserTable = (props: UserTableProps) => {
   }, [onGetScreenUser, pageable, screenId]);
 
   const rowSelection = useMemo<RowSelectionOptions>(() => {
-    return { mode: 'multiRow', enableClickSelection: true };
+    return { mode: 'multiRow' };
   }, []);
 
   const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
@@ -145,7 +147,7 @@ const UserTable = (props: UserTableProps) => {
 
   return (
     <Stack spacing={1}>
-      <Typography id={'editModalTitle'}>User using</Typography>
+      <Typography id={'editModalTitle'}>{t('label.userUsing')}</Typography>
 
       <Stack direction={'row'}>
         <Button
@@ -170,4 +172,4 @@ const UserTable = (props: UserTableProps) => {
   );
 };
 
-export default memo(UserTable);
+export default memo(ScreenUserTable);

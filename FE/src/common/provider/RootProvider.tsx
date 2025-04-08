@@ -185,8 +185,8 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
                 autoClose: true,
                 timeout: 15,
                 onConfirm: () => {
+                  closeDrawer(false);
                   dispatch({ type: RESET_ALL });
-                  closeDrawer();
                   localStorage.removeItem('login');
                   sessionStorage.removeItem('login');
                   navigate(screenUrl.LOGIN.path, true);
@@ -204,8 +204,8 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
                 autoClose: true,
                 timeout: 15,
                 onConfirm: () => {
+                  closeDrawer(false);
                   dispatch({ type: RESET_ALL });
-                  closeDrawer();
                   localStorage.removeItem('login');
                   sessionStorage.removeItem('login');
                   navigate(screenUrl.LOGIN.path, true);
@@ -227,8 +227,8 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
               messageType: responseData.messageType,
               isPopup: false,
               onConfirm: () => {
+                closeDrawer(false);
                 dispatch({ type: RESET_ALL });
-                closeDrawer();
                 localStorage.removeItem('login');
                 sessionStorage.removeItem('login');
                 navigate(screenUrl.LOGIN.path, true);

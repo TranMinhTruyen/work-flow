@@ -10,6 +10,7 @@ import { memo, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { get } from '@/common/api/apiS3Object';
 import { RESET_ALL } from '@/common/constants/commonConst';
 import { screenUrl } from '@/common/constants/urlConst';
+import { useRightDrawer } from '@/common/context/types/rightDrawerTypes';
 import useRouter from '@/common/hooks/useRouter';
 import { selectLoginData } from '@/common/store/commonSlice';
 import IconButton from '@/components/button/IconButton';
@@ -23,6 +24,7 @@ const UserPopover = () => {
   const loginData = useAppSelector(selectLoginData);
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();
+  const { closeDrawer } = useRightDrawer();
 
   useEffect(() => {
     const getImage = async () => {
@@ -49,11 +51,12 @@ const UserPopover = () => {
   }, []);
 
   const handleLogout = useCallback(() => {
+    closeDrawer(false);
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
     navigate(screenUrl.LOGIN.path, true);
-  }, [dispatch, navigate]);
+  }, [closeDrawer, dispatch, navigate]);
 
   return (
     <>

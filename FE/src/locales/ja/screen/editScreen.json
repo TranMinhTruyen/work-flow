@@ -1,10 +1,13 @@
 {
   "title": "編集画面",
   "label": {
+    "screenDetail": "画面の詳細",
+    "userUsing": "ユーザー使用中",
     "screenId": "画面ID",
     "screenName": "画面名",
     "screenUrl": "画面URL",
     "createdDatetime": "作成日時",
-    "updatedDatetime": "更新日時"
+    "updatedDatetime": "更新日時",
+    "active": "状態"
   }
 }

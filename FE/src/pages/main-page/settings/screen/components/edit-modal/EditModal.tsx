@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
@@ -17,7 +18,7 @@ import IEditModalForm from '../../model/EditModalForm';
 import ISaveScreenResponse from '../../model/SaveScreenResponse';
 import IScreenTableRow from '../../model/ScreenTableRow';
 import { getScreenDetail, saveAction } from './action';
-import UserTable from './UserTable';
+import ScreenUserTable from './ScreenUserTable';
 
 import './editModal.css';
 
@@ -28,11 +29,13 @@ type EditModalProps = {
 const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
+  const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
   const { control, reset, getValues } = useForm<IEditModalForm>({
     context: {
       language: I18nEnum.EDIT_SCREEN_I18N,
     },
   });
+
   const loginData = useAppSelector(selectLoginData);
 
   // Check status screen via websocket.
@@ -74,7 +77,7 @@ const EditModal = (props: EditModalProps) => {
   return (
     <form id={'edit-screen-form'}>
       <Stack spacing={2}>
-        <Typography id={'editModalTitle'}>Screen detail</Typography>
+        <Typography id={'editModalTitle'}>{t('label.screenDetail')}</Typography>
 
         <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
           <Stack spacing={3}>
@@ -101,11 +104,11 @@ const EditModal = (props: EditModalProps) => {
               width={290}
               disabled
             />
-            <SwitchInput name={'active'} control={control} label={'Status'} />
+            <SwitchInput name={'active'} control={control} />
           </Stack>
         </Stack>
 
-        <UserTable screenId={data.screenId} />
+        <ScreenUserTable screenId={data.screenId} />
 
         <SubmitButton onSubmit={handleSaveAction} />
       </Stack>

@@ -12,7 +12,7 @@ export type RightDrawerType = {
   isOpen: boolean;
   content?: RightDrawerContent;
   openDrawer: (content: RightDrawerContent) => void;
-  closeDrawer: () => void;
+  closeDrawer: (triggerCloseAction?: boolean) => void;
 };
 
 export const Context = createContext<RightDrawerType>({} as RightDrawerType);

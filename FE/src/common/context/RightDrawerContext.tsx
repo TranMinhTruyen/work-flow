@@ -11,12 +11,15 @@ const RightDrawerContext = ({ children }: { children: ReactNode }) => {
     setContent(content);
   }, []);
 
-  const closeDrawer = useCallback(() => {
-    if (content?.onCloseAction) {
-      content.onCloseAction();
-    }
-    setIsOpen(false);
-  }, [content]);
+  const closeDrawer = useCallback(
+    (triggerCloseAction: boolean = true) => {
+      if (triggerCloseAction && content?.onCloseAction) {
+        content.onCloseAction();
+      }
+      setIsOpen(false);
+    },
+    [content]
+  );
 
   return <Context value={{ isOpen, content, openDrawer, closeDrawer }}>{children}</Context>;
 };

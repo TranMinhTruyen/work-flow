@@ -1,10 +1,13 @@
 {
   "title": "Edit screen",
   "label": {
+    "screenDetail": "Screen detail",
+    "userUsing": "User using",
     "screenId": "Screen ID",
     "screenName": "Screen name",
     "screenUrl": "Screen URL",
     "createdDatetime": "Created datetime",
-    "updatedDatetime": "Updated datetime"
+    "updatedDatetime": "Updated datetime",
+    "active": "Status"
   }
 }

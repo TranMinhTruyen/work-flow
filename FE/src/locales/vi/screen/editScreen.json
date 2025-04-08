@@ -1,10 +1,13 @@
 {
   "title": "Cập nhật màn hình",
   "label": {
+    "screenDetail": "Chi tiết màn hình",
+    "userUsing": "Người dùng đang sử dụng",
     "screenId": "ID màn hình",
     "screenName": "Tên màn hình",
     "screenUrl": "URL màn hình",
     "createdDatetime": "Ngày tạo",
-    "updatedDatetime": "Ngày cập nhật"
+    "updatedDatetime": "Ngày cập nhật",
+    "active": "Trạng thái"
   }
 }
