@@ -18,6 +18,7 @@
   background-color: rgba(255, 0, 0, 0.8);
 }
 
-.multiRemoveButton {
+.deleteSelectedButton {
+  width: auto;
   background-color: rgba(255, 0, 0, 0.8);
 }

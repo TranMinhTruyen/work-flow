@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 
 //---English language---
 import commonEn from './locales/en/common.json';
+import errorCodeEn from './locales/en/errorCode.json';
 import loginEn from './locales/en/login.json';
 import registerEn from './locales/en/register.json';
 import addNewScreenEn from './locales/en/screen/addNewScreen.json';
@@ -12,6 +13,7 @@ import screenEn from './locales/en/screen/screen.json';
 
 //---Japanese language---
 import commonJp from './locales/ja/common.json';
+import errorCodeJp from './locales/ja/errorCode.json';
 import loginJp from './locales/ja/login.json';
 import registerJp from './locales/ja/register.json';
 import addNewScreenJp from './locales/ja/screen/addNewScreen.json';
@@ -20,6 +22,7 @@ import screenJp from './locales/ja/screen/screen.json';
 
 //---Vietnamese language---
 import commonVn from './locales/vi/common.json';
+import errorCodeVn from './locales/vi/errorCode.json';
 import loginVn from './locales/vi/login.json';
 import registerVn from './locales/vi/register.json';
 import addNewScreenVn from './locales/vi/screen/addNewScreen.json';
@@ -35,6 +38,7 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       common: commonEn,
+      errorCode: errorCodeEn,
       login: loginEn,
       register: registerEn,
       screen: screenEn,
@@ -43,6 +47,7 @@ i18n.use(initReactI18next).init({
     },
     vi: {
       common: commonVn,
+      errorCode: errorCodeVn,
       login: loginVn,
       register: registerVn,
       screen: screenVn,
@@ -51,6 +56,7 @@ i18n.use(initReactI18next).init({
     },
     ja: {
       common: commonJp,
+      errorCode: errorCodeJp,
       login: loginJp,
       register: registerJp,
       screen: screenJp,

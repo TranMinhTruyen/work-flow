@@ -8,7 +8,7 @@ import { MessageType } from '@/common/enums/messageEnum';
 import { openDialogContainer } from '../dialog/DialogContainer';
 import Button, { ButtonProps } from './Button';
 
-export type SubmitButtonProps = ButtonProps & {
+export type SubmitButtonProps = Omit<ButtonProps, 'onClick'> & {
   onSubmit?: () => void;
 };
 

@@ -175,51 +175,79 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
 
         switch (responseStatus) {
           case 401:
-            if (responseData.messageCode === 'EA0008') {
-              openDialogContainer({
-                type: 'message',
-                maxWidth: 'sm',
-                messageType: responseData.messageType,
-                isPopup: false,
-                showCloseButton: false,
-                autoClose: true,
-                timeout: 15,
-                onConfirm: () => {
-                  closeDrawer(false);
-                  dispatch({ type: RESET_ALL });
-                  localStorage.removeItem('login');
-                  sessionStorage.removeItem('login');
-                  navigate(screenUrl.LOGIN.path, true);
-                },
-                bodyElement: 'Session time out',
-              });
-              break;
-            } else {
-              openDialogContainer({
-                type: 'message',
-                maxWidth: 'sm',
-                messageType: responseData.messageType,
-                isPopup: false,
-                showCloseButton: false,
-                autoClose: true,
-                timeout: 15,
-                onConfirm: () => {
-                  closeDrawer(false);
-                  dispatch({ type: RESET_ALL });
-                  localStorage.removeItem('login');
-                  sessionStorage.removeItem('login');
-                  navigate(screenUrl.LOGIN.path, true);
-                },
-                bodyElement: (
-                  <ApiErrorDetail
-                    status={responseStatus}
-                    message={responseMessage}
-                    responseData={responseData}
-                  />
-                ),
-              });
-              break;
+            switch (responseData.messageCode) {
+              case 'EA0008':
+                openDialogContainer({
+                  type: 'message',
+                  maxWidth: 'sm',
+                  messageType: responseData.messageType,
+                  isPopup: false,
+                  showCloseButton: false,
+                  autoClose: true,
+                  timeout: 15,
+                  onConfirm: () => {
+                    closeDrawer(false);
+                    dispatch({ type: RESET_ALL });
+                    localStorage.removeItem('login');
+                    sessionStorage.removeItem('login');
+                    navigate(screenUrl.LOGIN.path, true);
+                  },
+                  bodyElement: 'Session time out',
+                });
+                break;
+              case 'EA0002':
+              case 'EA0003':
+              case 'EA0004':
+                responseData = {
+                  ...responseData,
+                  errorList: [
+                    {
+                      errorCode: responseData.messageCode,
+                      errorMessage: `${t(`${I18nEnum.ERROR_CODE}:${responseData.messageCode}`)}`,
+                    },
+                  ],
+                };
+                openDialogContainer({
+                  type: 'message',
+                  maxWidth: 'sm',
+                  messageType: responseData.messageType,
+                  isPopup: false,
+                  bodyElement: (
+                    <ApiErrorDetail
+                      status={responseStatus}
+                      message={responseMessage}
+                      responseData={responseData}
+                    />
+                  ),
+                });
+                break;
+              default:
+                openDialogContainer({
+                  type: 'message',
+                  maxWidth: 'sm',
+                  messageType: responseData.messageType,
+                  isPopup: false,
+                  showCloseButton: false,
+                  autoClose: true,
+                  timeout: 15,
+                  onConfirm: () => {
+                    closeDrawer(false);
+                    dispatch({ type: RESET_ALL });
+                    localStorage.removeItem('login');
+                    sessionStorage.removeItem('login');
+                    navigate(screenUrl.LOGIN.path, true);
+                  },
+                  bodyElement: (
+                    <ApiErrorDetail
+                      status={responseStatus}
+                      message={responseMessage}
+                      responseData={responseData}
+                    />
+                  ),
+                });
+                break;
             }
+            break;
           case 500:
             openDialogContainer({
               type: 'message',

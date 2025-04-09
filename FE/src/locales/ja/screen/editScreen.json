@@ -9,5 +9,8 @@
     "createdDatetime": "作成日時",
     "updatedDatetime": "更新日時",
     "active": "状態"
+  },
+  "button": {
+    "deleteSelected": "選択した項目を削除"
   }
 }

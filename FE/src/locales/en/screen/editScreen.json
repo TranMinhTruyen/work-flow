@@ -9,5 +9,8 @@
     "createdDatetime": "Created datetime",
     "updatedDatetime": "Updated datetime",
     "active": "Status"
+  },
+  "button": {
+    "deleteSelected": "Delete selected"
   }
 }

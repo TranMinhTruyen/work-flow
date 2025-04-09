@@ -83,6 +83,9 @@ public class ExceptionInterceptor extends AbstractController {
 
   @ExceptionHandler(RuntimeException.class)
   public ResponseEntity<BaseResponse> handleException(RuntimeException exception) {
+    if (exception.getCause() != null && exception.getCause() instanceof WFException) {
+      return returnErrorBaseResponse((WFException) exception.getCause());
+    }
     if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
         .isPresent()) {
       for (StackTraceElement item : exception.getStackTrace()) {

@@ -75,8 +75,8 @@ public abstract class AbstractController {
 
   protected ResponseEntity<BaseResponse> returnErrorBaseResponse(WFException WFException) {
     BaseResponse baseResponse = new BaseResponse();
-    baseResponse.setMessageType(SERVER_ERROR.getMessageType());
-    baseResponse.setMessageCode(SERVER_ERROR.getMessageCode());
+    baseResponse.setMessageType(WFException.getMessageEnum().getMessageType());
+    baseResponse.setMessageCode(WFException.getMessageEnum().getMessageCode());
     baseResponse.setErrorList(WFException.getErrorDetail());
     HttpHeaders header = new HttpHeaders();
     header.setContentType(APPLICATION_JSON);

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
-import com.org.workflow.dao.repository.ProxyRepository;
+import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.UserRepository;
 import com.org.workflow.domain.dto.response.screen.AccessScreenResponse;
 import com.org.workflow.domain.dto.response.screen.ScreenResponse;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityService {
 
-  private final ProxyRepository proxyRepository;
+  private final ScreenRepository screenRepository;
 
   private final UserRepository userRepository;
 
@@ -51,7 +51,7 @@ public class SecurityService {
     Optional<UserAccount> result = userRepository.findUserAccountByUserNameOrEmail(username);
     if (result.isPresent()) {
       Optional<List<Screen>> screenMasterList =
-          proxyRepository.findScreenMasterByListScreenId(result.get().getAccessScreenList());
+          screenRepository.findScreenMasterByListScreenId(result.get().getAccessScreenList());
 
       if (screenMasterList.isPresent()) {
         List<ScreenResponse> screenResponseList = setScreenMasterResponses(screenMasterList.get());

@@ -32,7 +32,7 @@ import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.document.UserHistory;
 import com.org.workflow.dao.document.sub.ChangeValue;
-import com.org.workflow.dao.repository.ProxyRepository;
+import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.UserHistoryRepository;
 import com.org.workflow.dao.repository.UserRepository;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
@@ -70,11 +70,12 @@ public class UserService extends AbstractService {
 
   private final UserHistoryRepository userHistoryRepository;
 
-  private final ProxyRepository proxyRepository;
+  private final ScreenRepository screenRepository;
 
   private final RedisTemplate<Object, Object> redisTemplate;
 
   private final ExceptionService exceptionService;
+
 
   @Value("${file-utils.image-path}")
   public String imagePath;
@@ -270,7 +271,7 @@ public class UserService extends AbstractService {
       if (userAccount.getAccessScreenList() != null && !userAccount.getAccessScreenList()
           .isEmpty()) {
         Optional<List<Screen>> screenMasterList =
-            proxyRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
+            screenRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
 
         if (screenMasterList.isPresent()) {
           ScreenResponse screenResponse;
@@ -326,7 +327,7 @@ public class UserService extends AbstractService {
         () -> exceptionService.getWFException(NOT_FOUND, baseRequest.getLanguage(), "", username));
 
     Optional<List<Screen>> screenMasterList =
-        proxyRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
+        screenRepository.findScreenMasterByListScreenId(userAccount.getAccessScreenList());
 
     List<ScreenResponse> screenResponseList = new ArrayList<>();
     if (screenMasterList.isPresent()) {

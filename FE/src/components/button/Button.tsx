@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -24,13 +24,20 @@ const Button = (props: ButtonProps) => {
     endIcon,
     badgeContent,
     className,
+    disabled,
     ...restProps
   } = props;
 
   const loadingComponent = useMemo(
     () =>
-      isLoading ? <CircularProgress variant={'indeterminate'} disableShrink size={20} /> : label,
-    [isLoading, label]
+      isLoading ? (
+        <CircularProgress variant={'indeterminate'} disableShrink size={20} />
+      ) : (
+        <Typography sx={{ color: disabled ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 1)' }}>
+          {label}
+        </Typography>
+      ),
+    [disabled, isLoading, label]
   );
 
   return (
@@ -41,6 +48,7 @@ const Button = (props: ButtonProps) => {
         endIcon={!isLoading ? endIcon : null}
         width={width}
         height={height}
+        disabled={disabled}
         {...restProps}
       >
         {loadingComponent}
@@ -49,7 +57,7 @@ const Button = (props: ButtonProps) => {
   );
 };
 
-const StyleButton = styled(MuiButton)<ButtonProps>(({ width, height }) => ({
+const StyleButton = styled(MuiButton)<ButtonProps>(({ width, height, disabled }) => ({
   width: `${width}px`,
   height: `${height}px`,
   boxShadow: 'rgba(168, 168, 168, 1)',
@@ -61,6 +69,14 @@ const StyleButton = styled(MuiButton)<ButtonProps>(({ width, height }) => ({
   '&:hover': {
     boxShadow: 'rgba(168, 168, 168, 1)',
     backgroundColor: 'rgba(210, 210, 210, 0.8)',
+  },
+  '& .MuiButton-startIcon': {
+    color: disabled ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 1)',
+    marginLeft: '0px',
+  },
+  '& .MuiButton-endIcon': {
+    color: disabled ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 1)',
+    marginRight: '0px',
   },
 }));
 

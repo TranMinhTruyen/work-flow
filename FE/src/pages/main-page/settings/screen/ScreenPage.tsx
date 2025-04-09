@@ -269,7 +269,8 @@ const styles = {
   },
 
   button: {
-    minWidth: '125px',
+    width: 'auto',
+    minWidth: '70px',
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
     height: '30px',
   },

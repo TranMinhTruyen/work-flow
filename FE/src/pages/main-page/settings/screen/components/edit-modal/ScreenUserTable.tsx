@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
@@ -10,8 +9,8 @@ import { I18nEnum } from '@/common/enums/i18nEnum';
 import { MessageType } from '@/common/enums/messageEnum';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
-import Button from '@/components/button/Button';
 import IconButton from '@/components/button/IconButton';
+import SubmitButton from '@/components/button/SubmitButton';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import PageGridTable from '@/components/table/PageGridTable';
 
@@ -150,12 +149,12 @@ const ScreenUserTable = (props: ScreenUserProps) => {
       <Typography id={'editModalTitle'}>{t('label.userUsing')}</Typography>
 
       <Stack direction={'row'}>
-        <Button
-          className={'multiRemoveButton'}
-          width={150}
-          label={'Multi remove'}
-          startIcon={<DeleteSweepIcon />}
-          onClick={handeMultiRemove}
+        <SubmitButton
+          className={'deleteSelectedButton'}
+          height={35}
+          label={t('button.deleteSelected')}
+          startIcon={<DeleteIcon />}
+          onSubmit={handeMultiRemove}
           disabled={selectedItem.length === 0}
         />
       </Stack>

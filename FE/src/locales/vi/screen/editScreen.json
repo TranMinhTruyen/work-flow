@@ -9,5 +9,8 @@
     "createdDatetime": "Ngày tạo",
     "updatedDatetime": "Ngày cập nhật",
     "active": "Trạng thái"
+  },
+  "button": {
+    "deleteSelected": "Xóa mục đã chọn"
   }
 }
