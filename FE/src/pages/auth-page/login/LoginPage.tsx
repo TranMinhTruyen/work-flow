@@ -124,7 +124,7 @@ const LoginPage = () => {
       <CardActions sx={loginStyles.footer}>
         <Button
           width={120}
-          label={<Typography sx={loginStyles.buttonLabel}>{t('button.login')}</Typography>}
+          label={t('button.login')}
           sx={loginStyles.button}
           form={'login-form'}
           type={'submit'}

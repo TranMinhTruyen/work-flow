@@ -47,11 +47,7 @@ const ErrorFallback = (props: ErrorFallbackProps) => {
     >
       <Stack spacing={2}>
         <Typography variant={'h3'}>{t(`clientError.${error.message}`)}</Typography>
-        <Button
-          label={<Typography>Reset</Typography>}
-          sx={styles.button}
-          onClick={resetErrorBoundary}
-        />
+        <Button label={'Reset'} sx={styles.button} onClick={resetErrorBoundary} />
       </Stack>
     </Container>
   );

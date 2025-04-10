@@ -25,8 +25,8 @@
   "SUCCESS": "Success",
   "WARNING": "Warning",
   "INFO": "Info",
-  "errorcode": "Error code",
-  "errormessage": "Error message",
+  "errorCode": "Error code",
+  "errorMessage": "Error message",
   "message": {
     "noPermission": "You don't have any permission!"
   },

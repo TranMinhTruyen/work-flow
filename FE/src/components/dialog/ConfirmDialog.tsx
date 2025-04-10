@@ -109,11 +109,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     if (showCancelButton !== undefined && showCancelButton) {
       return (
         <Button
-          label={
-            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {cancelText ?? t('button.cancel')}
-            </Typography>
-          }
+          label={cancelText ?? t('button.cancel')}
           sx={{
             width: 120,
             height: 30,
@@ -183,11 +179,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
         <DialogActions sx={{ justifyContent: 'center', alignItems: 'center', padding: '10px' }}>
           <Stack direction={'row'} alignItems={'center'} spacing={7}>
             <Button
-              label={
-                <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                  {confirmText ?? t('button.ok')}
-                </Typography>
-              }
+              label={confirmText ?? t('button.ok')}
               sx={{
                 width: 120,
                 height: 30,

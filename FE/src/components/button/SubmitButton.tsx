@@ -32,11 +32,7 @@ const SubmitButton = (props: SubmitButtonProps) => {
   return (
     <Button
       sx={{ marginLeft: 'auto', backgroundColor: 'rgba(0, 170, 255, 0.8)' }}
-      label={
-        <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-          {t('button.submit')}
-        </Typography>
-      }
+      label={t('button.submit')}
       onClick={handleSubmitButton}
       {...restProps}
     />

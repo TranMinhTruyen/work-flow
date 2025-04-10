@@ -31,7 +31,7 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
   const colDefs = useMemo<ColDef<IErrorList>[]>(
     () => [
       {
-        headerName: t('errorcode'),
+        headerName: t('errorCode'),
         field: 'errorCode',
         sortable: false,
         width: 125,
@@ -40,7 +40,7 @@ const ApiErrorDetail = (props: ApiErrorDetailProps) => {
         },
       },
       {
-        headerName: t('errormessage'),
+        headerName: t('errorMessage'),
         field: 'errorMessage',
         sortable: false,
         flex: 1,

@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -91,6 +92,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         colId: 'delete',
         sortable: false,
         width: 80,
+        headerComponent: AddNewHeader,
         cellRenderer: () => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
@@ -108,6 +110,9 @@ const ScreenUserTable = (props: ScreenUserProps) => {
     []
   );
 
+  /**
+   * Set select item for remove.
+   */
   const onSelectionChanged = useCallback(
     (event: SelectionChangedEvent) => {
       const selectedNodes = event.api.getSelectedNodes();
@@ -151,7 +156,6 @@ const ScreenUserTable = (props: ScreenUserProps) => {
       <Stack direction={'row'}>
         <SubmitButton
           className={'deleteSelectedButton'}
-          height={35}
           label={t('button.deleteSelected')}
           startIcon={<DeleteIcon />}
           onSubmit={handeMultiRemove}
@@ -166,6 +170,20 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         control={control}
         rowSelection={rowSelection}
         onSelectionChanged={onSelectionChanged}
+      />
+    </Stack>
+  );
+};
+
+const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
+  return (
+    <Stack>
+      <IconButton
+        className={'addButton'}
+        width={30}
+        height={30}
+        icon={<AddIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+        onClick={onClick}
       />
     </Stack>
   );

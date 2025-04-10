@@ -25,8 +25,8 @@
   "SUCCESS": "成功",
   "WARN": "警告",
   "INFO": "情報",
-  "errorcode": "エラー コード",
-  "errormessage": "エラー メッセージ",
+  "errorCode": "エラー コード",
+  "errorMessage": "エラー メッセージ",
   "message": {
     "noPermission": "あなたには権限がありません!"
   },

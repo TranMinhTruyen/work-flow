@@ -116,9 +116,7 @@ const DemoModal = (props: DemoModalProps) => {
           sx={{
             backgroundColor: 'rgba(0, 170, 255, 0.8)',
           }}
-          label={
-            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{'Ok'}</Typography>
-          }
+          label={'Ok'}
           onClick={handleOk}
         />
       </Container>

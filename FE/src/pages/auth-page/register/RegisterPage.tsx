@@ -8,7 +8,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -140,7 +139,7 @@ const RegisterPage = () => {
         <Stack direction={'row'} spacing={5}>
           <Button
             width={120}
-            label={<Typography sx={registerStyles.buttonLabel}>{t('button.register')}</Typography>}
+            label={t('button.register')}
             sx={registerStyles.button}
             form={'register-form'}
             type={'submit'}

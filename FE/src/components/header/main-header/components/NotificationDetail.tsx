@@ -54,11 +54,7 @@ const NotificationDetail = (props: NotificationDetailProps) => {
         <Divider />
 
         <Stack sx={{ padding: '8px' }} direction={'row-reverse'}>
-          <Button
-            label={<Typography sx={styles.buttonLabel}>OK</Typography>}
-            sx={styles.button}
-            onClick={handleClose}
-          />
+          <Button label={'OK'} sx={styles.button} onClick={handleClose} />
         </Stack>
       </Stack>
     </Dialog>

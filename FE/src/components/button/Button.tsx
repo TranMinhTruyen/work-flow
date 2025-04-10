@@ -19,7 +19,7 @@ const Button = (props: ButtonProps) => {
     label,
     isLoading = false,
     width = 100,
-    height = 35,
+    height = 30,
     startIcon,
     endIcon,
     badgeContent,
@@ -33,7 +33,14 @@ const Button = (props: ButtonProps) => {
       isLoading ? (
         <CircularProgress variant={'indeterminate'} disableShrink size={20} />
       ) : (
-        <Typography sx={{ color: disabled ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 1)' }}>
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            color: disabled ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 1)',
+            marginTop: '1px',
+          }}
+        >
           {label}
         </Typography>
       ),

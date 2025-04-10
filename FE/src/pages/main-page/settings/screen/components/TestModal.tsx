@@ -1,4 +1,3 @@
-import Typography from '@mui/material/Typography';
 import { memo, useCallback, useMemo, useRef } from 'react';
 
 import { CommonElement } from '@/common/constants/typeConst';
@@ -30,15 +29,7 @@ const TestModal = () => {
         level: 3,
       },
       <>
-        <Button
-          width={200}
-          label={
-            <Typography sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-              {'Test open modal'}
-            </Typography>
-          }
-          onClick={handleOpenModal}
-        />
+        <Button width={200} label={'Test open modal'} onClick={handleOpenModal} />
         <DemoModal ref={modalRef} />
       </>
     );

@@ -29,7 +29,7 @@ const GridTable = (props: GridTableProps) => {
     width = '100%',
     minWidth = '100%',
     maxWidth = '100%',
-    rowHeight = 55,
+    rowHeight = 50,
     control,
     defaultColDef: defaultColDefProp,
     ...restProps
@@ -39,7 +39,7 @@ const GridTable = (props: GridTableProps) => {
 
   const calculateGridHeight = useMemo(() => {
     const rowCount = control?.data ? control?.data.length : 1;
-    const totalHeight = rowCount * rowHeight + 53;
+    const totalHeight = rowCount * rowHeight + 55;
     return Math.min(Math.max(totalHeight, Number(50)), Number(maxHeight));
   }, [control?.data, maxHeight, rowHeight]);
 
@@ -120,7 +120,7 @@ const AgGridContainer = styled('div')<GridTableProps>(
     '& .ag-cell': {
       alignContent: 'center !important',
       borderRight: '1px solid rgba(204, 204, 204, 1) !important',
-      lineHeight: '1.8 !important',
+      lineHeight: '1.5 !important',
     },
 
     '& .ag-cell:last-child': {

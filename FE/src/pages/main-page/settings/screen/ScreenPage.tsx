@@ -219,17 +219,14 @@ const ScreenPage = () => {
 
           <Stack direction={'row'} spacing={2} sx={{ alignSelf: 'center' }}>
             <Button
-              label={<Typography sx={styles.buttonLabel}>{t('button.search')}</Typography>}
+              label={t('button.search')}
               startIcon={<SearchIcon />}
               sx={styles.button}
               form={'search-screen-form'}
               type={'submit'}
             />
 
-            <Button
-              label={<Typography sx={styles.buttonLabel}>{t('button.clear')}</Typography>}
-              sx={styles.button}
-            />
+            <Button label={t('button.clear')} sx={styles.button} />
           </Stack>
         </Stack>
       </form>
@@ -272,12 +269,6 @@ const styles = {
     width: 'auto',
     minWidth: '70px',
     backgroundColor: 'rgba(0, 170, 255, 0.8)',
-    height: '30px',
-  },
-
-  buttonLabel: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
 };
 

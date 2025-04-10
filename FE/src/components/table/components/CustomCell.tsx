@@ -20,14 +20,14 @@ const CellRenderer = (params: { value: any; colDef: ColDef }) => {
         maxWidth: params.colDef.width ?? '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
+        whiteSpace: !params.colDef.wrapText ? 'nowrap' : 'none',
       }}
     >
       {params.value}
     </Typography>
   );
 
-  return isOverflow ? (
+  return isOverflow && !params.colDef.wrapText ? (
     <Tooltip title={params.value || ''} arrow>
       {typographyContent}
     </Tooltip>

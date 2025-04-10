@@ -25,8 +25,8 @@
   "SUCCESS": "Thành công",
   "WARN": "Cảnh báo",
   "INFO": "Thông báo",
-  "errorcode": "Mã lỗi",
-  "errormessage": "Thông báo lỗi",
+  "errorCode": "Mã lỗi",
+  "errorMessage": "Thông báo lỗi",
   "message": {
     "noPermission": "Bạn không có quyền!"
   },
