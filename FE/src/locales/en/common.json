@@ -19,7 +19,8 @@
     "submit": "Submit"
   },
   "buttonMessage": {
-    "submit": "Are you want to do submit action?"
+    "submit": "Are you want to do submit action?",
+    "submitWarning": "Form not change, do you want to do submit action?"
   },
   "ERROR": "Error",
   "SUCCESS": "Success",

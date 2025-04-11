@@ -80,7 +80,7 @@ public class ApplicationStartup {
 
   private List<String> randomList(List<String> originalList) {
     int newSize = new Random().nextInt(originalList.size()) + 1;
-    return new ArrayList<>(originalList.subList(1, newSize));
+    return new ArrayList<>(originalList.subList(0, newSize));
   }
 
 

@@ -18,6 +18,6 @@ export interface INotificationCreateRequest {
 }
 
 export interface IAllNotificationResponse {
-  notification?: IPageResponse<INotificationResponse[]>;
+  notification?: IPageResponse<INotificationResponse>;
   totalNotRead?: number;
 }

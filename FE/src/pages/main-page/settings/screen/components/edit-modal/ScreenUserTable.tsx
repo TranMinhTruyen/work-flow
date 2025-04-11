@@ -63,10 +63,36 @@ const ScreenUserTable = (props: ScreenUserProps) => {
     return { mode: 'multiRow' };
   }, []);
 
+  /**
+   * Handle click remove button in table.
+   */
+  const handleClickRemoveButton = useCallback(
+    (data: IScreenUserTableRow) => async () => {
+      const response = await removeUserAction(screenId, [`${data.userId}`]);
+      if (response) {
+        openDialogContainer({
+          type: 'message',
+          maxWidth: 'xs',
+          messageType: MessageType.INFO,
+          isPopup: false,
+          onConfirm: () => {
+            const searchCondition: IPageRequest<ISearchScreenRequest> = {
+              condition: { screenId: screenId },
+              ...pageable,
+            };
+            onGetScreenUser(searchCondition);
+          },
+          bodyElement: <Typography>{`Total user removed: ${response.totalRemoveUser}`}</Typography>,
+        });
+      }
+    },
+    [onGetScreenUser, pageable, screenId]
+  );
+
   const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
     () => [
       {
-        headerName: 'User ID',
+        headerName: t('table.userId'),
         field: 'userId',
         width: 200,
         cellRenderer: (params: { value: string }) => {
@@ -74,26 +100,27 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         },
       },
       {
-        headerName: 'Email',
+        headerName: t('table.email'),
         field: 'email',
-        width: 200,
+        width: 230,
       },
       {
-        headerName: 'Username',
+        headerName: t('table.userName'),
         field: 'userName',
-        width: 200,
+        width: 170,
       },
       {
-        headerName: 'Fullname',
+        headerName: t('table.fullName'),
         field: 'fullName',
         flex: 1,
+        // wrapText: true,
       },
       {
-        colId: 'delete',
+        colId: 'remove',
         sortable: false,
-        width: 80,
+        width: 65,
         headerComponent: AddNewHeader,
-        cellRenderer: () => {
+        cellRenderer: (params: { data: IScreenUserTableRow }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
               <IconButton
@@ -101,13 +128,14 @@ const ScreenUserTable = (props: ScreenUserProps) => {
                 width={30}
                 height={30}
                 icon={<DeleteIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+                onClick={handleClickRemoveButton(params.data)}
               />
             </Stack>
           );
         },
       },
     ],
-    []
+    [handleClickRemoveButton, t]
   );
 
   /**

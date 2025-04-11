@@ -39,7 +39,7 @@ public class AuthUtil {
       throw new WFException(AUTHORITY_ERROR);
     }
 
-    if (level != 0 && userDetail.getUserAccount().getLevel() <= level) {
+    if (level != 0 && userDetail.getUserAccount().getLevel() < level) {
       throw new WFException(LEVEL_ERROR);
     }
   }

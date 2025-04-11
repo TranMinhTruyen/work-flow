@@ -1,4 +1,5 @@
 export interface IUserData {
+  userId?: string;
   userName?: string;
   token?: string;
   role?: string;

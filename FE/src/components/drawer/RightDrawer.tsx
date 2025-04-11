@@ -22,7 +22,7 @@ const RightDrawer = () => {
   );
 
   return content?.isOnClose ? (
-    <SideDrawer anchor={'right'} open={isOpen} onClose={closeDrawer}>
+    <SideDrawer anchor={'right'} open={isOpen} onClose={() => closeDrawer()}>
       <Stack sx={{ marginTop: '55px' }}>
         <Stack direction={'row'} sx={{ height: '45px', padding: '8px' }}>
           <Stack sx={{ flex: 1, height: '30px', marginLeft: '30px' }}>
@@ -32,7 +32,7 @@ const RightDrawer = () => {
           <IconButton
             width={30}
             height={30}
-            onClick={closeDrawer}
+            onClick={() => closeDrawer()}
             color={'primary'}
             icon={<CloseIcon />}
           />
@@ -52,7 +52,7 @@ const RightDrawer = () => {
           <IconButton
             width={30}
             height={30}
-            onClick={closeDrawer}
+            onClick={() => closeDrawer()}
             color={'primary'}
             icon={<CloseIcon />}
           />

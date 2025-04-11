@@ -22,7 +22,7 @@ import DatePickerInput from '@/components/form/DatePickerInput';
 import ImageInput from '@/components/form/ImageInput';
 import TextInput from '@/components/form/TextInput';
 
-import { handleSubmitRegister } from './action/action';
+import { handleSubmitRegister } from './action';
 import IRegisterForm from './model/RegisterForm';
 
 const RegisterPage = () => {

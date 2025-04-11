@@ -13,9 +13,10 @@ import { ModalRef } from '@/common/hooks/types/useModalTypes';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import { INotificationResponse } from '@/common/model/Notification';
 import { IPageRequest } from '@/common/model/Pageable';
+import { selectLoginData } from '@/common/store/commonSlice';
 import IconButton from '@/components/button/IconButton';
 import CircleProgress from '@/components/loading/CircleProgress';
-import { useAppDispatch } from '@/lib/store';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { notificationService } from '@/services/notificationService';
 
 import NotificationDetail from './NotificationDetail';
@@ -41,14 +42,32 @@ const NotificationPopover = () => {
 
   const modalRef = useRef<ModalRef<null, INotificationResponse>>(null);
   const dispatch = useAppDispatch();
-
   const open = Boolean(anchorEl);
+  const loginData = useAppSelector(selectLoginData);
 
   /**
-   * Get notificaiton via websocket.
+   * Get common notificaiton via websocket.
    */
   useWebSocket<INotificationResponse>({
     receiveUrl: '/notification/receive',
+    onSubscribe: async (data: INotificationResponse) => {
+      if (data) {
+        const response: INotificationResponse = await dispatch(
+          notificationService.endpoints.createNotification.initiate({ ...data, read: false })
+        ).unwrap();
+        setNotificationList(prev => {
+          return [response, ...prev];
+        });
+        setTotalNotRead(prev => prev + 1);
+      }
+    },
+  });
+
+  /**
+   * TODO Get user notificaiton via websocket.
+   */
+  useWebSocket<INotificationResponse>({
+    receiveUrl: `/user/${loginData?.userId}/notification/receive`,
     onSubscribe: async (data: INotificationResponse) => {
       if (data) {
         const response: INotificationResponse = await dispatch(

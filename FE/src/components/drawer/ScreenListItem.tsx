@@ -57,7 +57,7 @@ const screenItemList: IScreenItem[] = [
         screenLabel: 'drawerTitle.screenSetting',
         screenPath: screenUrl.SCREEN_MASTER.path,
         screenRole: ['ADMIN'],
-        screenLevel: 3,
+        screenLevel: 1,
         screenChild: null,
       },
       {
@@ -67,7 +67,7 @@ const screenItemList: IScreenItem[] = [
         screenLabel: 'drawerTitle.userSetting',
         screenPath: screenUrl.USER_MASTER.path,
         screenRole: ['ADMIN'],
-        screenLevel: 3,
+        screenLevel: 1,
         screenChild: null,
       },
     ],

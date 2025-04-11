@@ -10,24 +10,37 @@ import Button, { ButtonProps } from './Button';
 
 export type SubmitButtonProps = Omit<ButtonProps, 'onClick'> & {
   onSubmit?: () => void;
+  isDirty?: boolean;
 };
 
 const SubmitButton = (props: SubmitButtonProps) => {
-  const { onSubmit, ...restProps } = props;
+  const { onSubmit, isDirty = false, ...restProps } = props;
 
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const handleSubmitButton = useCallback(() => {
-    openDialogContainer({
-      type: 'message',
-      maxWidth: 'xs',
-      messageType: MessageType.INFO,
-      isPopup: false,
-      onConfirm: onSubmit,
-      showCancelButton: true,
-      bodyElement: <Typography>{t('buttonMessage.submit')}</Typography>,
-    });
-  }, [onSubmit, t]);
+    if (isDirty) {
+      openDialogContainer({
+        type: 'message',
+        maxWidth: 'xs',
+        messageType: MessageType.INFO,
+        isPopup: false,
+        onConfirm: onSubmit,
+        showCancelButton: true,
+        bodyElement: <Typography>{t('buttonMessage.submit')}</Typography>,
+      });
+    } else {
+      openDialogContainer({
+        type: 'message',
+        maxWidth: 'xs',
+        messageType: MessageType.WARN,
+        isPopup: false,
+        onConfirm: onSubmit,
+        showCancelButton: true,
+        bodyElement: <Typography>{t('buttonMessage.submitWarning')}</Typography>,
+      });
+    }
+  }, [isDirty, onSubmit, t]);
 
   return (
     <Button

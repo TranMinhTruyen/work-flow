@@ -12,5 +12,11 @@
   },
   "button": {
     "deleteSelected": "Delete selected"
+  },
+  "table": {
+    "userId": "User ID",
+    "email": "Email",
+    "userName": "Username",
+    "fullName": "Fullname"
   }
 }

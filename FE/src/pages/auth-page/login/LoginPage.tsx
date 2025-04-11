@@ -21,7 +21,7 @@ import Button from '@/components/button/Button';
 import CheckBoxInput from '@/components/form/CheckBoxInput';
 import TextInput from '@/components/form/TextInput';
 
-import { handleSubmitLogin } from './action/action';
+import { handleSubmitLogin } from './action';
 import ILoginForm from './model/loginForm';
 
 const LoginPage = () => {

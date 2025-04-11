@@ -12,5 +12,11 @@
   },
   "button": {
     "deleteSelected": "選択した項目を削除"
+  },
+  "table": {
+    "userId": "ユーザーID",
+    "email": "メールアドレス",
+    "userName": "ユーザー名",
+    "fullName": "氏名"
   }
 }

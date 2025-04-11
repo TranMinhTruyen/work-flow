@@ -14,5 +14,6 @@
 
 [col-id="addNew"] .ag-header-cell-comp-wrapper {
   justify-content: center;
+  margin-left: 1px;
 }
 

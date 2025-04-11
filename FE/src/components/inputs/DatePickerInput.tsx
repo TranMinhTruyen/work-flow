@@ -100,7 +100,7 @@ const DatePickerInput = (props: DatePickerProps) => {
     >
       <CustomDatePicker
         className={className}
-        value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate, inputFormat)}
+        value={isNullOrEmpty(selectedDate?.toString()) ? null : dayjs(selectedDate)}
         views={views}
         format={inputFormat}
         openTo={openTo}

@@ -242,6 +242,17 @@ public class ScreenService extends AbstractService {
 
     long count = screenRepository.removeUserFromScreen(condition);
 
+    for (String userId : payload.getListUserId()) {
+      NotificationResponse notificationResponse = new NotificationResponse();
+      notificationResponse.setTitle("Screen removed");
+      notificationResponse.setMessage(
+          MessageFormat.format("Screen [{0}] has been remove to you", payload.getScreenId()));
+      notificationResponse.setSendDatetime(LocalDateTime.now());
+
+      messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+    }
+
+
     return new RemoveUserResponse(count);
   }
 

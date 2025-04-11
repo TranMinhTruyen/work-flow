@@ -51,16 +51,15 @@ const PageGridTable = (props: PageGridTableProps) => {
           color={'primary'}
           onChange={handlePageChange}
         />
-        <FormControl size={'small'}>
+        <FormControl size={'small'} sx={{ alignSelf: 'center' }}>
           <Select
-            sx={{ height: '35px', borderRadius: '50px' }}
+            sx={{ height: '30px', borderRadius: '50px' }}
             value={props.control?.pageable.size as unknown as string}
             onChange={handleSizeChange}
           >
             <MenuItem value={10}>10</MenuItem>
             <MenuItem value={25}>25</MenuItem>
             <MenuItem value={50}>50</MenuItem>
-            <MenuItem value={100}>100</MenuItem>
           </Select>
         </FormControl>
         <Typography>

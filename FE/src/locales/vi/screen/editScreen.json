@@ -12,5 +12,11 @@
   },
   "button": {
     "deleteSelected": "Xóa mục đã chọn"
+  },
+  "table": {
+    "userId": "ID người dùng",
+    "email": "Email",
+    "userName": "Tên đăng nhập",
+    "fullName": "Họ và tên"
   }
 }

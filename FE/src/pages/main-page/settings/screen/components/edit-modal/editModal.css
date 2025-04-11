@@ -23,6 +23,7 @@
   background-color: rgba(255, 0, 0, 0.8);
 }
 
-[col-id="delete"] .ag-header-cell-comp-wrapper {
+[col-id="remove"] .ag-header-cell-comp-wrapper {
   justify-content: center;
+  margin-left: 1px;
 }

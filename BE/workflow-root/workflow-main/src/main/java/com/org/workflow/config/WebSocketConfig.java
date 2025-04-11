@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-  private static final String[] WEBSOCKET_BROKER = {"/screen-master", "/notification"};
+  private static final String[] WEBSOCKET_BROKER = {"/screen-master", "/notification", "/user"};
 
   @Value(value = "${client.url}")
   private String clientUrl;

@@ -4,9 +4,9 @@ import { encryptWithRSA } from '@/common/utils/authUtil';
 import store from '@/lib/store';
 import { userServices } from '@/services/userService';
 
-import ILoginForm from '../model/LoginForm';
-import ILoginRequest from '../model/LoginRequest';
-import ILoginResponse from '../model/LoginResponse';
+import ILoginForm from './model/LoginForm';
+import ILoginRequest from './model/LoginRequest';
+import ILoginResponse from './model/LoginResponse';
 
 /**
  * Handle click submit button.
@@ -38,6 +38,7 @@ export const handleSubmitLogin = async (data: ILoginForm): Promise<boolean> => {
  */
 const setToken = async (loginResponse: ILoginResponse, isRemember: boolean = false) => {
   const loginData: IUserData = {
+    userId: loginResponse.userResponse?.userId,
     userName: loginResponse.userResponse?.userName,
     token: loginResponse.token,
     role: loginResponse.userResponse?.role,

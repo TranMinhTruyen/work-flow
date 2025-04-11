@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+import { FULL_DATE_TIME_FORMAT } from '@/common/constants/commonConst';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useForm from '@/common/hooks/useForm';
 import useWebSocket from '@/common/hooks/useWebSocket';
@@ -30,7 +31,12 @@ const EditModal = (props: EditModalProps) => {
   const { data } = props;
 
   const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
-  const { control, reset, getValues } = useForm<IEditModalForm>({
+  const {
+    control,
+    reset,
+    getValues,
+    formState: { isDirty },
+  } = useForm<IEditModalForm>({
     context: {
       language: I18nEnum.EDIT_SCREEN_I18N,
     },
@@ -48,6 +54,9 @@ const EditModal = (props: EditModalProps) => {
     },
   });
 
+  /**
+   * Get screen detail action.
+   */
   const onGetScreenDetail = useCallback(async () => {
     const screenResponse = await getScreenDetail(data.screenId);
     reset({ ...screenResponse });
@@ -87,7 +96,7 @@ const EditModal = (props: EditModalProps) => {
 
           <Stack spacing={3}>
             <DatePickerInput
-              inputFormat={'YYYY-MM-DD HH:mm:ss'}
+              inputFormat={FULL_DATE_TIME_FORMAT}
               name={'createdDatetime'}
               control={control}
               width={290}
@@ -98,7 +107,7 @@ const EditModal = (props: EditModalProps) => {
 
           <Stack spacing={3}>
             <DatePickerInput
-              inputFormat={'YYYY-MM-DD HH:mm:ss'}
+              inputFormat={FULL_DATE_TIME_FORMAT}
               name={'updatedDatetime'}
               control={control}
               width={290}
@@ -110,7 +119,7 @@ const EditModal = (props: EditModalProps) => {
 
         <ScreenUserTable screenId={data.screenId} />
 
-        <SubmitButton onSubmit={handleSaveAction} />
+        <SubmitButton onSubmit={handleSaveAction} isDirty={isDirty} />
       </Stack>
     </form>
   );
