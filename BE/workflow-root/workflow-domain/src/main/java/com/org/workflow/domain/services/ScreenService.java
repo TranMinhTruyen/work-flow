@@ -4,6 +4,7 @@ import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PAT
 import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
 import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
+import static com.org.workflow.core.common.enums.NotificationEnum.NN0000001;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
 import com.org.workflow.domain.utils.AuthUtil;
+import com.org.workflow.domain.utils.NotificationUtil;
 import com.org.workflow.domain.utils.PageableUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -56,6 +58,8 @@ public class ScreenService extends AbstractService {
   private final UserRepository userRepository;
 
   private final SimpMessagingTemplate messagingTemplate;
+
+  private final NotificationUtil notificationUtil;
 
   /**
    * @param request
@@ -216,13 +220,9 @@ public class ScreenService extends AbstractService {
     response.setUpdatedBy(saveResult.getUpdatedBy());
 
 
-    NotificationResponse notificationResponse = new NotificationResponse();
-    notificationResponse.setTitle("Screen updated");
-    notificationResponse.setMessage(
-        MessageFormat.format("Screen [{0}] has been updated by [{1}]", response.getScreenName(),
-            userName));
+    NotificationResponse notificationResponse = notificationUtil.getNotificationResponse(NN0000001,
+        new Object[] {saveResult.getScreenName(), userName}, request.getLanguage());
     notificationResponse.setSendBy(userName);
-    notificationResponse.setSendDatetime(now);
 
     messagingTemplate.convertAndSend(SCREEN_MASTER_CHANGE, response);
     messagingTemplate.convertAndSend(NOTIFICATION_RECEIVE, notificationResponse);
@@ -245,8 +245,10 @@ public class ScreenService extends AbstractService {
     for (String userId : payload.getListUserId()) {
       NotificationResponse notificationResponse = new NotificationResponse();
       notificationResponse.setTitle("Screen removed");
+      notificationResponse.setSendBy(payload.getUserAction());
       notificationResponse.setMessage(
-          MessageFormat.format("Screen [{0}] has been remove to you", payload.getScreenId()));
+          MessageFormat.format("Screen [{0}] has been remove to you by [{1}]",
+              payload.getScreenId(), payload.getUserAction()));
       notificationResponse.setSendDatetime(LocalDateTime.now());
 
       messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);

@@ -5,3 +5,11 @@
 .MuiTypography-body1 {
   font-size: 14px !important;
 }
+
+.ag-grid-even-row {
+  background-color: rgba(235, 235, 235, 1);
+}
+
+.ag-grid-odd-row {
+  background-color: rgba(255, 255, 255, 1);
+}

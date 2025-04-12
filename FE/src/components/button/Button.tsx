@@ -24,6 +24,7 @@ const Button = (props: ButtonProps) => {
     endIcon,
     badgeContent,
     className,
+    sx,
     disabled,
     ...restProps
   } = props;
@@ -56,6 +57,7 @@ const Button = (props: ButtonProps) => {
         width={width}
         height={height}
         disabled={disabled}
+        sx={sx}
         {...restProps}
       >
         {loadingComponent}

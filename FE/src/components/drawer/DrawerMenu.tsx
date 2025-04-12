@@ -34,7 +34,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/store';
 import screenItemList, { IScreenItem } from './ScreenListItem';
 
 export type DrawerMenuItemProps = {
-  childIndex?: number;
   item: IScreenItem;
 };
 
@@ -159,7 +158,7 @@ const DrawerMenu = () => {
 };
 
 const DrawerMenuItem = (props: DrawerMenuItemProps) => {
-  const { item, childIndex } = props;
+  const { item } = props;
   const { navigate, currentPath } = useRouter();
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
@@ -174,13 +173,12 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
   );
 
   const customListItemSx = {
-    marginTop: childIndex && childIndex !== 0 ? 8 : 0,
     backgroundColor:
       currentPath === item.screenPath ? 'rgba(205, 205, 205, 0.8)' : 'rgba(255, 255, 255, 1)',
     color: currentPath === item.screenPath ? 'rgba(0, 109, 255, 0.8)' : 'rgba(98, 98, 98, 1)',
   };
 
-  const customListItemButtonSx = { justifyContent: openDrawer ? 'initial' : 'center' };
+  const customListItemButtonSx = { justifyContent: openDrawer ? 'initial' : 'center', gap: '8px' };
 
   const customListItemIconAndTextSx =
     currentPath === item.screenPath
@@ -283,13 +281,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     for (const childScreen of item.screenChild) {
       if (childScreen.screenChild === null) {
         if (checkAccessScreen(childScreen, loginData, screenMasterList)) {
-          returnItem.push(
-            <DrawerMenuItem
-              key={childScreen.screenKey}
-              item={childScreen}
-              childIndex={item.screenChild?.indexOf(childScreen)}
-            />
-          );
+          returnItem.push(<DrawerMenuItem key={childScreen.screenKey} item={childScreen} />);
         }
       } else {
         returnItem.push(<DrawerMenuItemWithChild key={childScreen.screenKey} item={childScreen} />);
@@ -335,6 +327,9 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
             <List
               component={'div'}
               style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
                 marginLeft: openDrawer ? '8px' : '0px',
                 paddingTop: '8px',
                 paddingBottom: '8px',

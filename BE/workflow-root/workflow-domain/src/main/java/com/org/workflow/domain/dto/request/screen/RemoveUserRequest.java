@@ -17,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class RemoveUserRequest implements Serializable {
 
+  private String userAction;
+
   private String screenId;
 
   private List<String> listUserId;

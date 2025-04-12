@@ -19,6 +19,7 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
     if (isSet) return;
 
     handleCheckToken();
+
     handleGetUserProfile();
 
     const currentPath = sessionStorage.getItem(CURRENT_PATH);

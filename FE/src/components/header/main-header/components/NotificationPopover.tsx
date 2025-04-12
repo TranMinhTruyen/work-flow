@@ -64,7 +64,7 @@ const NotificationPopover = () => {
   });
 
   /**
-   * TODO Get user notificaiton via websocket.
+   * Get user notificaiton via websocket.
    */
   useWebSocket<INotificationResponse>({
     receiveUrl: `/user/${loginData?.userId}/notification/receive`,
@@ -139,7 +139,7 @@ const NotificationPopover = () => {
           setNotificationList(prev =>
             prev.map(item => (item.id === response.id ? { ...item, read: true } : item))
           );
-          setTotalNotRead(prev => prev - 1);
+          setTotalNotRead(prev => (prev > 0 ? prev - 1 : prev));
           await modalRef.current.open({
             inputValue: response,
           });

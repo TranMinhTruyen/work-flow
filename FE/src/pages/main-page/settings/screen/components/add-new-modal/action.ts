@@ -1,8 +1,8 @@
 import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 
-import ISaveScreenRequest from '../../model/SaveScreenRequest';
-import ISaveScreenResponse from '../../model/SaveScreenResponse';
+import ISaveScreenRequest from '../../model/request/SaveScreenRequest';
+import ISaveScreenResponse from '../../model/response/SaveScreenResponse';
 
 export const saveAction = async (
   saveScreenRequest: ISaveScreenRequest

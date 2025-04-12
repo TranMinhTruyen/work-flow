@@ -22,6 +22,8 @@ public class NotificationResponse {
 
   private String title;
 
+  private String category;
+
   private String message;
 
   @JsonFormat(pattern = FULL_DATE_TIME_FORMAT_PATTERN, timezone = ZONE_ID)

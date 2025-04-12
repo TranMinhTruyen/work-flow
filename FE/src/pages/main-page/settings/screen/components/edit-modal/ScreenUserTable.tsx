@@ -12,13 +12,14 @@ import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import IconButton from '@/components/button/IconButton';
 import SubmitButton from '@/components/button/SubmitButton';
+import SubmitIconButton from '@/components/button/SubmitIconButton';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import PageGridTable from '@/components/table/PageGridTable';
 
-import IScreenUserRequest from '../../model/ScreenUserRequest';
-import IScreenUserResponse from '../../model/ScreenUserResponse';
-import IScreenUserTableRow from '../../model/ScreenUserTableRow';
-import ISearchScreenRequest from '../../model/SearchScreenRequest';
+import IScreenUserTableRow from '../../model/form/ScreenUserTableRow';
+import IScreenUserRequest from '../../model/request/ScreenUserRequest';
+import ISearchScreenRequest from '../../model/request/SearchScreenRequest';
+import IScreenUserResponse from '../../model/response/ScreenUserResponse';
 import { getScreenUsers, removeUserAction } from './action';
 
 type ScreenUserProps = {
@@ -123,12 +124,12 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         cellRenderer: (params: { data: IScreenUserTableRow }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
-              <IconButton
+              <SubmitIconButton
                 className={'removeButton'}
                 width={30}
                 height={30}
                 icon={<DeleteIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-                onClick={handleClickRemoveButton(params.data)}
+                onSubmit={handleClickRemoveButton(params.data)}
               />
             </Stack>
           );

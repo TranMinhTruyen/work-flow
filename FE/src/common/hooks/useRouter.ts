@@ -38,6 +38,8 @@ const useRouter = () => {
           }
           router(screen.screenUrl, { replace: isReplace });
           sessionStorage.setItem(CURRENT_PATH, screen.screenUrl);
+        } else {
+          throw new Error('404');
         }
       }
     },

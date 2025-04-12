@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { ColDef, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridReadyEvent, RowClassParams } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -66,6 +66,14 @@ const GridTable = (props: GridTableProps) => {
     [control]
   );
 
+  const getRowClass = useCallback((params: RowClassParams) => {
+    if (params.node.rowIndex === 0 || (params.node.rowIndex && params.node.rowIndex % 2 === 0)) {
+      return 'ag-grid-even-row';
+    } else {
+      return 'ag-grid-odd-row';
+    }
+  }, []);
+
   return (
     <AgGridContainer
       className={className}
@@ -89,6 +97,7 @@ const GridTable = (props: GridTableProps) => {
         enableCellTextSelection={true}
         ensureDomOrder={true}
         loadingOverlayComponent={CustomLoading}
+        getRowClass={getRowClass}
         {...restProps}
       />
     </AgGridContainer>

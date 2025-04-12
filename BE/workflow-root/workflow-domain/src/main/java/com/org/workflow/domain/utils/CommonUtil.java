@@ -5,13 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
+import org.springframework.validation.FieldError;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.validation.FieldError;
 
 /**
  * @author minh-truyen
@@ -20,7 +21,6 @@ public class CommonUtil {
 
   private CommonUtil() {
   }
-
 
   /**
    * Get language from payload.

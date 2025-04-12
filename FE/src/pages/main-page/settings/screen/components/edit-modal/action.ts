@@ -2,13 +2,13 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 
-import IGetScreenDetail from '../../model/GetScreenDetail';
-import IRemoveUserRequest from '../../model/RemoveUserRequest';
-import IRemoveUserResponse from '../../model/RemoveUserResponse';
-import ISaveScreenRequest from '../../model/SaveScreenRequest';
-import ISaveScreenResponse from '../../model/SaveScreenResponse';
-import IScreenUserRequest from '../../model/ScreenUserRequest';
-import IScreenUserResponse from '../../model/ScreenUserResponse';
+import IGetScreenDetail from '../../model/form/GetScreenDetail';
+import IRemoveUserRequest from '../../model/request/RemoveUserRequest';
+import ISaveScreenRequest from '../../model/request/SaveScreenRequest';
+import IScreenUserRequest from '../../model/request/ScreenUserRequest';
+import IRemoveUserResponse from '../../model/response/RemoveUserResponse';
+import ISaveScreenResponse from '../../model/response/SaveScreenResponse';
+import IScreenUserResponse from '../../model/response/ScreenUserResponse';
 
 export const getScreenDetail = async (screenId?: string): Promise<IGetScreenDetail> => {
   const response: IGetScreenDetail = await store
@@ -51,6 +51,7 @@ export const removeUserAction = async (
   listUserId?: string[]
 ): Promise<IRemoveUserResponse> => {
   const request: IRemoveUserRequest = {
+    userAction: store.getState().commonState.loginData?.userName,
     screenId: screenId,
     listUserId: listUserId,
   };

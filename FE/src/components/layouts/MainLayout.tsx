@@ -14,7 +14,7 @@ import {
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
-import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
+import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/response/SaveScreenResponse';
 
 import { openDialogContainer } from '../dialog/DialogContainer';
 
@@ -29,7 +29,7 @@ const MainLayout = () => {
   // Check status screen via websocket.
   useWebSocket<ISaveScreenResponse>({
     receiveUrl: '/screen-master/change',
-    onSubscribe: (data: ISaveScreenResponse) => {
+    onSubscribe: data => {
       if (data) {
         dispatch(
           updateScreenStatus({

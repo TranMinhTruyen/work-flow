@@ -20,10 +20,10 @@ import PageGridTable from '@/components/table/PageGridTable';
 import { searchAction } from './action';
 import AddNewModal from './components/add-new-modal/AddNewModal';
 import EditModal from './components/edit-modal/EditModal';
-import IScreenTableRow from './model/ScreenTableRow';
-import ISearchScreenForm from './model/SearchScreenForm';
-import ISearchScreenRequest from './model/SearchScreenRequest';
-import ISearchScreenResponse from './model/SearchScreenResponse';
+import IScreenTableRow from './model/form/ScreenTableRow';
+import ISearchScreenForm from './model/form/SearchScreenForm';
+import ISearchScreenRequest from './model/request/SearchScreenRequest';
+import ISearchScreenResponse from './model/response/SearchScreenResponse';
 
 import './screen.css';
 

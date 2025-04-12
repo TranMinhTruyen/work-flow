@@ -2,8 +2,8 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 
-import ISearchScreenRequest from './model/SearchScreenRequest';
-import ISearchScreenResponse from './model/SearchScreenResponse';
+import ISearchScreenRequest from './model/request/SearchScreenRequest';
+import ISearchScreenResponse from './model/response/SearchScreenResponse';
 
 export const searchAction = async (
   searchCondition?: IPageRequest<ISearchScreenRequest>

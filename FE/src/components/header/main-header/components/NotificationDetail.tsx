@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Divider } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -46,9 +46,9 @@ const NotificationDetail = (props: NotificationDetailProps) => {
             </Typography>
           </Stack>
 
-          <Stack sx={{ height: '100%', overflow: 'auto' }}>
+          <Box sx={{ height: '100%', overflow: 'auto' }}>
             <Typography>{inputValue?.message}</Typography>
-          </Stack>
+          </Box>
         </Stack>
 
         <Divider />

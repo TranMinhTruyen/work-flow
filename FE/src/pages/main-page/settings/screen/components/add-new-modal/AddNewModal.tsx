@@ -6,7 +6,7 @@ import useForm from '@/common/hooks/useForm';
 import SubmitButton from '@/components/button/SubmitButton';
 import TextInput from '@/components/form/TextInput';
 
-import IAddNewModalForm from '../../model/AddNewModalForm';
+import IAddNewModalForm from '../../model/form/AddNewModalForm';
 import { saveAction } from './action';
 import './addNewModal.css';
 

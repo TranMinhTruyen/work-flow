@@ -1,15 +1,15 @@
 import baseApi from '@/common/api/apiBaseQuery';
 import { ApiEnum } from '@/common/api/apiUrl';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
-import IGetScreenDetail from '@/pages/main-page/settings/screen/model/GetScreenDetail';
-import IRemoveUserRequest from '@/pages/main-page/settings/screen/model/RemoveUserRequest';
-import IRemoveUserResponse from '@/pages/main-page/settings/screen/model/RemoveUserResponse';
-import ISaveScreenRequest from '@/pages/main-page/settings/screen/model/SaveScreenRequest';
-import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
-import IScreenUserRequest from '@/pages/main-page/settings/screen/model/ScreenUserRequest';
-import IScreenUserResponse from '@/pages/main-page/settings/screen/model/ScreenUserResponse';
-import ISearchScreenRequest from '@/pages/main-page/settings/screen/model/SearchScreenRequest';
-import ISearchScreenResponse from '@/pages/main-page/settings/screen/model/SearchScreenResponse';
+import IGetScreenDetail from '@/pages/main-page/settings/screen/model/form/GetScreenDetail';
+import IRemoveUserRequest from '@/pages/main-page/settings/screen/model/request/RemoveUserRequest';
+import ISaveScreenRequest from '@/pages/main-page/settings/screen/model/request/SaveScreenRequest';
+import IScreenUserRequest from '@/pages/main-page/settings/screen/model/request/ScreenUserRequest';
+import ISearchScreenRequest from '@/pages/main-page/settings/screen/model/request/SearchScreenRequest';
+import IRemoveUserResponse from '@/pages/main-page/settings/screen/model/response/RemoveUserResponse';
+import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/response/SaveScreenResponse';
+import IScreenUserResponse from '@/pages/main-page/settings/screen/model/response/ScreenUserResponse';
+import ISearchScreenResponse from '@/pages/main-page/settings/screen/model/response/SearchScreenResponse';
 
 export const screenService = baseApi.injectEndpoints({
   endpoints: builder => ({

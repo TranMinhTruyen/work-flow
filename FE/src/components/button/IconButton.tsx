@@ -3,7 +3,7 @@ import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { memo, ReactNode } from 'react';
 
-type IconButtonProps = MuiButtonProps & {
+export type IconButtonProps = MuiButtonProps & {
   width?: number;
   height?: number;
   icon?: ReactNode;

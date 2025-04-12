@@ -7,7 +7,7 @@ import { I18nEnum } from '@/common/enums/i18nEnum';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import { updateScreenStatus } from '@/common/store/commonSlice';
 import { useAppDispatch } from '@/lib/store';
-import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/SaveScreenResponse';
+import ISaveScreenResponse from '@/pages/main-page/settings/screen/model/response/SaveScreenResponse';
 
 import Button from '../button/Button';
 

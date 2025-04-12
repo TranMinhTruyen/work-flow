@@ -14,11 +14,11 @@ export type SubmitButtonProps = Omit<ButtonProps, 'onClick'> & {
 };
 
 const SubmitButton = (props: SubmitButtonProps) => {
-  const { onSubmit, isDirty = false, ...restProps } = props;
+  const { onSubmit, isDirty = true, className, sx, ...restProps } = props;
 
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
-  const handleSubmitButton = useCallback(() => {
+  const handleClick = useCallback(() => {
     if (isDirty) {
       openDialogContainer({
         type: 'message',
@@ -44,9 +44,10 @@ const SubmitButton = (props: SubmitButtonProps) => {
 
   return (
     <Button
-      sx={{ marginLeft: 'auto', backgroundColor: 'rgba(0, 170, 255, 0.8)' }}
+      className={className}
+      sx={{ backgroundColor: 'rgba(0, 170, 255, 0.8)', ...sx }}
       label={t('button.submit')}
-      onClick={handleSubmitButton}
+      onClick={handleClick}
       {...restProps}
     />
   );

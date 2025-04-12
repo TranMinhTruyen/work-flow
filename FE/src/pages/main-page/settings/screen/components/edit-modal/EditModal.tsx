@@ -15,13 +15,12 @@ import SwitchInput from '@/components/form/SwitchInput';
 import TextInput from '@/components/form/TextInput';
 import { useAppSelector } from '@/lib/store';
 
-import IEditModalForm from '../../model/EditModalForm';
-import ISaveScreenResponse from '../../model/SaveScreenResponse';
-import IScreenTableRow from '../../model/ScreenTableRow';
+import IEditModalForm from '../../model/form/EditModalForm';
+import IScreenTableRow from '../../model/form/ScreenTableRow';
+import ISaveScreenResponse from '../../model/response/SaveScreenResponse';
 import { getScreenDetail, saveAction } from './action';
-import ScreenUserTable from './ScreenUserTable';
-
 import './editModal.css';
+import ScreenUserTable from './ScreenUserTable';
 
 type EditModalProps = {
   data: IScreenTableRow;
@@ -44,10 +43,18 @@ const EditModal = (props: EditModalProps) => {
 
   const loginData = useAppSelector(selectLoginData);
 
+  /**
+   * Init action get screen detail.
+   */
+  useEffect(() => {
+    onGetScreenDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Check status screen via websocket.
   useWebSocket<ISaveScreenResponse>({
     receiveUrl: '/screen-master/change',
-    onSubscribe: (data: ISaveScreenResponse) => {
+    onSubscribe: data => {
       if (data.updatedBy !== loginData?.userName) {
         toast.warning(<Typography>Please reload screen!</Typography>);
       }
@@ -61,14 +68,6 @@ const EditModal = (props: EditModalProps) => {
     const screenResponse = await getScreenDetail(data.screenId);
     reset({ ...screenResponse });
   }, [data.screenId, reset]);
-
-  /**
-   * Init action get screen detail.
-   */
-  useEffect(() => {
-    onGetScreenDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   /**
    * Save screen action.
@@ -119,7 +118,7 @@ const EditModal = (props: EditModalProps) => {
 
         <ScreenUserTable screenId={data.screenId} />
 
-        <SubmitButton onSubmit={handleSaveAction} isDirty={isDirty} />
+        <SubmitButton sx={{ marginLeft: 'auto' }} onSubmit={handleSaveAction} isDirty={isDirty} />
       </Stack>
     </form>
   );
