@@ -1,4 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -10,10 +9,10 @@ import { I18nEnum } from '@/common/enums/i18nEnum';
 import { MessageType } from '@/common/enums/messageEnum';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
-import IconButton from '@/components/button/IconButton';
 import SubmitButton from '@/components/button/SubmitButton';
 import SubmitIconButton from '@/components/button/SubmitIconButton';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import { AddNewHeader } from '@/components/table/GridTable';
 import PageGridTable from '@/components/table/PageGridTable';
 
 import IScreenUserTableRow from '../../model/form/ScreenUserTableRow';
@@ -199,20 +198,6 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         control={control}
         rowSelection={rowSelection}
         onSelectionChanged={onSelectionChanged}
-      />
-    </Stack>
-  );
-};
-
-const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
-  return (
-    <Stack>
-      <IconButton
-        className={'addButton'}
-        width={30}
-        height={30}
-        icon={<AddIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-        onClick={onClick}
       />
     </Stack>
   );

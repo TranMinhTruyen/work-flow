@@ -21,7 +21,8 @@ public class NotificationRepositoryExtImpl extends CommonRepositoryExt
   }
 
   @Override
-  public PageableResult<Notification> findNotificationByUserId(String userId, Pageable pageable) {
+  public PageableResult<Notification> findNotificationByUserIdAndLanguage(String userId,
+      Pageable pageable) {
     Criteria criteria = new Criteria();
     criteria.andOperator(Criteria.where("user_id").is(userId),
         Criteria.where("deleted_date_time").isNull(), Criteria.where("deleted_by").isNull(),

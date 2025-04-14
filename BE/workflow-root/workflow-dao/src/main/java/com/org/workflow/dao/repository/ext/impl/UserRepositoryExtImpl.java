@@ -3,8 +3,10 @@ package com.org.workflow.dao.repository.ext.impl;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -61,6 +63,25 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
     }
 
     return pageableFind(new Query(criteria), pageable, UserAccount.class);
+  }
+
+  @Override
+  public List<String> findUserIdByScreenId(String screenId) {
+    Criteria criteria = new Criteria().andOperator(where("access_screen_list").is(screenId),
+        new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)),
+        where("delete_by").isNull(), where("delete_date_time").isNull());
+
+    Query query = new Query(criteria);
+    query.fields().include("user_id");
+
+    List<UserAccount> userAccount = mongoTemplate.find(query, UserAccount.class);
+
+    if (CollectionUtils.isNotEmpty(userAccount)) {
+      return userAccount.stream().map(UserAccount::getUserId).toList();
+    } else {
+      return null;
+    }
+
   }
 
   /**

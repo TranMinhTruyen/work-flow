@@ -22,7 +22,7 @@ export const notificationService = baseApi.injectEndpoints({
         isLoading: false,
       }),
     }),
-    setIsRead: builder.mutation<INotificationResponse, { id: string }>({
+    setIsRead: builder.mutation<INotificationResponse, { id: string; language: string }>({
       query: params => ({
         api: ApiEnum.SET_IS_READ,
         params: params,

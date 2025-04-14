@@ -8,15 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.document.UserAccount;
+import com.org.workflow.dao.document.sub.NotificationContent;
 import com.org.workflow.dao.repository.NotificationRepository;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
+import com.org.workflow.domain.dto.request.notification.NotificationContentRequest;
 import com.org.workflow.domain.dto.request.notification.NotificationCreateRequest;
 import com.org.workflow.domain.dto.response.notification.AllNotificationResponse;
 import com.org.workflow.domain.dto.response.notification.NotificationResponse;
@@ -43,9 +46,18 @@ public class NotificationService extends AbstractService {
 
     Notification notification = new Notification();
     notification.setUserId(userAccount.getUserId());
-    notification.setTitle(payload.getTitle());
-    notification.setMessage(payload.getMessage());
     notification.setSendBy(payload.getSendBy());
+
+    List<NotificationContent> contentList = new ArrayList<>();
+    for (NotificationContentRequest contentRequest : payload.getContentList()) {
+      NotificationContent notificationContent = new NotificationContent();
+      notificationContent.setLanguage(contentRequest.getLanguage());
+      notificationContent.setTitle(contentRequest.getTitle());
+      notificationContent.setMessage(contentRequest.getMessage());
+      contentList.add(notificationContent);
+    }
+
+    notification.setContentList(contentList);
     notification.setSendDatetime(payload.getSendDatetime());
     notification.setRead(false);
     notification.setCreatedBy(userAccount.getUserName());
@@ -58,8 +70,6 @@ public class NotificationService extends AbstractService {
 
     NotificationResponse response = new NotificationResponse();
     response.setId(result.getId());
-    response.setTitle(result.getTitle());
-    response.setMessage(result.getMessage());
     response.setSendDatetime(now);
     response.setSendBy(result.getSendBy());
     response.setRead(false);
@@ -77,7 +87,7 @@ public class NotificationService extends AbstractService {
     UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
 
     PageableResult<Notification> queryResult =
-        notificationRepository.findNotificationByUserId(userAccount.getUserId(),
+        notificationRepository.findNotificationByUserIdAndLanguage(userAccount.getUserId(),
             PageableUtil.getPageable(pageable));
 
     long totalNotRead = notificationRepository.countAllByReadIsFalse(userAccount.getUserId());
@@ -90,8 +100,13 @@ public class NotificationService extends AbstractService {
       for (Notification notification : queryResult.getResult()) {
         NotificationResponse notificationResponse = new NotificationResponse();
         notificationResponse.setId(notification.getId());
-        notificationResponse.setTitle(notification.getTitle());
-        notificationResponse.setMessage(notification.getMessage());
+        NotificationContent notificationContent = notification.getContentList().stream()
+            .filter(x -> StringUtils.equals(x.getLanguage(), request.getLanguage())).findFirst()
+            .orElse(null);
+        if (notificationContent != null) {
+          notificationResponse.setTitle(notificationContent.getTitle());
+          notificationResponse.setMessage(notificationContent.getMessage());
+        }
         notificationResponse.setSendDatetime(notification.getCreateDatetime());
         notificationResponse.setSendBy(notification.getSendBy());
         notificationResponse.setRead(notification.isRead());
@@ -110,7 +125,7 @@ public class NotificationService extends AbstractService {
    * @return
    * @throws WFException
    */
-  public NotificationResponse setIsRead(String id) throws WFException {
+  public NotificationResponse setIsRead(String id, String language) throws WFException {
     UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
 
     Optional<Notification> result =
@@ -124,10 +139,14 @@ public class NotificationService extends AbstractService {
 
       NotificationResponse response = new NotificationResponse();
       response.setId(saveResult.getId());
-      response.setTitle(saveResult.getTitle());
-      response.setMessage(saveResult.getMessage());
       response.setSendDatetime(saveResult.getSendDatetime());
       response.setSendBy(saveResult.getSendBy());
+      NotificationContent notificationContent = notification.getContentList().stream()
+          .filter(x -> StringUtils.equals(x.getLanguage(), language)).findFirst().orElse(null);
+      if (notificationContent != null) {
+        response.setTitle(notificationContent.getTitle());
+        response.setMessage(notificationContent.getMessage());
+      }
       response.setRead(saveResult.isRead());
 
       return response;

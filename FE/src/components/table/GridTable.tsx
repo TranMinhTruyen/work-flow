@@ -1,3 +1,5 @@
+import AddIcon from '@mui/icons-material/Add';
+import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { ColDef, GridReadyEvent, RowClassParams } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
@@ -7,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import { ControlProps } from '@/common/hooks/types/useTableTypes';
 
+import IconButton from '../button/IconButton';
 import CustomCell from './components/CustomCell';
 import CustomHeader from './components/CustomHeader';
 import CustomLoading from './components/CustomLoading';
@@ -141,5 +144,24 @@ const AgGridContainer = styled('div')<GridTableProps>(
     },
   })
 );
+
+const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
+  return (
+    <Stack>
+      <IconButton
+        width={30}
+        height={30}
+        sx={{
+          borderRadius: '8px',
+          backgroundColor: 'rgba(0, 215, 45, 0.8)',
+        }}
+        icon={<AddIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+        onClick={onClick}
+      />
+    </Stack>
+  );
+};
+
+export { AddNewHeader };
 
 export default GridTable;

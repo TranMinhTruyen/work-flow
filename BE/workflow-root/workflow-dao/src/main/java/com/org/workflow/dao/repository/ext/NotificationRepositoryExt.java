@@ -10,6 +10,7 @@ import com.org.workflow.dao.repository.result.common.PageableResult;
  */
 public interface NotificationRepositoryExt {
 
-  PageableResult<Notification> findNotificationByUserId(String userId, Pageable pageable);
+  PageableResult<Notification> findNotificationByUserIdAndLanguage(String userId,
+      Pageable pageable);
 
 }

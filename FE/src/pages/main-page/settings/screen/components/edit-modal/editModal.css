@@ -15,12 +15,12 @@
 
 .removeButton {
   border-radius: 8px;
-  background-color: rgba(255, 0, 0, 0.8);
+  background-color: rgba(230, 0, 0, 0.8);
 }
 
 .deleteSelectedButton {
   width: auto;
-  background-color: rgba(255, 0, 0, 0.8);
+  background-color: rgba(230, 0, 0, 0.8);
 }
 
 [col-id="remove"] .ag-header-cell-comp-wrapper {

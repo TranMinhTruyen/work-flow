@@ -1,6 +1,7 @@
 package com.org.workflow.dao.repository.ext;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,10 @@ public interface UserRepositoryExt {
 
   PageableResult<UserAccount> findUserAccountByScreenId(SearchByScreenIdCondition condition,
       Pageable pageable);
-  
+
+
+  List<String> findUserIdByScreenId(String screenId);
+
 
   UserAccount saveDocument(UserAccount userAccount)
       throws WFException, InvocationTargetException, IllegalAccessException;

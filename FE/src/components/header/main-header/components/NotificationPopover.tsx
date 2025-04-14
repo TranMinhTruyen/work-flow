@@ -1,4 +1,5 @@
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Box } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,7 +14,7 @@ import { ModalRef } from '@/common/hooks/types/useModalTypes';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import { INotificationResponse } from '@/common/model/Notification';
 import { IPageRequest } from '@/common/model/Pageable';
-import { selectLoginData } from '@/common/store/commonSlice';
+import { selectLanguage, selectLoginData } from '@/common/store/commonSlice';
 import IconButton from '@/components/button/IconButton';
 import CircleProgress from '@/components/loading/CircleProgress';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
@@ -44,6 +45,9 @@ const NotificationPopover = () => {
   const dispatch = useAppDispatch();
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);
+  const language = useAppSelector(selectLanguage);
+  const lastCalledLanguage = useRef<string>(language);
+  const callGetNotification = useRef<boolean>(true);
 
   /**
    * Get common notificaiton via websocket.
@@ -85,12 +89,14 @@ const NotificationPopover = () => {
    * Get notification from server.
    */
   const getNotification = useCallback(async () => {
+    if (!callGetNotification.current) return;
+
     setLoading(true);
     const response = await dispatch(
       notificationService.endpoints.getNotification.initiate(notificationPageable)
     ).unwrap();
     if (response) {
-      if (response.notification) {
+      if (response.notification && callGetNotification.current) {
         setHasMore(response.notification.page !== response.notification.totalPages);
         setNotificationList(prev => {
           return [...prev, ...(response.notification?.result || [])];
@@ -104,6 +110,13 @@ const NotificationPopover = () => {
   }, [dispatch, notificationPageable]);
 
   useEffect(() => {
+    if (lastCalledLanguage.current === language) return;
+    lastCalledLanguage.current = language;
+    setNotificationList([]);
+    getNotification();
+  }, [getNotification, language]);
+
+  useEffect(() => {
     getNotification();
   }, [getNotification, notificationPageable]);
 
@@ -112,11 +125,12 @@ const NotificationPopover = () => {
    */
   const handleClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
-      if (notificationList.length > 0) {
-        setAnchorEl(event.currentTarget);
-      }
+      setAnchorEl(event.currentTarget);
+      callGetNotification.current = true;
+      setNotificationList([]);
+      getNotification();
     },
-    [notificationList]
+    [getNotification]
   );
 
   /**
@@ -124,6 +138,9 @@ const NotificationPopover = () => {
    */
   const handleClose = useCallback(() => {
     setAnchorEl(null);
+    callGetNotification.current = false;
+    setNotificationList([]);
+    setNotificationPageable(defaultPageable);
   }, []);
 
   /**
@@ -133,7 +150,7 @@ const NotificationPopover = () => {
     (id?: string) => async () => {
       if (modalRef.current && id) {
         const response = await dispatch(
-          notificationService.endpoints.setIsRead.initiate({ id: id })
+          notificationService.endpoints.setIsRead.initiate({ id: id, language: language })
         ).unwrap();
         if (response) {
           setNotificationList(prev =>
@@ -146,13 +163,14 @@ const NotificationPopover = () => {
         }
       }
     },
-    [dispatch]
+    [dispatch, language]
   );
 
   const handleOnScroll = useCallback(
     (event: { currentTarget: any }) => {
       const current = event.currentTarget;
       if (current.scrollTop + current.clientHeight >= current.scrollHeight && hasMore) {
+        callGetNotification.current = true;
         setNotificationPageable(prev => ({
           ...prev,
           page: prev.page + 1,
@@ -212,7 +230,7 @@ const NotificationPopover = () => {
                   }}
                 >
                   <Stack sx={{ width: '100%' }} spacing={1}>
-                    <Stack direction={'row'} sx={{ justifyContent: 'space-between' }}>
+                    <Box>
                       <Typography
                         sx={{
                           fontWeight: 'bold',
@@ -224,7 +242,7 @@ const NotificationPopover = () => {
                       <Typography>
                         {dayjs(item.sendDatetime).format(FULL_DATE_TIME_FORMAT)}
                       </Typography>
-                    </Stack>
+                    </Box>
 
                     <Stack direction={'row'}>
                       <Typography

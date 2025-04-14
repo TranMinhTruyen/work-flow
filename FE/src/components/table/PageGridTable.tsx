@@ -34,6 +34,10 @@ const PageGridTable = (props: PageGridTableProps) => {
 
   return (
     <Stack spacing={1}>
+      {/* Table area */}
+      <GridTable {...restProps} />
+
+      {/* Paging area */}
       <Stack direction={'row'} spacing={2} sx={{ marginLeft: 'auto !important' }}>
         <Typography>
           {formatString(
@@ -70,7 +74,6 @@ const PageGridTable = (props: PageGridTableProps) => {
           )}
         </Typography>
       </Stack>
-      <GridTable {...restProps} />
     </Stack>
   );
 };

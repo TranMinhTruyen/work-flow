@@ -1,4 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import Stack from '@mui/material/Stack';
@@ -15,6 +14,7 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import Button from '@/components/button/Button';
 import IconButton from '@/components/button/IconButton';
 import TextInput from '@/components/form/TextInput';
+import { AddNewHeader } from '@/components/table/GridTable';
 import PageGridTable from '@/components/table/PageGridTable';
 
 import { searchAction } from './action';
@@ -235,20 +235,6 @@ const ScreenPage = () => {
       <Stack>
         <PageGridTable height={'75vh'} maxHeight={'75vh'} columnDefs={colDefs} control={control} />
       </Stack>
-    </Stack>
-  );
-};
-
-const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
-  return (
-    <Stack>
-      <IconButton
-        className={'addButton'}
-        width={30}
-        height={30}
-        icon={<AddIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-        onClick={onClick}
-      />
     </Stack>
   );
 };

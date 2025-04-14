@@ -19,6 +19,7 @@ const IconButton = (props: IconButtonProps) => {
     isLoading = false,
     badgeContent,
     className,
+    sx,
     ...restProps
   } = props;
 
@@ -34,7 +35,13 @@ const IconButton = (props: IconButtonProps) => {
   );
 
   return (
-    <StyleIconButton className={className} width={width} height={height} {...restProps}>
+    <StyleIconButton
+      className={className}
+      sx={{ ...sx }}
+      width={width}
+      height={height}
+      {...restProps}
+    >
       <Badge
         badgeContent={badgeContent}
         max={99}

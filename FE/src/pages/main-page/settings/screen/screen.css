@@ -4,16 +4,10 @@
 
 .editButtons {
   border-radius: 8px;
-  background-color: rgba(255, 200, 0, 0.8);
-}
-
-.addButton {
-  border-radius: 8px;
-  background-color: rgba(0, 255, 55, 0.8);
+  background-color: rgba(225, 200, 0, 0.8);
 }
 
 [col-id="addNew"] .ag-header-cell-comp-wrapper {
   justify-content: center;
   margin-left: 1px;
 }
-

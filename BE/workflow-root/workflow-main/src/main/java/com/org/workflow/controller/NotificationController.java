@@ -51,8 +51,9 @@ public class NotificationController extends AbstractController {
 
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PutMapping("/set-is-read")
-  public ResponseEntity<BaseResponse> setIsRead(@RequestParam String id) throws WFException {
-    NotificationResponse response = notificationService.setIsRead(id);
+  public ResponseEntity<BaseResponse> setIsRead(@RequestParam String id,
+      @RequestParam String language) throws WFException {
+    NotificationResponse response = notificationService.setIsRead(id, language);
     return this.returnBaseResponse(response, MessageEnum.REQUEST_SUCCESS);
   }
 

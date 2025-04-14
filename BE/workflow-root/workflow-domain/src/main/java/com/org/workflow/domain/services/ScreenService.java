@@ -1,14 +1,13 @@
 package com.org.workflow.domain.services;
 
-import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMATTER;
 import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
 import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 import static com.org.workflow.core.common.enums.NotificationEnum.NN0000001;
+import static com.org.workflow.core.common.enums.NotificationEnum.NN0000002;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +26,7 @@ import com.org.workflow.dao.repository.condition.screen.SearchCondition;
 import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
 import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
+import com.org.workflow.domain.dto.request.common.PageableOrder;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
 import com.org.workflow.domain.dto.request.screen.RemoveUserRequest;
 import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
@@ -34,7 +34,7 @@ import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
-import com.org.workflow.domain.dto.response.notification.NotificationResponse;
+import com.org.workflow.domain.dto.response.notification.SendNotificationResponse;
 import com.org.workflow.domain.dto.response.screen.RemoveUserResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
@@ -83,7 +83,7 @@ public class ScreenService extends AbstractService {
         PageableUtil.getPageable(pageableRequest));
 
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
-    if (!CollectionUtils.isEmpty(queryResult.getResult())) {
+    if (CollectionUtils.isNotEmpty(queryResult.getResult())) {
       for (Screen screen : queryResult.getResult()) {
         SearchScreenResponse searchScreenResponse = new SearchScreenResponse();
         searchScreenResponse.setScreenId(screen.getScreenId());
@@ -92,12 +92,10 @@ public class ScreenService extends AbstractService {
         searchScreenResponse.setActive(screen.isActive());
         searchScreenResponse.setCreatedBy(screen.getCreatedBy());
         searchScreenResponse.setCreatedDatetime(
-            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-                .format(screen.getCreateDatetime()));
+            DATE_TIME_FORMATTER.format(screen.getCreateDatetime()));
         searchScreenResponse.setUpdatedBy(screen.getUpdatedBy());
         searchScreenResponse.setUpdatedDatetime(
-            DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)
-                .format(screen.getUpdatedDatetime()));
+            DATE_TIME_FORMATTER.format(screen.getUpdatedDatetime()));
 
         searchScreenResponses.add(searchScreenResponse);
       }
@@ -153,6 +151,8 @@ public class ScreenService extends AbstractService {
       condition.setScreenId(pageableRequest.getCondition().getScreenId());
       condition.setKeyword(pageableRequest.getCondition().getKeyword());
     }
+
+    pageableRequest.setOrderList(List.of(new PageableOrder("created_date_time", "asc")));
 
     PageableResult<UserAccount> queryResult = userRepository.findUserAccountByScreenId(condition,
         PageableUtil.getPageable(pageableRequest));
@@ -219,13 +219,19 @@ public class ScreenService extends AbstractService {
     response.setUpdatedDatetime(saveResult.getUpdatedDatetime());
     response.setUpdatedBy(saveResult.getUpdatedBy());
 
+    List<String> userIds = userRepository.findUserIdByScreenId(payload.getScreenId());
+    if (CollectionUtils.isNotEmpty(userIds)) {
+      SendNotificationResponse notificationResponse =
+          notificationUtil.getNotificationResponse(NN0000001,
+              new Object[] {saveResult.getScreenName(), saveResult.getScreenName(), userName});
+      notificationResponse.setSendBy(userName);
 
-    NotificationResponse notificationResponse = notificationUtil.getNotificationResponse(NN0000001,
-        new Object[] {saveResult.getScreenName(), userName}, request.getLanguage());
-    notificationResponse.setSendBy(userName);
+      for (String userId : userIds) {
+        messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+      }
+    }
 
     messagingTemplate.convertAndSend(SCREEN_MASTER_CHANGE, response);
-    messagingTemplate.convertAndSend(NOTIFICATION_RECEIVE, notificationResponse);
 
     return response;
   }
@@ -243,13 +249,10 @@ public class ScreenService extends AbstractService {
     long count = screenRepository.removeUserFromScreen(condition);
 
     for (String userId : payload.getListUserId()) {
-      NotificationResponse notificationResponse = new NotificationResponse();
-      notificationResponse.setTitle("Screen removed");
+      SendNotificationResponse notificationResponse =
+          notificationUtil.getNotificationResponse(NN0000002,
+              new Object[] {payload.getScreenId(), payload.getScreenId(), payload.getUserAction()});
       notificationResponse.setSendBy(payload.getUserAction());
-      notificationResponse.setMessage(
-          MessageFormat.format("Screen [{0}] has been remove to you by [{1}]",
-              payload.getScreenId(), payload.getUserAction()));
-      notificationResponse.setSendDatetime(LocalDateTime.now());
 
       messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
     }
