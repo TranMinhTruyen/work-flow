@@ -145,23 +145,4 @@ const AgGridContainer = styled('div')<GridTableProps>(
   })
 );
 
-const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
-  return (
-    <Stack>
-      <IconButton
-        width={30}
-        height={30}
-        sx={{
-          borderRadius: '8px',
-          backgroundColor: 'rgba(0, 215, 45, 0.8)',
-        }}
-        icon={<AddIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
-        onClick={onClick}
-      />
-    </Stack>
-  );
-};
-
-export { AddNewHeader };
-
 export default GridTable;

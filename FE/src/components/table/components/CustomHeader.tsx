@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SortIcon from '@mui/icons-material/Sort';
@@ -96,5 +97,24 @@ const CustomHeader = (props: CustomHeaderProps) => {
     </Stack>
   );
 };
+
+const AddNewHeader = ({ onClick }: { onClick?: () => void }) => {
+  return (
+    <Stack>
+      <IconButton
+        width={30}
+        height={30}
+        sx={{
+          borderRadius: '8px',
+          backgroundColor: 'rgba(0, 215, 45, 0.8)',
+        }}
+        icon={<AddIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+        onClick={onClick}
+      />
+    </Stack>
+  );
+};
+
+export { AddNewHeader };
 
 export default CustomHeader;

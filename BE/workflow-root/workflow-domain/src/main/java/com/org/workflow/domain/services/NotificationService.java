@@ -134,7 +134,7 @@ public class NotificationService extends AbstractService {
       Notification notification = result.get();
       notification.setRead(true);
       notification.setUpdatedDatetime(LocalDateTime.now());
-      notification.setUpdatedBy(userAccount.getUserId());
+      notification.setUpdatedBy(userAccount.getUserName());
       Notification saveResult = notificationRepository.save(notification);
 
       NotificationResponse response = new NotificationResponse();

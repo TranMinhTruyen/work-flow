@@ -138,6 +138,9 @@ const NotificationPopover = () => {
    */
   const handleClose = useCallback(() => {
     setAnchorEl(null);
+
+    //Set call flg to false to revent call api get notification
+    //when reset notification pageable
     callGetNotification.current = false;
     setNotificationList([]);
     setNotificationPageable(defaultPageable);

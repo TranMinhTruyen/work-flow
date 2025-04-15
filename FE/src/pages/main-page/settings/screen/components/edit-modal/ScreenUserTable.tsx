@@ -12,8 +12,8 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import SubmitButton from '@/components/button/SubmitButton';
 import SubmitIconButton from '@/components/button/SubmitIconButton';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
-import { AddNewHeader } from '@/components/table/GridTable';
 import PageGridTable from '@/components/table/PageGridTable';
+import { AddNewHeader } from '@/components/table/components/CustomHeader';
 
 import IScreenUserTableRow from '../../model/form/ScreenUserTableRow';
 import IScreenUserRequest from '../../model/request/ScreenUserRequest';

@@ -14,8 +14,8 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import Button from '@/components/button/Button';
 import IconButton from '@/components/button/IconButton';
 import TextInput from '@/components/form/TextInput';
-import { AddNewHeader } from '@/components/table/GridTable';
 import PageGridTable from '@/components/table/PageGridTable';
+import { AddNewHeader } from '@/components/table/components/CustomHeader';
 
 import { searchAction } from './action';
 import AddNewModal from './components/add-new-modal/AddNewModal';

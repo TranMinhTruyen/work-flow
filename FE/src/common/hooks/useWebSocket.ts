@@ -27,9 +27,6 @@ const useWebSocket = <T = any, P = any>(props: UseWebSocketProps<T>): UseWebSock
           const receive: T = JSON.parse(message.body);
           onSubscribe(receive);
         });
-
-        console.log(`Connect success ${receiveUrl}`);
-        console.log(stompClient);
       },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
