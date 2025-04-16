@@ -8,6 +8,7 @@ import { capitalizeFirst } from '@/common/utils/stringUtil';
 export type TextInputProps = Omit<TextFieldProps, 'onChange' | 'onBlur' | 'defaultValue'> & {
   label?: string;
   width?: number;
+  height?: number;
   value?: string;
   maxLength?: number;
   onChange?: (value: string) => void;
@@ -19,6 +20,7 @@ const TextInput = (props: TextInputProps) => {
     id,
     label,
     width,
+    height = 40,
     value: valueProps,
     maxLength,
     onChange: onChangeProps,
@@ -53,7 +55,8 @@ const TextInput = (props: TextInputProps) => {
     <StyledTextInput
       id={`textInput${capitalizeFirst(id)}`}
       value={value}
-      sx={{ width: width }}
+      sx={{ width: `${width}px` }}
+      height={height}
       onChange={handleOnChange}
       onBlur={handleOnBlur}
       label={label}
@@ -79,7 +82,7 @@ const TextInput = (props: TextInputProps) => {
   );
 };
 
-const StyledTextInput = styled(TextField)({
+const StyledTextInput = styled(TextField)<any>(({ height }) => ({
   '& .MuiInputLabel-root': {
     color: 'rgba(0, 0, 0, 1) !important',
     marginLeft: '10px',
@@ -97,8 +100,8 @@ const StyledTextInput = styled(TextField)({
   },
 
   '& .MuiOutlinedInput-root': {
-    height: '40px !important',
-    minHeight: '40px !important',
+    height: `${height}px !important`,
+    minHeight: `${height}px !important`,
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
       borderRadius: '50px',
@@ -110,6 +113,6 @@ const StyledTextInput = styled(TextField)({
       borderColor: '#007fb6',
     },
   },
-});
+}));
 
 export default TextInput;

@@ -1,4 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
@@ -12,6 +14,7 @@ import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import SubmitButton from '@/components/button/SubmitButton';
 import SubmitIconButton from '@/components/button/SubmitIconButton';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
+import TextInput from '@/components/inputs/TextInput';
 import PageGridTable from '@/components/table/PageGridTable';
 import { AddNewHeader } from '@/components/table/components/CustomHeader';
 
@@ -31,6 +34,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
   const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
   const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
+  const [keywordValue, setKeyWordValue] = useState<string>('');
 
   /**
    * Get screen user.
@@ -40,7 +44,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
       gridApiRef.current?.setGridOption('loading', true);
       const userResponse: IPageResponse<IScreenUserResponse> =
         await getScreenUsers(searchCondition);
-      if (userResponse.result && userResponse.result.length > 0) {
+      if (userResponse.result) {
         onDataChange(userResponse.result, userResponse);
       }
       gridApiRef.current?.setGridOption('loading', false);
@@ -52,12 +56,12 @@ const ScreenUserTable = (props: ScreenUserProps) => {
    * Init action for user table and call search when change sort.
    */
   useEffect(() => {
-    const searchCondition: IPageRequest<ISearchScreenRequest> = {
-      condition: { screenId: screenId },
+    const searchCondition: IPageRequest<IScreenUserRequest> = {
+      condition: { screenId: screenId, keyword: keywordValue },
       ...pageable,
     };
     onGetScreenUser(searchCondition);
-  }, [onGetScreenUser, pageable, screenId]);
+  }, [keywordValue, onGetScreenUser, pageable, screenId]);
 
   const rowSelection = useMemo<RowSelectionOptions>(() => {
     return { mode: 'multiRow' };
@@ -181,7 +185,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
     <Stack spacing={1}>
       <Typography id={'editModalTitle'}>{t('label.userUsing')}</Typography>
 
-      <Stack direction={'row'}>
+      <Stack direction={'row'} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <SubmitButton
           className={'deleteSelectedButton'}
           label={t('button.deleteSelected')}
@@ -189,6 +193,26 @@ const ScreenUserTable = (props: ScreenUserProps) => {
           onSubmit={handeMultiRemove}
           disabled={selectedItem.length === 0}
         />
+
+        <Stack direction={'row'} spacing={1}>
+          <TextInput
+            id={'keyword'}
+            width={200}
+            height={35}
+            onBlur={(value: string) => {
+              setKeyWordValue(value);
+            }}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position={'start'}>
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </Stack>
       </Stack>
 
       <PageGridTable

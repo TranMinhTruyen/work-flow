@@ -3,6 +3,7 @@ package com.org.workflow.dao.repository.ext.impl;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,18 +52,24 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
   @Override
   public PageableResult<UserAccount> findUserAccountByScreenId(SearchByScreenIdCondition condition,
       Pageable pageable) {
-    Criteria criteria =
-        new Criteria().andOperator(where("access_screen_list").is(condition.getScreenId()),
-            new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)),
-            where("delete_by").isNull(), where("delete_date_time").isNull());
+    List<Criteria> andConditions = new ArrayList<>();
+
+    andConditions.add(where("access_screen_list").is(condition.getScreenId()));
+    andConditions.add(
+        new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)));
+    andConditions.add(where("delete_by").isNull());
+    andConditions.add(where("delete_date_time").isNull());
 
     if (!StringUtils.isBlank(condition.getKeyword())) {
-      criteria.andOperator(new Criteria().orOperator(where("user_id").is(condition.getKeyword()),
-          where("user_name").is(condition.getKeyword()),
-          where("email").is(condition.getKeyword())));
+      andConditions.add(new Criteria().orOperator(
+          where("user_id").regex(".*" + condition.getKeyword() + ".*", "i"),
+          where("user_name").regex(".*" + condition.getKeyword() + ".*", "i"),
+          where("email").regex(".*" + condition.getKeyword() + ".*", "i")));
     }
 
-    return pageableFind(new Query(criteria), pageable, UserAccount.class);
+    return pageableFind(
+        new Query(new Criteria().andOperator(andConditions.toArray(new Criteria[0]))), pageable,
+        UserAccount.class);
   }
 
   @Override

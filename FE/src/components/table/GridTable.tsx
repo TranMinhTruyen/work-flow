@@ -1,5 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
-import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { ColDef, GridReadyEvent, RowClassParams } from 'ag-grid-community';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
@@ -8,13 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import { ControlProps } from '@/common/hooks/types/useTableTypes';
+import { capitalizeFirst } from '@/common/utils/stringUtil';
 
-import IconButton from '../button/IconButton';
 import CustomCell from './components/CustomCell';
 import CustomHeader from './components/CustomHeader';
 import CustomLoading from './components/CustomLoading';
 
 export type GridTableProps = Omit<AgGridReactProps, 'rowData'> & {
+  id?: string;
   height?: number | string;
   minHeight?: number | string;
   maxHeight?: number | string;
@@ -26,6 +25,7 @@ export type GridTableProps = Omit<AgGridReactProps, 'rowData'> & {
 
 const GridTable = (props: GridTableProps) => {
   const {
+    id,
     className,
     height,
     maxHeight = 300,
@@ -38,7 +38,7 @@ const GridTable = (props: GridTableProps) => {
     ...restProps
   } = props;
 
-  const { t } = useTranslation(I18nEnum.COMMON_I18N);
+  const { i18n, t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const calculateGridHeight = useMemo(() => {
     const rowCount = control?.data ? control?.data.length : 1;
@@ -87,13 +87,11 @@ const GridTable = (props: GridTableProps) => {
       maxWidth={maxWidth}
     >
       <AgGridReact
-        gridOptions={{
-          localeText: {
-            noRowsToShow: t('table.noData'),
-          },
-        }}
+        key={`gridTable${i18n.language}${capitalizeFirst(id)}`}
+        gridId={`gridTable${capitalizeFirst(id)}`}
         rowData={control?.data ?? []}
         defaultColDef={defaultColDef}
+        localeText={{ noRowsToShow: t('table.noData') }}
         headerHeight={50}
         rowHeight={rowHeight}
         onGridReady={onGridReady}

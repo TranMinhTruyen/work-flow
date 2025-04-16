@@ -201,7 +201,10 @@ const DrawerMenuItem = (props: DrawerMenuItemProps) => {
           disablePadding
         >
           <CustomListItemButton sx={customListItemButtonSx}>
-            <CustomListItemIcon style={customListItemIconAndTextSx}>
+            <CustomListItemIcon
+              style={customListItemIconAndTextSx}
+              sx={{ marginLeft: openDrawer ? '0px' : '8px' }}
+            >
               {itemCustomListItemIcon}
             </CustomListItemIcon>
             <ListItemText
