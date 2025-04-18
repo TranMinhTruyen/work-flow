@@ -23,7 +23,7 @@ const RightDrawer = () => {
 
   return content?.isOnClose ? (
     <SideDrawer anchor={'right'} open={isOpen} onClose={() => closeDrawer()}>
-      <Stack sx={{ marginTop: '55px' }}>
+      <Stack sx={{ marginTop: '55px', maxHeight: 'calc(100vh - 55px)' }}>
         <Stack direction={'row'} sx={{ height: '45px', padding: '8px' }}>
           <Stack sx={{ flex: 1, height: '30px', marginLeft: '30px' }}>
             <Typography variant={'h5'}>{t(content?.title ?? '')}</Typography>
@@ -40,12 +40,21 @@ const RightDrawer = () => {
 
         <Divider />
 
-        <Stack sx={{ padding: '16px' }}>{drawerBody}</Stack>
+        <Stack
+          sx={{
+            padding: '16px',
+            flex: 1,
+            overflow: 'auto',
+            minHeight: 0,
+          }}
+        >
+          {drawerBody}
+        </Stack>
       </Stack>
     </SideDrawer>
   ) : (
     <SideDrawer anchor={'right'} open={isOpen}>
-      <Stack sx={{ marginTop: '55px' }}>
+      <Stack sx={{ marginTop: '55px', maxHeight: 'calc(100vh - 55px)' }}>
         <Stack direction={'row'} sx={{ height: '45px', padding: '8px' }}>
           <Stack sx={{ flex: 1, marginLeft: '30px' }}>{content?.title}</Stack>
 
@@ -60,7 +69,16 @@ const RightDrawer = () => {
 
         <Divider />
 
-        <Stack sx={{ padding: '16px' }}>{drawerBody}</Stack>
+        <Stack
+          sx={{
+            padding: '16px',
+            flex: 1,
+            overflow: 'auto',
+            minHeight: 0,
+          }}
+        >
+          {drawerBody}
+        </Stack>
       </Stack>
     </SideDrawer>
   );

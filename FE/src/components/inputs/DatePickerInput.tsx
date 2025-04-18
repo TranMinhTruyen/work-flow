@@ -5,7 +5,7 @@ import { TextFieldProps } from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateView } from '@mui/x-date-pickers/models/views';
+import { DateView } from '@mui/x-date-pickers/models';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/ja';
@@ -120,11 +120,6 @@ const DatePickerInput = (props: DatePickerProps) => {
             label: label,
             error: error,
             helperText: helperText,
-            slotProps: {
-              inputLabel: {
-                shrink: true,
-              },
-            },
             InputProps: {
               startAdornment: (
                 <InputAdornment position={'start'}>
@@ -158,13 +153,13 @@ const CustomDatePicker = styled(DatePicker)<DatePickerProps>(({ width }) => ({
     },
   },
 
-  '& .MuiOutlinedInput-root': {
+  '& .MuiPickersInputBase-root': {
     width: width,
     height: '40px !important',
     minHeight: '40px !important',
     '& fieldset': {
       borderColor: 'rgba(13, 13, 13, 0.8)',
-      borderRadius: 50,
+      borderRadius: '50px',
     },
     '&:hover fieldset': {
       borderColor: '#00b2ff',
