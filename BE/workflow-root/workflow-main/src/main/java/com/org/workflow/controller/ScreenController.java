@@ -2,7 +2,9 @@ package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
 import static com.org.workflow.core.common.enums.AuthorityEnums.CREATE;
+import static com.org.workflow.core.common.enums.AuthorityEnums.DELETE;
 import static com.org.workflow.core.common.enums.AuthorityEnums.GET;
+import static com.org.workflow.core.common.enums.AuthorityEnums.UPDATE;
 import static com.org.workflow.core.common.enums.LevelEnums.HIGH_LEVEL;
 import static com.org.workflow.core.common.enums.LevelEnums.LOW_LEVEL;
 import static com.org.workflow.core.common.enums.RoleEnums.ROLE_ADMIN;
@@ -55,7 +57,7 @@ public class ScreenController extends AbstractController {
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/search")
-  @Authentication(authority = GET, role = ROLE_ADMIN, level = LOW_LEVEL)
+  @Authentication(authority = {GET}, role = {ROLE_ADMIN}, level = LOW_LEVEL)
   public ResponseEntity<BaseResponse> searchScreen(
       @RequestBody BaseRequest<PageableRequest<SearchScreenRequest>> request) {
     PageResponse<SearchScreenResponse> result = screenService.search(request);
@@ -68,7 +70,7 @@ public class ScreenController extends AbstractController {
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @GetMapping(value = "/get-screen-detail")
-  @Authentication(authority = GET, role = ROLE_ADMIN, level = LOW_LEVEL)
+  @Authentication(authority = {GET}, role = {ROLE_ADMIN}, level = LOW_LEVEL)
   public ResponseEntity<BaseResponse> getScreenDetail(@RequestParam String screenId) {
     GetScreenDetailResponse result = screenService.getScreenDetail(screenId);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
@@ -80,7 +82,7 @@ public class ScreenController extends AbstractController {
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @PostMapping(value = "/get-screen-users")
-  @Authentication(authority = GET, role = ROLE_ADMIN, level = LOW_LEVEL)
+  @Authentication(authority = {GET}, role = {ROLE_ADMIN}, level = LOW_LEVEL)
   public ResponseEntity<BaseResponse> getScreenUsers(
       @RequestBody BaseRequest<PageableRequest<ScreenUserRequest>> request) {
     PageResponse<ScreenUserResponse> result = screenService.getScreenUsers(request);
@@ -93,7 +95,7 @@ public class ScreenController extends AbstractController {
    * @throws WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
-  @Authentication(authority = CREATE, role = ROLE_ADMIN, level = HIGH_LEVEL)
+  @Authentication(authority = {CREATE, UPDATE}, role = {ROLE_ADMIN}, level = HIGH_LEVEL)
   @PostMapping(value = "/save-screen")
   public ResponseEntity<BaseResponse> saveScreen(
       @RequestBody BaseRequest<SaveScreenRequest> request) throws WFException {
@@ -107,12 +109,26 @@ public class ScreenController extends AbstractController {
    * @throws WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
-  @Authentication(authority = CREATE, role = ROLE_ADMIN, level = HIGH_LEVEL)
+  @Authentication(authority = {DELETE}, role = {ROLE_ADMIN}, level = HIGH_LEVEL)
   @PostMapping(value = "/remove-user-from-screen")
   public ResponseEntity<BaseResponse> removeUserFromScreen(
       @RequestBody BaseRequest<RemoveUserRequest> request) {
     RemoveUserResponse response = screenService.removeUserFromScreen(request);
     return this.returnBaseResponse(response, MessageEnum.SAVE_SUCCESS);
+  }
+
+  /**
+   * TODO get user not using.
+   *
+   * @param request
+   * @return
+   */
+  @Operation(security = {@SecurityRequirement(name = "Authorization")})
+  @Authentication(authority = {GET}, role = {ROLE_ADMIN}, level = HIGH_LEVEL)
+  @PostMapping(value = "/get-user-not-using")
+  public ResponseEntity<BaseResponse> getUserNotUsing(
+      @RequestBody BaseRequest<PageableRequest<ScreenUserRequest>> request) {
+    return this.returnBaseResponse(null, MessageEnum.SAVE_SUCCESS);
   }
 
 }

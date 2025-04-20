@@ -3,6 +3,7 @@ package com.org.workflow.domain.aop;
 import static com.org.workflow.domain.utils.AuthUtil.checkAuthentication;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,10 +30,10 @@ public class AuthenticationAop {
 
     Authentication authentication = method.getAnnotation(Authentication.class);
     if (authentication != null) {
-      RoleEnums role = authentication.role();
-      AuthorityEnums authority = authentication.authority();
+      List<RoleEnums> role = List.of(authentication.role());
+      List<AuthorityEnums> authority = List.of(authentication.authority());
       LevelEnums level = authentication.level();
-      checkAuthentication(role.getRole(), authority.getAuthority(), level.getLevel());
+      checkAuthentication(role, authority, level);
     }
 
     return joinPoint.proceed();

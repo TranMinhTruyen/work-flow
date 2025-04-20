@@ -5,10 +5,14 @@ import static com.org.workflow.core.common.enums.MessageEnum.AUTHORITY_ERROR;
 import static com.org.workflow.core.common.enums.MessageEnum.LEVEL_ERROR;
 import static com.org.workflow.core.common.enums.MessageEnum.ROLE_ERROR;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.org.workflow.core.common.enums.AuthorityEnums;
+import com.org.workflow.core.common.enums.LevelEnums;
+import com.org.workflow.core.common.enums.RoleEnums;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
 
@@ -24,22 +28,28 @@ public class AuthUtil {
     return (CustomUserDetail) authentication.getPrincipal();
   }
 
-  public static void checkAuthentication(@Nullable String role, @Nullable String authority,
-      int level) throws WFException {
+  public static void checkAuthentication(@Nullable List<RoleEnums> role,
+      @Nullable List<AuthorityEnums> authority, @Nullable LevelEnums level) throws WFException {
     CustomUserDetail userDetail = getAuthentication();
     if (userDetail == null) {
       throw new WFException(AUTHENTICATION_ERROR);
     }
 
-    if (role != null && !StringUtils.equals(userDetail.getUserAccount().getRole(), role)) {
+    if (role != null && !role.stream().map(RoleEnums::getRole).toList()
+        .contains(userDetail.getUserAccount().getRole())) {
       throw new WFException(ROLE_ERROR);
     }
 
-    if (authority != null && !userDetail.getUserAccount().getAuthorities().contains(authority)) {
-      throw new WFException(AUTHORITY_ERROR);
+    if (authority != null) {
+      List<String> authoritiesList = authority.stream().map(AuthorityEnums::getAuthority).toList();
+      List<String> userAuthorities = userDetail.getUserAccount().getAuthorities();
+      boolean hasMatchingAuthority = userAuthorities.stream().anyMatch(authoritiesList::contains);
+      if (!hasMatchingAuthority) {
+        throw new WFException(AUTHORITY_ERROR);
+      }
     }
 
-    if (level != 0 && userDetail.getUserAccount().getLevel() < level) {
+    if (level != null && userDetail.getUserAccount().getLevel() < level.getLevel()) {
       throw new WFException(LEVEL_ERROR);
     }
   }
