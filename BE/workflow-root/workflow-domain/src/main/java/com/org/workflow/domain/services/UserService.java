@@ -278,7 +278,7 @@ public class UserService extends AbstractService {
           for (Screen screen : screenMasterList.get()) {
             screenResponse = new ScreenResponse();
             screenResponse.setScreenId(screen.getScreenId());
-            screenResponse.setScreenName(screen.getScreenName());
+            screenResponse.setScreenName(screen.getScreenNameEn());
             screenResponse.setScreenUrl(screen.getScreenUrl());
             screenResponse.setActive(screen.isActive());
             screenResponseList.add(screenResponse);
@@ -335,7 +335,7 @@ public class UserService extends AbstractService {
       for (Screen screen : screenMasterList.get()) {
         screenResponse = new ScreenResponse();
         screenResponse.setScreenId(screen.getScreenId());
-        screenResponse.setScreenName(screen.getScreenName());
+        screenResponse.setScreenName(screen.getScreenNameEn());
         screenResponse.setScreenUrl(screen.getScreenUrl());
         screenResponse.setActive(screen.isActive());
         screenResponseList.add(screenResponse);

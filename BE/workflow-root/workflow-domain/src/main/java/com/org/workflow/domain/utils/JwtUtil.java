@@ -1,24 +1,28 @@
 package com.org.workflow.domain.utils;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.crypto.SecretKey;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.org.workflow.core.common.cnst.CommonConst;
 import com.org.workflow.domain.dto.common.CustomUserDetail;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import javax.crypto.SecretKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class JwtUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtil.class);
+  private static final Logger LOGGER = LogManager.getLogger(JwtUtil.class);
 
 
   public static String generateAccessToken(CustomUserDetail userDetail, boolean isRemember) {
@@ -31,13 +35,8 @@ public class JwtUtil {
     }
     Map<String, Object> claims = new HashMap<>();
     claims.put("userName", userDetail.getUserAccount().getUserName());
-    return Jwts.builder()
-        .claims(claims)
-        .subject(userDetail.getUsername())
-        .issuedAt(new Date())
-        .expiration(expiryDate)
-        .signWith(getSigningKey())
-        .compact();
+    return Jwts.builder().claims(claims).subject(userDetail.getUsername()).issuedAt(new Date())
+        .expiration(expiryDate).signWith(getSigningKey()).compact();
   }
 
 

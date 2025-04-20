@@ -27,7 +27,13 @@ public class SaveScreenRequest implements Serializable {
   private String screenId;
 
   @Validate(errorCode = ValidateEnum.MIN_MAX_VALIDATE, maxLength = 100)
-  private String screenName;
+  private String screenNameEn;
+
+  @Validate(errorCode = ValidateEnum.MIN_MAX_VALIDATE, maxLength = 100)
+  private String screenNameVi;
+
+  @Validate(errorCode = ValidateEnum.MIN_MAX_VALIDATE, maxLength = 100)
+  private String screenNameJa;
 
   @Validate(required = true)
   private String screenUrl;

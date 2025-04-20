@@ -33,7 +33,7 @@ public class SecurityService {
     for (Screen screen : screenList) {
       screenResponse = new ScreenResponse();
       screenResponse.setScreenId(screen.getScreenId());
-      screenResponse.setScreenName(screen.getScreenName());
+      screenResponse.setScreenName(screen.getScreenNameEn());
       screenResponse.setScreenUrl(screen.getScreenUrl());
       screenResponseList.add(screenResponse);
     }

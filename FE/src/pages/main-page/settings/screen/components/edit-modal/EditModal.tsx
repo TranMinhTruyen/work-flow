@@ -1,3 +1,4 @@
+import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useCallback, useEffect } from 'react';
@@ -76,51 +77,67 @@ const EditModal = (props: EditModalProps) => {
     const formValue = getValues();
     const saveResponse = await saveAction({ ...formValue });
     if (saveResponse) {
-      toast.success(<Typography>Save success</Typography>);
+      toast.success(<Typography>{t('toast.saveScreenSuccess')}</Typography>);
       const response = await getScreenDetail(saveResponse.screenId);
       reset({ ...response });
     }
-  }, [getValues, reset]);
+  }, [getValues, reset, t]);
 
   return (
-    <form id={'edit-screen-form'}>
-      <Stack spacing={2}>
-        <Typography id={'editModalTitle'}>{t('label.screenDetail')}</Typography>
+    <>
+      <Stack
+        sx={{
+          padding: '16px',
+          overflow: 'auto',
+          minHeight: 'calc(100vh - 147px)',
+        }}
+      >
+        <form id={'edit-screen-form'}>
+          <Stack spacing={2}>
+            <Typography id={'editModalTitle'}>{t('label.screenDetail')}</Typography>
 
-        <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
-          <Stack spacing={3}>
-            <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
-            <TextInput name={'screenName'} control={control} sx={styles.textInput} required />
+            <Stack spacing={3} direction={'row'} sx={{ justifyContent: 'space-between' }}>
+              <Stack spacing={3}>
+                <TextInput name={'screenId'} control={control} sx={styles.textInput} disabled />
+                <TextInput name={'screenNameEn'} control={control} sx={styles.textInput} required />
+                <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
+              </Stack>
+
+              <Stack spacing={3}>
+                <DatePickerInput
+                  inputFormat={FULL_DATE_TIME_FORMAT}
+                  name={'createdDatetime'}
+                  control={control}
+                  width={290}
+                  disabled
+                />
+                <TextInput name={'screenNameVi'} control={control} sx={styles.textInput} required />
+                <SwitchInput name={'active'} control={control} />
+              </Stack>
+
+              <Stack spacing={3}>
+                <DatePickerInput
+                  inputFormat={FULL_DATE_TIME_FORMAT}
+                  name={'updatedDatetime'}
+                  control={control}
+                  width={290}
+                  disabled
+                />
+                <TextInput name={'screenNameJa'} control={control} sx={styles.textInput} required />
+              </Stack>
+            </Stack>
+
+            <ScreenUserTable screenId={data.screenId} />
           </Stack>
+        </form>
+      </Stack>
 
-          <Stack spacing={3}>
-            <DatePickerInput
-              inputFormat={FULL_DATE_TIME_FORMAT}
-              name={'createdDatetime'}
-              control={control}
-              width={290}
-              disabled
-            />
-            <TextInput name={'screenUrl'} control={control} sx={styles.textInput} required />
-          </Stack>
+      <Divider />
 
-          <Stack spacing={3}>
-            <DatePickerInput
-              inputFormat={FULL_DATE_TIME_FORMAT}
-              name={'updatedDatetime'}
-              control={control}
-              width={290}
-              disabled
-            />
-            <SwitchInput name={'active'} control={control} />
-          </Stack>
-        </Stack>
-
-        <ScreenUserTable screenId={data.screenId} />
-
+      <Stack direction={'row-reverse'} spacing={1} sx={{ height: '45px', padding: '8px' }}>
         <SubmitButton sx={{ marginLeft: 'auto' }} onSubmit={handleSaveAction} isDirty={isDirty} />
       </Stack>
-    </form>
+    </>
   );
 };
 

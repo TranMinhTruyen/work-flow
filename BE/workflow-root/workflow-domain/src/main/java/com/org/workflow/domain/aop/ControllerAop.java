@@ -1,10 +1,10 @@
 package com.org.workflow.domain.aop;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.org.workflow.core.common.cnst.CommonConst;
@@ -19,7 +19,7 @@ public class ControllerAop {
   public static final String CONTROLLER_POINTCUT =
       "execution(* " + CommonConst.BASE_PACKAGE_NAME + ".controller.*.*(..))";
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAop.class);
+  private static final Logger LOGGER = LogManager.getLogger(ControllerAop.class);
 
   @Around(value = CONTROLLER_POINTCUT, argNames = "joinPoint")
   public Object controllerLogger(ProceedingJoinPoint joinPoint) throws Throwable {

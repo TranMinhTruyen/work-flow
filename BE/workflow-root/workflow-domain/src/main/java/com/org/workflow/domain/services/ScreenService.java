@@ -87,7 +87,7 @@ public class ScreenService extends AbstractService {
       for (Screen screen : queryResult.getResult()) {
         SearchScreenResponse searchScreenResponse = new SearchScreenResponse();
         searchScreenResponse.setScreenId(screen.getScreenId());
-        searchScreenResponse.setScreenName(screen.getScreenName());
+        searchScreenResponse.setScreenName(screen.getScreenNameEn());
         searchScreenResponse.setScreenUrl(screen.getScreenUrl());
         searchScreenResponse.setActive(screen.isActive());
         searchScreenResponse.setCreatedBy(screen.getCreatedBy());
@@ -117,7 +117,9 @@ public class ScreenService extends AbstractService {
     GetScreenDetailResponse response = new GetScreenDetailResponse();
     response.setId(screen.getId());
     response.setScreenId(screen.getScreenId());
-    response.setScreenName(screen.getScreenName());
+    response.setScreenNameEn(screen.getScreenNameEn());
+    response.setScreenNameVi(screen.getScreenNameVi());
+    response.setScreenNameJa(screen.getScreenNameJa());
     response.setScreenUrl(screen.getScreenUrl());
     response.setActive(screen.isActive());
     if (screen.getScreenComponentList() != null && !screen.getScreenComponentList().isEmpty()) {
@@ -190,7 +192,9 @@ public class ScreenService extends AbstractService {
       if (!screen.getUpdatedDatetime().isEqual(payload.getUpdatedDatetime())) {
         throw new WFException(UPDATE_FAILED);
       }
-      screen.setScreenName(payload.getScreenName());
+      screen.setScreenNameEn(payload.getScreenNameEn());
+      screen.setScreenNameVi(payload.getScreenNameVi());
+      screen.setScreenNameJa(payload.getScreenNameJa());
       screen.setScreenUrl(payload.getScreenUrl());
       screen.setActive(payload.isActive());
       screen.setUpdatedDatetime(now);
@@ -198,7 +202,9 @@ public class ScreenService extends AbstractService {
     } else {
       screen = new Screen();
       screen.setScreenId(payload.getScreenId());
-      screen.setScreenName(payload.getScreenName());
+      screen.setScreenNameEn(payload.getScreenNameEn());
+      screen.setScreenNameVi(payload.getScreenNameVi());
+      screen.setScreenNameJa(payload.getScreenNameJa());
       screen.setScreenUrl(payload.getScreenUrl());
       screen.setActive(payload.isActive());
       screen.setCreateDatetime(now);
@@ -212,7 +218,9 @@ public class ScreenService extends AbstractService {
     SaveScreenResponse response = new SaveScreenResponse();
     response.setId(saveResult.getId());
     response.setScreenId(saveResult.getScreenId());
-    response.setScreenName(saveResult.getScreenName());
+    response.setScreenNameEn(saveResult.getScreenNameEn());
+    response.setScreenNameVi(saveResult.getScreenNameVi());
+    response.setScreenNameJa(saveResult.getScreenNameJa());
     response.setScreenUrl(saveResult.getScreenUrl());
     response.setActive(saveResult.isActive());
     response.setCreatedDatetime(saveResult.getCreateDatetime());
@@ -221,9 +229,11 @@ public class ScreenService extends AbstractService {
 
     List<String> userIds = userRepository.findUserIdByScreenId(payload.getScreenId());
     if (CollectionUtils.isNotEmpty(userIds)) {
+      String screenName = saveResult.getScreenNameEn();
+
       SendNotificationResponse notificationResponse =
           notificationUtil.getNotificationResponse(NN0000001,
-              new Object[] {saveResult.getScreenName(), saveResult.getScreenName(), userName});
+              new Object[] {screenName, screenName, userName});
       notificationResponse.setSendBy(userName);
 
       for (String userId : userIds) {

@@ -4,14 +4,20 @@
     "screenDetail": "画面の詳細",
     "userUsing": "ユーザー使用中",
     "screenId": "画面ID",
-    "screenName": "画面名",
+    "screenNameEn": "英語のスクリーン名",
+    "screenNameVi": "ベトナム語のスクリーン名",
+    "screenNameJa": "日本語のスクリーン名",
     "screenUrl": "画面URL",
     "createdDatetime": "作成日時",
     "updatedDatetime": "更新日時",
-    "active": "状態"
+    "active": "状態",
+    "searchUser": "ユーザー検索"
   },
   "button": {
     "deleteSelected": "選択した項目を削除"
+  },
+  "toast": {
+    "saveScreenSuccess": "スクリーンの保存に成功しました！"
   },
   "table": {
     "userId": "ユーザーID",

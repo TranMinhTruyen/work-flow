@@ -95,7 +95,7 @@ public class ApplicationStartup {
 
       screen = new Screen();
       screen.setScreenId("SCR00000");
-      screen.setScreenName("SCREEN SETTING");
+      screen.setScreenNameEn("SCREEN SETTING");
       screen.setScreenUrl("/screen-setting");
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
@@ -108,7 +108,7 @@ public class ApplicationStartup {
 
       screen = new Screen();
       screen.setScreenId("SCR00001");
-      screen.setScreenName("USER SETTING");
+      screen.setScreenNameEn("USER SETTING");
       screen.setScreenUrl("/user-setting");
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
@@ -121,7 +121,7 @@ public class ApplicationStartup {
 
       screen = new Screen();
       screen.setScreenId("SCR00002");
-      screen.setScreenName("HOME");
+      screen.setScreenNameEn("HOME");
       screen.setScreenUrl("/home");
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
@@ -134,7 +134,7 @@ public class ApplicationStartup {
 
       screen = new Screen();
       screen.setScreenId("SCR00003");
-      screen.setScreenName("KANBAN");
+      screen.setScreenNameEn("KANBAN");
       screen.setScreenUrl("/kanban");
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);

@@ -27,7 +27,11 @@ public class GetScreenDetailResponse implements Serializable {
 
   private String screenId;
 
-  private String screenName;
+  private String screenNameEn;
+
+  private String screenNameVi;
+
+  private String screenNameJa;
 
   private String screenUrl;
 

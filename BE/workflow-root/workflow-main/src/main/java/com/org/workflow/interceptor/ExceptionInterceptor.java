@@ -1,6 +1,6 @@
 package com.org.workflow.interceptor;
 
-import static com.org.workflow.core.common.cnst.CommonConst.CLASS_NAME;
+import static com.org.workflow.core.common.cnst.CommonConst.BASE_PACKAGE_NAME;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.WARN;
 import static com.org.workflow.domain.utils.CommonUtil.getAttributes;
 import static com.org.workflow.domain.utils.CommonUtil.getLanguageFromRequest;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ExceptionInterceptor extends AbstractController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionInterceptor.class);
+  private static final Logger LOGGER = LogManager.getLogger(ExceptionInterceptor.class);
 
   private final MessageSource messageSource;
 
@@ -45,7 +45,7 @@ public class ExceptionInterceptor extends AbstractController {
   public ResponseEntity<BaseResponse> handleAppException(WFException WFException) {
     if (WFException.getMessageEnum().getMessageType().equals(WARN)) {
       for (StackTraceElement item : WFException.getStackTrace()) {
-        if (item.getClassName().contains(CLASS_NAME)) {
+        if (item.getClassName().contains(BASE_PACKAGE_NAME)) {
           LOGGER.warn("Class name {}, method {}, line {} has error: {} do rollback",
               item.getClassName(), item.getMethodName(), item.getLineNumber(),
               WFException.getErrorDetail());
@@ -56,7 +56,7 @@ public class ExceptionInterceptor extends AbstractController {
     if (WFException.getStackTrace() != null && Arrays.stream(WFException.getStackTrace()).findAny()
         .isPresent()) {
       for (StackTraceElement item : WFException.getStackTrace()) {
-        if (item.getClassName().contains(CLASS_NAME)) {
+        if (item.getClassName().contains(BASE_PACKAGE_NAME)) {
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
               item.getClassName(), item.getMethodName(), item.getLineNumber(),
               WFException.getErrorDetail());
@@ -71,7 +71,7 @@ public class ExceptionInterceptor extends AbstractController {
     if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
         .isPresent()) {
       for (StackTraceElement item : exception.getStackTrace()) {
-        if (item.getClassName().contains(CLASS_NAME)) {
+        if (item.getClassName().contains(BASE_PACKAGE_NAME)) {
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
               item.getClassName(), item.getMethodName(), item.getLineNumber(),
               exception.getMessage());
@@ -89,7 +89,7 @@ public class ExceptionInterceptor extends AbstractController {
     if (exception.getStackTrace() != null && Arrays.stream(exception.getStackTrace()).findAny()
         .isPresent()) {
       for (StackTraceElement item : exception.getStackTrace()) {
-        if (item.getClassName().contains(CLASS_NAME)) {
+        if (item.getClassName().contains(BASE_PACKAGE_NAME)) {
           LOGGER.error("Class name {}, method {}, line {} has error: {} do rollback",
               item.getClassName(), item.getMethodName(), item.getLineNumber(),
               exception.getMessage());

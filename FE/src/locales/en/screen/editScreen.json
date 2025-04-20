@@ -4,14 +4,20 @@
     "screenDetail": "Screen detail",
     "userUsing": "User using",
     "screenId": "Screen ID",
-    "screenName": "Screen name",
+    "screenNameEn": "Screen name English",
+    "screenNameVi": "Screen name Vietnamese",
+    "screenNameJa": "Screen name Japanese",
     "screenUrl": "Screen URL",
     "createdDatetime": "Created datetime",
     "updatedDatetime": "Updated datetime",
-    "active": "Status"
+    "active": "Status",
+    "searchUser": "Search user"
   },
   "button": {
     "deleteSelected": "Delete selected"
+  },
+  "toast": {
+    "saveScreenSuccess": "Save screen success!"
   },
   "table": {
     "userId": "User ID",

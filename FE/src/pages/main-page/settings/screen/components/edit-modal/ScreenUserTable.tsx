@@ -196,7 +196,8 @@ const ScreenUserTable = (props: ScreenUserProps) => {
 
         <Stack direction={'row'} spacing={1}>
           <TextInput
-            id={'keyword'}
+            id={'searchUser'}
+            label={t('label.searchUser')}
             width={200}
             height={35}
             onBlur={(value: string) => {
@@ -216,8 +217,8 @@ const ScreenUserTable = (props: ScreenUserProps) => {
       </Stack>
 
       <PageGridTable
-        height={'50vh'}
-        maxHeight={'50vh'}
+        height={'45vh'}
+        maxHeight={'45vh'}
         columnDefs={colDefs}
         control={control}
         rowSelection={rowSelection}

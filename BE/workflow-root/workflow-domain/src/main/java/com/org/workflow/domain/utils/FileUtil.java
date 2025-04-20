@@ -10,8 +10,8 @@ import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.common.FileData;
@@ -19,7 +19,7 @@ import com.org.workflow.domain.dto.common.FileData;
 
 public class FileUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+  private static final Logger LOGGER = LogManager.getLogger(FileUtil.class);
 
   private static final int BUFFER_SIZE = 1024 * 512;
 

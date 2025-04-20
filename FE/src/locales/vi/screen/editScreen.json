@@ -4,14 +4,20 @@
     "screenDetail": "Chi tiết màn hình",
     "userUsing": "Người dùng đang sử dụng",
     "screenId": "ID màn hình",
-    "screenName": "Tên màn hình",
+    "screenNameEn": "Tên màn hình tiếng Anh",
+    "screenNameVi": "Tên màn hình tiếng Việt",
+    "screenNameJa": "Tên màn hình tiếng Nhật",
     "screenUrl": "URL màn hình",
     "createdDatetime": "Ngày tạo",
     "updatedDatetime": "Ngày cập nhật",
-    "active": "Trạng thái"
+    "active": "Trạng thái",
+    "searchUser": "Tìm kiếm người dùng"
   },
   "button": {
     "deleteSelected": "Xóa mục đã chọn"
+  },
+  "toast": {
+    "saveScreenSuccess": "Lưu màn hình thành công!"
   },
   "table": {
     "userId": "ID người dùng",

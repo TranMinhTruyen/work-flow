@@ -20,6 +20,7 @@ export const screenService = baseApi.injectEndpoints({
       query: request => ({
         api: ApiEnum.SEARCH_SCREEN,
         data: request,
+        isLoading: false,
       }),
     }),
 

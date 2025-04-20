@@ -23,8 +23,14 @@ public class Screen extends AbstractDocument implements Serializable {
   @Field(name = "screen_id", write = Field.Write.ALWAYS)
   private String screenId;
 
-  @Field(name = "screen_name", write = Field.Write.ALWAYS)
-  private String screenName;
+  @Field(name = "screen_name_en", write = Field.Write.ALWAYS)
+  private String screenNameEn;
+
+  @Field(name = "screen_name_vi", write = Field.Write.ALWAYS)
+  private String screenNameVi;
+
+  @Field(name = "screen_name_ja", write = Field.Write.ALWAYS)
+  private String screenNameJa;
 
   @Field(name = "screen_url", write = Field.Write.ALWAYS)
   private String screenUrl;
