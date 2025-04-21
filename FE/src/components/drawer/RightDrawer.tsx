@@ -15,7 +15,7 @@ const RightDrawer = () => {
   const { t } = useTranslation();
 
   return content?.isOnClose ? (
-    <SideDrawer anchor={'right'} open={isOpen} onClose={() => closeDrawer()}>
+    <Drawer anchor={'right'} open={isOpen} onClose={() => closeDrawer()}>
       <Stack
         sx={{ marginTop: '55px', maxHeight: 'calc(100vh - 55px)', width: content?.width ?? '50vw' }}
       >
@@ -37,9 +37,9 @@ const RightDrawer = () => {
 
         {content?.content}
       </Stack>
-    </SideDrawer>
+    </Drawer>
   ) : (
-    <SideDrawer anchor={'right'} open={isOpen}>
+    <Drawer anchor={'right'} open={isOpen}>
       <Stack
         sx={{ marginTop: '55px', maxHeight: 'calc(100vh - 55px)', width: content?.width ?? '50vw' }}
       >
@@ -59,7 +59,7 @@ const RightDrawer = () => {
 
         {content?.content}
       </Stack>
-    </SideDrawer>
+    </Drawer>
   );
 };
 
