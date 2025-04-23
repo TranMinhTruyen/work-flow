@@ -1,8 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
-import Drawer, { DrawerProps } from '@mui/material/Drawer';
+import Drawer from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 
@@ -62,9 +61,5 @@ const RightDrawer = () => {
     </Drawer>
   );
 };
-
-const SideDrawer = styled(Drawer)<DrawerProps>(({ theme }) => ({
-  // zIndex: theme.zIndex.drawer + 1,
-}));
 
 export default RightDrawer;
