@@ -7,6 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
 
+import com.org.workflow.core.common.enums.AuthorityEnum;
+import com.org.workflow.core.common.enums.LevelEnum;
+import com.org.workflow.core.common.enums.RoleEnum;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,13 +41,13 @@ public class UserAccount extends AbstractDocument implements Serializable {
   private String imageObject;
 
   @Field(name = "role", write = Write.ALWAYS)
-  private String role;
+  private RoleEnum role;
 
   @Field(name = "authorities", write = Write.ALWAYS)
-  private List<String> authorities;
+  private List<AuthorityEnum> authorities;
 
   @Field(name = "level", write = Write.ALWAYS)
-  private Integer level;
+  private LevelEnum level;
 
   @Field(name = "access_screen_list", write = Write.ALWAYS)
   private List<String> accessScreenList;

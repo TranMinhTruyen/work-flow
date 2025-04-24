@@ -1,5 +1,9 @@
 package com.org.workflow.domain.services;
 
+import static com.org.workflow.core.common.enums.AuthorityEnum.CREATE;
+import static com.org.workflow.core.common.enums.AuthorityEnum.GET;
+import static com.org.workflow.core.common.enums.AuthorityEnum.UPDATE;
+import static com.org.workflow.core.common.enums.LevelEnum.LOW_LEVEL;
 import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_INACTIVE;
 import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
 import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
@@ -7,6 +11,7 @@ import static com.org.workflow.core.common.enums.MessageEnum.NEW_PASSWORD_AND_CU
 import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND;
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
+import static com.org.workflow.core.common.enums.RoleEnum.ROLE_USER;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
@@ -23,10 +28,10 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.google.common.hash.Hashing;
-import com.org.workflow.core.common.enums.AuthorityEnums;
+import com.org.workflow.core.common.enums.AuthorityEnum;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
-import com.org.workflow.core.common.enums.LevelEnums;
-import com.org.workflow.core.common.enums.RoleEnums;
+import com.org.workflow.core.common.enums.LevelEnum;
+import com.org.workflow.core.common.enums.RoleEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
@@ -94,9 +99,10 @@ public class UserService extends AbstractService {
     createUserResponse.setUserName(saveUserAccount.getUserName());
     createUserResponse.setFullName(saveUserAccount.getFullName());
     createUserResponse.setBirthDay(saveUserAccount.getBirthDay());
-    createUserResponse.setRole(saveUserAccount.getRole());
-    createUserResponse.setAuthorities(saveUserAccount.getAuthorities());
-    createUserResponse.setLevel(saveUserAccount.getLevel());
+    createUserResponse.setRole(String.valueOf(saveUserAccount.getRole()));
+    createUserResponse.setAuthorities(
+        saveUserAccount.getAuthorities().stream().map(AuthorityEnum::name).toList());
+    createUserResponse.setLevel(saveUserAccount.getLevel().getLevel());
     createUserResponse.setImagePath(saveUserAccount.getImageObject());
     createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
     createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
@@ -113,9 +119,10 @@ public class UserService extends AbstractService {
     userResponse.setUserName(userAccount.getUserName());
     userResponse.setFullName(userAccount.getFullName());
     userResponse.setBirthDay(userAccount.getBirthDay());
-    userResponse.setRole(userAccount.getRole());
-    userResponse.setAuthorities(userAccount.getAuthorities());
-    userResponse.setLevel(userAccount.getLevel());
+    userResponse.setRole(String.valueOf(userAccount.getRole()));
+    userResponse.setAuthorities(
+        userAccount.getAuthorities().stream().map(AuthorityEnum::name).toList());
+    userResponse.setLevel(userAccount.getLevel().getLevel());
     userResponse.setScreenMasterList(screenResponseList);
     userResponse.setImage(userAccount.getImageObject());
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
@@ -158,9 +165,10 @@ public class UserService extends AbstractService {
     userAccount.setFullName(createUserRequest.getFullName());
     userAccount.setBirthDay(createUserRequest.getBirthDay());
     userAccount.setEmail(createUserRequest.getEmail());
-    userAccount.setRole(createUserRequest.getRole());
-    userAccount.setAuthorities(createUserRequest.getAuthorities());
-    userAccount.setLevel(createUserRequest.getLevel());
+    userAccount.setRole(RoleEnum.valueOf(createUserRequest.getRole()));
+    userAccount.setAuthorities(
+        createUserRequest.getAuthorities().stream().map(AuthorityEnum::valueOf).toList());
+    userAccount.setLevel(LevelEnum.fromInt(createUserRequest.getLevel()));
     userAccount.setImageObject(createUserRequest.getImage());
     userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
@@ -207,11 +215,9 @@ public class UserService extends AbstractService {
     userAccount.setFullName(createUserRequest.getFullName());
     userAccount.setBirthDay(createUserRequest.getBirthDay());
     userAccount.setEmail(createUserRequest.getEmail());
-    userAccount.setRole(RoleEnums.ROLE_USER.getRole());
-    userAccount.setAuthorities(
-        List.of(AuthorityEnums.CREATE.getAuthority(), AuthorityEnums.GET.getAuthority(),
-            AuthorityEnums.UPDATE.getAuthority()));
-    userAccount.setLevel(LevelEnums.LOW_LEVEL.getLevel());
+    userAccount.setRole(ROLE_USER);
+    userAccount.setAuthorities(List.of(CREATE, GET, UPDATE));
+    userAccount.setLevel(LOW_LEVEL);
     userAccount.setImageObject(createUserRequest.getImage());
     userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
@@ -377,8 +383,10 @@ public class UserService extends AbstractService {
     userAccount.setEmail(updateUserRequest.getEmail());
     userAccount.setFullName(updateUserRequest.getFullName());
     userAccount.setBirthDay(updateUserRequest.getBirthDay());
-    userAccount.setRole(updateUserRequest.getRole());
-    userAccount.setAuthorities(updateUserRequest.getAuthorities());
+    userAccount.setRole(RoleEnum.valueOf(updateUserRequest.getRole()));
+    userAccount.setAuthorities(
+        updateUserRequest.getAuthorities().stream().map(AuthorityEnum::valueOf).toList());
+    userAccount.setLevel(LevelEnum.fromInt(updateUserRequest.getLevel()));
     userAccount.setActive(updateUserRequest.getIsActive());
     userAccount.setUpdatedDatetime(now);
     userAccount.setUpdatedBy(username);
@@ -388,7 +396,7 @@ public class UserService extends AbstractService {
 
     UpdateUserResponse response = new UpdateUserResponse();
     response.setFullName(userAccountUpdateResult.getFullName());
-    response.setRole(userAccountUpdateResult.getRole());
+    response.setRole(String.valueOf(userAccountUpdateResult.getRole()));
     response.setUpdateDatetime(userAccountUpdateResult.getUpdatedDatetime());
 
     return response;

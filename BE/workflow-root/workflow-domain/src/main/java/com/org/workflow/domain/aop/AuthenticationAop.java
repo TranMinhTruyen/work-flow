@@ -11,9 +11,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import com.org.workflow.core.common.enums.AuthorityEnums;
-import com.org.workflow.core.common.enums.LevelEnums;
-import com.org.workflow.core.common.enums.RoleEnums;
+import com.org.workflow.core.common.enums.AuthorityEnum;
+import com.org.workflow.core.common.enums.LevelEnum;
+import com.org.workflow.core.common.enums.RoleEnum;
 import com.org.workflow.domain.annotation.Authentication;
 
 /**
@@ -30,9 +30,9 @@ public class AuthenticationAop {
 
     Authentication authentication = method.getAnnotation(Authentication.class);
     if (authentication != null) {
-      List<RoleEnums> role = List.of(authentication.role());
-      List<AuthorityEnums> authority = List.of(authentication.authority());
-      LevelEnums level = authentication.level();
+      List<RoleEnum> role = List.of(authentication.role());
+      List<AuthorityEnum> authority = List.of(authentication.authority());
+      LevelEnum level = authentication.level();
       checkAuthentication(role, authority, level);
     }
 

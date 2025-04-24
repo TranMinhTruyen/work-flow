@@ -15,8 +15,6 @@ export type IScreenItem = {
   screenIcon: ReactNode;
   screenLabel: string;
   screenPath: string;
-  screenRole: string[] | null;
-  screenLevel: number;
   screenChild: IScreenItem[] | null;
 };
 
@@ -27,8 +25,6 @@ const screenItemList: IScreenItem[] = [
     screenIcon: <HomeOutlinedIcon />,
     screenLabel: 'drawerTitle.home',
     screenPath: screenUrl.HOME.path,
-    screenRole: ['ADMIN', 'USER'],
-    screenLevel: 1,
     screenChild: null,
   },
   {
@@ -37,18 +33,14 @@ const screenItemList: IScreenItem[] = [
     screenIcon: <ViewKanbanOutlinedIcon />,
     screenLabel: 'drawerTitle.kanban',
     screenPath: screenUrl.KANBAN.path,
-    screenRole: ['ADMIN', 'USER'],
-    screenLevel: 1,
     screenChild: null,
   },
   {
-    screenKey: 'SCREEN_MASTER',
+    screenKey: 'SCR00000-PARENT',
     screenParentKey: null,
     screenIcon: <DashboardIcon />,
     screenLabel: 'drawerTitle.generalSettings',
     screenPath: '',
-    screenRole: ['ADMIN'],
-    screenLevel: 3,
     screenChild: [
       {
         screenKey: 'SCR00000',
@@ -56,8 +48,6 @@ const screenItemList: IScreenItem[] = [
         screenIcon: <ListAltIcon />,
         screenLabel: 'drawerTitle.screenSetting',
         screenPath: screenUrl.SCREEN_MASTER.path,
-        screenRole: ['ADMIN'],
-        screenLevel: 1,
         screenChild: null,
       },
       {
@@ -66,8 +56,6 @@ const screenItemList: IScreenItem[] = [
         screenIcon: <AccountCircleIcon />,
         screenLabel: 'drawerTitle.userSetting',
         screenPath: screenUrl.USER_MASTER.path,
-        screenRole: ['ADMIN'],
-        screenLevel: 1,
         screenChild: null,
       },
     ],

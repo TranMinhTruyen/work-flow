@@ -21,7 +21,6 @@ import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
 import {
   removeScreenExpand,
-  selectLoginData,
   selectOpenDrawer,
   selectScreenExpand,
   selectScreenMaster,
@@ -43,7 +42,6 @@ const DrawerMenu = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
   const screenExpand = useAppSelector(selectScreenExpand);
   const screenExpandChain = useRef<string[]>([]);
-  const loginData = useAppSelector(selectLoginData);
   const screenMasterList = useAppSelector(selectScreenMaster);
 
   const findChain = useCallback(
@@ -102,7 +100,7 @@ const DrawerMenu = () => {
 
     for (const screen of screenItemList) {
       if (screen.screenChild === null) {
-        if (checkAccessScreen(screen, loginData, screenMasterList)) {
+        if (checkAccessScreen(screen, screenMasterList)) {
           returnItem.push(
             <Grid key={screen.screenKey} size={{ xs: 12 }}>
               <DrawerMenuItem item={screen} />
@@ -118,7 +116,7 @@ const DrawerMenu = () => {
       }
     }
     return returnItem;
-  }, [loginData, screenMasterList]);
+  }, [screenMasterList]);
 
   return (
     <>
@@ -228,7 +226,6 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
   const dispatch = useAppDispatch();
   const screenExpand = useAppSelector(selectScreenExpand);
   const openDrawer = useAppSelector(selectOpenDrawer);
-  const loginData = useAppSelector(selectLoginData);
   const screenMasterList = useAppSelector(selectScreenMaster);
 
   useEffect(() => {
@@ -283,7 +280,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
 
     for (const childScreen of item.screenChild) {
       if (childScreen.screenChild === null) {
-        if (checkAccessScreen(childScreen, loginData, screenMasterList)) {
+        if (checkAccessScreen(childScreen, screenMasterList)) {
           returnItem.push(<DrawerMenuItem key={childScreen.screenKey} item={childScreen} />);
         }
       } else {
@@ -292,7 +289,7 @@ const DrawerMenuItemWithChild = (props: DrawerMenuItemProps) => {
     }
 
     return returnItem;
-  }, [item.screenChild, loginData, screenMasterList]);
+  }, [item.screenChild, screenMasterList]);
 
   const handleExpand = useCallback(() => {
     setOpenChild(!openChild);

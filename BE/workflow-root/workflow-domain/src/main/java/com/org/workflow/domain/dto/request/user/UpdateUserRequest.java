@@ -1,13 +1,13 @@
 package com.org.workflow.domain.dto.request.user;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author minh-truyen
@@ -25,6 +25,8 @@ public class UpdateUserRequest implements Serializable {
   private String birthDay;
 
   private String role;
+
+  private Integer level;
 
   private LocalDateTime updateDatetime;
 

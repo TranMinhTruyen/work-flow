@@ -1,16 +1,19 @@
 package com.org.workflow.domain.dto.common;
 
-import com.org.workflow.dao.document.UserAccount;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.org.workflow.core.common.enums.AuthorityEnum;
+import com.org.workflow.dao.document.UserAccount;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor
@@ -22,13 +25,13 @@ public class CustomUserDetail implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     List<GrantedAuthority> authorities = new ArrayList<>();
 
-    if (userAccount.getRole() != null && !StringUtils.isBlank(userAccount.getRole())) {
-      authorities.add(new SimpleGrantedAuthority(userAccount.getRole()));
+    if (userAccount.getRole() != null && !StringUtils.isBlank(userAccount.getRole().getRole())) {
+      authorities.add(new SimpleGrantedAuthority(userAccount.getRole().getRole()));
     }
 
     if (userAccount.getAuthorities() != null && !userAccount.getAuthorities().isEmpty()) {
-      for (String authority : userAccount.getAuthorities()) {
-        authorities.add(new SimpleGrantedAuthority(authority));
+      for (AuthorityEnum authority : userAccount.getAuthorities()) {
+        authorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
       }
     }
 

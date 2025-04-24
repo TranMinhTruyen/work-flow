@@ -81,18 +81,9 @@ export const encryptWithRSA = (data?: string) => {
  */
 export const checkAccessScreen = (
   screenItem: IScreenItem,
-  loginData?: IUserData,
   screenMasterList?: IScreenMaster[]
 ): boolean => {
   let isAccess = true;
-
-  if (!loginData?.role || !screenItem.screenRole?.includes(loginData?.role)) {
-    isAccess = false;
-  }
-
-  if (!loginData?.level || loginData?.level < screenItem.screenLevel) {
-    isAccess = false;
-  }
 
   if (isNullOrEmpty(screenItem.screenPath) || screenItem.screenChild === null) {
     if (!screenMasterList?.find(item => item.screenId === screenItem.screenKey)?.active) {

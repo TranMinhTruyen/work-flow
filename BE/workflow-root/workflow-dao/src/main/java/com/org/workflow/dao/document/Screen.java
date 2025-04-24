@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Field.Write;
 
+import com.org.workflow.dao.document.sub.Authentication;
 import com.org.workflow.dao.document.sub.ScreenComponent;
 
 import lombok.Data;
@@ -34,6 +35,9 @@ public class Screen extends AbstractDocument implements Serializable {
 
   @Field(name = "screen_url", write = Field.Write.ALWAYS)
   private String screenUrl;
+
+  @Field(name = "authentication", write = Field.Write.ALWAYS)
+  private Authentication authentication;
 
   @Field(name = "screen_components", write = Field.Write.ALWAYS)
   private List<ScreenComponent> screenComponentList;

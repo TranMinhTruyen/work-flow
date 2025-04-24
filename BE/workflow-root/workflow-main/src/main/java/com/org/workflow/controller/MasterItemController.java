@@ -1,10 +1,10 @@
 package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
-import static com.org.workflow.core.common.enums.AuthorityEnums.CREATE;
-import static com.org.workflow.core.common.enums.LevelEnums.HIGH_LEVEL;
+import static com.org.workflow.core.common.enums.AuthorityEnum.CREATE;
+import static com.org.workflow.core.common.enums.LevelEnum.HIGH_LEVEL;
 import static com.org.workflow.core.common.enums.MessageTypeEnum.SUCCESS;
-import static com.org.workflow.core.common.enums.RoleEnums.ROLE_ADMIN;
+import static com.org.workflow.core.common.enums.RoleEnum.ROLE_ADMIN;
 
 import java.util.List;
 

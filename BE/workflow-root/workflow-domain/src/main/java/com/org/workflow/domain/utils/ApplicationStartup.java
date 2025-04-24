@@ -1,5 +1,14 @@
 package com.org.workflow.domain.utils;
 
+import static com.org.workflow.core.common.enums.AuthorityEnum.CREATE;
+import static com.org.workflow.core.common.enums.AuthorityEnum.DELETE;
+import static com.org.workflow.core.common.enums.AuthorityEnum.GET;
+import static com.org.workflow.core.common.enums.AuthorityEnum.UPDATE;
+import static com.org.workflow.core.common.enums.LevelEnum.HIGH_LEVEL;
+import static com.org.workflow.core.common.enums.LevelEnum.LOW_LEVEL;
+import static com.org.workflow.core.common.enums.RoleEnum.ROLE_ADMIN;
+import static com.org.workflow.core.common.enums.RoleEnum.ROLE_USER;
+
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,9 +22,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.google.common.hash.Hashing;
-import com.org.workflow.core.common.enums.RoleEnums;
+import com.org.workflow.core.common.enums.AuthorityEnum;
+import com.org.workflow.core.common.enums.LevelEnum;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
+import com.org.workflow.dao.document.sub.Authentication;
 import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.UserRepository;
 
@@ -54,10 +65,9 @@ public class ApplicationStartup {
         userAccount.setFullName(username);
         userAccount.setBirthDay("14-10-1999");
         userAccount.setEmail(username + "@" + username + ".com");
-        userAccount.setRole(
-            randomValue == 0 ? RoleEnums.ROLE_ADMIN.getRole() : RoleEnums.ROLE_USER.getRole());
-        userAccount.setAuthorities(randomList(List.of("CREATE", "GET", "UPDATE", "DELETE")));
-        userAccount.setLevel((int) (Math.random() * 3) + 1);
+        userAccount.setRole(randomValue == 0 ? ROLE_ADMIN : ROLE_USER);
+        userAccount.setAuthorities(randomAuthorityEnums(List.of(CREATE, GET, UPDATE, DELETE)));
+        userAccount.setLevel(LevelEnum.fromInt((int) (Math.random() * 3) + 1));
         userAccount.setActive(true);
         userAccount.setLoginFailCount(0);
 
@@ -76,6 +86,11 @@ public class ApplicationStartup {
         userRepository.save(userAccount);
       }
     }
+  }
+
+  private List<AuthorityEnum> randomAuthorityEnums(List<AuthorityEnum> originalList) {
+    int newSize = new Random().nextInt(originalList.size()) + 1;
+    return new ArrayList<>(originalList.subList(0, newSize));
   }
 
   private List<String> randomList(List<String> originalList) {
@@ -97,6 +112,7 @@ public class ApplicationStartup {
       screen.setScreenId("SCR00000");
       screen.setScreenNameEn("SCREEN SETTING");
       screen.setScreenUrl("/screen-setting");
+      screen.setAuthentication(new Authentication(List.of(ROLE_ADMIN), HIGH_LEVEL));
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
       screen.setCreateDatetime(now);
@@ -110,6 +126,7 @@ public class ApplicationStartup {
       screen.setScreenId("SCR00001");
       screen.setScreenNameEn("USER SETTING");
       screen.setScreenUrl("/user-setting");
+      screen.setAuthentication(new Authentication(List.of(ROLE_ADMIN), HIGH_LEVEL));
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
       screen.setCreateDatetime(now);
@@ -123,6 +140,7 @@ public class ApplicationStartup {
       screen.setScreenId("SCR00002");
       screen.setScreenNameEn("HOME");
       screen.setScreenUrl("/home");
+      screen.setAuthentication(new Authentication(List.of(ROLE_ADMIN, ROLE_USER), LOW_LEVEL));
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
       screen.setCreateDatetime(now);
@@ -136,6 +154,7 @@ public class ApplicationStartup {
       screen.setScreenId("SCR00003");
       screen.setScreenNameEn("KANBAN");
       screen.setScreenUrl("/kanban");
+      screen.setAuthentication(new Authentication(List.of(ROLE_ADMIN, ROLE_USER), LOW_LEVEL));
       screen.setActive(true);
       screen.setCreatedBy(SYSTEM);
       screen.setCreateDatetime(now);

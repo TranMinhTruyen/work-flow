@@ -73,6 +73,29 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
   }
 
   @Override
+  public PageableResult<UserAccount> findUserAccountNotUsingByScreenId(
+      SearchByScreenIdCondition condition, Pageable pageable) {
+    List<Criteria> andConditions = new ArrayList<>();
+
+    andConditions.add(where("access_screen_list").nin(condition.getScreenId()));
+    andConditions.add(
+        new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)));
+    andConditions.add(where("delete_by").isNull());
+    andConditions.add(where("delete_date_time").isNull());
+
+    if (!StringUtils.isBlank(condition.getKeyword())) {
+      andConditions.add(new Criteria().orOperator(
+          where("user_id").regex(".*" + condition.getKeyword() + ".*", "i"),
+          where("user_name").regex(".*" + condition.getKeyword() + ".*", "i"),
+          where("email").regex(".*" + condition.getKeyword() + ".*", "i")));
+    }
+
+    return pageableFind(
+        new Query(new Criteria().andOperator(andConditions.toArray(new Criteria[0]))), pageable,
+        UserAccount.class);
+  }
+
+  @Override
   public List<String> findUserIdByScreenId(String screenId) {
     Criteria criteria = new Criteria().andOperator(where("access_screen_list").is(screenId),
         new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)),

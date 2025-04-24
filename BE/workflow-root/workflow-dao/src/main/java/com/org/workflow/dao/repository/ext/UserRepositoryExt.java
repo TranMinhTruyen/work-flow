@@ -23,6 +23,10 @@ public interface UserRepositoryExt {
       Pageable pageable);
 
 
+  PageableResult<UserAccount> findUserAccountNotUsingByScreenId(SearchByScreenIdCondition condition,
+      Pageable pageable);
+
+
   List<String> findUserIdByScreenId(String screenId);
 
 

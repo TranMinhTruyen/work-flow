@@ -76,11 +76,11 @@ export const authorities: SelectDataType[] = [
 
 export const role: SelectDataType[] = [
   {
-    key: 'ADMIN',
+    key: 'ROLE_ADMIN',
     value: 'Role Administrator',
   },
   {
-    key: 'USER',
+    key: 'ROLE_USER',
     value: 'Role User',
   },
 ];

@@ -271,4 +271,36 @@ public class ScreenService extends AbstractService {
     return new RemoveUserResponse(count);
   }
 
+  public PageResponse<ScreenUserResponse> getUserNotUsing(
+      BaseRequest<PageableRequest<ScreenUserRequest>> request) {
+    PageableRequest<ScreenUserRequest> pageableRequest = request.getPayload();
+
+    SearchByScreenIdCondition condition = new SearchByScreenIdCondition();
+
+    if (pageableRequest.getCondition() != null) {
+      condition.setScreenId(pageableRequest.getCondition().getScreenId());
+      condition.setKeyword(pageableRequest.getCondition().getKeyword());
+    }
+
+    pageableRequest.setOrderList(List.of(new PageableOrder("created_date_time", "asc")));
+
+    PageableResult<UserAccount> queryResult =
+        userRepository.findUserAccountNotUsingByScreenId(condition,
+            PageableUtil.getPageable(pageableRequest));
+
+    List<ScreenUserResponse> screenUserResponses = new ArrayList<>();
+    if (!CollectionUtils.isEmpty(queryResult.getResult())) {
+      for (UserAccount userAccount : queryResult.getResult()) {
+        ScreenUserResponse item = new ScreenUserResponse();
+        item.setUserId(userAccount.getUserId());
+        item.setUserName(userAccount.getUserName());
+        item.setEmail(userAccount.getEmail());
+        item.setFullName(userAccount.getFullName());
+        screenUserResponses.add(item);
+      }
+    }
+
+    return PageableUtil.toPageableResponse(queryResult, screenUserResponses);
+  }
+
 }

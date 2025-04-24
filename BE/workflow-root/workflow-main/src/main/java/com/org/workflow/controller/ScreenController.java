@@ -1,13 +1,13 @@
 package com.org.workflow.controller;
 
 import static com.org.workflow.core.common.cnst.CommonConst.API_PREFIX;
-import static com.org.workflow.core.common.enums.AuthorityEnums.CREATE;
-import static com.org.workflow.core.common.enums.AuthorityEnums.DELETE;
-import static com.org.workflow.core.common.enums.AuthorityEnums.GET;
-import static com.org.workflow.core.common.enums.AuthorityEnums.UPDATE;
-import static com.org.workflow.core.common.enums.LevelEnums.HIGH_LEVEL;
-import static com.org.workflow.core.common.enums.LevelEnums.LOW_LEVEL;
-import static com.org.workflow.core.common.enums.RoleEnums.ROLE_ADMIN;
+import static com.org.workflow.core.common.enums.AuthorityEnum.CREATE;
+import static com.org.workflow.core.common.enums.AuthorityEnum.DELETE;
+import static com.org.workflow.core.common.enums.AuthorityEnum.GET;
+import static com.org.workflow.core.common.enums.AuthorityEnum.UPDATE;
+import static com.org.workflow.core.common.enums.LevelEnum.HIGH_LEVEL;
+import static com.org.workflow.core.common.enums.LevelEnum.LOW_LEVEL;
+import static com.org.workflow.core.common.enums.RoleEnum.ROLE_ADMIN;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -118,8 +118,6 @@ public class ScreenController extends AbstractController {
   }
 
   /**
-   * TODO get user not using.
-   *
    * @param request
    * @return
    */
@@ -128,7 +126,8 @@ public class ScreenController extends AbstractController {
   @PostMapping(value = "/get-user-not-using")
   public ResponseEntity<BaseResponse> getUserNotUsing(
       @RequestBody BaseRequest<PageableRequest<ScreenUserRequest>> request) {
-    return this.returnBaseResponse(null, MessageEnum.SAVE_SUCCESS);
+    PageResponse<ScreenUserResponse> result = screenService.getUserNotUsing(request);
+    return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
 }
