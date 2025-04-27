@@ -4,25 +4,27 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef, RowSelectionOptions, SelectionChangedEvent } from 'ag-grid-community';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import { MessageType } from '@/common/enums/messageEnum';
+import { ModalRef } from '@/common/hooks/types/useModalTypes';
 import useTable from '@/common/hooks/useTable';
 import { IPageRequest, IPageResponse } from '@/common/model/Pageable';
 import SubmitButton from '@/components/button/SubmitButton';
 import SubmitIconButton from '@/components/button/SubmitIconButton';
 import { openDialogContainer } from '@/components/dialog/DialogContainer';
 import TextInput from '@/components/inputs/TextInput';
-import PageGridTable from '@/components/table/PageGridTable';
 import { AddNewHeader } from '@/components/table/components/CustomHeader';
+import PageGridTable from '@/components/table/PageGridTable';
 
 import IScreenUserTableRow from '../../model/form/ScreenUserTableRow';
 import IScreenUserRequest from '../../model/request/ScreenUserRequest';
 import ISearchScreenRequest from '../../model/request/SearchScreenRequest';
 import IScreenUserResponse from '../../model/response/ScreenUserResponse';
 import { getScreenUsers, removeUserAction } from './action';
+import UserAssignModal from './UserAssignModal';
 
 type ScreenUserProps = {
   screenId?: string;
@@ -35,6 +37,8 @@ const ScreenUserTable = (props: ScreenUserProps) => {
   const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
   const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
   const [keywordValue, setKeyWordValue] = useState<string>('');
+
+  const userAssignModalRef = useRef<ModalRef<IScreenUserTableRow, {}>>(null);
 
   /**
    * Get screen user.
@@ -93,6 +97,10 @@ const ScreenUserTable = (props: ScreenUserProps) => {
     [onGetScreenUser, pageable, screenId]
   );
 
+  const handleOpenAssignUserModal = useCallback(() => {
+    userAssignModalRef.current?.open({ inputValue: { screenId: screenId } });
+  }, [screenId]);
+
   const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
     () => [
       {
@@ -124,6 +132,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         sortable: false,
         width: 65,
         headerComponent: AddNewHeader,
+        headerComponentParams: { onClick: handleOpenAssignUserModal },
         cellRenderer: (params: { data: IScreenUserTableRow }) => {
           return (
             <Stack sx={{ justifySelf: 'center' }}>
@@ -139,7 +148,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         },
       },
     ],
-    [handleClickRemoveButton, t]
+    [handleClickRemoveButton, handleOpenAssignUserModal, t]
   );
 
   /**
@@ -224,6 +233,8 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         rowSelection={rowSelection}
         onSelectionChanged={onSelectionChanged}
       />
+
+      <UserAssignModal ref={userAssignModalRef} />
     </Stack>
   );
 };

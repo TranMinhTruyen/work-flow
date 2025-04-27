@@ -123,10 +123,10 @@ public class ScreenController extends AbstractController {
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
   @Authentication(authority = {GET}, role = {ROLE_ADMIN}, level = HIGH_LEVEL)
-  @PostMapping(value = "/get-user-not-using")
-  public ResponseEntity<BaseResponse> getUserNotUsing(
+  @PostMapping(value = "/get-users-not-using")
+  public ResponseEntity<BaseResponse> getUsersNotUsing(
       @RequestBody BaseRequest<PageableRequest<ScreenUserRequest>> request) {
-    PageResponse<ScreenUserResponse> result = screenService.getUserNotUsing(request);
+    PageResponse<ScreenUserResponse> result = screenService.getUsersNotUsing(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 

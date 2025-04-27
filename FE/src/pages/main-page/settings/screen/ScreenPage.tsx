@@ -99,7 +99,7 @@ const ScreenPage = () => {
   const handleAddNewScreen = useCallback(() => {
     openDrawer({
       isOnClose: true,
-      width: '500px',
+      width: '525px',
       title: `${I18nEnum.ADD_NEW_SCREEN_I18N}:title`,
       onCloseAction: () => {
         onSearchAction({ ...pageable });

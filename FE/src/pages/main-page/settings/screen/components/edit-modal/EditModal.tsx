@@ -85,6 +85,7 @@ const EditModal = (props: EditModalProps) => {
 
   return (
     <>
+      {/* Modal body */}
       <Stack
         sx={{
           padding: '16px',
@@ -134,8 +135,9 @@ const EditModal = (props: EditModalProps) => {
 
       <Divider />
 
+      {/* Modal footer */}
       <Stack direction={'row-reverse'} spacing={1} sx={{ height: '45px', padding: '8px' }}>
-        <SubmitButton sx={{ marginLeft: 'auto' }} onSubmit={handleSaveAction} isDirty={isDirty} />
+        <SubmitButton onSubmit={handleSaveAction} isDirty={isDirty} />
       </Stack>
     </>
   );

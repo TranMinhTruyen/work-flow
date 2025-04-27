@@ -56,6 +56,17 @@ export const screenService = baseApi.injectEndpoints({
         data: request,
       }),
     }),
+
+    getUsersNotUsing: builder.query<
+      IPageResponse<IScreenUserResponse>,
+      IPageRequest<IScreenUserRequest>
+    >({
+      query: request => ({
+        api: ApiEnum.GET_USERS_NOT_USING,
+        data: request,
+        isLoading: false,
+      }),
+    }),
   }),
 });
 

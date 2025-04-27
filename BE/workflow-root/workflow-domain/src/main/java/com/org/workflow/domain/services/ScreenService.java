@@ -154,7 +154,9 @@ public class ScreenService extends AbstractService {
       condition.setKeyword(pageableRequest.getCondition().getKeyword());
     }
 
-    pageableRequest.setOrderList(List.of(new PageableOrder("created_date_time", "asc")));
+    if (CollectionUtils.isEmpty(pageableRequest.getOrderList())) {
+      pageableRequest.setOrderList(List.of(new PageableOrder("created_date_time", "asc")));
+    }
 
     PageableResult<UserAccount> queryResult = userRepository.findUserAccountByScreenId(condition,
         PageableUtil.getPageable(pageableRequest));
@@ -271,7 +273,7 @@ public class ScreenService extends AbstractService {
     return new RemoveUserResponse(count);
   }
 
-  public PageResponse<ScreenUserResponse> getUserNotUsing(
+  public PageResponse<ScreenUserResponse> getUsersNotUsing(
       BaseRequest<PageableRequest<ScreenUserRequest>> request) {
     PageableRequest<ScreenUserRequest> pageableRequest = request.getPayload();
 

@@ -14,15 +14,10 @@ logging:
           mongodb:
             core:
               MongoTemplate: DEBUG
-              MongoOperations: INFO
-              MongoDatabaseFactorySupport: INFO
-              MongoTemplate.MongoClientSession: INFO
-              MongoClient: INFO
-              MongoClientImpl: INFO
-              Mongo: INFO
-              MongoDbFactory: INFO
     mongodb:
-      driver: DEBUG
+      driver:
+        protocol:
+          command: DEBUG
 
 springdoc:
   api-docs:

@@ -110,9 +110,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
       return (
         <Button
           label={cancelText ?? t('button.cancel')}
-          sx={{
-            backgroundColor: 'rgba(255, 50, 50, 0.8)',
-          }}
+          sx={{ backgroundColor: 'rgba(255, 50, 50, 0.8)' }}
           onClick={handleCancelClick}
         />
       );
@@ -126,7 +124,6 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
           direction={'row'}
           sx={{
             height: '45px',
-            // padding: '8px',
             justifyContent: 'center',
             alignItems: 'center',
           }}

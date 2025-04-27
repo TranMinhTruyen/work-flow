@@ -62,3 +62,23 @@ export const removeUserAction = async (
 
   return response;
 };
+
+export const getUsersNotUsing = async (
+  searchCondition?: IPageRequest<IScreenUserRequest>
+): Promise<IPageResponse<IScreenUserResponse>> => {
+  let request: IPageRequest<IScreenUserRequest> = {
+    page: 1,
+    size: 10,
+    orderList: [],
+  };
+
+  if (searchCondition) {
+    request = searchCondition;
+  }
+
+  const response: IPageResponse<IScreenUserResponse> = await store
+    .dispatch(screenService.endpoints.getUsersNotUsing.initiate(request))
+    .unwrap();
+
+  return response;
+};

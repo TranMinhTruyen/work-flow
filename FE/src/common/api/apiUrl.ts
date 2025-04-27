@@ -39,6 +39,7 @@ export enum ApiEnum {
   GET_SCREEN_USERS,
   REMOVE_USER,
   SAVE_SCREEN,
+  GET_USERS_NOT_USING,
 }
 
 export const controller: Record<string, ApiType> = {
@@ -125,6 +126,10 @@ export const controller: Record<string, ApiType> = {
   },
   [ApiEnum.SAVE_SCREEN]: {
     url: `${SCREEN_PREFIX}/save-screen`,
+    method: 'POST',
+  },
+  [ApiEnum.GET_USERS_NOT_USING]: {
+    url: `${SCREEN_PREFIX}/get-users-not-using`,
     method: 'POST',
   },
 };
