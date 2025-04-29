@@ -7,7 +7,6 @@ import {
   ICellRendererParams,
   RowDoubleClickedEvent,
   RowSelectionOptions,
-  SelectionChangedEvent,
 } from 'ag-grid-community';
 import { memo, Ref, useCallback, useMemo } from 'react';
 
@@ -39,7 +38,7 @@ type DemoModalProps = {
 };
 
 const DemoModal = (props: DemoModalProps) => {
-  const { inputValue, handleClose, handleDoubleClick, handleOk, openModal, setSelectedItem } =
+  const { inputValue, handleClose, handleDoubleClick, handleOk, openModal, onSelectionChanged } =
     useModal<Item, TestInputValue>(props.ref);
 
   const { control } = useTable<Item>({ defaultValues: { data: dataMock } });
@@ -79,15 +78,6 @@ const DemoModal = (props: DemoModalProps) => {
       sortable: false,
     }),
     []
-  );
-
-  const onSelectionChanged = useCallback(
-    (event: SelectionChangedEvent) => {
-      const selectedNodes = event.api.getSelectedNodes();
-      const selectedData = selectedNodes.length > 0 ? selectedNodes[0].data : null;
-      setSelectedItem(selectedData);
-    },
-    [setSelectedItem]
   );
 
   const onRowDoubleClicked = useCallback(

@@ -1,16 +1,11 @@
+#switchFormGroupActive {
+  align-self: center;
+}
+
 #editModalTitle {
   font-size: 18px !important;
   font-weight: bold;
   margin-right: auto;
-}
-
-#switchFormGroup {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#switchLabel {
-  height: 40px;
 }
 
 .removeButton {

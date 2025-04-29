@@ -1,11 +1,15 @@
 package com.org.workflow.dao.repository.ext.impl;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Optional;
-
+import com.mongodb.client.result.UpdateResult;
+import com.org.workflow.core.common.exception.WFException;
+import com.org.workflow.dao.document.Screen;
+import com.org.workflow.dao.document.UserAccount;
+import com.org.workflow.dao.repository.common.CommonRepositoryExt;
+import com.org.workflow.dao.repository.condition.screen.AssignUserCondition;
+import com.org.workflow.dao.repository.condition.screen.RemoveUserCondition;
+import com.org.workflow.dao.repository.condition.screen.SearchCondition;
+import com.org.workflow.dao.repository.ext.ScreenRepositoryExt;
+import com.org.workflow.dao.repository.result.common.PageableResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,15 +17,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.mongodb.client.result.UpdateResult;
-import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.Screen;
-import com.org.workflow.dao.document.UserAccount;
-import com.org.workflow.dao.repository.common.CommonRepositoryExt;
-import com.org.workflow.dao.repository.condition.screen.RemoveUserCondition;
-import com.org.workflow.dao.repository.condition.screen.SearchCondition;
-import com.org.workflow.dao.repository.ext.ScreenRepositoryExt;
-import com.org.workflow.dao.repository.result.common.PageableResult;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * @author minh-truyen
@@ -72,10 +72,20 @@ public class ScreenRepositoryExtImpl extends CommonRepositoryExt implements Scre
    */
   @Override
   public long removeUserFromScreen(RemoveUserCondition condition) {
-
     Query query = new Query(Criteria.where("user_id").in(condition.getListUserId()));
 
     Update update = new Update().pull("access_screen_list", condition.getScreenId());
+
+    UpdateResult updateResult = mongoTemplate.updateMulti(query, update, UserAccount.class);
+
+    return updateResult.getModifiedCount();
+  }
+
+  @Override
+  public long assignUserToScreen(AssignUserCondition condition) {
+    Query query = new Query(Criteria.where("user_id").in(condition.getListUserId()));
+
+    Update update = new Update().push("access_screen_list", condition.getScreenId());
 
     UpdateResult updateResult = mongoTemplate.updateMulti(query, update, UserAccount.class);
 

@@ -50,35 +50,14 @@ const NotificationPopover = () => {
   const callGetNotification = useRef<boolean>(true);
 
   /**
-   * Get common notificaiton via websocket.
-   */
-  useWebSocket<INotificationResponse>({
-    receiveUrl: '/notification/receive',
-    onSubscribe: async (data: INotificationResponse) => {
-      if (data) {
-        const response: INotificationResponse = await dispatch(
-          notificationService.endpoints.createNotification.initiate({ ...data, read: false })
-        ).unwrap();
-        setNotificationList(prev => {
-          return [response, ...prev];
-        });
-        setTotalNotRead(prev => prev + 1);
-      }
-    },
-  });
-
-  /**
    * Get user notificaiton via websocket.
    */
   useWebSocket<INotificationResponse>({
     receiveUrl: `/user/${loginData?.userId}/notification/receive`,
     onSubscribe: async (data: INotificationResponse) => {
       if (data) {
-        const response: INotificationResponse = await dispatch(
-          notificationService.endpoints.createNotification.initiate({ ...data, read: false })
-        ).unwrap();
         setNotificationList(prev => {
-          return [response, ...prev];
+          return [data, ...prev];
         });
         setTotalNotRead(prev => prev + 1);
       }

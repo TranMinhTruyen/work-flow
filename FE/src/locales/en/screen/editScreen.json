@@ -1,5 +1,6 @@
 {
   "title": "Edit screen",
+  "assignUserTitle": "Assign user",
   "label": {
     "screenDetail": "Screen detail",
     "userUsing": "User using",
@@ -24,5 +25,10 @@
     "email": "Email",
     "userName": "Username",
     "fullName": "Fullname"
+  },
+  "message": {
+    "removeUserMessage": "Total user remove:",
+    "assignUserMessage": "Total user assign:",
+    "noUserSelected": "No user selected"
   }
 }

@@ -29,7 +29,6 @@ export enum ApiEnum {
   DOWNLOAD_FILE,
 
   // Notification api
-  CREATE_NOTIFICATION,
   GET_NOTIFICATION,
   SET_IS_READ,
 
@@ -40,6 +39,7 @@ export enum ApiEnum {
   REMOVE_USER,
   SAVE_SCREEN,
   GET_USERS_NOT_USING,
+  ASSIGN_USER,
 }
 
 export const controller: Record<string, ApiType> = {
@@ -94,10 +94,6 @@ export const controller: Record<string, ApiType> = {
   },
 
   // Notification api
-  [ApiEnum.CREATE_NOTIFICATION]: {
-    url: `${NOTIFICATION_PREFIX}/create-notification`,
-    method: 'POST',
-  },
   [ApiEnum.GET_NOTIFICATION]: {
     url: `${NOTIFICATION_PREFIX}/get-notification`,
     method: 'POST',
@@ -131,5 +127,9 @@ export const controller: Record<string, ApiType> = {
   [ApiEnum.GET_USERS_NOT_USING]: {
     url: `${SCREEN_PREFIX}/get-users-not-using`,
     method: 'POST',
+  },
+  [ApiEnum.ASSIGN_USER]: {
+    url: `${SCREEN_PREFIX}/assign-user`,
+    method: 'PUT',
   },
 };

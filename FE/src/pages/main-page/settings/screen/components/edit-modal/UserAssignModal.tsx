@@ -19,19 +19,22 @@ import IconButton from '@/components/button/IconButton';
 import TextInput from '@/components/inputs/TextInput';
 import PageGridTable from '@/components/table/PageGridTable';
 
+import IEditModalForm from '../../model/form/EditModalForm';
 import IScreenUserTableRow from '../../model/form/ScreenUserTableRow';
 import IScreenUserRequest from '../../model/request/ScreenUserRequest';
 import IScreenUserResponse from '../../model/response/ScreenUserResponse';
 import { getUsersNotUsing } from './action';
 
 type UserAssignModalProps = {
-  ref: Ref<ModalRef<IScreenUserTableRow, { screenId: string }>>;
+  ref: Ref<ModalRef<IScreenUserTableRow, IEditModalForm>>;
 };
 
 const UserAssignModal = (props: UserAssignModalProps) => {
-  const { inputValue, handleClose, handleDoubleClick, handleOk, openModal, setSelectedItem } =
-    useModal<IScreenUserTableRow, { screenId: string }>(props.ref);
-  const { t } = useTranslation([I18nEnum.COMMON_I18N, I18nEnum.EDIT_SCREEN_I18N]);
+  const { inputValue, handleClose, handleOk, openModal, onSelectionChanged } = useModal<
+    IScreenUserTableRow,
+    IEditModalForm
+  >(props.ref);
+  const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
   const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
 
   /**
@@ -56,21 +59,31 @@ const UserAssignModal = (props: UserAssignModalProps) => {
   useEffect(() => {
     if (openModal) {
       const searchCondition: IPageRequest<IScreenUserRequest> = {
-        condition: { screenId: inputValue?.screenId },
+        condition: {
+          screenId: inputValue?.screenId,
+          roleList: inputValue?.roles,
+          level: inputValue?.level,
+        },
         ...pageable,
       };
       onGetScreenUser(searchCondition);
     }
-  }, [inputValue?.screenId, onGetScreenUser, openModal, pageable]);
+  }, [inputValue, onGetScreenUser, openModal, pageable]);
 
+  /**
+   * Row selection config.
+   */
   const rowSelection = useMemo<RowSelectionOptions>(() => {
     return { mode: 'multiRow' };
   }, []);
 
+  /**
+   * Column selection config.
+   */
   const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
     () => [
       {
-        headerName: t('editScreen:table.userId'),
+        headerName: t('table.userId'),
         field: 'userId',
         width: 200,
         cellRenderer: (params: { value: string }) => {
@@ -78,17 +91,17 @@ const UserAssignModal = (props: UserAssignModalProps) => {
         },
       },
       {
-        headerName: t('editScreen:table.email'),
+        headerName: t('table.email'),
         field: 'email',
         width: 230,
       },
       {
-        headerName: t('editScreen:table.userName'),
+        headerName: t('table.userName'),
         field: 'userName',
         width: 170,
       },
       {
-        headerName: t('editScreen:table.fullName'),
+        headerName: t('table.fullName'),
         field: 'fullName',
         flex: 1,
       },
@@ -101,7 +114,7 @@ const UserAssignModal = (props: UserAssignModalProps) => {
       {/* Dialog header */}
       <Stack direction={'row'} sx={{ height: '45px', padding: '8px' }}>
         <Stack sx={{ flex: 1, height: '30px', marginLeft: '30px' }}>
-          <Typography variant={'h5'}>User assign</Typography>
+          <Typography variant={'h5'}>{t('assignUserTitle')}</Typography>
         </Stack>
 
         <IconButton
@@ -121,7 +134,7 @@ const UserAssignModal = (props: UserAssignModalProps) => {
           {/* Search input */}
           <TextInput
             id={'searchUser'}
-            label={t('editScreen:label.searchUser')}
+            label={t('label.searchUser')}
             width={200}
             height={35}
             slotProps={{
@@ -142,6 +155,7 @@ const UserAssignModal = (props: UserAssignModalProps) => {
             columnDefs={colDefs}
             control={control}
             rowSelection={rowSelection}
+            onSelectionChanged={onSelectionChanged}
           />
         </Stack>
       </Stack>
@@ -151,11 +165,15 @@ const UserAssignModal = (props: UserAssignModalProps) => {
       {/* Dialog footer */}
       <Stack direction={'row-reverse'} spacing={1} sx={{ height: '45px', padding: '8px' }}>
         <Button
-          label={t('button.cancel')}
+          label={t('common:button.cancel')}
           onClick={handleClose}
           sx={{ backgroundColor: 'rgba(255, 50, 50, 0.8)' }}
         />
-        <Button label={t('button.ok')} sx={{ backgroundColor: 'rgba(0, 170, 255, 0.8)' }} />
+        <Button
+          label={t('common:button.ok')}
+          sx={{ backgroundColor: 'rgba(0, 170, 255, 0.8)' }}
+          onClick={handleOk}
+        />
       </Stack>
     </Dialog>
   );

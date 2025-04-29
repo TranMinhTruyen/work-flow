@@ -1,36 +1,8 @@
 package com.org.workflow.domain.services;
 
-import static com.org.workflow.core.common.enums.AuthorityEnum.CREATE;
-import static com.org.workflow.core.common.enums.AuthorityEnum.GET;
-import static com.org.workflow.core.common.enums.AuthorityEnum.UPDATE;
-import static com.org.workflow.core.common.enums.LevelEnum.LOW_LEVEL;
-import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_INACTIVE;
-import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
-import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
-import static com.org.workflow.core.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
-import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND;
-import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
-import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
-import static com.org.workflow.core.common.enums.RoleEnum.ROLE_USER;
-
-import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-
 import com.google.common.hash.Hashing;
 import com.org.workflow.core.common.enums.AuthorityEnum;
 import com.org.workflow.core.common.enums.ChangeTypeEnum;
-import com.org.workflow.core.common.enums.LevelEnum;
 import com.org.workflow.core.common.enums.RoleEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
@@ -55,8 +27,33 @@ import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.HistoryUtil;
 import com.org.workflow.domain.utils.JwtUtil;
 import com.org.workflow.domain.utils.RSAUtil;
-
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.org.workflow.core.common.enums.AuthorityEnum.CREATE;
+import static com.org.workflow.core.common.enums.AuthorityEnum.GET;
+import static com.org.workflow.core.common.enums.AuthorityEnum.UPDATE;
+import static com.org.workflow.core.common.enums.LevelEnum.LOW_LEVEL;
+import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_INACTIVE;
+import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_NOT_FOUND;
+import static com.org.workflow.core.common.enums.MessageEnum.ACCOUNT_PASSWORD_INVALID;
+import static com.org.workflow.core.common.enums.MessageEnum.NEW_PASSWORD_AND_CURRENT_PASSWORD_NOT_EQUAL;
+import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND;
+import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
+import static com.org.workflow.core.common.enums.MessageEnum.USER_NAME_EXISTS;
+import static com.org.workflow.core.common.enums.RoleEnum.ROLE_USER;
 
 /**
  * @author minh-truyen
@@ -102,7 +99,7 @@ public class UserService extends AbstractService {
     createUserResponse.setRole(String.valueOf(saveUserAccount.getRole()));
     createUserResponse.setAuthorities(
         saveUserAccount.getAuthorities().stream().map(AuthorityEnum::name).toList());
-    createUserResponse.setLevel(saveUserAccount.getLevel().getLevel());
+    createUserResponse.setLevel(saveUserAccount.getLevel());
     createUserResponse.setImagePath(saveUserAccount.getImageObject());
     createUserResponse.setCreateDatetime(saveUserAccount.getCreateDatetime());
     createUserResponse.setCreatedBy(saveUserAccount.getCreatedBy());
@@ -112,7 +109,7 @@ public class UserService extends AbstractService {
   }
 
   private static UserResponse setUserResponse(UserAccount userAccount,
-      List<ScreenResponse> screenResponseList) {
+                                              List<ScreenResponse> screenResponseList) {
     UserResponse userResponse = new UserResponse();
     userResponse.setUserId(userAccount.getUserId());
     userResponse.setEmail(userAccount.getEmail());
@@ -122,7 +119,7 @@ public class UserService extends AbstractService {
     userResponse.setRole(String.valueOf(userAccount.getRole()));
     userResponse.setAuthorities(
         userAccount.getAuthorities().stream().map(AuthorityEnum::name).toList());
-    userResponse.setLevel(userAccount.getLevel().getLevel());
+    userResponse.setLevel(userAccount.getLevel());
     userResponse.setScreenMasterList(screenResponseList);
     userResponse.setImage(userAccount.getImageObject());
     userResponse.setLoginFailCount(userAccount.getLoginFailCount());
@@ -168,7 +165,7 @@ public class UserService extends AbstractService {
     userAccount.setRole(RoleEnum.valueOf(createUserRequest.getRole()));
     userAccount.setAuthorities(
         createUserRequest.getAuthorities().stream().map(AuthorityEnum::valueOf).toList());
-    userAccount.setLevel(LevelEnum.fromInt(createUserRequest.getLevel()));
+    userAccount.setLevel(createUserRequest.getLevel());
     userAccount.setImageObject(createUserRequest.getImage());
     userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
@@ -217,7 +214,7 @@ public class UserService extends AbstractService {
     userAccount.setEmail(createUserRequest.getEmail());
     userAccount.setRole(ROLE_USER);
     userAccount.setAuthorities(List.of(CREATE, GET, UPDATE));
-    userAccount.setLevel(LOW_LEVEL);
+    userAccount.setLevel(LOW_LEVEL.getLevel());
     userAccount.setImageObject(createUserRequest.getImage());
     userAccount.setActive(false);
     userAccount.setLoginFailCount(0);
@@ -343,6 +340,8 @@ public class UserService extends AbstractService {
         screenResponse.setScreenId(screen.getScreenId());
         screenResponse.setScreenName(screen.getScreenNameEn());
         screenResponse.setScreenUrl(screen.getScreenUrl());
+        screenResponse.setRoles(screen.getAuthentication().getRoles().stream().map(RoleEnum::getRole).toList());
+        screenResponse.setLevel(screen.getAuthentication().getLevel());
         screenResponse.setActive(screen.isActive());
         screenResponseList.add(screenResponse);
       }
@@ -386,7 +385,7 @@ public class UserService extends AbstractService {
     userAccount.setRole(RoleEnum.valueOf(updateUserRequest.getRole()));
     userAccount.setAuthorities(
         updateUserRequest.getAuthorities().stream().map(AuthorityEnum::valueOf).toList());
-    userAccount.setLevel(LevelEnum.fromInt(updateUserRequest.getLevel()));
+    userAccount.setLevel(updateUserRequest.getLevel());
     userAccount.setActive(updateUserRequest.getIsActive());
     userAccount.setUpdatedDatetime(now);
     userAccount.setUpdatedBy(username);

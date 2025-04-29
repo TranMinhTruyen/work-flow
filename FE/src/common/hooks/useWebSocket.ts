@@ -2,7 +2,7 @@ import { Client } from '@stomp/stompjs';
 import { useCallback, useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 
-const URL = import.meta.env.VITE_SERVER_URL;
+import { SERVER_URL } from '../constants/commonConst';
 
 export type UseWebSocketProps<T> = {
   receiveUrl: string;
@@ -20,7 +20,7 @@ const useWebSocket = <T = any, P = any>(props: UseWebSocketProps<T>): UseWebSock
 
   useEffect(() => {
     const stompClient = new Client({
-      webSocketFactory: () => new SockJS(`${URL}/ws`), // Websocket url
+      webSocketFactory: () => new SockJS(`${SERVER_URL}/ws`),
       onConnect: () => {
         // Receive message from server
         stompClient.subscribe(receiveUrl, message => {

@@ -1,27 +1,12 @@
 package com.org.workflow.domain.services;
 
-import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMATTER;
-import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
-import static com.org.workflow.core.common.cnst.WebsocketURL.SCREEN_MASTER_CHANGE;
-import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
-import static com.org.workflow.core.common.enums.NotificationEnum.NN0000001;
-import static com.org.workflow.core.common.enums.NotificationEnum.NN0000002;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.logging.log4j.Level;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
-
+import com.org.workflow.core.common.enums.RoleEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Screen;
 import com.org.workflow.dao.document.UserAccount;
 import com.org.workflow.dao.repository.ScreenRepository;
 import com.org.workflow.dao.repository.UserRepository;
+import com.org.workflow.dao.repository.condition.screen.AssignUserCondition;
 import com.org.workflow.dao.repository.condition.screen.RemoveUserCondition;
 import com.org.workflow.dao.repository.condition.screen.SearchCondition;
 import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
@@ -29,24 +14,43 @@ import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableOrder;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
+import com.org.workflow.domain.dto.request.notification.NotificationContentRequest;
+import com.org.workflow.domain.dto.request.notification.NotificationCreateRequest;
 import com.org.workflow.domain.dto.request.screen.RemoveUserRequest;
 import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
 import com.org.workflow.domain.dto.request.screen.ScreenUserRequest;
 import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
+import com.org.workflow.domain.dto.request.screen.UserAssignRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
-import com.org.workflow.domain.dto.response.notification.SendNotificationResponse;
+import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import com.org.workflow.domain.dto.response.screen.RemoveUserResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
+import com.org.workflow.domain.dto.response.screen.UserAssignResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.GetScreenDetailResponse;
 import com.org.workflow.domain.dto.response.screen.screendetail.ScreenComponentResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.LogUtil;
 import com.org.workflow.domain.utils.NotificationUtil;
 import com.org.workflow.domain.utils.PageableUtil;
-
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.Level;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMATTER;
+import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
+import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
+import static com.org.workflow.core.common.enums.NotificationEnum.NN0000001;
+import static com.org.workflow.core.common.enums.NotificationEnum.NN0000002;
+import static com.org.workflow.core.common.enums.NotificationEnum.NN0000003;
 
 /**
  * @author minh-truyen
@@ -64,6 +68,8 @@ public class ScreenService extends AbstractService {
   private final NotificationUtil notificationUtil;
 
   private final LogUtil logUtil;
+
+  private final NotificationService notificationService;
 
   /**
    * @param request
@@ -87,7 +93,7 @@ public class ScreenService extends AbstractService {
         PageableUtil.getPageable(pageableRequest));
 
     logUtil.log(Level.INFO, ScreenService.class,
-        new Object[] {"screenRepository.searchByCondition:", queryResult});
+        new Object[]{"screenRepository.searchByCondition:", queryResult});
 
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(queryResult.getResult())) {
@@ -111,7 +117,7 @@ public class ScreenService extends AbstractService {
     PageResponse<SearchScreenResponse> response =
         PageableUtil.toPageableResponse(queryResult, searchScreenResponses);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    logUtil.log(Level.INFO, ScreenService.class, new Object[]{"Response:", response});
 
     return response;
   }
@@ -127,7 +133,7 @@ public class ScreenService extends AbstractService {
     Screen screen = result.orElse(new Screen());
 
     logUtil.log(Level.INFO, ScreenService.class,
-        new Object[] {"screenRepository.findByScreenId:", screen});
+        new Object[]{"screenRepository.findByScreenId:", screen});
 
     GetScreenDetailResponse response = new GetScreenDetailResponse();
     response.setId(screen.getId());
@@ -137,6 +143,8 @@ public class ScreenService extends AbstractService {
     response.setScreenNameJa(screen.getScreenNameJa());
     response.setScreenUrl(screen.getScreenUrl());
     response.setActive(screen.isActive());
+    response.setRoles(screen.getAuthentication().getRoles().stream().map(RoleEnum::getRole).toList());
+    response.setLevel(screen.getAuthentication().getLevel());
     if (screen.getScreenComponentList() != null && !screen.getScreenComponentList().isEmpty()) {
       response.setScreenComponentList(screen.getScreenComponentList().stream().map(item -> {
         ScreenComponentResponse screenComponentResponse = new ScreenComponentResponse();
@@ -151,7 +159,7 @@ public class ScreenService extends AbstractService {
     response.setCreatedDatetime(screen.getCreateDatetime());
     response.setUpdatedDatetime(screen.getUpdatedDatetime());
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    logUtil.log(Level.INFO, ScreenService.class, new Object[]{"Response:", response});
 
     return response;
   }
@@ -179,7 +187,7 @@ public class ScreenService extends AbstractService {
         PageableUtil.getPageable(pageableRequest));
 
     logUtil.log(Level.INFO, ScreenService.class,
-        new Object[] {"userRepository.findUserAccountByScreenId:", queryResult});
+        new Object[]{"userRepository.findUserAccountByScreenId:", queryResult});
 
     List<ScreenUserResponse> screenUserResponses = new ArrayList<>();
     if (!CollectionUtils.isEmpty(queryResult.getResult())) {
@@ -196,7 +204,7 @@ public class ScreenService extends AbstractService {
     PageResponse<ScreenUserResponse> response =
         PageableUtil.toPageableResponse(queryResult, screenUserResponses);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    logUtil.log(Level.INFO, ScreenService.class, new Object[]{"Response:", response});
 
     return response;
   }
@@ -244,7 +252,7 @@ public class ScreenService extends AbstractService {
     Screen saveResult = screenRepository.save(screen);
 
     logUtil.log(Level.INFO, ScreenService.class,
-        new Object[] {"screenRepository.save:", saveResult});
+        new Object[]{"screenRepository.save:", saveResult});
 
     SaveScreenResponse response = new SaveScreenResponse();
     response.setId(saveResult.getId());
@@ -262,19 +270,22 @@ public class ScreenService extends AbstractService {
     if (CollectionUtils.isNotEmpty(userIds)) {
       String screenName = saveResult.getScreenNameEn();
 
-      SendNotificationResponse notificationResponse =
-          notificationUtil.getNotificationResponse(NN0000001,
-              new Object[] {screenName, screenName, userName});
-      notificationResponse.setSendBy(userName);
-
-      for (String userId : userIds) {
+      userIds.parallelStream().forEach(userId -> {
+        NotificationCreateRequest notificationCreateRequest =
+            notificationUtil.getNotificationResponse(NN0000001,
+                new Object[]{screenName, screenName, userName});
+        notificationCreateRequest.setSendBy(userName);
+        NotificationResponse notificationResponse = notificationService.createNotification(userId, notificationCreateRequest);
+        Optional<NotificationContentRequest> message = notificationCreateRequest.getContentList().stream().filter(
+            item -> item.getLanguage().equals(request.getLanguage())).findFirst();
+        notificationResponse.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
+        notificationResponse.setCategory(notificationCreateRequest.getCategory());
+        notificationResponse.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
         messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
-      }
+      });
     }
 
-    messagingTemplate.convertAndSend(SCREEN_MASTER_CHANGE, response);
-
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    logUtil.log(Level.INFO, ScreenService.class, new Object[]{"Response:", response});
 
     return response;
   }
@@ -292,17 +303,23 @@ public class ScreenService extends AbstractService {
     long count = screenRepository.removeUserFromScreen(condition);
 
     logUtil.log(Level.INFO, ScreenService.class,
-        new Object[] {"screenRepository.removeUserFromScreen:", count});
+        new Object[]{"screenRepository.removeUserFromScreen:", count});
 
-    for (String userId : payload.getListUserId()) {
-      SendNotificationResponse notificationResponse =
-          notificationUtil.getNotificationResponse(NN0000002,
-              new Object[] {payload.getScreenId(), payload.getScreenId(), payload.getUserAction()});
-      notificationResponse.setSendBy(payload.getUserAction());
-
-      messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+    if (count > 0) {
+      payload.getListUserId().parallelStream().forEach(userId -> {
+        NotificationCreateRequest notificationCreateRequest =
+            notificationUtil.getNotificationResponse(NN0000002,
+                new Object[]{payload.getScreenId(), payload.getScreenId(), payload.getUserAction()});
+        notificationCreateRequest.setSendBy(payload.getUserAction());
+        NotificationResponse notificationResponse = notificationService.createNotification(userId, notificationCreateRequest);
+        Optional<NotificationContentRequest> message = notificationCreateRequest.getContentList().stream().filter(
+            item -> item.getLanguage().equals(request.getLanguage())).findFirst();
+        notificationResponse.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
+        notificationResponse.setCategory(notificationCreateRequest.getCategory());
+        notificationResponse.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
+        messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+      });
     }
-
 
     return new RemoveUserResponse(count);
   }
@@ -315,6 +332,8 @@ public class ScreenService extends AbstractService {
 
     if (pageableRequest.getCondition() != null) {
       condition.setScreenId(pageableRequest.getCondition().getScreenId());
+      condition.setRoleList(pageableRequest.getCondition().getRoleList());
+      condition.setLevel(pageableRequest.getCondition().getLevel());
       condition.setKeyword(pageableRequest.getCondition().getKeyword());
     }
 
@@ -325,7 +344,7 @@ public class ScreenService extends AbstractService {
             PageableUtil.getPageable(pageableRequest));
 
     logUtil.log(Level.INFO, ScreenService.class,
-        new Object[] {"userRepository.findUserAccountNotUsingByScreenId:", queryResult});
+        new Object[]{"userRepository.findUserAccountNotUsingByScreenId:", queryResult});
 
     List<ScreenUserResponse> screenUserResponses = new ArrayList<>();
     if (!CollectionUtils.isEmpty(queryResult.getResult())) {
@@ -342,9 +361,44 @@ public class ScreenService extends AbstractService {
     PageResponse<ScreenUserResponse> response =
         PageableUtil.toPageableResponse(queryResult, screenUserResponses);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    logUtil.log(Level.INFO, ScreenService.class, new Object[]{"Response:", response});
 
     return response;
+  }
+
+  /**
+   * @param request
+   * @return
+   */
+  public UserAssignResponse assignUser(BaseRequest<UserAssignRequest> request) {
+    UserAssignRequest payload = request.getPayload();
+
+    AssignUserCondition condition = new AssignUserCondition();
+    condition.setScreenId(payload.getScreenId());
+    condition.setListUserId(payload.getListUserId());
+
+    long count = screenRepository.assignUserToScreen(condition);
+
+    logUtil.log(Level.INFO, ScreenService.class,
+        new Object[]{"screenRepository.assignUserToScreen:", count});
+
+    if (count > 0) {
+      payload.getListUserId().parallelStream().forEach(userId -> {
+        NotificationCreateRequest notificationCreateRequest =
+            notificationUtil.getNotificationResponse(NN0000003,
+                new Object[]{payload.getScreenId(), payload.getScreenId(), payload.getUserAction()});
+        notificationCreateRequest.setSendBy(payload.getUserAction());
+        NotificationResponse notificationResponse = notificationService.createNotification(userId, notificationCreateRequest);
+        Optional<NotificationContentRequest> message = notificationCreateRequest.getContentList().stream().filter(
+            item -> item.getLanguage().equals(request.getLanguage())).findFirst();
+        notificationResponse.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
+        notificationResponse.setCategory(notificationCreateRequest.getCategory());
+        notificationResponse.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
+        messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+      });
+    }
+
+    return new UserAssignResponse(count);
   }
 
 }

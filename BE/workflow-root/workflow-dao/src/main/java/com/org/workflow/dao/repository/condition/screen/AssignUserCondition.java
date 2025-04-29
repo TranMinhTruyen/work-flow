@@ -1,4 +1,4 @@
-package com.org.workflow.domain.dto.request.screen;
+package com.org.workflow.dao.repository.condition.screen;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,14 +14,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScreenUserRequest {
-
-  private List<String> roleList;
-
-  private Integer level;
+public class AssignUserCondition {
 
   private String screenId;
 
-  private String keyword;
+  private List<String> listUserId;
 
 }

@@ -1,12 +1,11 @@
 package com.org.workflow.dao.repository.ext.impl;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.org.workflow.core.common.exception.WFException;
+import com.org.workflow.dao.document.UserAccount;
+import com.org.workflow.dao.repository.common.CommonRepositoryExt;
+import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
+import com.org.workflow.dao.repository.ext.UserRepositoryExt;
+import com.org.workflow.dao.repository.result.common.PageableResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +13,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.org.workflow.core.common.exception.WFException;
-import com.org.workflow.dao.document.UserAccount;
-import com.org.workflow.dao.repository.common.CommonRepositoryExt;
-import com.org.workflow.dao.repository.condition.user.SearchByScreenIdCondition;
-import com.org.workflow.dao.repository.ext.UserRepositoryExt;
-import com.org.workflow.dao.repository.result.common.PageableResult;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * @author minh-truyen
@@ -51,7 +50,7 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
    */
   @Override
   public PageableResult<UserAccount> findUserAccountByScreenId(SearchByScreenIdCondition condition,
-      Pageable pageable) {
+                                                               Pageable pageable) {
     List<Criteria> andConditions = new ArrayList<>();
 
     andConditions.add(where("access_screen_list").is(condition.getScreenId()));
@@ -78,6 +77,8 @@ public class UserRepositoryExtImpl extends CommonRepositoryExt implements UserRe
     List<Criteria> andConditions = new ArrayList<>();
 
     andConditions.add(where("access_screen_list").nin(condition.getScreenId()));
+    andConditions.add(where("role").in(condition.getRoleList()));
+    andConditions.add(where("level").gte(condition.getLevel()));
     andConditions.add(
         new Criteria().orOperator(where("is_active").isNull(), where("is_active").is(true)));
     andConditions.add(where("delete_by").isNull());

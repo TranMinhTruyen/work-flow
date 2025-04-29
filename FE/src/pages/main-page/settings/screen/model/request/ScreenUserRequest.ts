@@ -1,6 +1,6 @@
 export default interface IScreenUserRequest {
   screenId?: string;
-  role?: string;
+  roleList?: string[];
   level?: number;
   keyword?: string;
 }

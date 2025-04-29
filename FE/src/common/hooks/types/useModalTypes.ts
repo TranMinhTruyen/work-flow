@@ -15,5 +15,10 @@ export type OpenModalProps<P> = {
  * - P (optional) is the type for input properties used to open the modal.
  */
 export type ModalRef<T, P = unknown> = {
-  open: (props?: OpenModalProps<P>) => Promise<T | undefined>;
+  open: (props?: OpenModalProps<P>) => Promise<ModalReturn<T>>;
+};
+
+export type ModalReturn<T> = {
+  value: T[];
+  status: 'OK' | 'CANCEL';
 };

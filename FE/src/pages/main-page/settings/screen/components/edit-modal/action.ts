@@ -3,9 +3,11 @@ import store from '@/lib/store';
 import { screenService } from '@/services/screenService';
 
 import IGetScreenDetail from '../../model/form/GetScreenDetail';
+import IAssignUserRequest from '../../model/request/AssignUserRequest';
 import IRemoveUserRequest from '../../model/request/RemoveUserRequest';
 import ISaveScreenRequest from '../../model/request/SaveScreenRequest';
 import IScreenUserRequest from '../../model/request/ScreenUserRequest';
+import IAssignUserResponse from '../../model/response/AssignUserResponse';
 import IRemoveUserResponse from '../../model/response/RemoveUserResponse';
 import ISaveScreenResponse from '../../model/response/SaveScreenResponse';
 import IScreenUserResponse from '../../model/response/ScreenUserResponse';
@@ -78,6 +80,23 @@ export const getUsersNotUsing = async (
 
   const response: IPageResponse<IScreenUserResponse> = await store
     .dispatch(screenService.endpoints.getUsersNotUsing.initiate(request))
+    .unwrap();
+
+  return response;
+};
+
+export const assignUserAction = async (
+  screenId?: string,
+  listUserId?: string[]
+): Promise<IAssignUserResponse> => {
+  const request: IAssignUserRequest = {
+    userAction: store.getState().commonState.loginData?.userName,
+    screenId: screenId,
+    listUserId: listUserId,
+  };
+
+  const response: IAssignUserResponse = await store
+    .dispatch(screenService.endpoints.assignUser.initiate(request))
     .unwrap();
 
   return response;

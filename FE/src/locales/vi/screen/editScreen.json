@@ -1,5 +1,6 @@
 {
   "title": "Cập nhật màn hình",
+  "assignUserTitle": "Thêm người dùng",
   "label": {
     "screenDetail": "Chi tiết màn hình",
     "userUsing": "Người dùng đang sử dụng",
@@ -24,5 +25,10 @@
     "email": "Email",
     "userName": "Tên đăng nhập",
     "fullName": "Họ và tên"
+  },
+  "message": {
+    "removeUserMessage": "Tổng số người dùng bị xóa:",
+    "assignUserMessage": "Tổng số người dùng được phân công:",
+    "noUserSelected": "Chưa chọn người dùng nào"
   }
 }

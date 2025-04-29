@@ -19,26 +19,27 @@ import TextInput from '@/components/inputs/TextInput';
 import { AddNewHeader } from '@/components/table/components/CustomHeader';
 import PageGridTable from '@/components/table/PageGridTable';
 
+import IEditModalForm from '../../model/form/EditModalForm';
 import IScreenUserTableRow from '../../model/form/ScreenUserTableRow';
 import IScreenUserRequest from '../../model/request/ScreenUserRequest';
 import ISearchScreenRequest from '../../model/request/SearchScreenRequest';
 import IScreenUserResponse from '../../model/response/ScreenUserResponse';
-import { getScreenUsers, removeUserAction } from './action';
+import { assignUserAction, getScreenUsers, removeUserAction } from './action';
 import UserAssignModal from './UserAssignModal';
 
 type ScreenUserProps = {
-  screenId?: string;
+  screenDetail?: IEditModalForm;
 };
 
 const ScreenUserTable = (props: ScreenUserProps) => {
-  const { screenId } = props;
+  const { screenDetail } = props;
 
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
   const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
-  const { t } = useTranslation(I18nEnum.EDIT_SCREEN_I18N);
+  const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
   const [keywordValue, setKeyWordValue] = useState<string>('');
 
-  const userAssignModalRef = useRef<ModalRef<IScreenUserTableRow, {}>>(null);
+  const userAssignModalRef = useRef<ModalRef<IScreenUserTableRow, IEditModalForm>>(null);
 
   /**
    * Get screen user.
@@ -61,11 +62,14 @@ const ScreenUserTable = (props: ScreenUserProps) => {
    */
   useEffect(() => {
     const searchCondition: IPageRequest<IScreenUserRequest> = {
-      condition: { screenId: screenId, keyword: keywordValue },
+      condition: {
+        screenId: screenDetail?.screenId,
+        keyword: keywordValue,
+      },
       ...pageable,
     };
     onGetScreenUser(searchCondition);
-  }, [keywordValue, onGetScreenUser, pageable, screenId]);
+  }, [keywordValue, onGetScreenUser, pageable, screenDetail]);
 
   const rowSelection = useMemo<RowSelectionOptions>(() => {
     return { mode: 'multiRow' };
@@ -76,7 +80,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
    */
   const handleClickRemoveButton = useCallback(
     (data: IScreenUserTableRow) => async () => {
-      const response = await removeUserAction(screenId, [`${data.userId}`]);
+      const response = await removeUserAction(screenDetail?.screenId, [`${data.userId}`]);
       if (response) {
         openDialogContainer({
           type: 'message',
@@ -85,24 +89,81 @@ const ScreenUserTable = (props: ScreenUserProps) => {
           isPopup: false,
           onConfirm: () => {
             const searchCondition: IPageRequest<ISearchScreenRequest> = {
-              condition: { screenId: screenId },
+              condition: { screenId: screenDetail?.screenId },
               ...pageable,
             };
             onGetScreenUser(searchCondition);
           },
-          bodyElement: <Typography>{`Total user removed: ${response.totalRemoveUser}`}</Typography>,
+          bodyElement: (
+            <Typography>{`${t('message.removeUserMessage')} ${response.totalRemoveUser}`}</Typography>
+          ),
         });
       }
     },
-    [onGetScreenUser, pageable, screenId]
+    [onGetScreenUser, pageable, screenDetail?.screenId, t]
+  );
+
+  /**
+   * Handle confirm assign user.
+   */
+  const handleSubmitAssignUser = useCallback(
+    (modalData: IScreenUserTableRow[]) => async () => {
+      const listUserId = modalData.map(item => item.userId ?? '');
+      const response = await assignUserAction(screenDetail?.screenId, listUserId);
+      if (response) {
+        openDialogContainer({
+          type: 'message',
+          maxWidth: 'xs',
+          messageType: MessageType.INFO,
+          isPopup: false,
+          onConfirm: () => {
+            const searchCondition: IPageRequest<ISearchScreenRequest> = {
+              condition: { screenId: screenDetail?.screenId },
+              ...pageable,
+            };
+            onGetScreenUser(searchCondition);
+          },
+          bodyElement: (
+            <Typography>{`${t('message.assignUserMessage')} ${response.totalUserAssign}`}</Typography>
+          ),
+        });
+      }
+    },
+    [onGetScreenUser, pageable, screenDetail?.screenId, t]
   );
 
   /**
    * Open assign user modal.
    */
-  const handleOpenAssignUserModal = useCallback(() => {
-    userAssignModalRef.current?.open({ inputValue: { screenId: screenId } });
-  }, [screenId]);
+  const handleOpenAssignUserModal = useCallback(async () => {
+    const result = await userAssignModalRef.current?.open({
+      inputValue: screenDetail,
+    });
+    if (result) {
+      if (result.status === 'OK' && result.value.length === 0) {
+        openDialogContainer({
+          type: 'message',
+          maxWidth: 'xs',
+          messageType: MessageType.ERROR,
+          isPopup: false,
+          onConfirm: handleOpenAssignUserModal,
+          bodyElement: <Typography>{t('message.noUserSelected')}</Typography>,
+        });
+      }
+      if (result.status === 'OK' && result.value.length > 0) {
+        openDialogContainer({
+          type: 'message',
+          maxWidth: 'xs',
+          messageType: MessageType.INFO,
+          isPopup: false,
+          onConfirm: handleSubmitAssignUser(result.value),
+          onCancel: handleOpenAssignUserModal,
+          showCancelButton: true,
+          bodyElement: <Typography>{t('common:buttonMessage.submit')}</Typography>,
+        });
+      }
+    }
+  }, [handleSubmitAssignUser, screenDetail, t]);
 
   const colDefs = useMemo<ColDef<IScreenUserTableRow>[]>(
     () => [
@@ -128,7 +189,6 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         headerName: t('table.fullName'),
         field: 'fullName',
         flex: 1,
-        // wrapText: true,
       },
       {
         colId: 'remove',
@@ -174,7 +234,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
   );
 
   const handeMultiRemove = useCallback(async () => {
-    const response = await removeUserAction(screenId, selectedItem);
+    const response = await removeUserAction(screenDetail?.screenId, selectedItem);
     if (response) {
       openDialogContainer({
         type: 'message',
@@ -183,7 +243,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         isPopup: false,
         onConfirm: () => {
           const searchCondition: IPageRequest<ISearchScreenRequest> = {
-            condition: { screenId: screenId },
+            condition: { screenId: screenDetail?.screenId },
             ...pageable,
           };
           onGetScreenUser(searchCondition);
@@ -191,7 +251,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
         bodyElement: <Typography>{`Total user removed: ${response.totalRemoveUser}`}</Typography>,
       });
     }
-  }, [onGetScreenUser, pageable, screenId, selectedItem]);
+  }, [onGetScreenUser, pageable, screenDetail?.screenId, selectedItem]);
 
   return (
     <Stack spacing={1}>

@@ -1,14 +1,12 @@
 import axios from 'axios';
 
 import { API_PREFIX } from '../constants/apiPrefixConst';
-import { TIME_OUT } from '../constants/commonConst';
+import { SERVER_URL, TIME_OUT } from '../constants/commonConst';
 import { CustomAxiosConfig } from '../constants/typeConst';
 import { ApiEnum, controller } from './apiUrl';
 
-const URL = import.meta.env.VITE_SERVER_URL;
-
 export const axiosInstance = axios.create({
-  baseURL: URL,
+  baseURL: SERVER_URL,
   timeout: TIME_OUT,
 });
 

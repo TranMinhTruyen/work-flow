@@ -1,9 +1,11 @@
-package com.org.workflow.domain.dto.response.notification;
+package com.org.workflow.domain.dto.response.screen;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author minh-truyen
@@ -12,12 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationContentResponse {
+public class UserAssignResponse implements Serializable {
 
-  private String language;
-
-  private String title;
-
-  private String message;
+  private long totalUserAssign;
 
 }

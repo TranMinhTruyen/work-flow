@@ -7,6 +7,8 @@ export interface IScreenMaster {
   screenName: string;
   screenUrl: string;
   screenComponentList: ScreenComponent[];
+  roles: string[];
+  level: number;
   active: boolean;
 }
 

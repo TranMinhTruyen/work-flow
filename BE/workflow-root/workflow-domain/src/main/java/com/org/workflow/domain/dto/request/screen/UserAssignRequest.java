@@ -1,4 +1,4 @@
-package com.org.workflow.domain.dto.response.screen;
+package com.org.workflow.domain.dto.request.screen;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,22 +8,19 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author minh-truyen
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScreenResponse implements Serializable {
+public class UserAssignRequest implements Serializable {
 
+  private String userAction;
+  
   private String screenId;
 
-  private String screenName;
-
-  private String screenUrl;
-
-  private List<String> roles;
-
-  private Integer level;
-
-  private boolean isActive;
+  private List<String> listUserId;
 
 }

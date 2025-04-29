@@ -6,6 +6,8 @@ export default interface IGetScreenDetail {
   screenNameJa?: string;
   screenUrl?: string;
   isActive?: boolean;
+  roles: string[];
+  level: number;
   createdDatetime?: string;
   updatedDatetime?: string;
 }

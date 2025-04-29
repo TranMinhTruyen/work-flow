@@ -13,6 +13,7 @@ public enum NotificationEnum {
 
   NN0000001("NN0000001", "N"),
   NN0000002("NN0000002", "N"),
+  NN0000003("NN0000003", "N"),
 
   //@formatter:on
   ;

@@ -1,16 +1,5 @@
 package com.org.workflow.domain.services;
 
-import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND_NOTIFICATION;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.dao.document.Notification;
 import com.org.workflow.dao.document.UserAccount;
@@ -25,8 +14,17 @@ import com.org.workflow.domain.dto.response.notification.AllNotificationResponse
 import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import com.org.workflow.domain.utils.AuthUtil;
 import com.org.workflow.domain.utils.PageableUtil;
-
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND_NOTIFICATION;
 
 @Service
 @RequiredArgsConstructor
@@ -36,20 +34,17 @@ public class NotificationService extends AbstractService {
 
   /**
    * @param request
-   * @return
    */
-  public NotificationResponse createNotification(BaseRequest<NotificationCreateRequest> request) {
+  public NotificationResponse createNotification(String userId, NotificationCreateRequest request) {
 
-    NotificationCreateRequest payload = request.getPayload();
-    UserAccount userAccount = AuthUtil.getAuthentication().getUserAccount();
     LocalDateTime now = LocalDateTime.now();
 
     Notification notification = new Notification();
-    notification.setUserId(userAccount.getUserId());
-    notification.setSendBy(payload.getSendBy());
+    notification.setUserId(userId);
+    notification.setSendBy(request.getSendBy());
 
     List<NotificationContent> contentList = new ArrayList<>();
-    for (NotificationContentRequest contentRequest : payload.getContentList()) {
+    for (NotificationContentRequest contentRequest : request.getContentList()) {
       NotificationContent notificationContent = new NotificationContent();
       notificationContent.setLanguage(contentRequest.getLanguage());
       notificationContent.setTitle(contentRequest.getTitle());
@@ -58,11 +53,11 @@ public class NotificationService extends AbstractService {
     }
 
     notification.setContentList(contentList);
-    notification.setSendDatetime(payload.getSendDatetime());
+    notification.setSendDatetime(request.getSendDatetime());
     notification.setRead(false);
-    notification.setCreatedBy(userAccount.getUserName());
+    notification.setCreatedBy(userId);
     notification.setCreateDatetime(now);
-    notification.setUpdatedBy(userAccount.getUserName());
+    notification.setUpdatedBy(userId);
     notification.setUpdatedDatetime(now);
     notification.setDeleted(false);
 
@@ -70,11 +65,12 @@ public class NotificationService extends AbstractService {
 
     NotificationResponse response = new NotificationResponse();
     response.setId(result.getId());
-    response.setSendDatetime(now);
+    response.setRead(result.isRead());
+    response.setSendDatetime(result.getSendDatetime());
     response.setSendBy(result.getSendBy());
-    response.setRead(false);
 
     return response;
+
   }
 
   /**

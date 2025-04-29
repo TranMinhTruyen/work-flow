@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author minh-truyen
  */
@@ -15,6 +17,10 @@ import lombok.NoArgsConstructor;
 public class SearchByScreenIdCondition {
 
   private String screenId;
+
+  private List<String> roleList;
+
+  private Integer level;
 
   private String keyword;
 

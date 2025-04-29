@@ -17,6 +17,7 @@ import TextInput from '@/components/form/TextInput';
 import { useAppSelector } from '@/lib/store';
 
 import IEditModalForm from '../../model/form/EditModalForm';
+import IGetScreenDetail from '../../model/form/GetScreenDetail';
 import IScreenTableRow from '../../model/form/ScreenTableRow';
 import ISaveScreenResponse from '../../model/response/SaveScreenResponse';
 import { getScreenDetail, saveAction } from './action';
@@ -66,7 +67,7 @@ const EditModal = (props: EditModalProps) => {
    * Get screen detail action.
    */
   const onGetScreenDetail = useCallback(async () => {
-    const screenResponse = await getScreenDetail(data.screenId);
+    const screenResponse: IGetScreenDetail = await getScreenDetail(data.screenId);
     reset({ ...screenResponse });
   }, [data.screenId, reset]);
 
@@ -128,7 +129,7 @@ const EditModal = (props: EditModalProps) => {
               </Stack>
             </Stack>
 
-            <ScreenUserTable screenId={data.screenId} />
+            <ScreenUserTable screenDetail={getValues()} />
           </Stack>
         </form>
       </Stack>

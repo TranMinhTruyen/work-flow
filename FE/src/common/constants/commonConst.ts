@@ -2,6 +2,8 @@ import { Accept } from 'react-dropzone';
 
 import { SelectDataType } from './typeConst';
 
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 //#region Axios config
 export const TIME_OUT: number = 180000;
 //#endregion
