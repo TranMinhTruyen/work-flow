@@ -24,7 +24,7 @@ import IScreenUserRequest from '../../model/request/ScreenUserRequest';
 import IScreenUserResponse from '../../model/response/ScreenUserResponse';
 import { getUsersNotUsing } from './action';
 
-export type UserAssignModalProps = {
+type UserAssignModalProps = {
   ref: Ref<ModalRef<IScreenUserTableRow, { screenId: string }>>;
 };
 

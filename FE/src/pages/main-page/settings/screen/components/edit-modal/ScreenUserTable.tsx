@@ -97,6 +97,9 @@ const ScreenUserTable = (props: ScreenUserProps) => {
     [onGetScreenUser, pageable, screenId]
   );
 
+  /**
+   * Open assign user modal.
+   */
   const handleOpenAssignUserModal = useCallback(() => {
     userAssignModalRef.current?.open({ inputValue: { screenId: screenId } });
   }, [screenId]);
