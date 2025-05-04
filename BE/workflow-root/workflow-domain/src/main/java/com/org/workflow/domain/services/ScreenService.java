@@ -14,7 +14,6 @@ import com.org.workflow.dao.repository.result.common.PageableResult;
 import com.org.workflow.domain.dto.request.common.BaseRequest;
 import com.org.workflow.domain.dto.request.common.PageableOrder;
 import com.org.workflow.domain.dto.request.common.PageableRequest;
-import com.org.workflow.domain.dto.request.notification.NotificationContentRequest;
 import com.org.workflow.domain.dto.request.notification.NotificationCreateRequest;
 import com.org.workflow.domain.dto.request.screen.RemoveUserRequest;
 import com.org.workflow.domain.dto.request.screen.SaveScreenRequest;
@@ -23,7 +22,6 @@ import com.org.workflow.domain.dto.request.screen.SearchScreenRequest;
 import com.org.workflow.domain.dto.request.screen.UserAssignRequest;
 import com.org.workflow.domain.dto.response.common.PageResponse;
 import com.org.workflow.domain.dto.response.master.SearchScreenResponse;
-import com.org.workflow.domain.dto.response.notification.NotificationResponse;
 import com.org.workflow.domain.dto.response.screen.RemoveUserResponse;
 import com.org.workflow.domain.dto.response.screen.SaveScreenResponse;
 import com.org.workflow.domain.dto.response.screen.ScreenUserResponse;
@@ -37,7 +35,6 @@ import com.org.workflow.domain.utils.PageableUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.Level;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,7 +43,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.org.workflow.core.common.cnst.CommonConst.DATE_TIME_FORMATTER;
-import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
 import static com.org.workflow.core.common.enums.MessageEnum.UPDATE_FAILED;
 import static com.org.workflow.core.common.enums.NotificationEnum.NN0000001;
 import static com.org.workflow.core.common.enums.NotificationEnum.NN0000002;
@@ -62,8 +58,6 @@ public class ScreenService extends AbstractService {
   private final ScreenRepository screenRepository;
 
   private final UserRepository userRepository;
-
-  private final SimpMessagingTemplate messagingTemplate;
 
   private final NotificationUtil notificationUtil;
 
@@ -269,19 +263,13 @@ public class ScreenService extends AbstractService {
     List<String> userIds = userRepository.findUserIdByScreenId(payload.getScreenId());
     if (CollectionUtils.isNotEmpty(userIds)) {
       String screenName = saveResult.getScreenNameEn();
-
+      
       userIds.parallelStream().forEach(userId -> {
         NotificationCreateRequest notificationCreateRequest =
             notificationUtil.getNotificationResponse(NN0000001,
                 new Object[]{screenName, screenName, userName});
         notificationCreateRequest.setSendBy(userName);
-        NotificationResponse notificationResponse = notificationService.createNotification(userId, notificationCreateRequest);
-        Optional<NotificationContentRequest> message = notificationCreateRequest.getContentList().stream().filter(
-            item -> item.getLanguage().equals(request.getLanguage())).findFirst();
-        notificationResponse.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
-        notificationResponse.setCategory(notificationCreateRequest.getCategory());
-        notificationResponse.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
-        messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+        notificationService.createNotification(userId, request.getLanguage(), notificationCreateRequest);
       });
     }
 
@@ -311,13 +299,7 @@ public class ScreenService extends AbstractService {
             notificationUtil.getNotificationResponse(NN0000002,
                 new Object[]{payload.getScreenId(), payload.getScreenId(), payload.getUserAction()});
         notificationCreateRequest.setSendBy(payload.getUserAction());
-        NotificationResponse notificationResponse = notificationService.createNotification(userId, notificationCreateRequest);
-        Optional<NotificationContentRequest> message = notificationCreateRequest.getContentList().stream().filter(
-            item -> item.getLanguage().equals(request.getLanguage())).findFirst();
-        notificationResponse.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
-        notificationResponse.setCategory(notificationCreateRequest.getCategory());
-        notificationResponse.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
-        messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+        notificationService.createNotification(userId, request.getLanguage(), notificationCreateRequest);
       });
     }
 
@@ -388,13 +370,7 @@ public class ScreenService extends AbstractService {
             notificationUtil.getNotificationResponse(NN0000003,
                 new Object[]{payload.getScreenId(), payload.getScreenId(), payload.getUserAction()});
         notificationCreateRequest.setSendBy(payload.getUserAction());
-        NotificationResponse notificationResponse = notificationService.createNotification(userId, notificationCreateRequest);
-        Optional<NotificationContentRequest> message = notificationCreateRequest.getContentList().stream().filter(
-            item -> item.getLanguage().equals(request.getLanguage())).findFirst();
-        notificationResponse.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
-        notificationResponse.setCategory(notificationCreateRequest.getCategory());
-        notificationResponse.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
-        messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, notificationResponse);
+        notificationService.createNotification(userId, request.getLanguage(), notificationCreateRequest);
       });
     }
 

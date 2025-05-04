@@ -17,6 +17,7 @@ import com.org.workflow.domain.utils.PageableUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.org.workflow.core.common.cnst.WebsocketURL.NOTIFICATION_RECEIVE;
 import static com.org.workflow.core.common.enums.MessageEnum.NOT_FOUND_NOTIFICATION;
 
 @Service
@@ -32,10 +34,12 @@ public class NotificationService extends AbstractService {
 
   private final NotificationRepository notificationRepository;
 
+  private final SimpMessagingTemplate messagingTemplate;
+
   /**
    * @param request
    */
-  public NotificationResponse createNotification(String userId, NotificationCreateRequest request) {
+  public void createNotification(String userId, String language, NotificationCreateRequest request) {
 
     LocalDateTime now = LocalDateTime.now();
 
@@ -63,14 +67,19 @@ public class NotificationService extends AbstractService {
 
     Notification result = notificationRepository.save(notification);
 
+    Optional<NotificationContentRequest> message = request.getContentList().stream().filter(
+        item -> item.getLanguage().equals(language)).findFirst();
+
     NotificationResponse response = new NotificationResponse();
     response.setId(result.getId());
-    response.setRead(result.isRead());
+    response.setTitle(message.map(NotificationContentRequest::getTitle).orElse(""));
+    response.setCategory(request.getCategory());
+    response.setMessage(message.map(NotificationContentRequest::getMessage).orElse(""));
     response.setSendDatetime(result.getSendDatetime());
     response.setSendBy(result.getSendBy());
+    response.setRead(result.isRead());
 
-    return response;
-
+    messagingTemplate.convertAndSendToUser(userId, NOTIFICATION_RECEIVE, response);
   }
 
   /**

@@ -1,22 +1,22 @@
 package com.org.workflow.domain.dto.response.notification;
 
-import static com.org.workflow.core.common.cnst.CommonConst.FULL_DATE_TIME_FORMAT_PATTERN;
-import static com.org.workflow.core.common.cnst.CommonConst.ZONE_ID;
-
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import static com.org.workflow.core.common.cnst.CommonConst.FULL_DATE_TIME_FORMAT_PATTERN;
+import static com.org.workflow.core.common.cnst.CommonConst.ZONE_ID;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationResponse {
+public class NotificationResponse implements Serializable {
 
   private String id;
 
