@@ -13,12 +13,14 @@ export const userServices = baseApi.injectEndpoints({
         data: request,
       }),
     }),
+
     register: builder.mutation<IRegisterResponse, IRegisterRequest>({
       query: request => ({
         api: ApiEnum.CREATE_USER,
         data: request,
       }),
     }),
+
     getUserProfile: builder.mutation<IUserResponse, void>({
       query: () => ({
         api: ApiEnum.GET_USER_PROFILE,

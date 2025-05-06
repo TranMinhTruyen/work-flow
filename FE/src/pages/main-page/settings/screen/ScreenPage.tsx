@@ -28,7 +28,7 @@ import ISearchScreenResponse from './model/response/SearchScreenResponse';
 import './screen.css';
 
 const ScreenPage = () => {
-  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenTableRow>();
+  const { control, pageable, onDataChange, onSetLoading } = useTable<IScreenTableRow>();
   const { openDrawer } = useRightDrawer();
   const { t } = useTranslation(I18nEnum.SCREEN_I18N);
   const { control: formControl, handleSubmit } = useForm<ISearchScreenForm>({
@@ -42,14 +42,14 @@ const ScreenPage = () => {
    */
   const onSearchAction = useCallback(
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
-      gridApiRef.current?.setGridOption('loading', true);
+      onSetLoading(true);
       const response: IPageResponse<ISearchScreenResponse> = await searchAction(searchCondition);
       if (response.result && response.result.length > 0) {
         onDataChange(response.result, response);
       }
-      gridApiRef.current?.setGridOption('loading', false);
+      onSetLoading(false);
     },
-    [gridApiRef, onDataChange]
+    [onDataChange, onSetLoading]
   );
 
   /**

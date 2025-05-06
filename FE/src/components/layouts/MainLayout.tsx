@@ -1,4 +1,6 @@
-import { Box, Grid, styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
 import { memo, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -7,10 +9,12 @@ import { MessageType } from '@/common/enums/messageEnum';
 import useRouter from '@/common/hooks/useRouter';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import {
+  selectLoginData,
   selectOpenDrawer,
   selectScreenMaster,
   updateScreenStatus,
 } from '@/common/store/commonSlice';
+import { handleGetUserProfile } from '@/common/utils/authUtil';
 import Drawer from '@/components/drawer/Drawer';
 import MainHeader from '@/components/header/main-header/MainHeader';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
@@ -24,12 +28,13 @@ const MainLayout = () => {
   const openDrawer = useAppSelector(selectOpenDrawer);
   const dispatch = useAppDispatch();
   const screenMasterList = useAppSelector(selectScreenMaster);
+  const loginData = useAppSelector(selectLoginData);
   const { navigate, currentPath } = useRouter();
 
   // Check status screen via websocket.
   useWebSocket<ISaveScreenResponse>({
     receiveUrl: '/screen-master/change',
-    onSubscribe: data => {
+    onSubscribe: async data => {
       if (data) {
         dispatch(
           updateScreenStatus({
@@ -38,6 +43,14 @@ const MainLayout = () => {
           })
         );
       }
+    },
+  });
+
+  // Check screen authority via websocket.
+  useWebSocket({
+    receiveUrl: `/user/${loginData?.userId}/screen-master/authority`,
+    onSubscribe: () => {
+      handleGetUserProfile();
     },
   });
 

@@ -15,41 +15,41 @@ import GridTable, { GridTableProps } from './GridTable';
 export type PageGridTableProps = GridTableProps & {};
 
 const PageGridTable = (props: PageGridTableProps) => {
-  const { ...restProps } = props;
+  const { control, ...restProps } = props;
   const { t } = useTranslation(I18nEnum.COMMON_I18N);
 
   const handlePageChange = useCallback(
     (_event: ChangeEvent<unknown>, page: number) => {
-      props.control?.onPageChange(page);
+      control?.onPageChange(page);
     },
-    [props]
+    [control]
   );
 
   const handleSizeChange = useCallback(
     (event: SelectChangeEvent) => {
-      props.control?.onSizeChange(Number(event.target.value));
+      control?.onSizeChange(Number(event.target.value));
     },
-    [props]
+    [control]
   );
 
   return (
     <Stack spacing={1}>
       {/* Table area */}
-      <GridTable {...restProps} />
+      <GridTable control={control} {...restProps} />
 
       {/* Paging area */}
       <Stack direction={'row'} spacing={2} sx={{ marginLeft: 'auto !important' }}>
         <Typography>
           {formatString(
             t('table.showTotalData'),
-            props.control?.paginationInfo?.from ?? '',
-            props.control?.paginationInfo?.to ?? '',
-            props.control?.paginationInfo?.total ?? ''
+            control?.paginationInfo?.from ?? '',
+            control?.paginationInfo?.to ?? '',
+            control?.paginationInfo?.total ?? ''
           )}
         </Typography>
         <Pagination
-          page={props.control?.pageable.page}
-          count={props.control?.paginationInfo?.totalPages}
+          page={control?.pageable.page}
+          count={control?.paginationInfo?.totalPages}
           showFirstButton
           showLastButton
           color={'primary'}
@@ -58,7 +58,7 @@ const PageGridTable = (props: PageGridTableProps) => {
         <FormControl size={'small'} sx={{ alignSelf: 'center' }}>
           <Select
             sx={{ height: '30px', borderRadius: '50px' }}
-            value={props.control?.pageable.size as unknown as string}
+            value={control?.pageable.size as unknown as string}
             onChange={handleSizeChange}
           >
             <MenuItem value={10}>10</MenuItem>
@@ -69,8 +69,8 @@ const PageGridTable = (props: PageGridTableProps) => {
         <Typography>
           {formatString(
             t('table.pageInfo'),
-            props.control?.pageable.page ?? '',
-            props.control?.paginationInfo?.totalPages ?? ''
+            control?.pageable.page ?? '',
+            control?.paginationInfo?.totalPages ?? ''
           )}
         </Typography>
       </Stack>

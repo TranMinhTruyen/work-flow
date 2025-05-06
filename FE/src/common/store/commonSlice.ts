@@ -16,7 +16,7 @@ interface CommonState {
   screenExpand: string[];
 }
 
-const initialState: CommonState = {
+export const initialState: CommonState = {
   theme: '',
   language: 'en',
   isOpenDrawer: true,

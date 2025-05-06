@@ -35,22 +35,22 @@ const UserAssignModal = (props: UserAssignModalProps) => {
     IEditModalForm
   >(props.ref);
   const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
-  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
+  const { control, pageable, onDataChange, onSetLoading } = useTable<IScreenUserTableRow>();
 
   /**
    * Get screen user.
    */
   const onGetScreenUser = useCallback(
     async (searchCondition?: IPageRequest<IScreenUserRequest>) => {
-      gridApiRef.current?.setGridOption('loading', true);
+      onSetLoading(true);
       const userResponse: IPageResponse<IScreenUserResponse> =
         await getUsersNotUsing(searchCondition);
       if (userResponse.result) {
         onDataChange(userResponse.result, userResponse);
       }
-      gridApiRef.current?.setGridOption('loading', false);
+      onSetLoading(false);
     },
-    [gridApiRef, onDataChange]
+    [onDataChange, onSetLoading]
   );
 
   /**

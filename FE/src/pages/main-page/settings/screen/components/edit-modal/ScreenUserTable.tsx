@@ -35,7 +35,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
   const { screenDetail } = props;
 
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
-  const { control, pageable, onDataChange, gridApiRef } = useTable<IScreenUserTableRow>();
+  const { control, pageable, onDataChange, onSetLoading } = useTable<IScreenUserTableRow>();
   const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
   const [keywordValue, setKeyWordValue] = useState<string>('');
 
@@ -46,15 +46,15 @@ const ScreenUserTable = (props: ScreenUserProps) => {
    */
   const onGetScreenUser = useCallback(
     async (searchCondition?: IPageRequest<IScreenUserRequest>) => {
-      gridApiRef.current?.setGridOption('loading', true);
+      onSetLoading(true);
       const userResponse: IPageResponse<IScreenUserResponse> =
         await getScreenUsers(searchCondition);
-      if (userResponse.result) {
+      if (userResponse.result && userResponse.result.length > 0) {
         onDataChange(userResponse.result, userResponse);
       }
-      gridApiRef.current?.setGridOption('loading', false);
+      onSetLoading(false);
     },
-    [gridApiRef, onDataChange]
+    [onDataChange, onSetLoading]
   );
 
   /**

@@ -87,6 +87,7 @@ const GridTable = (props: GridTableProps) => {
       maxWidth={maxWidth}
     >
       <AgGridReact
+        loading={control?.loading}
         key={`gridTable${i18n.language}${capitalizeFirst(id)}`}
         gridId={`gridTable${capitalizeFirst(id)}`}
         rowData={control?.data ?? []}
@@ -139,6 +140,10 @@ const AgGridContainer = styled('div')<GridTableProps>(
 
     '& .ag-cell-edit-wrapper': {
       padding: '8px',
+    },
+
+    '& .ag-overlay-loading-center': {
+      borderRadius: '50%',
     },
   })
 );

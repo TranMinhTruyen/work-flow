@@ -25,7 +25,7 @@ import { useAppSelector } from './lib/store';
 import './App.css';
 
 const BackgroundLoading = ({ children }: { children: ReactNode }) => {
-  return <Suspense fallback={<BackdropLoading />}>{children}</Suspense>;
+  return <Suspense fallback={<BackdropLoading open={true} />}>{children}</Suspense>;
 };
 
 const App = () => {

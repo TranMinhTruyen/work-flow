@@ -8,6 +8,7 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const { defaultValues } = props;
   const [data, setData] = useState<T[]>(defaultValues?.data ?? []);
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
+  const [loading, setLoading] = useState<boolean>(false);
   const gridApiRef = useRef<GridApi<T> | null>(null);
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
     from: 0,
@@ -83,8 +84,13 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
     }
   }, []);
 
+  const onSetLoading = useCallback((loading: boolean) => {
+    setLoading(loading);
+  }, []);
+
   return {
     control: {
+      loading,
       data,
       pageable,
       paginationInfo,
@@ -94,14 +100,13 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
       onPageChange,
       onSizeChange,
     },
-    data,
     pageable,
-    paginationInfo,
     gridApiRef,
     onDataChange,
     onSort,
     onPageChange,
     onSizeChange,
+    onSetLoading,
   };
 };
 

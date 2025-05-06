@@ -18,6 +18,11 @@ export type PaginationInfo = {
 
 export type ControlProps<T = any> = {
   /**
+   * Show or hide the loading overlay.
+   */
+  loading: boolean;
+
+  /**
    * Table data array.
    * Represents the current set of rows displayed in the table.
    */
@@ -88,6 +93,10 @@ export type UseTableProps<T> = {
   };
 };
 
-export type UseTableReturn<T = any> = ControlProps<T> & {
+export type UseTableReturn<T = any> = Omit<
+  ControlProps<T>,
+  'data' | 'paginationInfo' | 'loading'
+> & {
   control: ControlProps<T>;
+  onSetLoading: (loading: boolean) => void;
 };

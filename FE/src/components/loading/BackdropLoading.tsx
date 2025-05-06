@@ -4,18 +4,24 @@ import { styled } from '@mui/material/styles';
 
 import CircleProgress from './CircleProgress';
 
-const BackdropLoading = () => {
+export type BackdropLoadingProps = {
+  open: boolean;
+};
+
+const BackdropLoading = (props: BackdropLoadingProps) => {
+  const { open } = props;
   return (
     <BackdropDialog
       keepMounted
-      open={true}
-      maxWidth={'xs'}
+      open={open}
       disableScrollLock
-      sx={{
-        position: 'absolute',
+      slotProps={{
+        paper: {
+          sx: { borderRadius: '50%' },
+        },
       }}
     >
-      <DialogContent sx={{ padding: 3.5 }}>
+      <DialogContent sx={{ padding: '8px' }}>
         <CircleProgress />
       </DialogContent>
     </BackdropDialog>

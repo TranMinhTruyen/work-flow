@@ -54,7 +54,7 @@ const NotificationPopover = () => {
    */
   useWebSocket<INotificationResponse>({
     receiveUrl: `/user/${loginData?.userId}/notification/receive`,
-    onSubscribe: async (data: INotificationResponse) => {
+    onSubscribe: async data => {
       if (data) {
         setNotificationList(prev => {
           return [data, ...prev];

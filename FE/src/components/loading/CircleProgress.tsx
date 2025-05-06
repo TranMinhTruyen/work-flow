@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 
 const CircleProgress = () => {
   return (
-    <Stack alignItems={'center'} justifyContent={'center'}>
+    <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
       <svg width={0} height={0}>
         <defs>
           <linearGradient id={'my_gradient'} x1={'0%'} y1={'0%'} x2={'0%'} y2={'100%'}>
