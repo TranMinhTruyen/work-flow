@@ -21,7 +21,10 @@ export const sessionStorage = createWebStorage('session');
 export const rootReducer = (state: any, action: any) => {
   if (RESET_ALL === action.type) {
     state = {
-      commonState: initialState,
+      commonState: {
+        ...initialState,
+        screenExpand: [],
+      },
     };
   }
   return combineReducer(state, action);

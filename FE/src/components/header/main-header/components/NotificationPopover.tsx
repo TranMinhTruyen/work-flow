@@ -46,7 +46,6 @@ const NotificationPopover = () => {
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);
   const language = useAppSelector(selectLanguage);
-  const lastCalledLanguage = useRef<string>(language);
   const callGetNotification = useRef<boolean>(true);
 
   /**
@@ -88,13 +87,9 @@ const NotificationPopover = () => {
     }
   }, [dispatch, notificationPageable]);
 
-  useEffect(() => {
-    if (lastCalledLanguage.current === language) return;
-    lastCalledLanguage.current = language;
-    setNotificationList([]);
-    getNotification();
-  }, [getNotification, language]);
-
+  /**
+   * Get notification when init and open notification list.
+   */
   useEffect(() => {
     getNotification();
   }, [getNotification, notificationPageable]);

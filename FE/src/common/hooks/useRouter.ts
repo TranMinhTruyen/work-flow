@@ -11,6 +11,7 @@ const useRouter = () => {
   const router = useNavigate();
   const location = useLocation();
   const screenMasterList = useAppSelector(selectScreenMaster);
+  const whiteList = [screenUrl.HOME.path, screenUrl.LOGIN.path, screenUrl.REGISTER.path];
 
   useEffect(() => {
     const screen = screenMasterList?.find(screen => screen.screenUrl === location.pathname);
@@ -24,7 +25,7 @@ const useRouter = () => {
 
   const navigate = useCallback(
     (path: string, isReplace: boolean = false) => {
-      if (path === screenUrl.LOGIN.path || path === screenUrl.REGISTER.path) {
+      if (whiteList.includes(path)) {
         router(path, { replace: isReplace });
         sessionStorage.setItem(CURRENT_PATH, path);
       } else {

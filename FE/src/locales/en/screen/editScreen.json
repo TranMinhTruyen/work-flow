@@ -29,6 +29,7 @@
   "message": {
     "removeUserMessage": "Total user remove:",
     "assignUserMessage": "Total user assign:",
-    "noUserSelected": "No user selected"
+    "noUserSelected": "No user selected",
+    "submitAssignUser": "Are you want to assign user?"
   }
 }

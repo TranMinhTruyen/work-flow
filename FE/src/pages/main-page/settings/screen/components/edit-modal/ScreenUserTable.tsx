@@ -159,7 +159,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
           onConfirm: handleSubmitAssignUser(result.value),
           onCancel: handleOpenAssignUserModal,
           showCancelButton: true,
-          bodyElement: <Typography>{t('common:buttonMessage.submit')}</Typography>,
+          bodyElement: <Typography>{t(`${I18nEnum.COMMON_I18N}:buttonMessage.submit`)}</Typography>,
         });
       }
     }
@@ -204,6 +204,10 @@ const ScreenUserTable = (props: ScreenUserProps) => {
                 width={30}
                 height={30}
                 icon={<DeleteIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />}
+                submitMessage={{
+                  messageCode: 'M0000001',
+                  args: [t(`${I18nEnum.COMMON_I18N}:button.delete`).toLowerCase()],
+                }}
                 onSubmit={handleClickRemoveButton(params.data)}
               />
             </Stack>

@@ -16,7 +16,8 @@
     "save": "Save",
     "back": "Back",
     "cancel": "Cancel",
-    "submit": "Submit"
+    "submit": "Submit",
+    "delete": "Delete"
   },
   "buttonMessage": {
     "submit": "Are you want to do submit action?",

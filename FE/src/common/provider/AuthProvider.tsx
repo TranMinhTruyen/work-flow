@@ -9,11 +9,11 @@ import { isNullOrEmpty } from '../utils/stringUtil';
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
   const { navigate } = useRouter();
-  const isLogin = checkLogin();
 
   useEffect(() => {
     if (checkLogin()) {
       navigate(screenUrl.HOME.path, true);
+      return;
     }
 
     if (isSet) return;
@@ -24,7 +24,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsSet(true);
-  }, [isLogin, isSet, navigate]);
+  }, [isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

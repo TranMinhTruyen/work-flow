@@ -12,7 +12,6 @@ interface CommonState {
   isLoading: boolean;
   loginData?: IUserData;
   screenMasterList?: IScreenMaster[];
-  proxyType?: string;
   screenExpand: string[];
 }
 
@@ -22,7 +21,6 @@ export const initialState: CommonState = {
   isOpenDrawer: true,
   isLogin: false,
   isLoading: false,
-  proxyType: '',
   screenExpand: [],
   screenMasterList: [],
 };
@@ -79,13 +77,6 @@ const commonSlice = createSlice({
     resetCommon: () => {
       return initialState;
     },
-    setProxyType: (state, action: PayloadAction<string | undefined>) => {
-      const { payload } = action;
-      return {
-        ...state,
-        proxyType: payload,
-      };
-    },
     setScreenExpand: (state, action: PayloadAction<string>) => {
       const { payload } = action;
       state.screenExpand.push(payload);
@@ -109,7 +100,6 @@ export const {
   toggleLoading,
   setLanguage,
   resetCommon,
-  setProxyType,
   setScreenExpand,
   removeScreenExpand,
 } = commonSlice.actions;
@@ -120,7 +110,6 @@ export const selectOpenDrawer = (state: RootState) => state.commonState.isOpenDr
 export const selectIsLogin = (state: RootState) => state.commonState.isLogin;
 export const selectIsLoading = (state: RootState) => state.commonState.isLoading;
 export const selectLanguage = (state: RootState) => state.commonState.language;
-export const selectProxyType = (state: RootState) => state.commonState.proxyType;
 export const selectScreenExpand = (state: RootState) => state.commonState.screenExpand;
 
 export default commonSlice.reducer;

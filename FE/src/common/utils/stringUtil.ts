@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import _ from 'lodash';
 
 /**
@@ -37,6 +38,24 @@ export const formatString = (template: string, ...args: (string | number)[]): st
   });
 };
 
+/**
+ * Get message translate.
+ *
+ * @param messageCode
+ * @param args
+ * @returns
+ */
+export const getMessage = (messageCode: string, ...args: (string | number)[]) => {
+  const message = i18next.t(`message:${messageCode}`);
+  return formatString(message, ...args);
+};
+
+/**
+ * Generate random number.
+ *
+ * @param pad
+ * @returns
+ */
 export const randomNumberString = (pad?: number): string => {
   const randomNum = Math.floor(Math.random() * 1000000);
   return randomNum.toString().padStart(pad ?? 6, '0');

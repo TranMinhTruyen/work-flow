@@ -29,6 +29,7 @@
   "message": {
     "removeUserMessage": "Tổng số người dùng bị xóa:",
     "assignUserMessage": "Tổng số người dùng được phân công:",
-    "noUserSelected": "Chưa chọn người dùng nào"
+    "noUserSelected": "Chưa chọn người dùng nào",
+    "submitAssignUser": "Bạn có muốn phân công người dùng không?"
   }
 }

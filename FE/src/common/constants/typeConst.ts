@@ -42,3 +42,8 @@ export type CustomAxiosConfig<T = any> = AxiosRequestConfig<T> & {
 export type FormContext = {
   language: I18nEnum;
 };
+
+export type MessageParams = {
+  messageCode: string;
+  args?: (string | number)[];
+};

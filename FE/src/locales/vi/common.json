@@ -16,7 +16,8 @@
     "save": "Lưu",
     "back": "Quay lại",
     "cancel": "Hủy",
-    "submit": "Gửi"
+    "submit": "Gửi",
+    "delete": "Xóa"
   },
   "buttonMessage": {
     "submit": "Bạn có muốn thực hiện hành động gửi không?"

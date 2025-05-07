@@ -16,7 +16,8 @@
     "save": "保存",
     "back": "戻る",
     "cancel": "キャンセル",
-    "submit": "送信"
+    "submit": "送信",
+    "delete": "削除"
   },
   "buttonMessage": {
     "submit": "送信アクションを実行しますか?"

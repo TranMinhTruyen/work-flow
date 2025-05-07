@@ -29,6 +29,7 @@
   "message": {
     "removeUserMessage": "ユーザー削除の合計：",
     "assignUserMessage": "ユーザー割り当ての合計：",
-    "noUserSelected": "ユーザーが選択されていません"
+    "noUserSelected": "ユーザーが選択されていません",
+    "submitAssignUser": "ユーザーを割り当てますか？"
   }
 }
