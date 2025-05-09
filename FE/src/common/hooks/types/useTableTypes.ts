@@ -9,7 +9,7 @@ export type Pageable = {
   orderList?: IPageableOrder[];
 };
 
-export type PaginationInfo = {
+export type PaginationInfo = Pageable & {
   from?: number;
   to?: number;
   total?: number;

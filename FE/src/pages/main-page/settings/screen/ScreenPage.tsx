@@ -44,7 +44,7 @@ const ScreenPage = () => {
     async (searchCondition?: IPageRequest<ISearchScreenRequest>) => {
       onSetLoading(true);
       const response: IPageResponse<ISearchScreenResponse> = await searchAction(searchCondition);
-      if (response.result && response.result.length > 0) {
+      if (response.result && response.total > 0) {
         onDataChange(response.result, response);
       }
       onSetLoading(false);

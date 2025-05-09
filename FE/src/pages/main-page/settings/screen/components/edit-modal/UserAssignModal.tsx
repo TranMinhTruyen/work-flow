@@ -1,12 +1,13 @@
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { IconButton as MUIIconButton } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ColDef, RowSelectionOptions } from 'ag-grid-community';
-import { memo, Ref, useCallback, useEffect, useMemo } from 'react';
+import { memo, Ref, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { I18nEnum } from '@/common/enums/i18nEnum';
@@ -36,6 +37,7 @@ const UserAssignModal = (props: UserAssignModalProps) => {
   >(props.ref);
   const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
   const { control, pageable, onDataChange, onSetLoading } = useTable<IScreenUserTableRow>();
+  const [keywordValue, setKeyWordValue] = useState<string>('');
 
   /**
    * Get screen user.
@@ -63,12 +65,21 @@ const UserAssignModal = (props: UserAssignModalProps) => {
           screenId: inputValue?.screenId,
           roleList: inputValue?.roles,
           level: inputValue?.level,
+          keyword: keywordValue,
         },
         ...pageable,
       };
       onGetScreenUser(searchCondition);
     }
-  }, [inputValue, onGetScreenUser, openModal, pageable]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    inputValue?.level,
+    inputValue?.roles,
+    inputValue?.screenId,
+    onGetScreenUser,
+    openModal,
+    pageable,
+  ]);
 
   /**
    * Row selection config.
@@ -109,6 +120,28 @@ const UserAssignModal = (props: UserAssignModalProps) => {
     [t]
   );
 
+  const handleSearchUser = useCallback(() => {
+    const searchCondition: IPageRequest<IScreenUserRequest> = {
+      condition: {
+        screenId: inputValue?.screenId,
+        roleList: inputValue?.roles,
+        level: inputValue?.level,
+        keyword: keywordValue,
+      },
+      page: 1,
+      size: 10,
+      orderList: pageable.orderList,
+    };
+    onGetScreenUser(searchCondition);
+  }, [
+    inputValue?.level,
+    inputValue?.roles,
+    inputValue?.screenId,
+    keywordValue,
+    onGetScreenUser,
+    pageable.orderList,
+  ]);
+
   return (
     <Dialog open={openModal} onClose={handleClose} fullWidth maxWidth={'md'}>
       {/* Dialog header */}
@@ -137,11 +170,16 @@ const UserAssignModal = (props: UserAssignModalProps) => {
             label={t('label.searchUser')}
             width={200}
             height={35}
+            onChange={(value: string) => {
+              setKeyWordValue(value);
+            }}
             slotProps={{
               input: {
-                startAdornment: (
-                  <InputAdornment position={'start'}>
-                    <SearchIcon />
+                endAdornment: (
+                  <InputAdornment position={'end'}>
+                    <MUIIconButton edge={'end'} onClick={handleSearchUser}>
+                      <SearchIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />
+                    </MUIIconButton>
                   </InputAdornment>
                 ),
               },

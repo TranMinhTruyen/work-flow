@@ -1,5 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
+import { IconButton } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -49,7 +50,7 @@ const ScreenUserTable = (props: ScreenUserProps) => {
       onSetLoading(true);
       const userResponse: IPageResponse<IScreenUserResponse> =
         await getScreenUsers(searchCondition);
-      if (userResponse.result && userResponse.result.length > 0) {
+      if (userResponse.result) {
         onDataChange(userResponse.result, userResponse);
       }
       onSetLoading(false);
@@ -64,12 +65,11 @@ const ScreenUserTable = (props: ScreenUserProps) => {
     const searchCondition: IPageRequest<IScreenUserRequest> = {
       condition: {
         screenId: screenDetail?.screenId,
-        keyword: keywordValue,
       },
       ...pageable,
     };
     onGetScreenUser(searchCondition);
-  }, [keywordValue, onGetScreenUser, pageable, screenDetail]);
+  }, [onGetScreenUser, pageable, screenDetail?.screenId]);
 
   const rowSelection = useMemo<RowSelectionOptions>(() => {
     return { mode: 'multiRow' };
@@ -252,10 +252,25 @@ const ScreenUserTable = (props: ScreenUserProps) => {
           };
           onGetScreenUser(searchCondition);
         },
-        bodyElement: <Typography>{`Total user removed: ${response.totalRemoveUser}`}</Typography>,
+        bodyElement: (
+          <Typography>{`${t('message.removeUserMessage')}: ${response.totalRemoveUser}`}</Typography>
+        ),
       });
     }
-  }, [onGetScreenUser, pageable, screenDetail?.screenId, selectedItem]);
+  }, [onGetScreenUser, pageable, screenDetail?.screenId, selectedItem, t]);
+
+  const handleSearchUser = useCallback(() => {
+    const searchCondition: IPageRequest<IScreenUserRequest> = {
+      condition: {
+        screenId: screenDetail?.screenId,
+        keyword: keywordValue,
+      },
+      page: 1,
+      size: 10,
+      orderList: pageable.orderList,
+    };
+    onGetScreenUser(searchCondition);
+  }, [keywordValue, onGetScreenUser, pageable, screenDetail]);
 
   return (
     <Stack spacing={1}>
@@ -268,6 +283,10 @@ const ScreenUserTable = (props: ScreenUserProps) => {
           startIcon={<DeleteIcon />}
           onSubmit={handeMultiRemove}
           disabled={selectedItem.length === 0}
+          submitMessage={{
+            messageCode: 'M0000001',
+            args: [t(`${I18nEnum.COMMON_I18N}:button.delete`).toLowerCase()],
+          }}
         />
 
         <Stack direction={'row'} spacing={1}>
@@ -276,14 +295,16 @@ const ScreenUserTable = (props: ScreenUserProps) => {
             label={t('label.searchUser')}
             width={200}
             height={35}
-            onBlur={(value: string) => {
+            onChange={(value: string) => {
               setKeyWordValue(value);
             }}
             slotProps={{
               input: {
-                startAdornment: (
-                  <InputAdornment position={'start'}>
-                    <SearchIcon />
+                endAdornment: (
+                  <InputAdornment position={'end'}>
+                    <IconButton edge={'end'} onClick={handleSearchUser}>
+                      <SearchIcon sx={{ color: 'rgba(0, 0, 0, 1)' }} />
+                    </IconButton>
                   </InputAdornment>
                 ),
               },

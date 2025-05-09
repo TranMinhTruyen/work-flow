@@ -48,7 +48,7 @@ const PageGridTable = (props: PageGridTableProps) => {
           )}
         </Typography>
         <Pagination
-          page={control?.pageable.page}
+          page={control?.paginationInfo?.page}
           count={control?.paginationInfo?.totalPages}
           showFirstButton
           showLastButton
@@ -58,7 +58,7 @@ const PageGridTable = (props: PageGridTableProps) => {
         <FormControl size={'small'} sx={{ alignSelf: 'center' }}>
           <Select
             sx={{ height: '30px', borderRadius: '50px' }}
-            value={control?.pageable.size as unknown as string}
+            value={control?.paginationInfo?.size as unknown as string}
             onChange={handleSizeChange}
           >
             <MenuItem value={10}>10</MenuItem>
@@ -69,7 +69,7 @@ const PageGridTable = (props: PageGridTableProps) => {
         <Typography>
           {formatString(
             t('table.pageInfo'),
-            control?.pageable.page ?? '',
+            control?.paginationInfo?.page ?? '',
             control?.paginationInfo?.totalPages ?? ''
           )}
         </Typography>

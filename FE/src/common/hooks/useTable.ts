@@ -10,16 +10,17 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
   const [sortColumn, setSortColumn] = useState<Map<string, string>>();
   const [loading, setLoading] = useState<boolean>(false);
   const gridApiRef = useRef<GridApi<T> | null>(null);
-  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
-    from: 0,
-    to: 0,
-    total: 0,
-    totalPages: 0,
-  });
   const [pageable, setPageable] = useState<Pageable>({
     page: 1,
     size: 10,
     orderList: [],
+  });
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
+    ...pageable,
+    from: 0,
+    to: 0,
+    total: 0,
+    totalPages: 0,
   });
 
   useEffect(() => {
@@ -77,12 +78,15 @@ const useTable = <T = any>(props: UseTableProps<T> = {}): UseTableReturn<T> => {
     });
   }, []);
 
-  const onDataChange = useCallback((data: T[], pageResponse?: IPageResponse) => {
-    setData(data);
-    if (pageResponse) {
-      setPaginationInfo({ ...pageResponse });
-    }
-  }, []);
+  const onDataChange = useCallback(
+    (data: T[], pageResponse?: IPageResponse) => {
+      setData(data);
+      if (pageResponse) {
+        setPaginationInfo({ ...pageResponse, orderList: pageable.orderList });
+      }
+    },
+    [pageable.orderList]
+  );
 
   const onSetLoading = useCallback((loading: boolean) => {
     setLoading(loading);

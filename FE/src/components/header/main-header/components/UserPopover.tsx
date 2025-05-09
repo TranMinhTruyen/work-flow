@@ -51,10 +51,10 @@ const UserPopover = () => {
   }, []);
 
   const handleLogout = useCallback(() => {
-    closeDrawer(false);
     dispatch({ type: RESET_ALL });
     localStorage.removeItem('login');
     sessionStorage.removeItem('login');
+    closeDrawer(false);
     navigate(screenUrl.LOGIN.path, true);
   }, [closeDrawer, dispatch, navigate]);
 
