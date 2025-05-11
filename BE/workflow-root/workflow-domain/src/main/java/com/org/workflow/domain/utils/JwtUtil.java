@@ -29,9 +29,9 @@ public class JwtUtil {
     long now = (new Date()).getTime();
     Date expiryDate;
     if (!isRemember) {
-      expiryDate = new Date(now + CommonConst.EXPIRATIONTIME);
+      expiryDate = new Date(now + CommonConst.EXPIRATION_TIME);
     } else {
-      expiryDate = new Date(now + CommonConst.EXPIRATIONTIME_FOR_REMEMBER);
+      expiryDate = new Date(now + CommonConst.EXPIRATION_TIME_FOR_REMEMBER);
     }
     Map<String, Object> claims = new HashMap<>();
     claims.put("userName", userDetail.getUserAccount().getUserName());

@@ -36,9 +36,10 @@ const ScreenUserTable = (props: ScreenUserProps) => {
   const { screenDetail } = props;
 
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
+  const [keywordValue, setKeyWordValue] = useState<string>('');
+
   const { control, pageable, onDataChange, onSetLoading } = useTable<IScreenUserTableRow>();
   const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
-  const [keywordValue, setKeyWordValue] = useState<string>('');
 
   const userAssignModalRef = useRef<ModalRef<IScreenUserTableRow, IEditModalForm>>(null);
 

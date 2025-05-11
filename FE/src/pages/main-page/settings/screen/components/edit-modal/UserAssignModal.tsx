@@ -31,13 +31,14 @@ type UserAssignModalProps = {
 };
 
 const UserAssignModal = (props: UserAssignModalProps) => {
+  const [keywordValue, setKeyWordValue] = useState<string>('');
+
   const { inputValue, handleClose, handleOk, openModal, onSelectionChanged } = useModal<
     IScreenUserTableRow,
     IEditModalForm
   >(props.ref);
   const { t } = useTranslation([I18nEnum.EDIT_SCREEN_I18N, I18nEnum.COMMON_I18N]);
   const { control, pageable, onDataChange, onSetLoading } = useTable<IScreenUserTableRow>();
-  const [keywordValue, setKeyWordValue] = useState<string>('');
 
   /**
    * Get screen user.

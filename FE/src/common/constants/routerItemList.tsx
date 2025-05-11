@@ -1,5 +1,7 @@
 import { lazy, ReactNode } from 'react';
 
+import UserDetailPage from '@/pages/main-page/settings/user/UserDetailPage';
+
 import { screenUrl } from './urlConst';
 
 const LoginPage = lazy(() => import('@/pages/auth-page/login/LoginPage'));
@@ -45,6 +47,11 @@ const routerItemList: Array<IRouterItem> = [
     screen: <UserPage />,
     screenPrefix: screenUrl.USER_MASTER.prefix,
     screenPath: screenUrl.USER_MASTER.path,
+  },
+  {
+    screen: <UserDetailPage />,
+    screenPrefix: screenUrl.USER_DETAIL.prefix,
+    screenPath: screenUrl.USER_DETAIL.path,
   },
 ];
 

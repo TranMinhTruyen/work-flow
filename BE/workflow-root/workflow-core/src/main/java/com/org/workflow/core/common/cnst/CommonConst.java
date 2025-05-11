@@ -31,9 +31,9 @@ public class CommonConst {
   //endregion
 
   //region JWT
-  public static final long EXPIRATIONTIME = 18000L;
+  public static final long EXPIRATION_TIME = 1000L * 60L * 60L;
 
-  public static final long EXPIRATIONTIME_FOR_REMEMBER = 2592000000L;
+  public static final long EXPIRATION_TIME_FOR_REMEMBER = 1000L * 60L * 60L * 24L * 30L;
 
   public static final String ACCESS_TOKEN_SECRET_KEY = """
       WKI9zOfZ0XHFHCZLUDNl

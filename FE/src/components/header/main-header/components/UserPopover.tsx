@@ -20,11 +20,12 @@ const UserPopover = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null | undefined>(null);
 
+  const { navigate } = useRouter();
+  const { closeDrawer } = useRightDrawer();
+
   const open = Boolean(anchorEl);
   const loginData = useAppSelector(selectLoginData);
   const dispatch = useAppDispatch();
-  const { navigate } = useRouter();
-  const { closeDrawer } = useRightDrawer();
 
   useEffect(() => {
     const getImage = async () => {
@@ -57,6 +58,10 @@ const UserPopover = () => {
     closeDrawer(false);
     navigate(screenUrl.LOGIN.path, true);
   }, [closeDrawer, dispatch, navigate]);
+
+  const handleProfileOnClick = useCallback(() => {
+    navigate(`${screenUrl.USER_DETAIL.path.replace(':userId', '')}${loginData?.userId}`);
+  }, [loginData?.userId, navigate]);
 
   return (
     <>
@@ -96,7 +101,7 @@ const UserPopover = () => {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleProfileOnClick}>
           <ListItemIcon>
             <AccountCircleIcon fontSize={'medium'} />
           </ListItemIcon>

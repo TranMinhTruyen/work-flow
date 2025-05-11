@@ -5,13 +5,19 @@ import { useAppSelector } from '@/lib/store';
 
 import { CURRENT_PATH } from '../constants/commonConst';
 import { screenUrl } from '../constants/urlConst';
-import { selectScreenMaster } from '../store/commonSlice';
+import { selectLoginData, selectScreenMaster } from '../store/commonSlice';
 
 const useRouter = () => {
   const router = useNavigate();
   const location = useLocation();
   const screenMasterList = useAppSelector(selectScreenMaster);
-  const whiteList = [screenUrl.HOME.path, screenUrl.LOGIN.path, screenUrl.REGISTER.path];
+  const loginData = useAppSelector(selectLoginData);
+  const whiteList = [
+    screenUrl.HOME.path,
+    screenUrl.LOGIN.path,
+    screenUrl.REGISTER.path,
+    `${screenUrl.USER_DETAIL.path.replace(':userId', '')}${loginData?.userId}`,
+  ];
 
   useEffect(() => {
     const screen = screenMasterList?.find(screen => screen.screenUrl === location.pathname);
@@ -44,6 +50,7 @@ const useRouter = () => {
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [router, screenMasterList]
   );
 
