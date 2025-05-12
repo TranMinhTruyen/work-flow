@@ -27,6 +27,7 @@ export enum ApiEnum {
   // File api
   UPLOAD_FILE,
   DOWNLOAD_FILE,
+  DELETE_FILE,
 
   // Notification api
   GET_NOTIFICATION,
@@ -57,7 +58,7 @@ export const controller: Record<string, ApiType> = {
     method: 'POST',
   },
   [ApiEnum.GET_USER_PROFILE]: {
-    url: `${USER_PREFIX}/get-user-profile`,
+    url: `${USER_PREFIX}/get-user`,
     method: 'POST',
   },
   [ApiEnum.UPDATE_USER_ACCOUNT]: {
@@ -90,6 +91,10 @@ export const controller: Record<string, ApiType> = {
   },
   [ApiEnum.DOWNLOAD_FILE]: {
     url: `${FILE_PREFIX}/get-download-url`,
+    method: 'POST',
+  },
+  [ApiEnum.DELETE_FILE]: {
+    url: `${FILE_PREFIX}/delete-file`,
     method: 'POST',
   },
 

@@ -5,19 +5,13 @@ import { useAppSelector } from '@/lib/store';
 
 import { CURRENT_PATH } from '../constants/commonConst';
 import { screenUrl } from '../constants/urlConst';
-import { selectLoginData, selectScreenMaster } from '../store/commonSlice';
+import { selectScreenMaster } from '../store/commonSlice';
 
 const useRouter = () => {
   const router = useNavigate();
   const location = useLocation();
   const screenMasterList = useAppSelector(selectScreenMaster);
-  const loginData = useAppSelector(selectLoginData);
-  const whiteList = [
-    screenUrl.HOME.path,
-    screenUrl.LOGIN.path,
-    screenUrl.REGISTER.path,
-    `${screenUrl.USER_DETAIL.path.replace(':userId', '')}${loginData?.userId}`,
-  ];
+  const whiteList = [screenUrl.HOME.path, screenUrl.LOGIN.path, screenUrl.REGISTER.path];
 
   useEffect(() => {
     const screen = screenMasterList?.find(screen => screen.screenUrl === location.pathname);
@@ -31,7 +25,10 @@ const useRouter = () => {
 
   const navigate = useCallback(
     (path: string, isReplace: boolean = false) => {
-      if (whiteList.includes(path)) {
+      if (
+        whiteList.includes(path) ||
+        path.includes(screenUrl.USER_DETAIL.path.replace(':userId', ''))
+      ) {
         router(path, { replace: isReplace });
         sessionStorage.setItem(CURRENT_PATH, path);
       } else {

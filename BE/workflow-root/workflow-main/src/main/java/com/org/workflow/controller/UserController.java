@@ -18,6 +18,7 @@ import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
 import com.org.workflow.domain.dto.request.user.CreateUserRequest;
 import com.org.workflow.domain.dto.request.user.LoginRequest;
 import com.org.workflow.domain.dto.request.user.UpdateUserRequest;
+import com.org.workflow.domain.dto.request.user.UserDetailRequest;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
 import com.org.workflow.domain.dto.response.user.CreateUserResponse;
 import com.org.workflow.domain.dto.response.user.LoginResponse;
@@ -97,11 +98,18 @@ public class UserController extends AbstractController {
    * @throws WFException WFException
    */
   @Operation(security = {@SecurityRequirement(name = "Authorization")})
-  @PostMapping("/get-user-profile")
-  public ResponseEntity<BaseResponse> getUserProfile(@RequestBody BaseRequest<?> request)
+  @PostMapping("/get-user")
+  public ResponseEntity<BaseResponse> getUser(@RequestBody BaseRequest<?> request)
       throws WFException {
-    UserResponse result = userService.getUserProfile(request);
+    UserResponse result = userService.getUser(request);
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
+  }
+
+  // TODO
+  @PostMapping("/get-user-detail")
+  public ResponseEntity<BaseResponse> getUserDetail(
+      @RequestBody BaseRequest<UserDetailRequest> request) throws WFException {
+    return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
   }
 
   /**

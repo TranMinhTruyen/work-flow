@@ -1,21 +1,24 @@
 package com.org.workflow.domain.utils;
 
-import com.org.workflow.domain.dto.request.file.DownloadFileRequest;
-import com.org.workflow.domain.dto.request.file.UploadFileRequest;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.URLConnection;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+
+import com.org.workflow.domain.dto.request.file.S3FileRequest;
+
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.StatObjectArgs;
 import io.minio.http.Method;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.URLConnection;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 
 /**
  * @author minh-truyen
@@ -46,13 +49,8 @@ public class S3Util {
         contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
       }
 
-      minioClient.putObject(
-          PutObjectArgs.builder()
-              .bucket(BUCKET_NAME)
-              .object(fileName)
-              .stream(byteInputStream, fileContent.length, -1)
-              .contentType(contentType)
-              .build());
+      minioClient.putObject(PutObjectArgs.builder().bucket(BUCKET_NAME).object(fileName)
+          .stream(byteInputStream, fileContent.length, -1).contentType(contentType).build());
 
       return fileName;
     } catch (Exception exception) {
@@ -67,10 +65,8 @@ public class S3Util {
    * @return InputStream
    */
   public InputStream downloadFile(String fileName) {
-    try (InputStream stream = minioClient.getObject(GetObjectArgs.builder()
-        .bucket(BUCKET_NAME)
-        .object(fileName)
-        .build())) {
+    try (InputStream stream = minioClient.getObject(
+        GetObjectArgs.builder().bucket(BUCKET_NAME).object(fileName).build())) {
       return stream;
     } catch (Exception exception) {
       return null;
@@ -85,8 +81,7 @@ public class S3Util {
    */
   public boolean isBucketExist(String bucketName) {
     try {
-      return minioClient.bucketExists(
-          BucketExistsArgs.builder().bucket(bucketName).build());
+      return minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
     } catch (Exception exception) {
       return false;
     }
@@ -104,10 +99,8 @@ public class S3Util {
       return false;
     }
     try {
-      minioClient.statObject(StatObjectArgs.builder()
-          .bucket(bucketName)
-          .object(objectName)
-          .build());
+      minioClient.statObject(
+          StatObjectArgs.builder().bucket(bucketName).object(objectName).build());
       return true;
     } catch (Exception exception) {
       return false;
@@ -117,43 +110,47 @@ public class S3Util {
   /**
    * Get uploadURL.
    *
-   * @param objectName String
+   * @param fileRequest S3FileRequest
    * @return String
    * @throws Exception Exception
    */
-  public String generateUrlUpload(UploadFileRequest uploadFileRequest) throws Exception {
-    if (!isBucketExist(uploadFileRequest.getBucketName())) {
-      minioClient.makeBucket(
-          MakeBucketArgs.builder().bucket(uploadFileRequest.getBucketName()).build());
+  public String generateUrlUpload(S3FileRequest fileRequest) throws Exception {
+    if (!isBucketExist(fileRequest.getBucketName())) {
+      minioClient.makeBucket(MakeBucketArgs.builder().bucket(fileRequest.getBucketName()).build());
     }
-    return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
-        .method(Method.PUT)
-        .bucket(uploadFileRequest.getBucketName())
-        .object(uploadFileRequest.getObjectId())
-        .expiry(EXPIRY)
-        .build());
+    return minioClient.getPresignedObjectUrl(
+        GetPresignedObjectUrlArgs.builder().method(Method.PUT).bucket(fileRequest.getBucketName())
+            .object(fileRequest.getObjectId()).expiry(EXPIRY).build());
   }
 
   /**
    * Get downloadURL.
    *
-   * @param objectName String
+   * @param fileRequest S3FileRequest
    * @return String
    * @throws Exception Exception
    */
-  public String generateUrlDownload(DownloadFileRequest downloadFileRequest) throws Exception {
-    if (isFileExist(downloadFileRequest.getBucketName(), downloadFileRequest.getObjectId())) {
-      return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
-          .method(Method.GET)
-          .bucket(downloadFileRequest.getBucketName())
-          .object(downloadFileRequest.getObjectId())
-          .expiry(EXPIRY)
-          .build());
+  public String generateUrlDownload(S3FileRequest fileRequest) throws Exception {
+    if (isFileExist(fileRequest.getBucketName(), fileRequest.getObjectId())) {
+      return minioClient.getPresignedObjectUrl(
+          GetPresignedObjectUrlArgs.builder().method(Method.GET).bucket(fileRequest.getBucketName())
+              .object(fileRequest.getObjectId()).expiry(EXPIRY).build());
     }
     return null;
   }
 
-  public void deleteFile(String fileName) {
-
+  /**
+   * @param fileRequest S3FileRequest
+   * @return String
+   * @throws Exception Exception
+   */
+  public String deleteFile(S3FileRequest fileRequest) throws Exception {
+    if (isFileExist(fileRequest.getBucketName(), fileRequest.getObjectId())) {
+      minioClient.removeObject(RemoveObjectArgs.builder().bucket(fileRequest.getBucketName())
+          .object(fileRequest.getObjectId()).build());
+      return fileRequest.getObjectId();
+    }
+    return null;
   }
+
 }
