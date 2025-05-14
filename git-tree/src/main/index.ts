@@ -1,14 +1,23 @@
 import { is, optimizer } from '@electron-toolkit/utils';
+import dotenv from 'dotenv';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
-import { join } from 'path';
+import path, { join } from 'path';
 import icon from '../../resources/icon.png?asset';
 
-function createWindow(): void {
+const envFile = process.env.NODE_ENV === 'development' ? '.env.development' : '.env.production';
+dotenv.config({ path: path.resolve(__dirname, '..', '..', envFile) });
+
+const createWindow = () => {
+  const windowWidth = process.env.ELECTRON_WIDTH ?? '1440';
+  const windowHeight = process.env.ELECTRON_HEIGHT ?? '1200';
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     title: 'Git tree',
-    width: 1920,
-    height: 1080,
+    width: Number(windowWidth),
+    height: Number(windowHeight),
+    minWidth: Number(windowWidth),
+    minHeight: Number(windowHeight),
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -16,6 +25,8 @@ function createWindow(): void {
       sandbox: false,
     },
   });
+
+  mainWindow.maximize();
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -33,7 +44,7 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
-}
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
