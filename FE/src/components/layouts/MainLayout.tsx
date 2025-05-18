@@ -9,6 +9,7 @@ import { MessageType } from '@/common/enums/messageEnum';
 import useRouter from '@/common/hooks/useRouter';
 import useWebSocket from '@/common/hooks/useWebSocket';
 import {
+  selectIsLogin,
   selectLoginData,
   selectOpenDrawer,
   selectScreenMaster,
@@ -25,11 +26,13 @@ import { openDialogContainer } from '../dialog/DialogContainer';
 const DRAWER_WIDTH: number = 200;
 
 const MainLayout = () => {
+  const { navigate, currentPath } = useRouter();
+
   const openDrawer = useAppSelector(selectOpenDrawer);
   const dispatch = useAppDispatch();
   const screenMasterList = useAppSelector(selectScreenMaster);
   const loginData = useAppSelector(selectLoginData);
-  const { navigate, currentPath } = useRouter();
+  const isLogin = useAppSelector(selectIsLogin);
 
   // Check status screen via websocket.
   useWebSocket<ISaveScreenResponse>({
@@ -79,7 +82,7 @@ const MainLayout = () => {
   return (
     <ScreenLayout open={openDrawer}>
       <MainHeader drawerWidth={DRAWER_WIDTH} />
-      <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} />
+      {isLogin ? <Drawer key={'drawer'} drawerWidth={DRAWER_WIDTH} /> : null}
       <Box sx={{ padding: '10px', flex: 1, overflow: 'auto' }}>
         <Outlet />
       </Box>

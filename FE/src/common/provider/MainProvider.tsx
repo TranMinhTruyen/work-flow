@@ -8,9 +8,14 @@ import { isNullOrEmpty } from '../utils/stringUtil';
 
 const MainProvider = ({ children }: { children: ReactNode }) => {
   const [isSet, setIsSet] = useState<boolean>(false);
-  const { navigate } = useRouter();
+  const { navigate, currentPath: currentNavigate } = useRouter();
 
   useEffect(() => {
+    if (currentNavigate.includes('/user-detail')) {
+      setIsSet(true);
+      return;
+    }
+
     if (!checkLogin()) {
       navigate(screenUrl.LOGIN.path, true);
       return;
@@ -28,7 +33,7 @@ const MainProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsSet(true);
-  }, [isSet, navigate]);
+  }, [currentNavigate, isSet, navigate]);
 
   return <>{isSet && children}</>;
 };

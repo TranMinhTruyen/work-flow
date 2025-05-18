@@ -11,7 +11,7 @@ import { languageConst } from '@/common/constants/commonConst';
 import { screenUrl } from '@/common/constants/urlConst';
 import { I18nEnum } from '@/common/enums/i18nEnum';
 import useRouter from '@/common/hooks/useRouter';
-import { selectLanguage, setLanguage } from '@/common/store/commonSlice';
+import { selectIsLogin, selectLanguage, setLanguage } from '@/common/store/commonSlice';
 import { toSelectData } from '@/common/utils/convertUtil';
 import SelectInput from '@/components/inputs/SelectInput';
 import { useAppDispatch, useAppSelector } from '@/lib/store';
@@ -33,7 +33,8 @@ const MainHeader = (props: HeaderProps) => {
   const { navigate } = useRouter();
 
   const dispatch = useAppDispatch();
-  const language: string = useAppSelector(selectLanguage);
+  const language = useAppSelector(selectLanguage);
+  const isLogin = useAppSelector(selectIsLogin);
 
   const handleChangeLanguage = useCallback(
     (value: string) => {
@@ -62,7 +63,7 @@ const MainHeader = (props: HeaderProps) => {
             <SvgIcon
               viewBox={'0 0 100 100'}
               sx={{ height: '35px !important', width: '35px !important', borderRadius: '15px' }}
-              onClick={() => navigate(screenUrl.HOME.path)}
+              onClick={() => navigate(isLogin ? screenUrl.HOME.path : screenUrl.LOGIN.path)}
             >
               <image href={logoUrl} viewBox={'0 0 100 100'} />
             </SvgIcon>
@@ -72,7 +73,7 @@ const MainHeader = (props: HeaderProps) => {
             variant={'h5'}
             component={'span'}
             sx={styles.title}
-            onClick={() => navigate(screenUrl.HOME.path)}
+            onClick={() => navigate(isLogin ? screenUrl.HOME.path : screenUrl.LOGIN.path)}
           >
             WORK FLOW
           </Typography>
@@ -92,9 +93,12 @@ const MainHeader = (props: HeaderProps) => {
             onChange={handleChangeLanguage}
           />
 
-          <NotificationPopover />
-
-          <UserPopover />
+          {isLogin ? (
+            <>
+              <NotificationPopover />
+              <UserPopover />
+            </>
+          ) : null}
         </Stack>
       </Stack>
     </AppBar>

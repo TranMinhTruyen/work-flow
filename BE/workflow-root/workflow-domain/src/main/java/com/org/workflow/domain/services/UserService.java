@@ -45,6 +45,7 @@ import com.org.workflow.domain.dto.request.user.ChangePasswordRequest;
 import com.org.workflow.domain.dto.request.user.CreateUserRequest;
 import com.org.workflow.domain.dto.request.user.LoginRequest;
 import com.org.workflow.domain.dto.request.user.UpdateUserRequest;
+import com.org.workflow.domain.dto.request.user.UserDetailRequest;
 import com.org.workflow.domain.dto.response.screen.ScreenResponse;
 import com.org.workflow.domain.dto.response.user.CreateUserResponse;
 import com.org.workflow.domain.dto.response.user.LoginResponse;
@@ -537,6 +538,38 @@ public class UserService extends AbstractService {
     userHistory.setUpdatedDatetime(now);
 
     userHistoryRepository.save(userHistory);
+  }
+
+  /**
+   * @param request
+   * @return
+   * @throws WFException
+   */
+  public UserResponse getUserDetail(BaseRequest<UserDetailRequest> request) throws WFException {
+    UserDetailRequest payload = request.getPayload();
+    if (!payload.getIsLogin()) {
+      Optional<UserAccount> result = userRepository.findUserAccountByUserId(payload.getUserId());
+      UserAccount userAccount = result.orElseThrow(
+          () -> exceptionService.getWFException(NOT_FOUND, request.getLanguage(), "",
+              payload.getUserId()));
+
+      UserResponse userResponse = new UserResponse();
+      userResponse.setUserId(userAccount.getUserId());
+      userResponse.setEmail(userAccount.getEmail());
+      userResponse.setUserName(userAccount.getUserName());
+      userResponse.setFullName(userAccount.getFullName());
+      userResponse.setBirthDay(userAccount.getBirthDay());
+      userResponse.setImage(userAccount.getImageObject());
+      userResponse.setIsActive(userAccount.isActive());
+      userResponse.setCreateDatetime(userAccount.getCreateDatetime());
+      userResponse.setCreateBy(userAccount.getCreatedBy());
+      userResponse.setUpdateDatetime(userAccount.getUpdatedDatetime());
+      userResponse.setUpdateBy(userAccount.getUpdatedBy());
+
+      return userResponse;
+    } else {
+      return getUser(request);
+    }
   }
 
 }

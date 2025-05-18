@@ -48,7 +48,11 @@ public class UserResponse implements Serializable {
   @JsonFormat(pattern = FULL_DATE_TIME_FORMAT_PATTERN, timezone = ZONE_ID)
   private LocalDateTime createDatetime;
 
+  private String createBy;
+
   @JsonFormat(pattern = FULL_DATE_TIME_FORMAT_PATTERN, timezone = ZONE_ID)
   private LocalDateTime updateDatetime;
+
+  private String updateBy;
 
 }

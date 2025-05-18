@@ -84,7 +84,7 @@ const App = () => {
                     .map((item, index) => (
                       <Route
                         key={index}
-                        index={item.screenPath === screenUrl.LOGIN.path ? true : false}
+                        index={item.screenPath === screenUrl.HOME.path ? true : false}
                         path={item.screenPath}
                         element={<BackgroundLoading>{item.screen}</BackgroundLoading>}
                       />

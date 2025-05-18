@@ -2,6 +2,7 @@ package com.org.workflow.domain.filter;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.Level;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -11,6 +12,7 @@ import com.org.workflow.core.common.enums.MessageEnum;
 import com.org.workflow.core.common.enums.MessageTypeEnum;
 import com.org.workflow.core.common.exception.WFException;
 import com.org.workflow.domain.dto.response.common.BaseResponse;
+import com.org.workflow.domain.utils.LogUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +22,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException authException) throws IOException {
+    LogUtil.log(Level.ERROR, CustomAuthenticationEntryPoint.class,
+        new Object[] {"URI error:", request.getRequestURI()});
+
     WFException cause = (WFException) authException.getCause();
     ObjectMapper objectMapper = new ObjectMapper();
     BaseResponse baseResponse = new BaseResponse();

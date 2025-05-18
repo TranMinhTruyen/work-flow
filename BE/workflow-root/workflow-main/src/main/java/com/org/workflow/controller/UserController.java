@@ -105,11 +105,19 @@ public class UserController extends AbstractController {
     return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
-  // TODO
+  /**
+   * Get user detail.
+   *
+   * @param request UserDetailRequest
+   * @return UserResponse
+   * @throws WFException WFException
+   */
   @PostMapping("/get-user-detail")
+  @IgnoreSecurity
   public ResponseEntity<BaseResponse> getUserDetail(
       @RequestBody BaseRequest<UserDetailRequest> request) throws WFException {
-    return this.returnBaseResponse(null, MessageEnum.REQUEST_SUCCESS);
+    UserResponse result = userService.getUserDetail(request);
+    return this.returnBaseResponse(result, MessageEnum.REQUEST_SUCCESS);
   }
 
   /**

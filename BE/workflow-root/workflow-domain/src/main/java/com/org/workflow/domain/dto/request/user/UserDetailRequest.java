@@ -18,4 +18,6 @@ public class UserDetailRequest implements Serializable {
 
   private String userId;
 
+  private Boolean isLogin;
+
 }

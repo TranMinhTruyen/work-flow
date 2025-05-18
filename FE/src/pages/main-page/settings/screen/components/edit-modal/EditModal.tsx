@@ -50,6 +50,10 @@ const EditModal = (props: EditModalProps) => {
    */
   useEffect(() => {
     onGetScreenDetail();
+
+    return () => {
+      reset();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

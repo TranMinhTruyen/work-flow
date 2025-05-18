@@ -13,7 +13,8 @@ export enum ApiEnum {
   CREATE_USER_ADMIN,
   CREATE_USER,
   LOGIN,
-  GET_USER_PROFILE,
+  GET_USER,
+  GET_USER_DETAIL,
   UPDATE_USER_ACCOUNT,
   CHANGE_LOGIN_PASSWORD,
 
@@ -57,8 +58,12 @@ export const controller: Record<string, ApiType> = {
     url: `${USER_PREFIX}/create-user`,
     method: 'POST',
   },
-  [ApiEnum.GET_USER_PROFILE]: {
+  [ApiEnum.GET_USER]: {
     url: `${USER_PREFIX}/get-user`,
+    method: 'POST',
+  },
+  [ApiEnum.GET_USER_DETAIL]: {
+    url: `${USER_PREFIX}/get-user-detail`,
     method: 'POST',
   },
   [ApiEnum.UPDATE_USER_ACCOUNT]: {

@@ -1,12 +1,6 @@
 import { IScreenMaster } from '@/common/model/ScreenMaster';
 
-export default interface ILoginResponse {
-  tokenType?: string;
-  userResponse?: IUserResponse;
-  token?: string;
-}
-
-export interface IUserResponse {
+export interface IUserDetailForm {
   userId?: string;
   email?: string;
   userName?: string;

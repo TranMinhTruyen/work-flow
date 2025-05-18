@@ -66,8 +66,6 @@ public class ScreenService extends AbstractService {
 
   private final NotificationUtil notificationUtil;
 
-  private final LogUtil logUtil;
-
   private final NotificationService notificationService;
 
   private final SimpMessagingTemplate messagingTemplate;
@@ -93,7 +91,7 @@ public class ScreenService extends AbstractService {
     PageableResult<Screen> queryResult = screenRepository.searchByCondition(searchCondition,
         PageableUtil.getPageable(pageableRequest));
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"screenRepository.searchByCondition:", queryResult});
 
     List<SearchScreenResponse> searchScreenResponses = new ArrayList<>();
@@ -118,7 +116,7 @@ public class ScreenService extends AbstractService {
     PageResponse<SearchScreenResponse> response =
         PageableUtil.toPageableResponse(queryResult, searchScreenResponses);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    LogUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
 
     return response;
   }
@@ -133,7 +131,7 @@ public class ScreenService extends AbstractService {
 
     Screen screen = result.orElse(new Screen());
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"screenRepository.findByScreenId:", screen});
 
     GetScreenDetailResponse response = new GetScreenDetailResponse();
@@ -161,7 +159,7 @@ public class ScreenService extends AbstractService {
     response.setCreatedDatetime(screen.getCreateDatetime());
     response.setUpdatedDatetime(screen.getUpdatedDatetime());
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    LogUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
 
     return response;
   }
@@ -188,7 +186,7 @@ public class ScreenService extends AbstractService {
     PageableResult<UserAccount> queryResult = userRepository.findUserAccountByScreenId(condition,
         PageableUtil.getPageable(pageableRequest));
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"userRepository.findUserAccountByScreenId:", queryResult});
 
     List<ScreenUserResponse> screenUserResponses = new ArrayList<>();
@@ -206,7 +204,7 @@ public class ScreenService extends AbstractService {
     PageResponse<ScreenUserResponse> response =
         PageableUtil.toPageableResponse(queryResult, screenUserResponses);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    LogUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
 
     return response;
   }
@@ -253,7 +251,7 @@ public class ScreenService extends AbstractService {
 
     Screen saveResult = screenRepository.save(screen);
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"screenRepository.save:", saveResult});
 
     SaveScreenResponse response = new SaveScreenResponse();
@@ -283,7 +281,7 @@ public class ScreenService extends AbstractService {
     }
     messagingTemplate.convertAndSend(SCREEN_MASTER_CHANGE, response);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    LogUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
 
     return response;
   }
@@ -300,7 +298,7 @@ public class ScreenService extends AbstractService {
 
     long count = screenRepository.removeUserFromScreen(condition);
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"screenRepository.removeUserFromScreen:", count});
 
     if (count > 0) {
@@ -338,7 +336,7 @@ public class ScreenService extends AbstractService {
         userRepository.findUserAccountNotUsingByScreenId(condition,
             PageableUtil.getPageable(pageableRequest));
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"userRepository.findUserAccountNotUsingByScreenId:", queryResult});
 
     List<ScreenUserResponse> screenUserResponses = new ArrayList<>();
@@ -356,7 +354,7 @@ public class ScreenService extends AbstractService {
     PageResponse<ScreenUserResponse> response =
         PageableUtil.toPageableResponse(queryResult, screenUserResponses);
 
-    logUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
+    LogUtil.log(Level.INFO, ScreenService.class, new Object[] {"Response:", response});
 
     return response;
   }
@@ -374,7 +372,7 @@ public class ScreenService extends AbstractService {
 
     long count = screenRepository.assignUserToScreen(condition);
 
-    logUtil.log(Level.INFO, ScreenService.class,
+    LogUtil.log(Level.INFO, ScreenService.class,
         new Object[] {"screenRepository.assignUserToScreen:", count});
 
     if (count > 0) {

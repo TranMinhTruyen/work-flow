@@ -7,15 +7,13 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
 /**
  * @author minh-truyen
  */
-@Component
 public class LogUtil {
-  
-  public void log(Level level, final Class<?> clazz, @Nullable Object[] args) {
+
+  public static void log(Level level, final Class<?> clazz, @Nullable Object[] args) {
     Logger LOGGER = LogManager.getLogger(clazz);
     if (args == null || args.length == 0) {
       LOGGER.log(level, "");

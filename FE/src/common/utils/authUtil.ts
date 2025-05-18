@@ -107,7 +107,7 @@ export const handleCheckToken = async () => {
 
 export const handleGetUserProfile = async () => {
   const response: IUserResponse = await store
-    .dispatch(userServices.endpoints.getUserProfile.initiate())
+    .dispatch(userServices.endpoints.getUser.initiate())
     .unwrap();
   store.dispatch(setScreenMaster(response.screenMasterList ?? []));
 };

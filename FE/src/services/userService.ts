@@ -4,6 +4,7 @@ import ILoginRequest from '@/pages/auth-page/login/model/LoginRequest';
 import ILoginResponse, { IUserResponse } from '@/pages/auth-page/login/model/LoginResponse';
 import IRegisterRequest from '@/pages/auth-page/register/model/RegisterRequest';
 import IRegisterResponse from '@/pages/auth-page/register/model/RegisterResponse';
+import { IUserDetailRequest } from '@/pages/main-page/settings/user/model/request/UserDetailRequest';
 
 export const userServices = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -21,9 +22,16 @@ export const userServices = baseApi.injectEndpoints({
       }),
     }),
 
-    getUserProfile: builder.mutation<IUserResponse, void>({
+    getUser: builder.mutation<IUserResponse, void>({
       query: () => ({
-        api: ApiEnum.GET_USER_PROFILE,
+        api: ApiEnum.GET_USER,
+      }),
+    }),
+
+    getUserDetail: builder.mutation<IUserResponse, IUserDetailRequest>({
+      query: request => ({
+        api: ApiEnum.GET_USER_DETAIL,
+        data: request,
       }),
     }),
   }),

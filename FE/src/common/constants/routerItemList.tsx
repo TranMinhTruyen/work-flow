@@ -1,7 +1,5 @@
 import { lazy, ReactNode } from 'react';
 
-import UserDetailPage from '@/pages/main-page/settings/user/UserDetailPage';
-
 import { screenUrl } from './urlConst';
 
 const LoginPage = lazy(() => import('@/pages/auth-page/login/LoginPage'));
@@ -10,6 +8,7 @@ const HomePage = lazy(() => import('@/pages/main-page/home/HomePage'));
 const KanbanPage = lazy(() => import('@/pages/main-page/kanban/KanbanPage'));
 const ScreenPage = lazy(() => import('@/pages/main-page/settings/screen/ScreenPage'));
 const UserPage = lazy(() => import('@/pages/main-page/settings/user/UserPage'));
+const UserDetailPage = lazy(() => import('@/pages/main-page/settings/user/UserDetailPage'));
 
 export interface IRouterItem {
   screen: ReactNode;

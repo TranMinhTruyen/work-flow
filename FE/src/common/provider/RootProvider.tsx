@@ -16,7 +16,6 @@ import { I18nEnum } from '../enums/i18nEnum';
 import { MessageType } from '../enums/messageEnum';
 import useRouter from '../hooks/useRouter';
 import { IBaseRequest, IBaseResponse } from '../model/AxiosData';
-import { IUserData } from '../model/user';
 import { toggleLoading } from '../store/commonSlice';
 import { getLoginData } from '../utils/authUtil';
 import { isIBaseRequest } from '../utils/convertUtil';
@@ -27,6 +26,7 @@ const FILE_API: string[] = ['/api/file/get-upload-url', '/api/file/get-download-
 const AUTH_WHITE_LIST: string[] = [
   '/api/user-account/login',
   '/api/user-account/create',
+  '/api/user-account/get-user-detail',
   '/api/master-item/get',
   ...FILE_API,
 ];
@@ -43,9 +43,9 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
 
     axiosInstance.interceptors.request.use(config => {
       if (!(config as CustomAxiosConfig).isS3Url) {
-        if (!AUTH_WHITE_LIST.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
-          const loginData: IUserData | undefined = getLoginData();
+        const loginData = getLoginData();
 
+        if (!AUTH_WHITE_LIST.some(x => x.toLowerCase() === config.url?.toLowerCase())) {
           // If login data is undefined, back to login screen
           if (!loginData) {
             navigate(screenUrl.LOGIN.path, true);
@@ -53,6 +53,10 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
             // Set token to header
             config.headers['Authorization'] = `Bearer ${loginData.token}`;
           }
+        }
+
+        if (config.url?.toLowerCase() === '/api/user-account/get-user-detail') {
+          config.headers['Authorization'] = `Bearer ${loginData?.token}`;
         }
 
         // Transform request
