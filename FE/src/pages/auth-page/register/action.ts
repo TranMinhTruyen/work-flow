@@ -7,12 +7,12 @@ import IRegisterForm from './model/RegisterForm';
 import IRegisterRequest from './model/RegisterRequest';
 
 export const handleSubmitRegister = async (formData: IRegisterForm) => {
-  const objectId = await upload('workflow', formData.image);
+  const data = await upload('workflow', formData.image);
 
   const registerRequest: IRegisterRequest = {
     ...formData,
     password: encryptWithRSA(formData.password),
-    image: objectId,
+    image: data?.objectId,
   };
 
   const response = await store

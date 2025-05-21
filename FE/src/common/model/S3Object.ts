@@ -1,22 +1,20 @@
+import { FileData } from '../constants/typeConst';
+
 export interface IS3FileData {
-  file?: File;
-  name?: string;
-  data?: number[];
+  fileData?: FileData;
   base64?: string | null;
+  objectId?: string;
+  downloadUrl?: string;
+  uploadUrl?: string;
 }
 
-export interface IUploadFileRequest {
+export interface S3FileRequest {
   bucketName: string;
   objectId: string;
 }
 
 export interface IUploadFileResponse {
   uploadUrl: string;
-}
-
-export interface IDownloadFileRequest {
-  bucketName: string;
-  objectId: string;
 }
 
 export interface IDownloadFileResponse {

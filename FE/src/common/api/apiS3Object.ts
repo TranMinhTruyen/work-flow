@@ -5,11 +5,10 @@ import { DATE_TIME_STRING_FORMAT } from '../constants/commonConst';
 import { CustomAxiosConfig, FileData } from '../constants/typeConst';
 import { IBaseResponse } from '../model/AxiosData';
 import {
-  IDownloadFileRequest,
   IDownloadFileResponse,
   IS3FileData,
-  IUploadFileRequest,
   IUploadFileResponse,
+  S3FileRequest,
 } from '../model/S3Object';
 import { blobToBase64 } from '../utils/convertUtil';
 import { randomNumberString } from '../utils/stringUtil';
@@ -26,22 +25,22 @@ import { axiosApiEnumFetch, axiosFetch } from './axios';
 export const upload = async (
   bucketName?: string | null,
   fileData?: FileData | null
-): Promise<string | null | undefined> => {
+): Promise<IS3FileData | null | undefined> => {
   if (!bucketName || !fileData) return undefined;
   try {
     const objectId = `WFS3-${randomNumberString()}-${dayjs(new Date()).format(DATE_TIME_STRING_FORMAT)}-${fileData.name}`;
-    const getUrlResponse: AxiosResponse<IBaseResponse<IUploadFileResponse>> =
+    const getUploadUrlResponse: AxiosResponse<IBaseResponse<IUploadFileResponse>> =
       await axiosApiEnumFetch(ApiEnum.UPLOAD_FILE, {
         data: {
           bucketName: bucketName,
           objectId: objectId,
         },
-      } as CustomAxiosConfig<IUploadFileRequest>);
+      } as CustomAxiosConfig<S3FileRequest>);
 
-    if (!getUrlResponse.data.body.uploadUrl) return null;
+    if (!getUploadUrlResponse.data.body.uploadUrl) return null;
 
     await axiosFetch({
-      url: getUrlResponse.data.body.uploadUrl,
+      url: getUploadUrlResponse.data.body.uploadUrl,
       method: 'PUT',
       data: fileData.file,
       headers: {
@@ -50,7 +49,20 @@ export const upload = async (
       isS3Url: true,
     });
 
-    return objectId;
+    const getDownloadUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
+      await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
+        data: {
+          bucketName: bucketName,
+          objectId: objectId,
+        },
+      } as CustomAxiosConfig<S3FileRequest>);
+
+    return {
+      fileData: fileData,
+      objectId,
+      downloadUrl: getDownloadUrlResponse.data.body.downloadUrl,
+      uploadUrl: getUploadUrlResponse.data.body.uploadUrl,
+    };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   } catch (error) {
     return null;
@@ -63,14 +75,14 @@ export const upload = async (
  * @param objectId
  * @returns
  */
-export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | null> => {
+export const get = async (params?: S3FileRequest): Promise<IS3FileData | null> => {
   if (!params) return null;
 
   try {
     const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
       await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
         data: params,
-      } as CustomAxiosConfig<IDownloadFileRequest>);
+      } as CustomAxiosConfig<S3FileRequest>);
 
     if (!getUrlResponse.data.body.downloadUrl) return null;
 
@@ -105,10 +117,14 @@ export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | 
     }
 
     return {
-      file,
-      name: fileName,
-      data,
+      fileData: {
+        file,
+        name: fileName,
+        data,
+      },
       base64,
+      objectId: params.objectId,
+      downloadUrl: getUrlResponse.data.body.downloadUrl,
     };
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   } catch (error) {
@@ -121,14 +137,14 @@ export const get = async (params?: IDownloadFileRequest): Promise<IS3FileData | 
  *
  * @param objectId
  */
-export const download = async (params?: IDownloadFileRequest): Promise<void> => {
+export const download = async (params?: S3FileRequest): Promise<void> => {
   if (!params) return;
 
   try {
     const getUrlResponse: AxiosResponse<IBaseResponse<IDownloadFileResponse>> =
       await axiosApiEnumFetch(ApiEnum.DOWNLOAD_FILE, {
         data: params,
-      } as CustomAxiosConfig<IDownloadFileRequest>);
+      } as CustomAxiosConfig<S3FileRequest>);
 
     if (!getUrlResponse.data.body.downloadUrl) return;
 
@@ -159,7 +175,7 @@ export const download = async (params?: IDownloadFileRequest): Promise<void> => 
  *
  * @param objectIdList
  */
-export const downloadMultiple = async (objectIdList?: IDownloadFileRequest[]): Promise<void> => {
+export const downloadMultiple = async (objectIdList?: S3FileRequest[]): Promise<void> => {
   if (!objectIdList) return;
   try {
     await Promise.all(
